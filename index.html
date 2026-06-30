@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#2563eb">
+    <meta name="description" content="Aprende hiragana, katakana y kanji con escritura, audio y repetición espaciada.">
+    <title>KanjiFlow — Aprende japonés</title>
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="stylesheet" href="style.css?v=300">
+</head>
+<body>
+    <main class="app-shell">
+        <header class="app-header">
+            <div>
+                <p class="eyebrow">日本語を学ぼう</p>
+                <h1>KanjiFlow</h1>
+                <p class="subtitle">Kana y kanji, un repaso a la vez.</p>
+            </div>
+            <span id="estado-conexion" class="connection-badge" role="status">En línea</span>
+        </header>
+
+        <section class="progress-card" aria-labelledby="titulo-progreso">
+            <div class="progress-heading">
+                <div>
+                    <h2 id="titulo-progreso">Tu progreso</h2>
+                    <p id="resumen-progreso">Preparando tu sesión…</p>
+                </div>
+                <strong id="porcentaje-dominio">0%</strong>
+            </div>
+            <div class="progress-track" aria-hidden="true">
+                <span id="barra-progreso"></span>
+            </div>
+            <div class="stats-grid">
+                <div><strong id="stat-nuevas">0</strong><span>Nuevas</span></div>
+                <div><strong id="stat-repasar">0</strong><span>Por repasar</span></div>
+                <div><strong id="stat-dominadas">0</strong><span>Dominadas</span></div>
+                <div><strong id="stat-racha">0</strong><span>Mejor racha</span></div>
+            </div>
+            <div class="data-actions">
+                <button id="btn-exportar" class="text-button" type="button">Exportar progreso</button>
+                <button id="btn-importar" class="text-button" type="button">Importar progreso</button>
+                <input id="archivo-importar" type="file" accept="application/json" hidden>
+            </div>
+        </section>
+
+        <nav class="tabs-navigation" role="tablist" aria-label="Secciones de aprendizaje">
+            <button id="tab-practica" class="tab-button active" type="button" role="tab"
+                    aria-selected="true" aria-controls="seccion-practica">
+                <span aria-hidden="true">✍️</span> Práctica
+            </button>
+            <button id="tab-estudio" class="tab-button" type="button" role="tab"
+                    aria-selected="false" aria-controls="seccion-estudio" tabindex="-1">
+                <span aria-hidden="true">📚</span> Estudio
+            </button>
+        </nav>
+
+        <section id="seccion-practica" role="tabpanel" aria-labelledby="tab-practica">
+            <div class="filters-card">
+                <div class="field">
+                    <label for="selector-leccion">Lección</label>
+                    <select id="selector-leccion"></select>
+                </div>
+                <div class="filters-row">
+                    <div class="field">
+                        <label for="selector-modo">Escritura</label>
+                        <select id="selector-modo">
+                            <option value="todos">Todas</option>
+                            <option value="hiragana">Hiragana</option>
+                            <option value="katakana">Katakana</option>
+                            <option value="kanji">Kanji</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label for="selector-progreso">Sesión</label>
+                        <select id="selector-progreso">
+                            <option value="recomendado">Recomendado</option>
+                            <option value="repasar">Por repasar</option>
+                            <option value="nuevas">Solo nuevas</option>
+                            <option value="aprendiendo">En aprendizaje</option>
+                            <option value="dominadas">Dominadas</option>
+                            <option value="favoritos">Favoritas</option>
+                            <option value="todos">Todo</option>
+                        </select>
+                    </div>
+                </div>
+                <p id="descripcion-leccion" class="lesson-description"></p>
+            </div>
+
+            <article class="question-card" aria-labelledby="texto-significado">
+                <div class="question-meta">
+                    <span id="info-tipo" class="tag">Cargando…</span>
+                    <span id="estado-tarjeta" class="card-state"></span>
+                </div>
+                <div class="question-title-row">
+                    <h2 id="texto-significado">Cargando vocabulario…</h2>
+                    <button id="btn-sonido-practica" class="icon-button" type="button"
+                            aria-label="Escuchar pronunciación" title="Escuchar pronunciación">🔊</button>
+                </div>
+                <p id="pista-romaji" class="hint"></p>
+            </article>
+
+            <div class="canvas-frame">
+                <canvas id="pizarra" width="320" height="320"
+                        aria-label="Pizarra para escribir el carácter japonés"></canvas>
+            </div>
+
+            <div class="board-controls">
+                <button id="btn-limpiar" class="button secondary" type="button">Limpiar</button>
+                <button id="btn-revelar" class="button secondary" type="button">Ver respuesta</button>
+                <button id="btn-evaluar-ia" class="button recognition" type="button">
+                    Reconocer dibujo <span class="beta-label">beta</span>
+                </button>
+            </div>
+            <p id="estado-reconocimiento" class="recognition-status" aria-live="polite">
+                El reconocimiento compara la forma final; no evalúa todavía el orden de los trazos.
+            </p>
+
+            <section id="panel-respuesta" class="answer-panel hidden" aria-live="polite">
+                <div class="answer-main">
+                    <div class="correct-character" id="resp-caracter">?</div>
+                    <button id="btn-sonido-respuesta" class="icon-button" type="button"
+                            aria-label="Escuchar respuesta">🔊</button>
+                </div>
+                <dl class="details-list">
+                    <div id="fila-romaji"><dt>Lectura</dt><dd id="resp-romaji">—</dd></div>
+                    <div id="fila-categoria"><dt>Categoría</dt><dd id="resp-categoria">—</dd></div>
+                    <div id="fila-contraparte"><dt>Contraparte</dt><dd id="resp-contraparte">—</dd></div>
+                    <div id="fila-palabra"><dt>Ejemplo</dt><dd id="resp-palabra">—</dd></div>
+                    <div id="fila-id"><dt>N.º JLPT</dt><dd id="resp-id">—</dd></div>
+                    <div id="fila-onyomi"><dt>Onyomi</dt><dd id="resp-onyomi">—</dd></div>
+                    <div id="fila-kunyomi"><dt>Kunyomi</dt><dd id="resp-kunyomi">—</dd></div>
+                    <div id="fila-ejemplo-kanji"><dt>En contexto</dt><dd id="resp-ejemplo-kanji">—</dd></div>
+                </dl>
+                <fieldset class="rating-fieldset">
+                    <legend>¿Qué tan fácil fue recordarlo?</legend>
+                    <div class="rating-grid">
+                        <button type="button" data-rating="again" class="rating again">
+                            <strong>Otra vez</strong><span>&lt; 1 min</span>
+                        </button>
+                        <button type="button" data-rating="hard" class="rating hard">
+                            <strong>Difícil</strong><span>pronto</span>
+                        </button>
+                        <button type="button" data-rating="good" class="rating good">
+                            <strong>Bien</strong><span>normal</span>
+                        </button>
+                        <button type="button" data-rating="easy" class="rating easy">
+                            <strong>Fácil</strong><span>más tarde</span>
+                        </button>
+                    </div>
+                </fieldset>
+            </section>
+        </section>
+
+        <section id="seccion-estudio" class="hidden" role="tabpanel"
+                 aria-labelledby="tab-estudio" tabindex="0">
+            <div class="study-filters">
+                <div class="field">
+                    <label for="buscador-texto">Buscar</label>
+                    <input type="search" id="buscador-texto"
+                           placeholder="Carácter, lectura o significado…"
+                           autocomplete="off">
+                </div>
+                <div class="field">
+                    <label for="filtro-nivel">Contenido</label>
+                    <select id="filtro-nivel">
+                        <option value="todos">Todos los caracteres</option>
+                        <option value="hiragana">Hiragana</option>
+                        <option value="katakana">Katakana</option>
+                        <option value="kana">Hiragana + katakana</option>
+                        <option value="N5">Kanji N5</option>
+                        <option value="importantes">Mis favoritas</option>
+                    </select>
+                </div>
+            </div>
+            <p id="contador-resultados" class="results-count" aria-live="polite"></p>
+            <div id="lista-diccionario" class="dictionary-grid"></div>
+        </section>
+    </main>
+
+    <div id="modal-detalles" class="modal hidden" role="dialog" aria-modal="true"
+         aria-labelledby="modal-caracter" aria-describedby="modal-significado">
+        <div class="modal-content" tabindex="-1">
+            <div class="modal-top-actions">
+                <button id="btn-favorito" class="favorite-button" type="button"
+                        aria-label="Añadir a favoritas" aria-pressed="false">☆</button>
+                <button id="cerrar-modal" class="close-button" type="button"
+                        aria-label="Cerrar detalles">×</button>
+            </div>
+
+            <div class="modal-practice-zone">
+                <div id="modal-caracter" class="character-guide">?</div>
+                <canvas id="pizarra-modal" width="300" height="300"
+                        aria-label="Pizarra para calcar el carácter"></canvas>
+            </div>
+
+            <div class="modal-board-controls">
+                <button id="btn-toggle-trazos" class="button secondary" type="button"
+                        aria-pressed="false">Mostrar orden de trazos</button>
+                <button id="btn-limpiar-modal" class="button secondary" type="button">Limpiar</button>
+            </div>
+
+            <div class="modal-reading">
+                <h2 id="modal-romaji">—</h2>
+                <button id="btn-sonido-principal" class="icon-button" type="button"
+                        aria-label="Escuchar carácter">🔊</button>
+            </div>
+            <p id="modal-significado" class="modal-meaning">—</p>
+
+            <dl class="details-list modal-details">
+                <div><dt>Categoría</dt><dd id="modal-categoria">—</dd></div>
+                <div id="modal-fila-contraparte"><dt>Contraparte</dt><dd id="modal-contraparte">—</dd></div>
+                <div id="modal-fila-palabra">
+                    <dt>Ejemplo</dt>
+                    <dd><span id="modal-palabra">—</span>
+                        <button id="btn-sonido-palabra" class="inline-sound" type="button"
+                                aria-label="Escuchar ejemplo">🔊</button></dd>
+                </div>
+                <div id="modal-fila-id"><dt>N.º JLPT</dt><dd id="modal-id">—</dd></div>
+                <div id="modal-fila-onyomi">
+                    <dt>Onyomi</dt>
+                    <dd><span id="modal-onyomi">—</span>
+                        <button id="btn-sonido-onyomi" class="inline-sound" type="button"
+                                aria-label="Escuchar onyomi">🔊</button></dd>
+                </div>
+                <div id="modal-fila-kunyomi">
+                    <dt>Kunyomi</dt>
+                    <dd><span id="modal-kunyomi">—</span>
+                        <button id="btn-sonido-kunyomi" class="inline-sound" type="button"
+                                aria-label="Escuchar kunyomi">🔊</button></dd>
+                </div>
+            </dl>
+
+            <section id="modal-contexto-kanji" class="context-card hidden">
+                <h3>Kanji en contexto</h3>
+                <p><strong id="modal-ejemplo-palabra">—</strong>
+                    <span id="modal-ejemplo-lectura">—</span></p>
+                <p id="modal-ejemplo-significado">—</p>
+                <p class="japanese-sentence" id="modal-ejemplo-frase">—</p>
+                <p id="modal-ejemplo-frase-lectura">—</p>
+                <p id="modal-ejemplo-frase-significado">—</p>
+                <button id="btn-sonido-frase" class="text-button" type="button">Escuchar frase</button>
+            </section>
+
+            <div class="modal-navigation">
+                <button id="btn-modal-prev" class="button secondary" type="button">← Anterior</button>
+                <span id="contador-modal">—</span>
+                <button id="btn-modal-next" class="button secondary" type="button">Siguiente →</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <script type="module" src="js/app.js?v=303"></script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+{
+  "name": "KanjiFlow — Aprende japonés",
+  "short_name": "KanjiFlow",
+  "description": "Práctica de hiragana, katakana y kanji con escritura y repetición espaciada.",
+  "lang": "es",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#eef2f8",
+  "theme_color": "#2563eb"
+}

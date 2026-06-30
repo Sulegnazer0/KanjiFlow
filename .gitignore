@@ -1,0 +1,22 @@
+# Dependencias y salidas locales
+node_modules/
+coverage/
+dist/
+build/
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+
+# Backups/exportaciones locales de progreso
+kanjiflow-progreso-*.json
+
+# Fuente original pesada: la app usa KanjiStrokeOrders.woff
+KanjiStrokeOrders.ttf
