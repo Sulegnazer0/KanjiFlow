@@ -11,7 +11,6 @@ import {
     normalizeSearch,
     progressStats,
     scheduleReview,
-    timeUntil,
 } from "./core.js";
 import {
     createBackup,
@@ -27,6 +26,20 @@ import {
 import { createDrawingPad } from "./drawing.js";
 import { exampleJapanese, itemPronunciation, japaneseOnly, speakJapanese } from "./audio.js";
 import { loadDictionary } from "./data.js";
+import {
+    AVAILABLE_LANGUAGES,
+    applyDocumentTranslations,
+    currentLanguage,
+    detectInitialLanguage,
+    formatRelativeTime,
+    formatResultCount,
+    lessonDescription,
+    lessonTitle,
+    loadLocale,
+    localizeDictionary,
+    t,
+    translateCardState,
+} from "./i18n.js?v=401";
 
 const $ = selector => document.querySelector(selector);
 const elements = {
@@ -117,8 +130,10 @@ const elements = {
     modalNext: $("#btn-modal-next"),
     modalCounter: $("#contador-modal"),
     toast: $("#toast"),
+    languageSelect: $("#selector-idioma"),
 };
 
+let baseDictionary = [];
 let dictionary = [];
 let currentItem = null;
 let previousItemId = "";
@@ -135,6 +150,14 @@ let touchStartX = 0;
 const practicePad = createDrawingPad(elements.board, { lineWidth: 12 });
 const modalPad = createDrawingPad(elements.modalBoard, { lineWidth: 7 });
 
+function itemStateLabel(record) {
+    return translateCardState(cardState(record));
+}
+
+function localizeLoadedDictionary() {
+    dictionary = localizeDictionary(baseDictionary);
+}
+
 function showToast(message) {
     clearTimeout(toastTimer);
     elements.toast.textContent = message;
@@ -146,12 +169,24 @@ function setVisibility(element, visible) {
     element.classList.toggle("hidden", !visible);
 }
 
+function populateLanguageSelect() {
+    const fragment = document.createDocumentFragment();
+    for (const language of AVAILABLE_LANGUAGES) {
+        const option = document.createElement("option");
+        option.value = language.code;
+        option.textContent = language.label;
+        fragment.appendChild(option);
+    }
+    elements.languageSelect.replaceChildren(fragment);
+    elements.languageSelect.value = currentLanguage();
+}
+
 function populateLessons() {
     const fragment = document.createDocumentFragment();
     for (const lesson of LESSONS) {
         const option = document.createElement("option");
         option.value = lesson.id;
-        option.textContent = lesson.title;
+        option.textContent = lessonTitle(lesson);
         fragment.appendChild(option);
     }
     elements.lessonSelect.replaceChildren(fragment);
@@ -159,9 +194,11 @@ function populateLessons() {
 
 function saveCurrentSettings() {
     settings = {
+        ...settings,
         lesson: elements.lessonSelect.value,
         script: elements.scriptSelect.value,
         session: elements.sessionSelect.value,
+        language: currentLanguage(),
     };
     saveSettings(settings);
 }
@@ -171,6 +208,40 @@ function restoreSettings() {
     elements.lessonSelect.value = lessonExists ? settings.lesson : "recommended";
     elements.scriptSelect.value = settings.script || "todos";
     elements.sessionSelect.value = settings.session || "recomendado";
+}
+
+function applyLanguageToUI() {
+    applyDocumentTranslations();
+    populateLanguageSelect();
+    populateLessons();
+    restoreSettings();
+    updateConnection();
+    if (baseDictionary.length) {
+        localizeLoadedDictionary();
+        updateProgressUI();
+        presentChallenge();
+        renderDictionary();
+        if (!elements.modal.classList.contains("hidden")) openModal(modalIndex, modalTrigger);
+    }
+}
+
+async function changeLanguage(language) {
+    if (language === currentLanguage()) return;
+    settings = {
+        ...settings,
+        lesson: elements.lessonSelect.value || settings.lesson,
+        script: elements.scriptSelect.value || settings.script,
+        session: elements.sessionSelect.value || settings.session,
+        language,
+    };
+    saveSettings(settings);
+    try {
+        await loadLocale(language);
+        applyLanguageToUI();
+    } catch (error) {
+        console.error(error);
+        showToast(t("ui.loadErrorQuestion"));
+    }
 }
 
 function currentLessonData() {
@@ -186,8 +257,8 @@ function updateProgressUI() {
     elements.progressPercent.textContent = `${stats.percent}%`;
     elements.progressBar.style.width = `${stats.percent}%`;
     elements.progressSummary.textContent = stats.dueCount
-        ? `${stats.dueCount} tarjeta${stats.dueCount === 1 ? "" : "s"} esperando repaso.`
-        : "Estás al día. Puedes aprender tarjetas nuevas.";
+        ? t(stats.dueCount === 1 ? "ui.progressDueOne" : "ui.progressDueMany", { count: stats.dueCount })
+        : t("ui.progressReady");
 }
 
 function getPracticePool() {
@@ -209,14 +280,14 @@ function presentChallenge() {
     elements.answerPanel.classList.add("hidden");
     practicePad.clear();
     const poolData = getPracticePool();
-    elements.lessonDescription.textContent = poolData.lesson.description;
+    elements.lessonDescription.textContent = lessonDescription(poolData.lesson);
     currentItem = chooseNext(poolData.items, previousItemId, progress);
 
     if (!currentItem) {
-        elements.typeInfo.textContent = "Sin tarjetas";
+        elements.typeInfo.textContent = t("ui.noCardsTag");
         elements.cardState.textContent = "";
-        elements.question.textContent = "No hay caracteres con estos filtros.";
-        elements.hint.textContent = "Prueba otra lección o una sesión diferente.";
+        elements.question.textContent = t("ui.noCardsQuestion");
+        elements.hint.textContent = t("ui.noCardsHint");
         elements.reveal.disabled = true;
         elements.recognition.disabled = true;
         return;
@@ -226,18 +297,18 @@ function presentChallenge() {
     const record = progress[previousItemId];
     elements.reveal.disabled = false;
     elements.recognition.disabled = !navigator.onLine;
-    elements.typeInfo.textContent = `${currentItem.tipo} · ${currentItem.categoria}`;
-    elements.cardState.textContent = cardState(record);
+    elements.typeInfo.textContent = `${currentItem.tipoLabel} · ${currentItem.categoriaLabel}`;
+    elements.cardState.textContent = itemStateLabel(record);
     elements.question.textContent = currentItem.tipo === "kanji"
-        ? `Dibuja «${currentItem.significado}»`
+        ? t("ui.drawMeaning", { meaning: currentItem.significado })
         : currentItem.categoria === "especial"
-            ? `Escribe «${currentItem.significado}»`
-            : `Escribe el sonido «${currentItem.romaji}»`;
+            ? t("ui.writeMeaning", { meaning: currentItem.significado })
+            : t("ui.writeSound", { romaji: currentItem.romaji });
     elements.hint.textContent = currentItem.tipo === "kanji"
-        ? "Puedes escuchar una lectura como pista."
+        ? t("ui.kanjiHint")
         : currentItem.categoria === "especial"
-            ? "Revisa la descripción de la lección si necesitas recordar la regla."
-            : "Traza el carácter dentro de la cuadrícula.";
+            ? t("ui.specialHint")
+            : t("ui.kanaHint");
 }
 
 function answerAudioText(item = currentItem) {
@@ -250,7 +321,7 @@ function revealAnswer() {
     practicePad.overlay(currentItem.caracter);
     elements.answerCharacter.textContent = currentItem.caracter;
     elements.answerRomaji.textContent = currentItem.romaji || "—";
-    elements.answerCategory.textContent = currentItem.categoria || "—";
+    elements.answerCategory.textContent = currentItem.categoriaLabel || "—";
 
     const kanji = currentItem.tipo === "kanji";
     setVisibility(elements.rowCounterpart, !kanji);
@@ -282,7 +353,9 @@ function rateCurrent(rating) {
     progress[id] = nextRecord;
     saveProgress(progress);
     updateProgressUI();
-    const dueText = rating === "again" ? "La veremos de nuevo en esta sesión." : `Próximo repaso ${timeUntil(nextRecord.dueAt)}.`;
+    const dueText = rating === "again"
+        ? t("ui.dueAgain")
+        : t("ui.nextReview", { time: formatRelativeTime(nextRecord.dueAt) });
     showToast(dueText);
     presentChallenge();
 }
@@ -350,7 +423,11 @@ function makeDictionaryCard(item, index) {
     button.className = "dictionary-card";
     button.setAttribute(
         "aria-label",
-        `${item.caracter}, ${item.romaji}, ${item.significado}. Abrir detalles`,
+        t("ui.openDetails", {
+            character: item.caracter,
+            reading: item.romaji,
+            meaning: item.significado,
+        }),
     );
 
     const character = document.createElement("span");
@@ -364,7 +441,7 @@ function makeDictionaryCard(item, index) {
     meaning.textContent = item.significado;
     const type = document.createElement("span");
     type.className = "dictionary-type";
-    type.textContent = `${item.tipo} · ${cardState(progress[itemId(item)])}`;
+    type.textContent = `${item.tipoLabel} · ${itemStateLabel(progress[itemId(item)])}`;
 
     button.append(character, reading, meaning, type);
     button.addEventListener("click", () => openModal(index, button));
@@ -380,12 +457,12 @@ function renderDictionary() {
     filteredStudyItems = primaryMatches.length
         ? primaryMatches
         : baseItems.filter(item => matchesSearch(item, query, true));
-    elements.resultCount.textContent = `${filteredStudyItems.length} resultado${filteredStudyItems.length === 1 ? "" : "s"}`;
+    elements.resultCount.textContent = formatResultCount(filteredStudyItems.length);
 
     if (!filteredStudyItems.length) {
         const empty = document.createElement("p");
         empty.className = "empty-state";
-        empty.textContent = "No se encontraron caracteres con esos filtros.";
+        empty.textContent = t("ui.emptyResults");
         elements.dictionary.replaceChildren(empty);
         return;
     }
@@ -409,13 +486,13 @@ function openModal(index, trigger = modalTrigger) {
     strokeOrderVisible = false;
     elements.modalCharacter.classList.remove("stroke-order");
     elements.toggleStrokes.setAttribute("aria-pressed", "false");
-    elements.toggleStrokes.textContent = "Mostrar orden de trazos";
+    elements.toggleStrokes.textContent = t("ui.showStrokeOrder");
     modalPad.clear();
 
     elements.modalCharacter.textContent = item.caracter || "?";
     elements.modalRomaji.textContent = item.romaji || "—";
     elements.modalMeaning.textContent = item.significado || "—";
-    elements.modalCategory.textContent = item.categoria || "—";
+    elements.modalCategory.textContent = item.categoriaLabel || "—";
     elements.modalCounter.textContent = `${index + 1} / ${filteredStudyItems.length}`;
 
     const favorite = Boolean(favorites[itemId(item)]);
@@ -424,7 +501,7 @@ function openModal(index, trigger = modalTrigger) {
     elements.favorite.setAttribute("aria-pressed", String(favorite));
     elements.favorite.setAttribute(
         "aria-label",
-        favorite ? "Quitar de favoritas" : "Añadir a favoritas",
+        favorite ? t("ui.removeFavorite") : t("ui.addFavorite"),
     );
 
     const kanji = item.tipo === "kanji";
@@ -527,18 +604,18 @@ function loadTesseract() {
 
 async function recognizeDrawing() {
     if (!currentItem || !practicePad.hasDrawing()) {
-        showToast("Primero dibuja un carácter.");
+        showToast(t("ui.drawFirst"));
         return;
     }
     if (!navigator.onLine) {
-        showToast("El reconocimiento necesita conexión.");
+        showToast(t("ui.recognitionNeedsConnection"));
         return;
     }
 
     const original = elements.recognition.textContent;
     elements.recognition.disabled = true;
-    elements.recognition.textContent = "Analizando…";
-    elements.recognitionStatus.textContent = "Cargando el reconocimiento japonés. La primera vez puede tardar.";
+    elements.recognition.textContent = t("ui.recognitionAnalyzing");
+    elements.recognitionStatus.textContent = t("ui.recognitionLoading");
     let worker;
 
     try {
@@ -551,23 +628,31 @@ async function recognizeDrawing() {
         const detected = result.data.text.replace(/\s+/g, "");
         const expected = currentItem.caracter.replace(/\s+/g, "");
         if (detected.includes(expected)) {
-            elements.recognitionStatus.textContent = `Reconocido como «${result.data.text.trim()}». Comprueba el orden de trazos con la guía.`;
-            showToast("La forma fue reconocida.");
+            elements.recognitionStatus.textContent = t("ui.recognitionMatched", {
+                detected: result.data.text.trim(),
+            });
+            showToast(t("ui.recognitionMatchedToast"));
             revealAnswer();
         } else {
-            elements.recognitionStatus.textContent = `Se detectó «${result.data.text.trim() || "nada claro"}»; se esperaba «${currentItem.caracter}».`;
-            showToast("No se reconoció la forma. Puedes autoevaluarte.");
+            elements.recognitionStatus.textContent = t("ui.recognitionMissed", {
+                detected: result.data.text.trim() || t("ui.recognitionNothing"),
+                expected: currentItem.caracter,
+            });
+            showToast(t("ui.recognitionMissedToast"));
         }
     } catch (error) {
         console.error(error);
-        elements.recognitionStatus.textContent = "No fue posible usar el reconocimiento. La práctica y la autoevaluación siguen disponibles.";
-        showToast("Falló el reconocimiento externo.");
+        elements.recognitionStatus.textContent = t("ui.recognitionError");
+        showToast(t("ui.recognitionErrorToast"));
     } finally {
         await worker?.terminate?.();
+        const label = document.createElement("span");
+        label.dataset.i18n = "ui.recognizeDrawing";
+        label.textContent = t("ui.recognizeDrawing");
         const beta = document.createElement("span");
         beta.className = "beta-label";
         beta.textContent = "beta";
-        elements.recognition.replaceChildren("Reconocer dibujo ", beta);
+        elements.recognition.replaceChildren(label, " ", beta);
         elements.recognition.disabled = !navigator.onLine;
         if (!elements.recognition.textContent.trim()) elements.recognition.textContent = original;
     }
@@ -584,7 +669,7 @@ function exportProgress() {
     link.download = `kanjiflow-progreso-${new Date().toISOString().slice(0, 10)}.json`;
     link.click();
     URL.revokeObjectURL(url);
-    showToast("Copia de progreso creada.");
+    showToast(t("ui.backupCreated"));
 }
 
 async function importProgress(file) {
@@ -598,9 +683,9 @@ async function importProgress(file) {
         updateProgressUI();
         presentChallenge();
         renderDictionary();
-        showToast("Progreso importado correctamente.");
+        showToast(t("ui.backupImported"));
     } catch (error) {
-        showToast(error.message || "No se pudo importar la copia.");
+        showToast(error.message || t("ui.backupInvalid"));
     } finally {
         elements.importFile.value = "";
     }
@@ -608,7 +693,7 @@ async function importProgress(file) {
 
 function updateConnection() {
     const online = navigator.onLine;
-    elements.connection.textContent = online ? "En línea" : "Sin conexión";
+    elements.connection.textContent = online ? t("ui.online") : t("ui.offline");
     elements.connection.classList.toggle("offline", !online);
     if (currentItem) elements.recognition.disabled = !online;
 }
@@ -624,6 +709,7 @@ function registerServiceWorker() {
 function bindEvents() {
     elements.practiceTab.addEventListener("click", () => switchTab("practice"));
     elements.studyTab.addEventListener("click", () => switchTab("study"));
+    elements.languageSelect.addEventListener("change", () => changeLanguage(elements.languageSelect.value));
     for (const tab of [elements.practiceTab, elements.studyTab]) {
         tab.addEventListener("keydown", event => {
             if (!["ArrowLeft", "ArrowRight"].includes(event.key)) return;
@@ -664,8 +750,8 @@ function bindEvents() {
         elements.modalCharacter.classList.toggle("stroke-order", strokeOrderVisible);
         elements.toggleStrokes.setAttribute("aria-pressed", String(strokeOrderVisible));
         elements.toggleStrokes.textContent = strokeOrderVisible
-            ? "Ocultar orden de trazos"
-            : "Mostrar orden de trazos";
+            ? t("ui.hideStrokeOrder")
+            : t("ui.showStrokeOrder");
     });
     elements.modalPrevious.addEventListener("click", () => openModal(modalIndex - 1, modalTrigger));
     elements.modalNext.addEventListener("click", () => openModal(modalIndex + 1, modalTrigger));
@@ -708,6 +794,14 @@ function bindEvents() {
 }
 
 async function init() {
+    settings = {
+        ...settings,
+        language: detectInitialLanguage(settings.language),
+    };
+    await loadLocale(settings.language);
+    saveSettings(settings);
+    applyDocumentTranslations();
+    populateLanguageSelect();
     populateLessons();
     restoreSettings();
     bindEvents();
@@ -715,15 +809,16 @@ async function init() {
     registerServiceWorker();
 
     try {
-        dictionary = await loadDictionary();
+        baseDictionary = await loadDictionary();
+        localizeLoadedDictionary();
         updateProgressUI();
         presentChallenge();
         renderDictionary();
     } catch (error) {
         console.error(error);
-        elements.typeInfo.textContent = "Error";
-        elements.question.textContent = "No se pudo cargar el contenido.";
-        elements.hint.textContent = "Abre la app desde un servidor local o revisa datos.csv.";
+        elements.typeInfo.textContent = t("ui.loadErrorTag");
+        elements.question.textContent = t("ui.loadErrorQuestion");
+        elements.hint.textContent = t("ui.loadErrorHint");
         elements.reveal.disabled = true;
         elements.recognition.disabled = true;
     }

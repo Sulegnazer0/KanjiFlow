@@ -83,6 +83,7 @@ export function loadSettings() {
         lesson: "recommended",
         script: "todos",
         session: "recomendado",
+        language: "es",
     });
 }
 
