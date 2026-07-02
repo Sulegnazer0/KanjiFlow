@@ -7,7 +7,7 @@
     <meta name="description" content="Aprende hiragana, katakana y kanji con escritura, audio y repetición espaciada.">
     <title>KanjiFlow — Aprende japonés</title>
     <link rel="manifest" href="manifest.webmanifest">
-    <link rel="stylesheet" href="style.css?v=400">
+    <link rel="stylesheet" href="style.css?v=500">
 </head>
 <body>
     <main class="app-shell">
@@ -22,6 +22,13 @@
                     <span aria-hidden="true">🌐</span>
                     <select id="selector-idioma" data-i18n-aria-label="ui.languageLabel"></select>
                 </label>
+                <button id="btn-recordatorio" class="reminder-button" type="button"
+                        aria-pressed="false"
+                        aria-label="Activar recordatorio de práctica"
+                        title="Activar recordatorio de práctica">
+                    <span id="icono-recordatorio" aria-hidden="true">🔔</span>
+                    <span id="texto-recordatorio" data-i18n="ui.reminderOff">Recordarme</span>
+                </button>
                 <span id="estado-conexion" class="connection-badge" role="status">En línea</span>
             </div>
         </header>
@@ -263,6 +270,6 @@
     </div>
 
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
-    <script type="module" src="js/app.js?v=401"></script>
+    <script type="module" src="js/app.js?v=501"></script>
 </body>
 </html>

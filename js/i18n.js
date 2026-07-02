@@ -3,7 +3,7 @@ import { itemId } from "./core.js";
 const DAY_MS = 24 * 60 * 60 * 1000;
 const MINUTE_MS = 60 * 1000;
 const FALLBACK_LANGUAGE = "es";
-const LOCALE_VERSION = "400";
+const LOCALE_VERSION = "501";
 
 export const AVAILABLE_LANGUAGES = [
     { code: "es", label: "Español" },

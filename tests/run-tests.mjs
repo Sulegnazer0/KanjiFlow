@@ -10,6 +10,14 @@ import {
     scheduleReview,
 } from "../js/core.js";
 import { KANJI_EXAMPLES } from "../js/kanji-examples.js";
+import {
+    enablePracticeReminder,
+    isPracticeReminderDue,
+    markPracticeReminderNotified,
+    recordPractice,
+    REMINDER_INTERVAL_MS,
+    shouldNotifyPracticeReminder,
+} from "../js/reminders.js";
 
 const csvSample = 'name,meaning,note\n"水","agua, líquido","dice ""mizu"""\n';
 assert.deepEqual(parseCSV(csvSample), [{
@@ -35,6 +43,21 @@ const failed = scheduleReview(mastered, "again", now);
 assert.equal(failed.streak, 0);
 assert.equal(failed.lapses, 1);
 assert.equal(failed.repetitions, 0);
+
+const enabledReminder = enablePracticeReminder({}, now);
+assert.equal(enabledReminder.enabled, true);
+assert.equal(enabledReminder.lastPracticeAt, now);
+assert.equal(enabledReminder.nextReminderAt, now + REMINDER_INTERVAL_MS);
+assert.equal(isPracticeReminderDue(enabledReminder, now + REMINDER_INTERVAL_MS - 1), false);
+assert.equal(isPracticeReminderDue(enabledReminder, now + REMINDER_INTERVAL_MS), true);
+
+const practicedEarly = recordPractice(enabledReminder, now + 2 * 60 * 60 * 1000);
+assert.equal(practicedEarly.lastPracticeAt, now + 2 * 60 * 60 * 1000);
+assert.equal(practicedEarly.nextReminderAt, now + 2 * 60 * 60 * 1000 + REMINDER_INTERVAL_MS);
+assert.equal(isPracticeReminderDue(practicedEarly, now + REMINDER_INTERVAL_MS), false);
+assert.equal(shouldNotifyPracticeReminder(practicedEarly, practicedEarly.nextReminderAt), true);
+const notifiedReminder = markPracticeReminderNotified(practicedEarly, practicedEarly.nextReminderAt);
+assert.equal(shouldNotifyPracticeReminder(notifiedReminder, practicedEarly.nextReminderAt + 60_000), false);
 
 const rawData = await readFile(new URL("../datos.csv", import.meta.url), "utf8");
 const dictionary = parseCSV(rawData);
@@ -62,6 +85,15 @@ for (const code of localeCodes) {
     const locale = JSON.parse(await readFile(new URL(`../locales/${code}.json`, import.meta.url), "utf8"));
     assert.ok(locale.meta?.htmlLang, `Falta meta.htmlLang en ${code}`);
     assert.ok(locale.ui?.languageLabel, `Falta ui.languageLabel en ${code}`);
+    for (const reminderKey of [
+        "reminderOff",
+        "reminderOn",
+        "reminderDueButton",
+        "reminderNotificationTitle",
+        "reminderNotificationBody",
+    ]) {
+        assert.ok(locale.ui?.[reminderKey], `Falta ${reminderKey} en ${code}`);
+    }
     for (const lessonId of ["recommended", "hira-basic-1", "kata-basic-1", "kana-special", "kanji-4", "all"]) {
         assert.ok(locale.lessons?.[lessonId]?.title, `Falta título ${lessonId} en ${code}`);
         assert.ok(locale.lessons?.[lessonId]?.description, `Falta descripción ${lessonId} en ${code}`);
@@ -88,6 +120,7 @@ assert.equal(stats.masteredCount, 0);
 
 console.log("✓ Parser CSV con campos entrecomillados");
 console.log("✓ Programación de repetición espaciada");
+console.log("✓ Recordatorio de práctica de 24 horas");
 console.log("✓ Datos únicos y 80 ejemplos de kanji");
 console.log("✓ Currículo y estadísticas de progreso");
 console.log("✓ Locales ES/EN/DE completos para kanji y kana especial");

@@ -13,6 +13,7 @@ Aplicación web estática para aprender hiragana, katakana y kanji N5 mediante e
 - Audio japonés mediante las voces instaladas en el dispositivo.
 - Selector de idioma con Español, English y Deutsch.
 - Progreso y favoritas compartidos entre idiomas mediante `cardId`.
+- Campana de recordatorio: guarda la última práctica y avisa tras 24 h sin estudiar.
 - Ejemplos completos para cada kanji: palabra, lectura, significado y frase.
 - Búsqueda accesible por carácter, lectura, significado o ejemplo.
 - Funcionamiento básico sin conexión después de la primera visita.
@@ -56,6 +57,7 @@ Las pruebas comprueban el parser CSV, el algoritmo de repetición espaciada, la 
 - `js/audio.js`: pronunciación japonesa.
 - `js/i18n.js`: carga de idiomas, traducción de UI y localización de tarjetas.
 - `js/kanji-examples.js`: ejemplos contextualizados.
+- `js/reminders.js`: cálculo del recordatorio de práctica de 24 horas.
 - `js/app.js`: interfaz y coordinación.
 - `locales/es.json`, `locales/en.json`, `locales/de.json`: textos por idioma.
 - `service-worker.js`: caché para uso sin conexión.
@@ -79,6 +81,18 @@ Para agregar otro idioma:
 El progreso no depende del idioma. Se guarda por `cardId`, por ejemplo
 `kanji_水`, así que aprender un carácter en español conserva el avance al cambiar
 a inglés o alemán.
+
+## Recordatorios de práctica
+
+La campana `🔔` activa un recordatorio local. Cada vez que calificas una tarjeta,
+la app guarda `lastPracticeAt` y programa `nextReminderAt` para 24 horas después.
+Si estudias antes de que se cumplan las 24 horas, la hora se actualiza y el aviso
+se pospone.
+
+En GitHub Pages, sin backend, el recordatorio es confiable dentro de la app: se
+muestra al volver a abrir KanjiFlow o cuando la pestaña sigue abierta. Si el
+navegador concede permisos de notificación, la app también intenta mostrar una
+notificación del sistema mientras el navegador permite ejecutar la PWA.
 
 ## Notas pedagógicas
 

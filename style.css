@@ -121,6 +121,36 @@ select:focus-visible,
     outline: none;
 }
 
+.reminder-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 34px;
+    padding: 5px 10px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--surface);
+    color: var(--muted);
+    font-size: 0.82rem;
+    font-weight: 850;
+}
+
+.reminder-button.active {
+    border-color: rgba(37, 99, 235, 0.35);
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+
+.reminder-button.due {
+    border-color: rgba(217, 119, 6, 0.4);
+    background: #ffedd5;
+    color: #9a3412;
+}
+
+.reminder-button.due #icono-recordatorio {
+    animation: bell-ring 900ms ease-in-out infinite;
+}
+
 .app-header h1 {
     margin: 0;
     font-size: clamp(1.9rem, 8vw, 2.6rem);
@@ -714,11 +744,11 @@ canvas {
 }
 
 .character-guide {
-    z-index: 1;
+    z-index: 3;
     display: flex;
     justify-content: center;
     align-items: center;
-    color: #d6deeb;
+    color: rgba(100, 116, 139, 0.16);
     font-size: clamp(7rem, 42vw, 10rem);
     line-height: 1;
     pointer-events: none;
@@ -726,7 +756,7 @@ canvas {
 }
 
 .character-guide.stroke-order {
-    color: #ef9a9a;
+    color: rgba(220, 38, 38, 0.72);
     font-family: "OrdenTrazos", sans-serif;
 }
 
@@ -836,6 +866,14 @@ canvas {
     to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
+@keyframes bell-ring {
+    0%, 100% { transform: rotate(0deg); }
+    20% { transform: rotate(-12deg); }
+    40% { transform: rotate(10deg); }
+    60% { transform: rotate(-7deg); }
+    80% { transform: rotate(5deg); }
+}
+
 @media (max-width: 460px) {
     body {
         padding: 10px;
@@ -905,6 +943,17 @@ canvas {
 
     .language-control select {
         min-width: 6.4rem;
+    }
+
+    .reminder-button {
+        padding-inline: 8px;
+    }
+
+    .reminder-button span:last-child {
+        max-width: 5.8rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 
     .connection-badge {

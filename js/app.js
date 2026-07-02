@@ -15,17 +15,27 @@ import {
 import {
     createBackup,
     loadFavorites,
+    loadPracticeReminder,
     loadProgress,
     loadSettings,
     parseBackup,
     replaceStoredData,
     saveFavorites,
+    savePracticeReminder,
     saveProgress,
     saveSettings,
 } from "./storage.js";
 import { createDrawingPad } from "./drawing.js";
 import { exampleJapanese, itemPronunciation, japaneseOnly, speakJapanese } from "./audio.js";
 import { loadDictionary } from "./data.js";
+import {
+    disablePracticeReminder,
+    enablePracticeReminder,
+    isPracticeReminderDue,
+    markPracticeReminderNotified,
+    recordPractice,
+    shouldNotifyPracticeReminder,
+} from "./reminders.js?v=500";
 import {
     AVAILABLE_LANGUAGES,
     applyDocumentTranslations,
@@ -39,7 +49,7 @@ import {
     localizeDictionary,
     t,
     translateCardState,
-} from "./i18n.js?v=401";
+} from "./i18n.js?v=501";
 
 const $ = selector => document.querySelector(selector);
 const elements = {
@@ -131,6 +141,9 @@ const elements = {
     modalCounter: $("#contador-modal"),
     toast: $("#toast"),
     languageSelect: $("#selector-idioma"),
+    reminderButton: $("#btn-recordatorio"),
+    reminderIcon: $("#icono-recordatorio"),
+    reminderText: $("#texto-recordatorio"),
 };
 
 let baseDictionary = [];
@@ -144,7 +157,9 @@ let strokeOrderVisible = false;
 let progress = loadProgress();
 let favorites = loadFavorites();
 let settings = loadSettings();
+let practiceReminder = loadPracticeReminder();
 let toastTimer = null;
+let reminderTimer = null;
 let touchStartX = 0;
 
 const practicePad = createDrawingPad(elements.board, { lineWidth: 12 });
@@ -163,6 +178,99 @@ function showToast(message) {
     elements.toast.textContent = message;
     elements.toast.classList.add("visible");
     toastTimer = setTimeout(() => elements.toast.classList.remove("visible"), 2600);
+}
+
+function saveReminderState(nextReminder = practiceReminder) {
+    practiceReminder = nextReminder;
+    savePracticeReminder(practiceReminder);
+    updateReminderUI();
+    scheduleReminderTimer();
+}
+
+function reminderButtonText() {
+    if (!practiceReminder.enabled) return t("ui.reminderOff");
+    if (isPracticeReminderDue(practiceReminder)) return t("ui.reminderDueButton");
+    return t("ui.reminderOn");
+}
+
+function updateReminderUI() {
+    const due = isPracticeReminderDue(practiceReminder);
+    elements.reminderButton.classList.toggle("active", practiceReminder.enabled && !due);
+    elements.reminderButton.classList.toggle("due", due);
+    elements.reminderButton.setAttribute("aria-pressed", String(practiceReminder.enabled));
+    elements.reminderIcon.textContent = practiceReminder.enabled ? "🔔" : "🔕";
+    elements.reminderText.textContent = reminderButtonText();
+    const label = practiceReminder.enabled
+        ? due
+            ? t("ui.reminderDueLabel")
+            : t("ui.reminderOnLabel", { time: formatRelativeTime(practiceReminder.nextReminderAt) })
+        : t("ui.reminderOffLabel");
+    elements.reminderButton.setAttribute("aria-label", label);
+    elements.reminderButton.title = label;
+}
+
+async function showSystemReminderNotification() {
+    if (!("Notification" in window) || Notification.permission !== "granted") return;
+    const title = t("ui.reminderNotificationTitle");
+    const options = {
+        body: t("ui.reminderNotificationBody"),
+        tag: "kanjiflow-practice-reminder",
+        renotify: true,
+    };
+    try {
+        if ("serviceWorker" in navigator) {
+            const registration = await navigator.serviceWorker.ready;
+            await registration.showNotification(title, options);
+            return;
+        }
+        new Notification(title, options);
+    } catch (error) {
+        console.warn("No se pudo mostrar el recordatorio.", error);
+    }
+}
+
+function checkPracticeReminder({ notify = false } = {}) {
+    updateReminderUI();
+    if (!shouldNotifyPracticeReminder(practiceReminder)) return;
+    showToast(t("ui.reminderDueToast"));
+    if (notify) showSystemReminderNotification();
+    saveReminderState(markPracticeReminderNotified(practiceReminder));
+}
+
+function scheduleReminderTimer() {
+    clearTimeout(reminderTimer);
+    if (!practiceReminder.enabled || !practiceReminder.nextReminderAt) return;
+    const delay = Math.max(0, practiceReminder.nextReminderAt - Date.now());
+    reminderTimer = setTimeout(
+        () => checkPracticeReminder({ notify: true }),
+        Math.min(delay, 2_147_483_647),
+    );
+}
+
+async function togglePracticeReminder() {
+    if (practiceReminder.enabled) {
+        saveReminderState(disablePracticeReminder(practiceReminder));
+        showToast(t("ui.reminderDisabledToast"));
+        return;
+    }
+
+    let notificationStatus = "unsupported";
+    if ("Notification" in window) {
+        notificationStatus = Notification.permission;
+        if (notificationStatus === "default") {
+            notificationStatus = await Notification.requestPermission();
+        }
+    }
+
+    saveReminderState(enablePracticeReminder(practiceReminder));
+    showToast(notificationStatus === "granted"
+        ? t("ui.reminderEnabledToastWithNotifications")
+        : t("ui.reminderEnabledToast"));
+    checkPracticeReminder({ notify: false });
+}
+
+function trackPracticeActivity(now = Date.now()) {
+    saveReminderState(recordPractice(practiceReminder, now));
 }
 
 function setVisibility(element, visible) {
@@ -216,6 +324,7 @@ function applyLanguageToUI() {
     populateLessons();
     restoreSettings();
     updateConnection();
+    updateReminderUI();
     if (baseDictionary.length) {
         localizeLoadedDictionary();
         updateProgressUI();
@@ -352,6 +461,7 @@ function rateCurrent(rating) {
     const nextRecord = scheduleReview(progress[id], rating);
     progress[id] = nextRecord;
     saveProgress(progress);
+    trackPracticeActivity(nextRecord.lastReviewedAt);
     updateProgressUI();
     const dueText = rating === "again"
         ? t("ui.dueAgain")
@@ -660,7 +770,7 @@ async function recognizeDrawing() {
 
 function exportProgress() {
     const blob = new Blob(
-        [createBackup(progress, favorites, settings)],
+        [createBackup(progress, favorites, settings, practiceReminder)],
         { type: "application/json" },
     );
     const url = URL.createObjectURL(blob);
@@ -679,7 +789,9 @@ async function importProgress(file) {
         progress = imported.progress;
         favorites = imported.favorites;
         settings = imported.settings;
+        practiceReminder = imported.reminder;
         restoreSettings();
+        saveReminderState(practiceReminder);
         updateProgressUI();
         presentChallenge();
         renderDictionary();
@@ -710,6 +822,7 @@ function bindEvents() {
     elements.practiceTab.addEventListener("click", () => switchTab("practice"));
     elements.studyTab.addEventListener("click", () => switchTab("study"));
     elements.languageSelect.addEventListener("change", () => changeLanguage(elements.languageSelect.value));
+    elements.reminderButton.addEventListener("click", togglePracticeReminder);
     for (const tab of [elements.practiceTab, elements.studyTab]) {
         tab.addEventListener("keydown", event => {
             if (!["ArrowLeft", "ArrowRight"].includes(event.key)) return;
@@ -791,6 +904,10 @@ function bindEvents() {
 
     window.addEventListener("online", updateConnection);
     window.addEventListener("offline", updateConnection);
+    window.addEventListener("focus", () => checkPracticeReminder({ notify: false }));
+    document.addEventListener("visibilitychange", () => {
+        if (!document.hidden) checkPracticeReminder({ notify: false });
+    });
 }
 
 async function init() {
@@ -806,6 +923,8 @@ async function init() {
     restoreSettings();
     bindEvents();
     updateConnection();
+    updateReminderUI();
+    scheduleReminderTimer();
     registerServiceWorker();
 
     try {
@@ -814,6 +933,7 @@ async function init() {
         updateProgressUI();
         presentChallenge();
         renderDictionary();
+        setTimeout(() => checkPracticeReminder({ notify: false }), 700);
     } catch (error) {
         console.error(error);
         elements.typeInfo.textContent = t("ui.loadErrorTag");

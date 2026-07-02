@@ -1,8 +1,10 @@
 import { emptyReviewRecord, normalizeReviewRecord } from "./core.js";
+import { emptyPracticeReminder, normalizePracticeReminder } from "./reminders.js";
 
 const PROGRESS_KEY = "kanjiflow_progress_v2";
 const FAVORITES_KEY = "kanjiflow_favorites_v2";
 const SETTINGS_KEY = "kanjiflow_settings_v2";
+const REMINDER_KEY = "kanjiflow_practice_reminder_v1";
 
 function readJSON(key, fallback) {
     try {
@@ -91,7 +93,15 @@ export function saveSettings(settings) {
     localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
 }
 
-export function createBackup(progress, favorites, settings) {
+export function loadPracticeReminder() {
+    return normalizePracticeReminder(readJSON(REMINDER_KEY, emptyPracticeReminder()));
+}
+
+export function savePracticeReminder(reminder) {
+    localStorage.setItem(REMINDER_KEY, JSON.stringify(normalizePracticeReminder(reminder)));
+}
+
+export function createBackup(progress, favorites, settings, reminder = emptyPracticeReminder()) {
     return JSON.stringify({
         app: "KanjiFlow",
         version: 2,
@@ -99,6 +109,7 @@ export function createBackup(progress, favorites, settings) {
         progress,
         favorites,
         settings,
+        reminder: normalizePracticeReminder(reminder),
     }, null, 2);
 }
 
@@ -116,11 +127,13 @@ export function parseBackup(text) {
         ),
         favorites: data.favorites,
         settings: data.settings,
+        reminder: normalizePracticeReminder(data.reminder),
     };
 }
 
-export function replaceStoredData({ progress, favorites, settings }) {
+export function replaceStoredData({ progress, favorites, settings, reminder }) {
     saveProgress(progress);
     saveFavorites(favorites);
     saveSettings(settings);
+    savePracticeReminder(reminder);
 }
