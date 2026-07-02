@@ -153,10 +153,13 @@ for (const code of localeCodes) {
         "aboutButton",
         "aboutVersion",
         "latestUpdates",
+        "updateDirectFeedback",
         "feedbackTitle",
         "feedbackPlaceholder",
         "feedbackTooShort",
-        "feedbackMailOpened",
+        "feedbackSending",
+        "feedbackSent",
+        "feedbackSendError",
     ]) {
         assert.ok(locale.ui?.[profileKey], `Falta ${profileKey} en ${code}`);
     }

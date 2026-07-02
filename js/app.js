@@ -56,11 +56,10 @@ import {
     localizeDictionary,
     t,
     translateCardState,
-} from "./i18n.js?v=600";
+} from "./i18n.js?v=610";
 
-const APP_VERSION = "0.6.0";
-const FEEDBACK_EMAIL = "sulegnazer0@gmail.com";
-const FEEDBACK_SUBJECT = "KanjiFlow comment";
+const APP_VERSION = "0.6.1";
+const FEEDBACK_ENDPOINT = "https://script.google.com/macros/s/AKfycbxiz6058zwMxfPTDTmIBpG8JutOPw8YBxCRJ0BeMHp-py6IXZy4zkZs2IdTqwmSSzC1jw/exec";
 
 const $ = selector => document.querySelector(selector);
 const elements = {
@@ -646,7 +645,7 @@ function updateFeedbackCounter() {
     elements.feedbackCounter.textContent = t("ui.feedbackCounter", { count, max: 500 }, `${count} / 500`);
 }
 
-function sendFeedback() {
+async function sendFeedback() {
     const message = elements.feedbackText.value.trim();
     if (message.length < 10) {
         elements.feedbackStatus.textContent = t("ui.feedbackTooShort");
@@ -657,20 +656,31 @@ function sendFeedback() {
         return;
     }
 
-    const body = [
-        message,
-        "",
-        "---",
-        `KanjiFlow v${APP_VERSION}`,
-        profile.name ? `Usuario: ${profile.name}` : "Usuario: sin nombre",
-        `Idioma: ${currentLanguage()}`,
-    ].join("\n");
-    const params = new URLSearchParams({
-        subject: FEEDBACK_SUBJECT,
-        body,
-    });
-    window.location.href = `mailto:${FEEDBACK_EMAIL}?${params.toString()}`;
-    elements.feedbackStatus.textContent = t("ui.feedbackMailOpened");
+    elements.feedbackSend.disabled = true;
+    elements.feedbackStatus.textContent = t("ui.feedbackSending");
+
+    try {
+        await fetch(FEEDBACK_ENDPOINT, {
+            method: "POST",
+            mode: "no-cors",
+            body: new URLSearchParams({
+                comment: message,
+                language: currentLanguage(),
+                version: APP_VERSION,
+                userName: profile.name,
+                url: window.location.href,
+                userAgent: navigator.userAgent,
+            }),
+        });
+        elements.feedbackText.value = "";
+        updateFeedbackCounter();
+        elements.feedbackStatus.textContent = t("ui.feedbackSent");
+    } catch (error) {
+        console.warn("No se pudo enviar la recomendación.", error);
+        elements.feedbackStatus.textContent = t("ui.feedbackSendError");
+    } finally {
+        elements.feedbackSend.disabled = false;
+    }
 }
 
 function matchesStudyFilter(item) {

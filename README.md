@@ -15,7 +15,7 @@ Aplicación web estática para aprender hiragana, katakana y kanji N5 mediante e
 - Selector de idioma con Español, English y Deutsch.
 - Progreso y favoritas compartidos entre idiomas mediante `cardId`.
 - Campana de recordatorio: guarda la última práctica y avisa tras 24 h sin estudiar.
-- Ventana “Acerca de” con versión, últimas actualizaciones, créditos de S0 Labs y envío de recomendaciones por correo.
+- Ventana “Acerca de” con versión, últimas actualizaciones, créditos de S0 Labs y envío directo de recomendaciones.
 - Ejemplos completos para cada kanji: palabra, lectura, significado y frase.
 - Búsqueda accesible por carácter, lectura, significado o ejemplo.
 - Funcionamiento básico sin conexión después de la primera visita.
@@ -95,11 +95,10 @@ El apartado Perfil guarda nombre, meta diaria, días activos, metas cumplidas y
 racha. También concentra la exportación/importación de datos.
 
 El botón “Acerca de” abre una ventana con versión, últimas actualizaciones,
-crédito “Desarrollada por S0 Labs” y un campo para recomendaciones. En GitHub
-Pages, sin servidor, el envío usa `mailto:`: valida 10–500 caracteres y abre la
-aplicación de correo del usuario con destino `sulegnazer0@gmail.com` y asunto
-`KanjiFlow comment`. Para envío automático sin abrir correo hará falta conectar
-un backend o servicio de formularios.
+crédito “Desarrollada por S0 Labs” y un campo para recomendaciones. El envío
+valida 10–500 caracteres y manda el comentario a un endpoint de Google Apps
+Script, que lo registra en una Google Sheet y puede notificar por correo sin
+exponer la dirección destinataria en la interfaz.
 
 ## Recordatorios de práctica
 

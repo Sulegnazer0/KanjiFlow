@@ -350,6 +350,7 @@
                 <h3 data-i18n="ui.latestUpdates">Últimas actualizaciones</h3>
                 <ul class="updates-list">
                     <li data-i18n="ui.updateProfileGoals">Perfil, meta diaria y estadísticas por día.</li>
+                    <li data-i18n="ui.updateDirectFeedback">Envío directo de recomendaciones a Google Sheets.</li>
                     <li data-i18n="ui.updateReminders">Campana de recordatorio de práctica de 24 horas.</li>
                     <li data-i18n="ui.updateI18n">Interfaz multiidioma en español, inglés y alemán.</li>
                 </ul>
@@ -358,7 +359,7 @@
             <section class="feedback-card">
                 <h3 data-i18n="ui.feedbackTitle">Enviar recomendación</h3>
                 <p class="lesson-description" data-i18n="ui.feedbackDescription">
-                    Escribe entre 10 y 500 caracteres. Se abrirá tu aplicación de correo.
+                    Escribe entre 10 y 500 caracteres. Se guardará directo para revisión.
                 </p>
                 <label class="sr-only" for="feedback-texto" data-i18n="ui.feedbackLabel">Recomendación</label>
                 <textarea id="feedback-texto" rows="5" maxlength="500"
@@ -374,6 +375,6 @@
     </div>
 
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
-    <script type="module" src="js/app.js?v=600"></script>
+    <script type="module" src="js/app.js?v=610"></script>
 </body>
 </html>
