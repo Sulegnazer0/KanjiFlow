@@ -742,9 +742,10 @@ select:focus-visible,
 }
 
 .canvas-frame {
-    display: flex;
-    justify-content: center;
-    width: 100%;
+    position: relative;
+    width: min(100%, 320px);
+    aspect-ratio: 1;
+    margin: 0 auto;
 }
 
 canvas {
@@ -752,10 +753,30 @@ canvas {
     touch-action: none;
 }
 
+.practice-character-guide,
 #pizarra {
-    width: min(100%, 320px);
-    height: auto;
-    aspect-ratio: 1;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.practice-character-guide {
+    z-index: 3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: rgba(239, 68, 68, 0.24);
+    font-family: "OrdenTrazos", sans-serif;
+    font-size: clamp(7rem, 42vw, 10rem);
+    line-height: 1;
+    pointer-events: none;
+    user-select: none;
+    mix-blend-mode: multiply;
+}
+
+#pizarra {
+    z-index: 2;
     border: 3px solid #cbd5e1;
     border-radius: 18px;
     background: var(--paper);

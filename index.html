@@ -7,7 +7,7 @@
     <meta name="description" content="Aprende hiragana, katakana y kanji con escritura, audio y repetición espaciada.">
     <title>KanjiFlow — Aprende japonés</title>
     <link rel="manifest" href="manifest.webmanifest">
-    <link rel="stylesheet" href="style.css?v=620">
+    <link rel="stylesheet" href="style.css?v=630">
 </head>
 <body>
     <main class="app-shell">
@@ -115,6 +115,7 @@
             </article>
 
             <div class="canvas-frame">
+                <div id="guia-practica" class="practice-character-guide hidden" aria-hidden="true"></div>
                 <canvas id="pizarra" width="320" height="320"
                         aria-label="Pizarra para escribir el carácter japonés"
                         data-i18n-aria-label="ui.practiceCanvasLabel"></canvas>
@@ -402,6 +403,6 @@
     </div>
 
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
-    <script type="module" src="js/app.js?v=620"></script>
+    <script type="module" src="js/app.js?v=630"></script>
 </body>
 </html>

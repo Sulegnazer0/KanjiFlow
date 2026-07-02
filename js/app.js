@@ -61,7 +61,7 @@ import {
     translateCardState,
 } from "./i18n.js?v=620";
 
-const APP_VERSION = "0.6.2";
+const APP_VERSION = "0.6.3";
 const FEEDBACK_ENDPOINT = "https://script.google.com/macros/s/AKfycbxiz6058zwMxfPTDTmIBpG8JutOPw8YBxCRJ0BeMHp-py6IXZy4zkZs2IdTqwmSSzC1jw/exec";
 
 const $ = selector => document.querySelector(selector);
@@ -93,6 +93,7 @@ const elements = {
     hint: $("#pista-romaji"),
     practiceSound: $("#btn-sonido-practica"),
     board: $("#pizarra"),
+    practiceGuide: $("#guia-practica"),
     clearBoard: $("#btn-limpiar"),
     reveal: $("#btn-revelar"),
     recognition: $("#btn-evaluar-ia"),
@@ -207,6 +208,21 @@ let touchStartX = 0;
 
 const practicePad = createDrawingPad(elements.board, { lineWidth: 12 });
 const modalPad = createDrawingPad(elements.modalBoard, { lineWidth: 7 });
+
+function hidePracticeGuide() {
+    elements.practiceGuide.textContent = "";
+    elements.practiceGuide.classList.add("hidden");
+}
+
+function showPracticeGuide(character) {
+    elements.practiceGuide.textContent = character || "";
+    elements.practiceGuide.classList.toggle("hidden", !character);
+}
+
+function clearPracticeBoard() {
+    practicePad.clear();
+    hidePracticeGuide();
+}
 
 function itemStateLabel(record) {
     return translateCardState(cardState(record));
@@ -465,7 +481,7 @@ function getPracticePool() {
 
 function presentChallenge() {
     elements.answerPanel.classList.add("hidden");
-    practicePad.clear();
+    clearPracticeBoard();
     const poolData = getPracticePool();
     elements.lessonDescription.textContent = lessonDescription(poolData.lesson);
     currentItem = chooseNext(poolData.items, previousItemId, progress);
@@ -505,7 +521,7 @@ function answerAudioText(item = currentItem) {
 
 function revealAnswer() {
     if (!currentItem) return;
-    practicePad.overlay(currentItem.caracter);
+    showPracticeGuide(currentItem.caracter);
     elements.answerCharacter.textContent = currentItem.caracter;
     elements.answerRomaji.textContent = currentItem.romaji || "—";
     elements.answerCategory.textContent = currentItem.categoriaLabel || "—";
@@ -1219,7 +1235,7 @@ function bindEvents() {
     elements.feedbackText.addEventListener("input", updateFeedbackCounter);
     elements.feedbackSend.addEventListener("click", sendFeedback);
 
-    elements.clearBoard.addEventListener("click", practicePad.clear);
+    elements.clearBoard.addEventListener("click", clearPracticeBoard);
     elements.reveal.addEventListener("click", revealAnswer);
     elements.recognition.addEventListener("click", recognizeDrawing);
     elements.practiceSound.addEventListener("click", () => speakJapanese(itemPronunciation(currentItem)));
