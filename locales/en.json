@@ -201,6 +201,8 @@
     "resultCountMany": "{count} results",
     "emptyResults": "No characters were found with those filters.",
     "openDetails": "{character}, {reading}, {meaning}. Open details",
+    "studyFavoriteBadge": "Favorite",
+    "studyMasteredBadge": "Mastered",
     "addFavorite": "Add to favorites",
     "removeFavorite": "Remove from favorites",
     "closeDetails": "Close details",

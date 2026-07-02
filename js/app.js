@@ -46,7 +46,7 @@ import {
     recordPractice,
     setPracticeReminderTime,
     shouldNotifyPracticeReminder,
-} from "./reminders.js?v=711";
+} from "./reminders.js?v=712";
 import {
     AVAILABLE_LANGUAGES,
     applyDocumentTranslations,
@@ -60,9 +60,9 @@ import {
     localizeDictionary,
     t,
     translateCardState,
-} from "./i18n.js?v=711";
+} from "./i18n.js?v=712";
 
-const APP_VERSION = "0.7.2";
+const APP_VERSION = "0.7.3";
 const FEEDBACK_ENDPOINT = "https://script.google.com/macros/s/AKfycbxiz6058zwMxfPTDTmIBpG8JutOPw8YBxCRJ0BeMHp-py6IXZy4zkZs2IdTqwmSSzC1jw/exec";
 const SPLASH_MIN_MS = 2400;
 const startupStartedAt = performance.now();
@@ -1206,18 +1206,45 @@ function matchesSearch(item, query, includeContext = true) {
 }
 
 function makeDictionaryCard(item, index) {
+    const id = itemId(item);
+    const record = progress[id];
+    const favorite = Boolean(favorites[id]);
+    const mastered = isMastered(record);
+    const statusLabels = [
+        favorite ? t("ui.studyFavoriteBadge") : "",
+        mastered ? t("ui.studyMasteredBadge") : "",
+    ].filter(Boolean);
     const button = document.createElement("button");
     button.type = "button";
     button.className = "dictionary-card";
+    button.classList.toggle("is-favorite", favorite);
+    button.classList.toggle("is-mastered", mastered);
     button.setAttribute(
         "aria-label",
-        t("ui.openDetails", {
+        `${t("ui.openDetails", {
             character: item.caracter,
             reading: item.romaji,
             meaning: item.significado,
-        }),
+        })}${statusLabels.length ? `. ${statusLabels.join(", ")}` : ""}`,
     );
 
+    const badges = document.createElement("span");
+    badges.className = "dictionary-badges";
+    badges.setAttribute("aria-hidden", "true");
+    if (favorite) {
+        const favoriteBadge = document.createElement("span");
+        favoriteBadge.className = "dictionary-badge favorite";
+        favoriteBadge.title = t("ui.studyFavoriteBadge");
+        favoriteBadge.textContent = "★";
+        badges.appendChild(favoriteBadge);
+    }
+    if (mastered) {
+        const masteredBadge = document.createElement("span");
+        masteredBadge.className = "dictionary-badge mastered";
+        masteredBadge.title = t("ui.studyMasteredBadge");
+        masteredBadge.textContent = "✓";
+        badges.appendChild(masteredBadge);
+    }
     const character = document.createElement("span");
     character.className = "dictionary-character";
     character.textContent = item.caracter;
@@ -1229,9 +1256,9 @@ function makeDictionaryCard(item, index) {
     meaning.textContent = item.significado;
     const type = document.createElement("span");
     type.className = "dictionary-type";
-    type.textContent = `${item.tipoLabel} · ${itemStateLabel(progress[itemId(item)])}`;
+    type.textContent = `${item.tipoLabel} · ${itemStateLabel(record)}`;
 
-    button.append(character, reading, meaning, type);
+    button.append(badges, character, reading, meaning, type);
     button.addEventListener("click", () => openModal(index, button));
     return button;
 }

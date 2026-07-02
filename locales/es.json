@@ -201,6 +201,8 @@
     "resultCountMany": "{count} resultados",
     "emptyResults": "No se encontraron caracteres con esos filtros.",
     "openDetails": "{character}, {reading}, {meaning}. Abrir detalles",
+    "studyFavoriteBadge": "Favorita",
+    "studyMasteredBadge": "Dominada",
     "addFavorite": "Añadir a favoritas",
     "removeFavorite": "Quitar de favoritas",
     "closeDetails": "Cerrar detalles",

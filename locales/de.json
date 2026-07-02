@@ -201,6 +201,8 @@
     "resultCountMany": "{count} Ergebnisse",
     "emptyResults": "Mit diesen Filtern wurden keine Zeichen gefunden.",
     "openDetails": "{character}, {reading}, {meaning}. Details öffnen",
+    "studyFavoriteBadge": "Favorit",
+    "studyMasteredBadge": "Gemeistert",
     "addFavorite": "Zu Favoriten hinzufügen",
     "removeFavorite": "Aus Favoriten entfernen",
     "closeDetails": "Details schließen",

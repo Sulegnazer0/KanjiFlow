@@ -986,8 +986,9 @@ canvas {
 }
 
 .dictionary-card {
+    position: relative;
     min-width: 0;
-    padding: 14px 8px;
+    padding: 22px 8px 14px;
     border: 1px solid var(--line);
     border-radius: 14px;
     background: var(--surface-soft);
@@ -1000,6 +1001,48 @@ canvas {
     transform: translateY(-2px);
     border-color: #93c5fd;
     box-shadow: 0 8px 18px rgba(37, 99, 235, 0.12);
+}
+
+.dictionary-card.is-favorite {
+    border-color: rgba(217, 119, 6, 0.38);
+}
+
+.dictionary-card.is-mastered {
+    box-shadow: inset 0 0 0 1px rgba(5, 150, 105, 0.12);
+}
+
+.dictionary-badges {
+    position: absolute;
+    top: 7px;
+    right: 7px;
+    display: inline-flex;
+    gap: 4px;
+    pointer-events: none;
+}
+
+.dictionary-badge {
+    display: inline-grid;
+    width: 20px;
+    height: 20px;
+    place-items: center;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 900;
+    line-height: 1;
+    box-shadow: 0 6px 16px rgba(15, 23, 42, 0.08);
+}
+
+.dictionary-badge.favorite {
+    border-color: rgba(217, 119, 6, 0.32);
+    background: #fef3c7;
+    color: #b45309;
+}
+
+.dictionary-badge.mastered {
+    border-color: rgba(5, 150, 105, 0.28);
+    background: #d1fae5;
+    color: #047857;
 }
 
 .dictionary-character,
