@@ -7,7 +7,7 @@
     <meta name="description" content="Aprende hiragana, katakana y kanji con escritura, audio y repetición espaciada.">
     <title>KanjiFlow — Aprende japonés</title>
     <link rel="manifest" href="manifest.webmanifest">
-    <link rel="stylesheet" href="style.css?v=700">
+    <link rel="stylesheet" href="style.css?v=710">
 </head>
 <body>
     <div id="pantalla-carga" class="splash-screen" aria-live="polite">
@@ -131,13 +131,7 @@
             <div class="board-controls">
                 <button id="btn-limpiar" class="button secondary" type="button" data-i18n="ui.clear">Limpiar</button>
                 <button id="btn-revelar" class="button secondary" type="button" data-i18n="ui.revealAnswer">Ver respuesta</button>
-                <button id="btn-evaluar-ia" class="button recognition" type="button">
-                    <span data-i18n="ui.recognizeDrawing">Reconocer dibujo</span> <span class="beta-label">beta</span>
-                </button>
             </div>
-            <p id="estado-reconocimiento" class="recognition-status" aria-live="polite" data-i18n="ui.recognitionIntro">
-                El reconocimiento compara la forma final; no evalúa todavía el orden de los trazos.
-            </p>
 
             <section id="panel-respuesta" class="answer-panel hidden" aria-live="polite">
                 <div class="answer-main">
@@ -224,6 +218,10 @@
                         <label for="meta-diaria" data-i18n="ui.dailyGoalLabel">Meta diaria</label>
                         <input id="meta-diaria" type="number" min="1" max="200" step="1">
                     </div>
+                    <div class="field">
+                        <label for="hora-recordatorio" data-i18n="ui.reminderTimeLabel">Hora de recordatorio</label>
+                        <input id="hora-recordatorio" type="time" step="300">
+                    </div>
                     <button id="btn-guardar-perfil" class="button secondary" type="button" data-i18n="ui.saveProfile">Guardar</button>
                 </div>
 
@@ -291,9 +289,11 @@
     <div id="modal-bienvenida" class="modal onboarding-modal hidden" role="dialog" aria-modal="true"
          aria-labelledby="bienvenida-titulo" aria-describedby="bienvenida-descripcion">
         <div class="modal-content onboarding-content" tabindex="-1">
-            <img src="assets/s0labsHorizontal.png" alt="S0 Labs" class="onboarding-logo">
-            <p class="eyebrow" data-i18n="ui.onboardingEyebrow">Bienvenida</p>
-            <h2 id="bienvenida-titulo" data-i18n="ui.onboardingTitle">Antes de empezar</h2>
+            <div class="onboarding-brand" aria-hidden="true">
+                <p class="eyebrow" data-i18n="ui.eyebrow">日本語を学ぼう</p>
+                <h1>KanjiFlow</h1>
+            </div>
+            <h2 id="bienvenida-titulo" data-i18n="ui.onboardingTitle">KanjiFlow te da la bienvenida</h2>
             <p id="bienvenida-descripcion" class="lesson-description" data-i18n="ui.onboardingDescription">
                 Dime tu nombre para personalizar tu progreso. Después puedes tomar un tour rápido o entrar directo.
             </p>
@@ -305,6 +305,11 @@
                            placeholder="Tu nombre"
                            data-i18n-placeholder="ui.profileNamePlaceholder"
                            autocomplete="name">
+                </div>
+                <div class="field">
+                    <label for="onboarding-recordatorio" data-i18n="ui.reminderTimeLabel">Hora de recordatorio</label>
+                    <input id="onboarding-recordatorio" type="time" step="300">
+                    <small class="field-hint" data-i18n="ui.reminderTimeHint">La campana usará esta hora cuando actives recordatorios.</small>
                 </div>
                 <p id="onboarding-error" class="recognition-status" aria-live="polite"></p>
                 <div class="onboarding-actions">
@@ -414,6 +419,7 @@
                 <h3 data-i18n="ui.latestUpdates">Últimas actualizaciones</h3>
                 <ul class="updates-list">
                     <li data-i18n="ui.updateOnboarding">Pantalla de marca, bienvenida y tour inicial.</li>
+                    <li data-i18n="ui.updateReminderTime">Hora configurable para recordatorios.</li>
                     <li data-i18n="ui.updateProfileGoals">Perfil, meta diaria y estadísticas por día.</li>
                     <li data-i18n="ui.updateDirectFeedback">Envío directo de recomendaciones a Google Sheets.</li>
                     <li data-i18n="ui.updateReminders">Campana de recordatorio de práctica de 24 horas.</li>
@@ -453,6 +459,6 @@
     </div>
 
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
-    <script type="module" src="js/app.js?v=700"></script>
+    <script type="module" src="js/app.js?v=710"></script>
 </body>
 </html>

@@ -8,7 +8,7 @@ Aplicación web estática para aprender hiragana, katakana y kanji N5 mediante e
 - 293 tarjetas: hiragana, katakana, reglas especiales y 80 kanji.
 - Repetición espaciada con cuatro niveles de respuesta.
 - Perfil local con nombre, meta diaria, historial de 7 días y rachas de meta.
-- Pantalla de arranque con marca S0 Labs, bienvenida inicial y tour visual.
+- Pantalla de arranque con marca S0 Labs, bienvenida inicial de KanjiFlow y tour visual.
 - Listas de perfil con tarjetas vistas hoy, falladas, dominadas y próximas por repasar.
 - Estadísticas, favoritas y migración del progreso de la versión anterior.
 - Exportación e importación de copias de seguridad con progreso, perfil y recordatorios.
@@ -16,12 +16,11 @@ Aplicación web estática para aprender hiragana, katakana y kanji N5 mediante e
 - Audio japonés mediante las voces instaladas en el dispositivo.
 - Selector de idioma con Español, English y Deutsch.
 - Progreso y favoritas compartidos entre idiomas mediante `cardId`.
-- Campana de recordatorio: guarda la última práctica y avisa tras 24 h sin estudiar.
+- Campana de recordatorio: permite elegir hora preferida y avisa en ese horario.
 - Ventana “Acerca de” con versión, últimas actualizaciones, créditos de S0 Labs y envío directo de recomendaciones.
 - Ejemplos completos para cada kanji: palabra, lectura, significado y frase.
 - Búsqueda accesible por carácter, lectura, significado o ejemplo.
 - Funcionamiento básico sin conexión después de la primera visita.
-- Reconocimiento óptico opcional. Necesita conexión y solo compara la forma final.
 
 ## Ejecutar
 
@@ -54,7 +53,7 @@ Las pruebas comprueban el parser CSV, el algoritmo de repetición espaciada, la 
 
 - `index.html`: estructura semántica y accesible.
 - `style.css`: diseño responsive.
-- `assets/s0labsHorizontal.png`: logo usado en splash y bienvenida.
+- `assets/s0labsHorizontal.png`: logo de S0 Labs usado en la pantalla de arranque.
 - `datos.csv`: contenido de kana y kanji.
 - `js/core.js`: currículo, filtros y repetición espaciada.
 - `js/storage.js`: persistencia, migración y copias de seguridad.
@@ -63,7 +62,7 @@ Las pruebas comprueban el parser CSV, el algoritmo de repetición espaciada, la 
 - `js/i18n.js`: carga de idiomas, traducción de UI y localización de tarjetas.
 - `js/kanji-examples.js`: ejemplos contextualizados.
 - `js/profile.js`: perfil, meta diaria, historial y estadísticas de práctica.
-- `js/reminders.js`: cálculo del recordatorio de práctica de 24 horas.
+- `js/reminders.js`: cálculo del recordatorio de práctica con hora configurable.
 - `js/app.js`: interfaz y coordinación.
 - `locales/es.json`, `locales/en.json`, `locales/de.json`: textos por idioma.
 - `service-worker.js`: caché para uso sin conexión.
@@ -101,8 +100,9 @@ tarjetas fueron vistas hoy, cuáles fallaron, cuáles ya están dominadas y cuá
 vienen próximas.
 
 La primera visita muestra una pantalla de marca de 2–3 segundos. Si no existe un
-perfil local, la app pide el nombre y pregunta si se desea tomar un tour visual.
-El tour resalta práctica, estudio y metas sin modificar el progreso.
+perfil local, la app pide el nombre, una hora preferida de recordatorio y pregunta
+si se desea tomar un tour visual. El tour resalta práctica, estudio, favoritos,
+metas y estadísticas sin modificar el progreso.
 
 En modo “Recomendado”, la práctica evita repetir tarjetas ya vistas durante el
 día cuando existen mejores opciones. Las excepciones son tarjetas vencidas,
@@ -120,10 +120,11 @@ para Apps Script está en `docs/apps-script-users.md`.
 
 ## Recordatorios de práctica
 
-La campana `🔔` activa un recordatorio local. Cada vez que calificas una tarjeta,
-la app guarda `lastPracticeAt` y programa `nextReminderAt` para 24 horas después.
-Si estudias antes de que se cumplan las 24 horas, la hora se actualiza y el aviso
-se pospone.
+La campana `🔔` activa un recordatorio local. El usuario elige una hora preferida
+en la bienvenida o en Perfil. Cada vez que califica una tarjeta, la app guarda
+`lastPracticeAt` y programa `nextReminderAt` para la siguiente aparición de esa
+hora, normalmente al día siguiente. Si estudia antes, el aviso se vuelve a
+programar para el próximo horario elegido.
 
 En GitHub Pages, sin backend, el recordatorio es confiable dentro de la app: se
 muestra al volver a abrir KanjiFlow o cuando la pestaña sigue abierta. Si el
@@ -132,4 +133,5 @@ notificación del sistema mientras el navegador permite ejecutar la PWA.
 
 ## Notas pedagógicas
 
-“Reconocer dibujo” usa OCR y no verifica la dirección ni el orden real de cada trazo. Para aprender la escritura correcta se debe comparar con la guía de orden de trazos y autoevaluarse con honestidad.
+La autoevaluación sigue siendo importante: para aprender la escritura correcta se
+debe comparar el dibujo con la guía de orden de trazos y calificar con honestidad.

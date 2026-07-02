@@ -11,11 +11,14 @@ import {
 } from "../js/core.js";
 import { KANJI_EXAMPLES } from "../js/kanji-examples.js";
 import {
+    DEFAULT_REMINDER_TIME,
     enablePracticeReminder,
     isPracticeReminderDue,
     markPracticeReminderNotified,
+    nextReminderAtForTime,
     recordPractice,
     REMINDER_INTERVAL_MS,
+    setPracticeReminderTime,
     shouldNotifyPracticeReminder,
 } from "../js/reminders.js";
 import {
@@ -53,17 +56,24 @@ assert.equal(failed.repetitions, 0);
 const enabledReminder = enablePracticeReminder({}, now);
 assert.equal(enabledReminder.enabled, true);
 assert.equal(enabledReminder.lastPracticeAt, now);
-assert.equal(enabledReminder.nextReminderAt, now + REMINDER_INTERVAL_MS);
-assert.equal(isPracticeReminderDue(enabledReminder, now + REMINDER_INTERVAL_MS - 1), false);
-assert.equal(isPracticeReminderDue(enabledReminder, now + REMINDER_INTERVAL_MS), true);
+assert.equal(enabledReminder.preferredTime, DEFAULT_REMINDER_TIME);
+assert.equal(new Date(enabledReminder.nextReminderAt).getHours(), 19);
+assert.ok(enabledReminder.nextReminderAt > now);
+assert.equal(isPracticeReminderDue(enabledReminder, enabledReminder.nextReminderAt - 1), false);
+assert.equal(isPracticeReminderDue(enabledReminder, enabledReminder.nextReminderAt), true);
 
 const practicedEarly = recordPractice(enabledReminder, now + 2 * 60 * 60 * 1000);
 assert.equal(practicedEarly.lastPracticeAt, now + 2 * 60 * 60 * 1000);
-assert.equal(practicedEarly.nextReminderAt, now + 2 * 60 * 60 * 1000 + REMINDER_INTERVAL_MS);
-assert.equal(isPracticeReminderDue(practicedEarly, now + REMINDER_INTERVAL_MS), false);
+assert.equal(new Date(practicedEarly.nextReminderAt).getHours(), 19);
+assert.ok(practicedEarly.nextReminderAt > practicedEarly.lastPracticeAt);
+assert.equal(isPracticeReminderDue(practicedEarly, practicedEarly.nextReminderAt - 1), false);
 assert.equal(shouldNotifyPracticeReminder(practicedEarly, practicedEarly.nextReminderAt), true);
 const notifiedReminder = markPracticeReminderNotified(practicedEarly, practicedEarly.nextReminderAt);
 assert.equal(shouldNotifyPracticeReminder(notifiedReminder, practicedEarly.nextReminderAt + 60_000), false);
+const customReminder = setPracticeReminderTime(enabledReminder, "08:30", now);
+assert.equal(customReminder.preferredTime, "08:30");
+assert.equal(customReminder.nextReminderAt, nextReminderAtForTime("08:30", now, true));
+assert.equal(REMINDER_INTERVAL_MS, 24 * 60 * 60 * 1000);
 
 const dailyProfile = { name: "S0", dailyGoal: 2, createdAt: now };
 let dailyStats = {};
@@ -147,8 +157,15 @@ for (const code of localeCodes) {
     }
     for (const profileKey of [
         "profileTab",
+        "onboardingTitle",
+        "onboardingDescription",
+        "onboardingStartTour",
+        "tourFavoritesTitle",
+        "tourReminderTimeTitle",
         "dailyGoalSummary",
         "dailyGoalReachedSummary",
+        "reminderTimeLabel",
+        "reminderOnAt",
         "profileGreeting",
         "profileGreetingNamed",
         "profileSummary",
@@ -175,6 +192,7 @@ for (const code of localeCodes) {
         "aboutVersion",
         "latestUpdates",
         "updateDirectFeedback",
+        "updateReminderTime",
         "feedbackTitle",
         "feedbackPlaceholder",
         "feedbackTooShort",
@@ -210,7 +228,7 @@ assert.equal(stats.masteredCount, 0);
 
 console.log("✓ Parser CSV con campos entrecomillados");
 console.log("✓ Programación de repetición espaciada");
-console.log("✓ Recordatorio de práctica de 24 horas");
+console.log("✓ Recordatorio de práctica con hora configurable");
 console.log("✓ Meta diaria y estadísticas de perfil");
 console.log("✓ Datos únicos y 80 ejemplos de kanji");
 console.log("✓ Currículo y estadísticas de progreso");

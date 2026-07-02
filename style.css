@@ -47,9 +47,7 @@ body {
     display: grid;
     place-items: center;
     padding: 24px;
-    background:
-        radial-gradient(circle at center, rgba(37, 99, 235, 0.24), transparent 28rem),
-        #030712;
+    background: #000000;
     color: white;
     animation: splash-fade 2400ms ease forwards;
 }
@@ -388,7 +386,7 @@ select:focus-visible,
 
 .profile-form {
     display: grid;
-    grid-template-columns: 1.4fr 0.8fr auto;
+    grid-template-columns: 1.2fr 0.7fr 0.9fr auto;
     gap: 10px;
     align-items: end;
     padding: 16px;
@@ -702,6 +700,14 @@ select:focus-visible,
     color: var(--ink);
 }
 
+.field-hint {
+    display: block;
+    margin: 6px 2px 0;
+    color: var(--muted);
+    font-size: 0.7rem;
+    line-height: 1.35;
+}
+
 .field input:focus,
 .field select:focus {
     border-color: var(--blue);
@@ -826,7 +832,7 @@ canvas {
 .board-controls,
 .modal-board-controls {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
     margin-top: 14px;
 }
@@ -855,20 +861,6 @@ canvas {
 .button:disabled {
     cursor: not-allowed;
     opacity: 0.45;
-}
-
-.recognition {
-    position: relative;
-    background: var(--purple);
-    color: white;
-}
-
-.beta-label {
-    display: block;
-    font-size: 0.58rem;
-    font-weight: 900;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
 }
 
 .recognition-status {
@@ -1061,6 +1053,15 @@ canvas {
     background: rgba(15, 23, 42, 0.68);
 }
 
+.modal.tour-modal {
+    z-index: 1600;
+    background: transparent;
+}
+
+.modal.tour-modal .modal-content {
+    box-shadow: 0 22px 60px rgba(0, 0, 0, 0.38);
+}
+
 .modal-content {
     position: relative;
     width: min(100%, 520px);
@@ -1082,13 +1083,14 @@ canvas {
     padding: 30px 22px 24px;
 }
 
-.onboarding-logo {
-    width: min(100%, 260px);
-    height: auto;
-    margin: 0 auto 14px;
-    border-radius: 16px;
-    background: #020617;
-    box-shadow: 0 14px 34px rgba(15, 23, 42, 0.16);
+.onboarding-brand {
+    margin-bottom: 12px;
+}
+
+.onboarding-brand h1 {
+    margin: 0;
+    font-size: clamp(2rem, 10vw, 3.1rem);
+    letter-spacing: -0.05em;
 }
 
 .onboarding-form {
@@ -1387,14 +1389,6 @@ canvas {
 
     .profile-lists-grid {
         grid-template-columns: 1fr;
-    }
-
-    .board-controls {
-        grid-template-columns: 1fr 1fr;
-    }
-
-    .board-controls .recognition {
-        grid-column: 1 / -1;
     }
 
     .rating-grid {

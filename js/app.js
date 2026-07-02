@@ -44,8 +44,9 @@ import {
     isPracticeReminderDue,
     markPracticeReminderNotified,
     recordPractice,
+    setPracticeReminderTime,
     shouldNotifyPracticeReminder,
-} from "./reminders.js?v=500";
+} from "./reminders.js?v=710";
 import {
     AVAILABLE_LANGUAGES,
     applyDocumentTranslations,
@@ -59,9 +60,9 @@ import {
     localizeDictionary,
     t,
     translateCardState,
-} from "./i18n.js?v=700";
+} from "./i18n.js?v=710";
 
-const APP_VERSION = "0.7.0";
+const APP_VERSION = "0.7.1";
 const FEEDBACK_ENDPOINT = "https://script.google.com/macros/s/AKfycbxiz6058zwMxfPTDTmIBpG8JutOPw8YBxCRJ0BeMHp-py6IXZy4zkZs2IdTqwmSSzC1jw/exec";
 const SPLASH_MIN_MS = 2400;
 const startupStartedAt = performance.now();
@@ -99,8 +100,6 @@ const elements = {
     practiceGuide: $("#guia-practica"),
     clearBoard: $("#btn-limpiar"),
     reveal: $("#btn-revelar"),
-    recognition: $("#btn-evaluar-ia"),
-    recognitionStatus: $("#estado-reconocimiento"),
     answerPanel: $("#panel-respuesta"),
     answerCharacter: $("#resp-caracter"),
     answerSound: $("#btn-sonido-respuesta"),
@@ -167,6 +166,7 @@ const elements = {
     profileSummary: $("#perfil-resumen"),
     profileName: $("#perfil-nombre"),
     dailyGoal: $("#meta-diaria"),
+    reminderTime: $("#hora-recordatorio"),
     saveProfile: $("#btn-guardar-perfil"),
     goalChips: document.querySelectorAll("[data-goal]"),
     profileTodayUnique: $("#perfil-hoy-unicas"),
@@ -193,6 +193,7 @@ const elements = {
     onboardingContent: $(".onboarding-content"),
     onboardingForm: $("#form-bienvenida"),
     onboardingName: $("#onboarding-nombre"),
+    onboardingReminderTime: $("#onboarding-recordatorio"),
     onboardingError: $("#onboarding-error"),
     onboardingSkipTour: $("#btn-onboarding-sin-tour"),
     onboardingStartTour: $("#btn-onboarding-tour"),
@@ -313,18 +314,47 @@ const TOUR_STEPS = [
         textKey: "ui.tourCardsText",
     },
     {
-        before: () => switchTab("profile"),
+        before: () => showFavoriteTourExample(),
+        target: () => elements.favorite,
+        titleKey: "ui.tourFavoritesTitle",
+        textKey: "ui.tourFavoritesText",
+    },
+    {
+        before: () => {
+            closeModal();
+            switchTab("profile");
+        },
         target: () => elements.dailyGoal,
         titleKey: "ui.tourProfileGoalTitle",
         textKey: "ui.tourProfileGoalText",
     },
     {
-        before: () => switchTab("profile"),
+        before: () => {
+            closeModal();
+            switchTab("profile");
+        },
+        target: () => elements.reminderTime,
+        titleKey: "ui.tourReminderTimeTitle",
+        textKey: "ui.tourReminderTimeText",
+    },
+    {
+        before: () => {
+            closeModal();
+            switchTab("profile");
+        },
         target: () => document.querySelector(".profile-stats-grid"),
         titleKey: "ui.tourStatsTitle",
         textKey: "ui.tourStatsText",
     },
 ];
+
+function showFavoriteTourExample() {
+    switchTab("study");
+    if (!filteredStudyItems.length) renderDictionary();
+    if (filteredStudyItems.length && elements.modal.classList.contains("hidden")) {
+        openModal(0, elements.studyTab);
+    }
+}
 
 function createUserId() {
     if (globalThis.crypto?.randomUUID) return globalThis.crypto.randomUUID();
@@ -374,6 +404,7 @@ function sendUserSignup(tourAccepted) {
         userId: profile.userId,
         userName: profile.name,
         dailyGoal: String(profile.dailyGoal),
+        reminderTime: practiceReminder.preferredTime,
         createdAt,
         onboardedAt,
         tourAccepted: String(Boolean(tourAccepted)),
@@ -389,6 +420,7 @@ async function finishSplashAndMaybeOnboard() {
 
 function openOnboardingModal() {
     elements.onboardingName.value = profile.name || "";
+    elements.onboardingReminderTime.value = practiceReminder.preferredTime || "19:00";
     elements.onboardingError.textContent = "";
     elements.onboardingModal.classList.remove("hidden");
     document.body.style.overflow = "hidden";
@@ -418,6 +450,7 @@ function saveOnboardingProfile(startTour) {
     };
     saveProfile(profile);
     profile = loadProfile();
+    saveReminderTime(elements.onboardingReminderTime.value);
     updateProgressUI();
     sendUserSignup(startTour);
     return true;
@@ -436,6 +469,7 @@ function completeOnboarding(startTour) {
 function clearTourHighlight() {
     tourHighlightedElement?.classList.remove("tour-highlight");
     tourHighlightedElement = null;
+    elements.modal.classList.remove("tour-modal");
 }
 
 async function showTourStep(index) {
@@ -459,6 +493,7 @@ async function showTourStep(index) {
 
     tourHighlightedElement = target;
     tourHighlightedElement.classList.add("tour-highlight");
+    if (tourHighlightedElement.closest(".modal")) elements.modal.classList.add("tour-modal");
     tourHighlightedElement.scrollIntoView?.({ behavior: "smooth", block: "center", inline: "center" });
 
     elements.tourCounter.textContent = t("ui.tourStepCounter", {
@@ -486,6 +521,7 @@ function finishTour(completed = false) {
     clearTourHighlight();
     elements.tourOverlay.classList.add("hidden");
     elements.tourPopover.classList.add("hidden");
+    closeModal();
     const now = Date.now();
     profile = {
         ...profile,
@@ -505,10 +541,23 @@ function saveReminderState(nextReminder = practiceReminder) {
     scheduleReminderTimer();
 }
 
+function formatReminderDateTime(timestamp) {
+    if (!timestamp) return practiceReminder.preferredTime || "";
+    return new Intl.DateTimeFormat(currentLanguage(), {
+        weekday: "short",
+        hour: "2-digit",
+        minute: "2-digit",
+    }).format(new Date(timestamp));
+}
+
+function saveReminderTime(value) {
+    saveReminderState(setPracticeReminderTime(practiceReminder, value));
+}
+
 function reminderButtonText() {
     if (!practiceReminder.enabled) return t("ui.reminderOff");
     if (isPracticeReminderDue(practiceReminder)) return t("ui.reminderDueButton");
-    return t("ui.reminderOn");
+    return t("ui.reminderOnAt", { time: practiceReminder.preferredTime }, practiceReminder.preferredTime);
 }
 
 function updateReminderUI() {
@@ -521,7 +570,7 @@ function updateReminderUI() {
     const label = practiceReminder.enabled
         ? due
             ? t("ui.reminderDueLabel")
-            : t("ui.reminderOnLabel", { time: formatRelativeTime(practiceReminder.nextReminderAt) })
+            : t("ui.reminderOnLabel", { time: formatReminderDateTime(practiceReminder.nextReminderAt) })
         : t("ui.reminderOffLabel");
     elements.reminderButton.setAttribute("aria-label", label);
     elements.reminderButton.title = label;
@@ -751,14 +800,12 @@ function presentChallenge() {
         elements.question.textContent = t("ui.noCardsQuestion");
         elements.hint.textContent = t("ui.noCardsHint");
         elements.reveal.disabled = true;
-        elements.recognition.disabled = true;
         return;
     }
 
     previousItemId = itemId(currentItem);
     const record = progress[previousItemId];
     elements.reveal.disabled = false;
-    elements.recognition.disabled = !navigator.onLine;
     elements.typeInfo.textContent = `${currentItem.tipoLabel} · ${currentItem.categoriaLabel}`;
     elements.cardState.textContent = itemStateLabel(record);
     elements.question.textContent = currentItem.tipo === "kanji"
@@ -1031,6 +1078,9 @@ function renderProfile() {
 
     if (document.activeElement !== elements.profileName) elements.profileName.value = profile.name;
     if (document.activeElement !== elements.dailyGoal) elements.dailyGoal.value = profile.dailyGoal;
+    if (document.activeElement !== elements.reminderTime) {
+        elements.reminderTime.value = practiceReminder.preferredTime || "19:00";
+    }
     elements.goalChips.forEach(chip => {
         chip.classList.toggle("active", Number(chip.dataset.goal) === Number(profile.dailyGoal));
     });
@@ -1053,6 +1103,7 @@ function saveProfileFromForm() {
     };
     saveProfile(profile);
     profile = loadProfile();
+    saveReminderTime(elements.reminderTime.value);
     updateProgressUI();
     showToast(t("ui.profileSaved"));
 }
@@ -1320,81 +1371,6 @@ function trapModalFocus(event, modal = elements.modal) {
     }
 }
 
-function loadTesseract() {
-    if (window.Tesseract) return Promise.resolve(window.Tesseract);
-    return new Promise((resolve, reject) => {
-        const existing = document.querySelector('script[data-tesseract]');
-        if (existing) {
-            existing.addEventListener("load", () => resolve(window.Tesseract), { once: true });
-            existing.addEventListener("error", reject, { once: true });
-            return;
-        }
-        const script = document.createElement("script");
-        script.src = "https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js";
-        script.dataset.tesseract = "true";
-        script.async = true;
-        script.addEventListener("load", () => resolve(window.Tesseract), { once: true });
-        script.addEventListener("error", () => reject(new Error("No se pudo descargar el reconocedor.")), { once: true });
-        document.head.appendChild(script);
-    });
-}
-
-async function recognizeDrawing() {
-    if (!currentItem || !practicePad.hasDrawing()) {
-        showToast(t("ui.drawFirst"));
-        return;
-    }
-    if (!navigator.onLine) {
-        showToast(t("ui.recognitionNeedsConnection"));
-        return;
-    }
-
-    const original = elements.recognition.textContent;
-    elements.recognition.disabled = true;
-    elements.recognition.textContent = t("ui.recognitionAnalyzing");
-    elements.recognitionStatus.textContent = t("ui.recognitionLoading");
-    let worker;
-
-    try {
-        const tesseract = await loadTesseract();
-        worker = await tesseract.createWorker("jpn");
-        await worker.setParameters({
-            tessedit_pageseg_mode: currentItem.caracter.length > 1 ? "8" : "10",
-        });
-        const result = await worker.recognize(practicePad.recognitionDataURL());
-        const detected = result.data.text.replace(/\s+/g, "");
-        const expected = currentItem.caracter.replace(/\s+/g, "");
-        if (detected.includes(expected)) {
-            elements.recognitionStatus.textContent = t("ui.recognitionMatched", {
-                detected: result.data.text.trim(),
-            });
-            showToast(t("ui.recognitionMatchedToast"));
-            revealAnswer();
-        } else {
-            elements.recognitionStatus.textContent = t("ui.recognitionMissed", {
-                detected: result.data.text.trim() || t("ui.recognitionNothing"),
-                expected: currentItem.caracter,
-            });
-            showToast(t("ui.recognitionMissedToast"));
-        }
-    } catch (error) {
-        console.error(error);
-        elements.recognitionStatus.textContent = t("ui.recognitionError");
-        showToast(t("ui.recognitionErrorToast"));
-    } finally {
-        await worker?.terminate?.();
-        const label = document.createElement("span");
-        label.dataset.i18n = "ui.recognizeDrawing";
-        label.textContent = t("ui.recognizeDrawing");
-        const beta = document.createElement("span");
-        beta.className = "beta-label";
-        beta.textContent = "beta";
-        elements.recognition.replaceChildren(label, " ", beta);
-        elements.recognition.disabled = !navigator.onLine;
-        if (!elements.recognition.textContent.trim()) elements.recognition.textContent = original;
-    }
-}
-
 function exportProgress() {
     const blob = new Blob(
         [createBackup(progress, favorites, settings, practiceReminder, profile, dailyStats)],
@@ -1437,7 +1413,6 @@ function updateConnection() {
     const online = navigator.onLine;
     elements.connection.textContent = online ? t("ui.online") : t("ui.offline");
     elements.connection.classList.toggle("offline", !online);
-    if (currentItem) elements.recognition.disabled = !online;
 }
 
 function registerServiceWorker() {
@@ -1480,6 +1455,9 @@ function bindEvents() {
     elements.dailyGoal.addEventListener("keydown", event => {
         if (event.key === "Enter") saveProfileFromForm();
     });
+    elements.reminderTime.addEventListener("keydown", event => {
+        if (event.key === "Enter") saveProfileFromForm();
+    });
     elements.goalChips.forEach(chip => {
         chip.addEventListener("click", () => {
             elements.dailyGoal.value = chip.dataset.goal;
@@ -1507,7 +1485,6 @@ function bindEvents() {
 
     elements.clearBoard.addEventListener("click", clearPracticeBoard);
     elements.reveal.addEventListener("click", revealAnswer);
-    elements.recognition.addEventListener("click", recognizeDrawing);
     elements.practiceSound.addEventListener("click", () => speakJapanese(itemPronunciation(currentItem)));
     elements.answerSound.addEventListener("click", () => speakJapanese(answerAudioText()));
     document.querySelectorAll("[data-rating]").forEach(button => {
@@ -1622,7 +1599,6 @@ async function init() {
         elements.question.textContent = t("ui.loadErrorQuestion");
         elements.hint.textContent = t("ui.loadErrorHint");
         elements.reveal.disabled = true;
-        elements.recognition.disabled = true;
     } finally {
         finishSplashAndMaybeOnboard();
     }

@@ -13,6 +13,7 @@ subject=KanjiFlow user signup
 userId=<id local>
 userName=<nombre capturado>
 dailyGoal=<meta diaria>
+reminderTime=<HH:mm>
 createdAt=<ISO date>
 onboardedAt=<ISO date>
 tourAccepted=true|false
@@ -36,6 +37,7 @@ function appendUserSignup_(payload) {
       'userId',
       'userName',
       'dailyGoal',
+      'reminderTime',
       'language',
       'version',
       'tourAccepted',
@@ -51,6 +53,7 @@ function appendUserSignup_(payload) {
     payload.userId || '',
     payload.userName || '',
     payload.dailyGoal || '',
+    payload.reminderTime || '',
     payload.language || '',
     payload.version || '',
     payload.tourAccepted || '',
