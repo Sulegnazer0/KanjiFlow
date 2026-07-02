@@ -37,7 +37,7 @@ import {
     practiceStats,
     recentDailySummaries,
     recordDailyPractice,
-} from "./profile.js?v=620";
+} from "./profile.js?v=700";
 import {
     disablePracticeReminder,
     enablePracticeReminder,
@@ -59,13 +59,16 @@ import {
     localizeDictionary,
     t,
     translateCardState,
-} from "./i18n.js?v=620";
+} from "./i18n.js?v=700";
 
-const APP_VERSION = "0.6.3";
+const APP_VERSION = "0.7.0";
 const FEEDBACK_ENDPOINT = "https://script.google.com/macros/s/AKfycbxiz6058zwMxfPTDTmIBpG8JutOPw8YBxCRJ0BeMHp-py6IXZy4zkZs2IdTqwmSSzC1jw/exec";
+const SPLASH_MIN_MS = 2400;
+const startupStartedAt = performance.now();
 
 const $ = selector => document.querySelector(selector);
 const elements = {
+    splash: $("#pantalla-carga"),
     connection: $("#estado-conexion"),
     progressSummary: $("#resumen-progreso"),
     progressPercent: $("#porcentaje-dominio"),
@@ -186,6 +189,21 @@ const elements = {
     feedbackCounter: $("#feedback-contador"),
     feedbackSend: $("#btn-enviar-feedback"),
     feedbackStatus: $("#feedback-estado"),
+    onboardingModal: $("#modal-bienvenida"),
+    onboardingContent: $(".onboarding-content"),
+    onboardingForm: $("#form-bienvenida"),
+    onboardingName: $("#onboarding-nombre"),
+    onboardingError: $("#onboarding-error"),
+    onboardingSkipTour: $("#btn-onboarding-sin-tour"),
+    onboardingStartTour: $("#btn-onboarding-tour"),
+    tourOverlay: $("#tour-overlay"),
+    tourPopover: $("#tour-popover"),
+    tourCounter: $("#tour-contador"),
+    tourTitle: $("#tour-titulo"),
+    tourText: $("#tour-texto"),
+    tourSkip: $("#btn-tour-saltar"),
+    tourPrevious: $("#btn-tour-atras"),
+    tourNext: $("#btn-tour-siguiente"),
 };
 
 let baseDictionary = [];
@@ -205,9 +223,13 @@ let dailyStats = loadDailyStats();
 let toastTimer = null;
 let reminderTimer = null;
 let touchStartX = 0;
+let tourIndex = 0;
+let tourHighlightedElement = null;
 
 const practicePad = createDrawingPad(elements.board, { lineWidth: 12 });
 const modalPad = createDrawingPad(elements.modalBoard, { lineWidth: 7 });
+
+const wait = ms => new Promise(resolve => setTimeout(resolve, Math.max(0, ms)));
 
 function hidePracticeGuide() {
     elements.practiceGuide.textContent = "";
@@ -237,6 +259,243 @@ function showToast(message) {
     elements.toast.textContent = message;
     elements.toast.classList.add("visible");
     toastTimer = setTimeout(() => elements.toast.classList.remove("visible"), 2600);
+}
+
+const TOUR_STEPS = [
+    {
+        target: () => document.querySelector(".progress-card"),
+        titleKey: "ui.tourGoalTitle",
+        textKey: "ui.tourGoalText",
+    },
+    {
+        before: () => switchTab("practice"),
+        target: () => elements.lessonSelect,
+        titleKey: "ui.tourLessonTitle",
+        textKey: "ui.tourLessonText",
+    },
+    {
+        before: () => switchTab("practice"),
+        target: () => elements.board,
+        titleKey: "ui.tourBoardTitle",
+        textKey: "ui.tourBoardText",
+    },
+    {
+        before: () => switchTab("practice"),
+        target: () => elements.reveal,
+        titleKey: "ui.tourRevealTitle",
+        textKey: "ui.tourRevealText",
+    },
+    {
+        before: () => {
+            switchTab("practice");
+            if (currentItem && elements.answerPanel.classList.contains("hidden")) revealAnswer();
+        },
+        target: () => document.querySelector(".rating-grid"),
+        titleKey: "ui.tourRatingTitle",
+        textKey: "ui.tourRatingText",
+    },
+    {
+        before: () => switchTab("study"),
+        target: () => elements.studyTab,
+        titleKey: "ui.tourStudyTitle",
+        textKey: "ui.tourStudyText",
+    },
+    {
+        before: () => switchTab("study"),
+        target: () => elements.search,
+        titleKey: "ui.tourSearchTitle",
+        textKey: "ui.tourSearchText",
+    },
+    {
+        before: () => switchTab("study"),
+        target: () => elements.dictionary,
+        titleKey: "ui.tourCardsTitle",
+        textKey: "ui.tourCardsText",
+    },
+    {
+        before: () => switchTab("profile"),
+        target: () => elements.dailyGoal,
+        titleKey: "ui.tourProfileGoalTitle",
+        textKey: "ui.tourProfileGoalText",
+    },
+    {
+        before: () => switchTab("profile"),
+        target: () => document.querySelector(".profile-stats-grid"),
+        titleKey: "ui.tourStatsTitle",
+        textKey: "ui.tourStatsText",
+    },
+];
+
+function createUserId() {
+    if (globalThis.crypto?.randomUUID) return globalThis.crypto.randomUUID();
+    return `kf_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 10)}`;
+}
+
+function ensureExistingProfileIdentity() {
+    if (!profile.name || profile.userId) return;
+    profile = {
+        ...profile,
+        userId: createUserId(),
+        onboardedAt: profile.onboardedAt || profile.createdAt || Date.now(),
+    };
+    saveProfile(profile);
+    profile = loadProfile();
+}
+
+async function sendAppEvent(type, payload = {}) {
+    if (typeof fetch !== "function") return;
+    try {
+        await fetch(FEEDBACK_ENDPOINT, {
+            method: "POST",
+            mode: "no-cors",
+            body: new URLSearchParams({
+                type,
+                app: "KanjiFlow",
+                version: APP_VERSION,
+                language: currentLanguage(),
+                url: window.location.href,
+                userAgent: navigator.userAgent,
+                ...payload,
+            }),
+        });
+    } catch (error) {
+        console.warn(`No se pudo enviar evento ${type}.`, error);
+    }
+}
+
+function sendUserSignup(tourAccepted) {
+    const createdAt = profile.createdAt ? new Date(profile.createdAt).toISOString() : "";
+    const onboardedAt = profile.onboardedAt ? new Date(profile.onboardedAt).toISOString() : "";
+    return sendAppEvent("user_signup", {
+        sheet: "Usuarios",
+        notification: "false",
+        email: "false",
+        subject: "KanjiFlow user signup",
+        userId: profile.userId,
+        userName: profile.name,
+        dailyGoal: String(profile.dailyGoal),
+        createdAt,
+        onboardedAt,
+        tourAccepted: String(Boolean(tourAccepted)),
+        comment: `Nuevo usuario: ${profile.name}`,
+    });
+}
+
+async function finishSplashAndMaybeOnboard() {
+    await wait(SPLASH_MIN_MS - (performance.now() - startupStartedAt));
+    elements.splash?.classList.add("hidden");
+    if (!profile.name) openOnboardingModal();
+}
+
+function openOnboardingModal() {
+    elements.onboardingName.value = profile.name || "";
+    elements.onboardingError.textContent = "";
+    elements.onboardingModal.classList.remove("hidden");
+    document.body.style.overflow = "hidden";
+    setTimeout(() => elements.onboardingName.focus(), 80);
+}
+
+function closeOnboardingModal() {
+    elements.onboardingModal.classList.add("hidden");
+    document.body.style.overflow = "";
+}
+
+function saveOnboardingProfile(startTour) {
+    const name = elements.onboardingName.value.trim();
+    if (!name) {
+        elements.onboardingError.textContent = t("ui.onboardingNameRequired");
+        elements.onboardingName.focus();
+        return false;
+    }
+
+    const now = Date.now();
+    profile = {
+        ...profile,
+        userId: profile.userId || createUserId(),
+        name,
+        onboardedAt: profile.onboardedAt || now,
+        tourSkippedAt: startTour ? profile.tourSkippedAt : now,
+    };
+    saveProfile(profile);
+    profile = loadProfile();
+    updateProgressUI();
+    sendUserSignup(startTour);
+    return true;
+}
+
+function completeOnboarding(startTour) {
+    if (!saveOnboardingProfile(startTour)) return;
+    closeOnboardingModal();
+    if (startTour) {
+        startTourGuide();
+        return;
+    }
+    showToast(t("ui.onboardingReadyToast"));
+}
+
+function clearTourHighlight() {
+    tourHighlightedElement?.classList.remove("tour-highlight");
+    tourHighlightedElement = null;
+}
+
+async function showTourStep(index) {
+    const nextIndex = Math.max(0, index);
+    if (nextIndex >= TOUR_STEPS.length) {
+        finishTour(true);
+        return;
+    }
+
+    tourIndex = nextIndex;
+    clearTourHighlight();
+    const step = TOUR_STEPS[tourIndex];
+    step.before?.();
+    await wait(90);
+
+    const target = step.target?.();
+    if (!target) {
+        showTourStep(tourIndex + 1);
+        return;
+    }
+
+    tourHighlightedElement = target;
+    tourHighlightedElement.classList.add("tour-highlight");
+    tourHighlightedElement.scrollIntoView?.({ behavior: "smooth", block: "center", inline: "center" });
+
+    elements.tourCounter.textContent = t("ui.tourStepCounter", {
+        current: tourIndex + 1,
+        total: TOUR_STEPS.length,
+    }, `${tourIndex + 1} / ${TOUR_STEPS.length}`);
+    elements.tourTitle.textContent = t(step.titleKey);
+    elements.tourText.textContent = t(step.textKey);
+    elements.tourPrevious.disabled = tourIndex === 0;
+    elements.tourNext.textContent = tourIndex === TOUR_STEPS.length - 1
+        ? t("ui.tourFinish")
+        : t("ui.next");
+    elements.tourOverlay.classList.remove("hidden");
+    elements.tourPopover.classList.remove("hidden");
+    elements.tourPopover.focus?.();
+}
+
+function startTourGuide() {
+    closeAboutModal();
+    closeModal();
+    showTourStep(0);
+}
+
+function finishTour(completed = false) {
+    clearTourHighlight();
+    elements.tourOverlay.classList.add("hidden");
+    elements.tourPopover.classList.add("hidden");
+    const now = Date.now();
+    profile = {
+        ...profile,
+        tourCompletedAt: completed ? now : profile.tourCompletedAt,
+        tourSkippedAt: completed ? profile.tourSkippedAt : now,
+    };
+    saveProfile(profile);
+    profile = loadProfile();
+    switchTab("practice");
+    showToast(completed ? t("ui.tourDoneToast") : t("ui.tourSkippedToast"));
 }
 
 function saveReminderState(nextReminder = practiceReminder) {
@@ -1234,6 +1493,17 @@ function bindEvents() {
     });
     elements.feedbackText.addEventListener("input", updateFeedbackCounter);
     elements.feedbackSend.addEventListener("click", sendFeedback);
+    elements.onboardingForm.addEventListener("submit", event => {
+        event.preventDefault();
+        completeOnboarding(true);
+    });
+    elements.onboardingSkipTour.addEventListener("click", () => completeOnboarding(false));
+    elements.onboardingName.addEventListener("input", () => {
+        elements.onboardingError.textContent = "";
+    });
+    elements.tourSkip.addEventListener("click", () => finishTour(false));
+    elements.tourPrevious.addEventListener("click", () => showTourStep(tourIndex - 1));
+    elements.tourNext.addEventListener("click", () => showTourStep(tourIndex + 1));
 
     elements.clearBoard.addEventListener("click", clearPracticeBoard);
     elements.reveal.addEventListener("click", revealAnswer);
@@ -1283,6 +1553,14 @@ function bindEvents() {
     }, { passive: true });
 
     document.addEventListener("keydown", event => {
+        if (!elements.tourPopover.classList.contains("hidden")) {
+            if (event.key === "Escape") finishTour(false);
+            return;
+        }
+        if (!elements.onboardingModal.classList.contains("hidden")) {
+            trapModalFocus(event, elements.onboardingModal);
+            return;
+        }
         if (!elements.aboutModal.classList.contains("hidden")) {
             if (event.key === "Escape") closeAboutModal();
             trapModalFocus(event, elements.aboutModal);
@@ -1317,6 +1595,7 @@ async function init() {
     };
     await loadLocale(settings.language);
     saveSettings(settings);
+    ensureExistingProfileIdentity();
     applyDocumentTranslations();
     populateLanguageSelect();
     populateLessons();
@@ -1344,6 +1623,8 @@ async function init() {
         elements.hint.textContent = t("ui.loadErrorHint");
         elements.reveal.disabled = true;
         elements.recognition.disabled = true;
+    } finally {
+        finishSplashAndMaybeOnboard();
     }
 }
 

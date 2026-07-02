@@ -21,17 +21,25 @@ function clampDailyGoal(value) {
 
 export function emptyProfile(now = Date.now()) {
     return {
+        userId: "",
         name: "",
         dailyGoal: DEFAULT_DAILY_GOAL,
         createdAt: now,
+        onboardedAt: 0,
+        tourCompletedAt: 0,
+        tourSkippedAt: 0,
     };
 }
 
 export function normalizeProfile(profile = {}, now = Date.now()) {
     const normalized = { ...emptyProfile(now), ...profile };
+    normalized.userId = String(normalized.userId || "").trim().slice(0, 80);
     normalized.name = String(normalized.name || "").trim().slice(0, 40);
     normalized.dailyGoal = clampDailyGoal(normalized.dailyGoal);
     normalized.createdAt = Number(normalized.createdAt) || now;
+    normalized.onboardedAt = Number(normalized.onboardedAt) || 0;
+    normalized.tourCompletedAt = Number(normalized.tourCompletedAt) || 0;
+    normalized.tourSkippedAt = Number(normalized.tourSkippedAt) || 0;
     return normalized;
 }
 

@@ -7,9 +7,16 @@
     <meta name="description" content="Aprende hiragana, katakana y kanji con escritura, audio y repetición espaciada.">
     <title>KanjiFlow — Aprende japonés</title>
     <link rel="manifest" href="manifest.webmanifest">
-    <link rel="stylesheet" href="style.css?v=630">
+    <link rel="stylesheet" href="style.css?v=700">
 </head>
 <body>
+    <div id="pantalla-carga" class="splash-screen" aria-live="polite">
+        <div class="splash-card">
+            <img src="assets/s0labsHorizontal.png" alt="S0 Labs" class="splash-logo">
+            <p data-i18n="ui.splashTagline">Preparando tu flujo de práctica…</p>
+        </div>
+    </div>
+
     <main class="app-shell">
         <header class="app-header">
             <div>
@@ -281,6 +288,35 @@
         </section>
     </main>
 
+    <div id="modal-bienvenida" class="modal onboarding-modal hidden" role="dialog" aria-modal="true"
+         aria-labelledby="bienvenida-titulo" aria-describedby="bienvenida-descripcion">
+        <div class="modal-content onboarding-content" tabindex="-1">
+            <img src="assets/s0labsHorizontal.png" alt="S0 Labs" class="onboarding-logo">
+            <p class="eyebrow" data-i18n="ui.onboardingEyebrow">Bienvenida</p>
+            <h2 id="bienvenida-titulo" data-i18n="ui.onboardingTitle">Antes de empezar</h2>
+            <p id="bienvenida-descripcion" class="lesson-description" data-i18n="ui.onboardingDescription">
+                Dime tu nombre para personalizar tu progreso. Después puedes tomar un tour rápido o entrar directo.
+            </p>
+
+            <form id="form-bienvenida" class="onboarding-form">
+                <div class="field">
+                    <label for="onboarding-nombre" data-i18n="ui.profileNameLabel">Nombre</label>
+                    <input id="onboarding-nombre" type="text" maxlength="40" required
+                           placeholder="Tu nombre"
+                           data-i18n-placeholder="ui.profileNamePlaceholder"
+                           autocomplete="name">
+                </div>
+                <p id="onboarding-error" class="recognition-status" aria-live="polite"></p>
+                <div class="onboarding-actions">
+                    <button id="btn-onboarding-sin-tour" class="button secondary" type="button"
+                            data-i18n="ui.onboardingSkipTour">Entrar sin tour</button>
+                    <button id="btn-onboarding-tour" class="button" type="submit"
+                            data-i18n="ui.onboardingStartTour">Iniciar tour</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <div id="modal-detalles" class="modal hidden" role="dialog" aria-modal="true"
          aria-labelledby="modal-caracter" aria-describedby="modal-significado">
         <div class="modal-content" tabindex="-1">
@@ -377,6 +413,7 @@
             <section class="context-card">
                 <h3 data-i18n="ui.latestUpdates">Últimas actualizaciones</h3>
                 <ul class="updates-list">
+                    <li data-i18n="ui.updateOnboarding">Pantalla de marca, bienvenida y tour inicial.</li>
                     <li data-i18n="ui.updateProfileGoals">Perfil, meta diaria y estadísticas por día.</li>
                     <li data-i18n="ui.updateDirectFeedback">Envío directo de recomendaciones a Google Sheets.</li>
                     <li data-i18n="ui.updateReminders">Campana de recordatorio de práctica de 24 horas.</li>
@@ -402,7 +439,20 @@
         </div>
     </div>
 
+    <div id="tour-overlay" class="tour-overlay hidden" aria-hidden="true"></div>
+    <div id="tour-popover" class="tour-popover hidden" role="dialog" aria-live="polite" tabindex="-1"
+         aria-labelledby="tour-titulo" aria-describedby="tour-texto">
+        <p id="tour-contador" class="eyebrow">Tour</p>
+        <h2 id="tour-titulo">KanjiFlow</h2>
+        <p id="tour-texto"></p>
+        <div class="tour-actions">
+            <button id="btn-tour-saltar" class="text-button" type="button" data-i18n="ui.tourSkip">Saltar</button>
+            <button id="btn-tour-atras" class="button secondary" type="button" data-i18n="ui.previous">Anterior</button>
+            <button id="btn-tour-siguiente" class="button" type="button" data-i18n="ui.next">Siguiente</button>
+        </div>
+    </div>
+
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
-    <script type="module" src="js/app.js?v=630"></script>
+    <script type="module" src="js/app.js?v=700"></script>
 </body>
 </html>

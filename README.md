@@ -8,6 +8,7 @@ Aplicación web estática para aprender hiragana, katakana y kanji N5 mediante e
 - 293 tarjetas: hiragana, katakana, reglas especiales y 80 kanji.
 - Repetición espaciada con cuatro niveles de respuesta.
 - Perfil local con nombre, meta diaria, historial de 7 días y rachas de meta.
+- Pantalla de arranque con marca S0 Labs, bienvenida inicial y tour visual.
 - Listas de perfil con tarjetas vistas hoy, falladas, dominadas y próximas por repasar.
 - Estadísticas, favoritas y migración del progreso de la versión anterior.
 - Exportación e importación de copias de seguridad con progreso, perfil y recordatorios.
@@ -53,6 +54,7 @@ Las pruebas comprueban el parser CSV, el algoritmo de repetición espaciada, la 
 
 - `index.html`: estructura semántica y accesible.
 - `style.css`: diseño responsive.
+- `assets/s0labsHorizontal.png`: logo usado en splash y bienvenida.
 - `datos.csv`: contenido de kana y kanji.
 - `js/core.js`: currículo, filtros y repetición espaciada.
 - `js/storage.js`: persistencia, migración y copias de seguridad.
@@ -65,6 +67,7 @@ Las pruebas comprueban el parser CSV, el algoritmo de repetición espaciada, la 
 - `js/app.js`: interfaz y coordinación.
 - `locales/es.json`, `locales/en.json`, `locales/de.json`: textos por idioma.
 - `service-worker.js`: caché para uso sin conexión.
+- `docs/apps-script-users.md`: contrato temporal para registrar altas en la pestaña `Usuarios`.
 
 La fuente original de trazos se conserva como referencia, pero la aplicación carga
 `KanjiStrokeOrders.woff`, una versión reducida a los caracteres utilizados (aprox.
@@ -97,6 +100,10 @@ racha. También concentra la exportación/importación de datos y muestra qué
 tarjetas fueron vistas hoy, cuáles fallaron, cuáles ya están dominadas y cuáles
 vienen próximas.
 
+La primera visita muestra una pantalla de marca de 2–3 segundos. Si no existe un
+perfil local, la app pide el nombre y pregunta si se desea tomar un tour visual.
+El tour resalta práctica, estudio y metas sin modificar el progreso.
+
 En modo “Recomendado”, la práctica evita repetir tarjetas ya vistas durante el
 día cuando existen mejores opciones. Las excepciones son tarjetas vencidas,
 marcadas como “Otra vez” o casos donde no quedan alternativas disponibles.
@@ -106,6 +113,10 @@ crédito “Desarrollada por S0 Labs” y un campo para recomendaciones. El env�
 valida 10–500 caracteres y manda el comentario a un endpoint de Google Apps
 Script, que lo registra en una Google Sheet y puede notificar por correo sin
 exponer la dirección destinataria en la interfaz.
+
+El alta inicial de usuario también se envía al endpoint como `type=user_signup`
+para registrarla temporalmente en una pestaña `Usuarios`. El contrato sugerido
+para Apps Script está en `docs/apps-script-users.md`.
 
 ## Recordatorios de práctica
 
