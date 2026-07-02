@@ -46,7 +46,7 @@ import {
     recordPractice,
     setPracticeReminderTime,
     shouldNotifyPracticeReminder,
-} from "./reminders.js?v=710";
+} from "./reminders.js?v=711";
 import {
     AVAILABLE_LANGUAGES,
     applyDocumentTranslations,
@@ -60,9 +60,9 @@ import {
     localizeDictionary,
     t,
     translateCardState,
-} from "./i18n.js?v=710";
+} from "./i18n.js?v=711";
 
-const APP_VERSION = "0.7.1";
+const APP_VERSION = "0.7.2";
 const FEEDBACK_ENDPOINT = "https://script.google.com/macros/s/AKfycbxiz6058zwMxfPTDTmIBpG8JutOPw8YBxCRJ0BeMHp-py6IXZy4zkZs2IdTqwmSSzC1jw/exec";
 const SPLASH_MIN_MS = 2400;
 const startupStartedAt = performance.now();
