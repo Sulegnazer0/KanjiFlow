@@ -4,6 +4,8 @@ import {
     chooseNext,
     filterBySession,
     filterLesson,
+    isDue,
+    isMastered,
     itemId,
     normalizeSearch,
     progressStats,
@@ -30,11 +32,12 @@ import { createDrawingPad } from "./drawing.js";
 import { exampleJapanese, itemPronunciation, japaneseOnly, speakJapanese } from "./audio.js";
 import { loadDictionary } from "./data.js";
 import {
+    dailyEntry,
     dailySummary,
     practiceStats,
     recentDailySummaries,
     recordDailyPractice,
-} from "./profile.js?v=600";
+} from "./profile.js?v=620";
 import {
     disablePracticeReminder,
     enablePracticeReminder,
@@ -56,9 +59,9 @@ import {
     localizeDictionary,
     t,
     translateCardState,
-} from "./i18n.js?v=610";
+} from "./i18n.js?v=620";
 
-const APP_VERSION = "0.6.1";
+const APP_VERSION = "0.6.2";
 const FEEDBACK_ENDPOINT = "https://script.google.com/macros/s/AKfycbxiz6058zwMxfPTDTmIBpG8JutOPw8YBxCRJ0BeMHp-py6IXZy4zkZs2IdTqwmSSzC1jw/exec";
 
 const $ = selector => document.querySelector(selector);
@@ -169,6 +172,10 @@ const elements = {
     profileCurrentStreak: $("#perfil-racha-actual"),
     profileBestStreak: $("#perfil-mejor-racha"),
     dailyHistory: $("#historial-diario"),
+    profileViewedToday: $("#perfil-vistas-hoy"),
+    profileFailedToday: $("#perfil-falladas-hoy"),
+    profileMasteredList: $("#perfil-lista-dominadas"),
+    profileUpcomingList: $("#perfil-proximas-repasar"),
     aboutButton: $("#btn-acerca"),
     aboutModal: $("#modal-acerca"),
     aboutContent: $(".about-content"),
@@ -404,6 +411,10 @@ function currentLessonData() {
     return filterLesson(dictionary, elements.lessonSelect.value, progress);
 }
 
+function todayPracticeEntry(now = Date.now()) {
+    return dailyEntry(dailyStats, now);
+}
+
 function updateProgressUI() {
     const mastery = progressStats(dictionary, progress);
     const today = dailySummary(dailyStats, profile);
@@ -420,6 +431,22 @@ function updateProgressUI() {
     renderProfile();
 }
 
+function avoidUnneededRepeats(pool) {
+    if (elements.sessionSelect.value !== "recomendado" || pool.length < 2) return pool;
+    const today = todayPracticeEntry();
+    const viewedToday = new Set(today.uniqueCards);
+    if (!viewedToday.size) return pool;
+
+    const preferred = pool.filter(item => {
+        const id = itemId(item);
+        if (!viewedToday.has(id)) return true;
+        const record = progress[id];
+        const todayCard = today.cards[id];
+        return isDue(record) || todayCard?.lastRating === "again";
+    });
+    return preferred.length ? preferred : pool;
+}
+
 function getPracticePool() {
     const lessonData = currentLessonData();
     let pool = lessonData.items;
@@ -432,6 +459,7 @@ function getPracticePool() {
         progress,
         favorites,
     );
+    pool = avoidUnneededRepeats(pool);
     return { ...lessonData, items: pool };
 }
 
@@ -586,6 +614,134 @@ function renderDailyHistory() {
     elements.dailyHistory.replaceChildren(fragment);
 }
 
+function cardById(id) {
+    return dictionary.find(item => itemId(item) === id) ?? null;
+}
+
+function ratingLabel(rating) {
+    const keys = {
+        again: "ui.ratingAgain",
+        hard: "ui.ratingHard",
+        good: "ui.ratingGood",
+        easy: "ui.ratingEasy",
+    };
+    return keys[rating] ? t(keys[rating]) : t("ui.noRating");
+}
+
+function openProfileCard(item, trigger) {
+    filteredStudyItems = [item];
+    openModal(0, trigger);
+}
+
+function makeProfileListItem({ item, meta, badge }) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "profile-list-item";
+
+    const character = document.createElement("span");
+    character.className = "profile-list-character";
+    character.textContent = item.caracter;
+
+    const body = document.createElement("span");
+    body.className = "profile-list-body";
+    const title = document.createElement("strong");
+    title.textContent = `${item.romaji || "—"} · ${item.significado || "—"}`;
+    const detail = document.createElement("small");
+    detail.textContent = meta;
+    body.append(title, detail);
+
+    const status = document.createElement("span");
+    status.className = "profile-list-badge";
+    status.textContent = badge;
+
+    button.append(character, body, status);
+    button.addEventListener("click", () => openProfileCard(item, button));
+    return button;
+}
+
+function renderProfileList(container, entries, emptyKey) {
+    if (!container) return;
+    if (!entries.length) {
+        const empty = document.createElement("p");
+        empty.className = "profile-list-empty";
+        empty.textContent = t(emptyKey);
+        container.replaceChildren(empty);
+        return;
+    }
+
+    const fragment = document.createDocumentFragment();
+    for (const entry of entries) {
+        fragment.appendChild(makeProfileListItem(entry));
+    }
+    container.replaceChildren(fragment);
+}
+
+function renderProfileLists() {
+    const today = todayPracticeEntry();
+    const viewedEntries = [...today.uniqueCards]
+        .sort((left, right) =>
+            (today.cards[right]?.lastReviewedAt || 0) - (today.cards[left]?.lastReviewedAt || 0))
+        .map(id => {
+            const item = cardById(id);
+            if (!item) return null;
+            const card = today.cards[id];
+            return {
+                item,
+                badge: t("ui.cardViewedBadge"),
+                meta: t("ui.viewedCardMeta", {
+                    rating: ratingLabel(card?.lastRating),
+                    count: card?.reviews || 0,
+                }),
+            };
+        })
+        .filter(Boolean);
+
+    const failedEntries = Object.values(today.cards)
+        .filter(card => card.again > 0)
+        .sort((left, right) => right.lastReviewedAt - left.lastReviewedAt)
+        .map(card => {
+            const item = cardById(card.cardId);
+            return item
+                ? {
+                    item,
+                    badge: t("ui.cardFailedBadge"),
+                    meta: t("ui.failedCardMeta", { count: card.again }),
+                }
+                : null;
+        })
+        .filter(Boolean);
+
+    const masteredEntries = dictionary
+        .filter(item => isMastered(progress[itemId(item)]))
+        .sort((left, right) =>
+            (progress[itemId(right)]?.lastReviewedAt || 0) - (progress[itemId(left)]?.lastReviewedAt || 0))
+        .map(item => {
+            const record = progress[itemId(item)];
+            return {
+                item,
+                badge: t("ui.cardMasteredBadge"),
+                meta: record?.dueAt
+                    ? t("ui.masteredCardMeta", { time: formatRelativeTime(record.dueAt) })
+                    : itemStateLabel(record),
+            };
+        });
+
+    const upcomingEntries = dictionary
+        .map(item => ({ item, record: progress[itemId(item)] }))
+        .filter(({ record }) => record?.lastReviewedAt && record.dueAt > Date.now() && !isDue(record))
+        .sort((left, right) => left.record.dueAt - right.record.dueAt)
+        .map(({ item, record }) => ({
+            item,
+            badge: t("ui.cardUpcomingBadge"),
+            meta: t("ui.upcomingCardMeta", { time: formatRelativeTime(record.dueAt) }),
+        }));
+
+    renderProfileList(elements.profileViewedToday, viewedEntries, "ui.emptyViewedToday");
+    renderProfileList(elements.profileFailedToday, failedEntries, "ui.emptyFailedToday");
+    renderProfileList(elements.profileMasteredList, masteredEntries, "ui.emptyMastered");
+    renderProfileList(elements.profileUpcomingList, upcomingEntries, "ui.emptyUpcoming");
+}
+
 function renderProfile() {
     const today = dailySummary(dailyStats, profile);
     const stats = practiceStats(dailyStats, profile);
@@ -611,6 +767,7 @@ function renderProfile() {
     elements.profileCurrentStreak.textContent = stats.currentGoalStreak;
     elements.profileBestStreak.textContent = stats.bestGoalStreak;
     renderDailyHistory();
+    renderProfileLists();
 }
 
 function saveProfileFromForm() {

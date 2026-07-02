@@ -7,7 +7,7 @@
     <meta name="description" content="Aprende hiragana, katakana y kanji con escritura, audio y repetición espaciada.">
     <title>KanjiFlow — Aprende japonés</title>
     <link rel="manifest" href="manifest.webmanifest">
-    <link rel="stylesheet" href="style.css?v=600">
+    <link rel="stylesheet" href="style.css?v=620">
 </head>
 <body>
     <main class="app-shell">
@@ -240,6 +240,33 @@
                     <div id="historial-diario" class="daily-history"></div>
                 </section>
 
+                <section class="profile-lists-card" aria-labelledby="detalle-tarjetas-titulo">
+                    <div>
+                        <h3 id="detalle-tarjetas-titulo" data-i18n="ui.profileListsTitle">Detalle de tarjetas</h3>
+                        <p class="lesson-description" data-i18n="ui.profileListsDescription">
+                            Revisa qué viste hoy, qué fallaste, qué ya dominas y qué viene pronto.
+                        </p>
+                    </div>
+                    <div class="profile-lists-grid">
+                        <section class="profile-list-panel" aria-labelledby="vistas-hoy-titulo">
+                            <h4 id="vistas-hoy-titulo" data-i18n="ui.viewedTodayTitle">Vistas hoy</h4>
+                            <div id="perfil-vistas-hoy" class="profile-card-list"></div>
+                        </section>
+                        <section class="profile-list-panel" aria-labelledby="falladas-hoy-titulo">
+                            <h4 id="falladas-hoy-titulo" data-i18n="ui.failedTodayTitle">Falladas hoy</h4>
+                            <div id="perfil-falladas-hoy" class="profile-card-list"></div>
+                        </section>
+                        <section class="profile-list-panel" aria-labelledby="dominadas-titulo">
+                            <h4 id="dominadas-titulo" data-i18n="ui.masteredListTitle">Dominadas</h4>
+                            <div id="perfil-lista-dominadas" class="profile-card-list"></div>
+                        </section>
+                        <section class="profile-list-panel" aria-labelledby="proximas-titulo">
+                            <h4 id="proximas-titulo" data-i18n="ui.upcomingReviewTitle">Próximas por repasar</h4>
+                            <div id="perfil-proximas-repasar" class="profile-card-list"></div>
+                        </section>
+                    </div>
+                </section>
+
                 <section class="data-card" aria-labelledby="datos-titulo">
                     <h3 id="datos-titulo" data-i18n="ui.dataTitle">Datos y respaldo</h3>
                     <p class="lesson-description" data-i18n="ui.dataDescription">Exporta o importa una copia local de tu avance.</p>
@@ -375,6 +402,6 @@
     </div>
 
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
-    <script type="module" src="js/app.js?v=610"></script>
+    <script type="module" src="js/app.js?v=620"></script>
 </body>
 </html>

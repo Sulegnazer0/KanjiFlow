@@ -41,6 +41,7 @@ export function emptyDailyEntry(dateKey = localDateKey()) {
         goal: DEFAULT_DAILY_GOAL,
         reviews: 0,
         uniqueCards: [],
+        cards: {},
         correct: 0,
         again: 0,
         hard: 0,
@@ -50,12 +51,53 @@ export function emptyDailyEntry(dateKey = localDateKey()) {
     };
 }
 
+function emptyDailyCard(cardId = "") {
+    return {
+        cardId: String(cardId),
+        reviews: 0,
+        correct: 0,
+        again: 0,
+        hard: 0,
+        good: 0,
+        easy: 0,
+        firstReviewedAt: 0,
+        lastReviewedAt: 0,
+        lastRating: "",
+    };
+}
+
+function normalizeDailyCard(card = {}, cardId = card.cardId || "") {
+    const normalized = { ...emptyDailyCard(cardId), ...card };
+    normalized.cardId = String(normalized.cardId || cardId);
+    normalized.lastRating = String(normalized.lastRating || "");
+    for (const key of [
+        "reviews", "correct", "again", "hard", "good", "easy", "firstReviewedAt", "lastReviewedAt",
+    ]) {
+        normalized[key] = Number(normalized[key]) || 0;
+    }
+    return normalized;
+}
+
 export function normalizeDailyEntry(entry = {}, dateKey = entry.date || localDateKey()) {
     const normalized = { ...emptyDailyEntry(dateKey), ...entry };
     normalized.date = String(normalized.date || dateKey);
     normalized.uniqueCards = Array.isArray(normalized.uniqueCards)
         ? [...new Set(normalized.uniqueCards.map(String))]
         : [];
+    const rawCards = normalized.cards && typeof normalized.cards === "object"
+        ? normalized.cards
+        : {};
+    normalized.cards = Object.fromEntries(
+        Object.entries(rawCards).map(([cardId, card]) => [
+            String(cardId),
+            normalizeDailyCard(card, cardId),
+        ]),
+    );
+    for (const cardId of normalized.uniqueCards) {
+        if (!normalized.cards[cardId]) {
+            normalized.cards[cardId] = normalizeDailyCard({ cardId }, cardId);
+        }
+    }
     normalized.goal = clampDailyGoal(normalized.goal);
     for (const key of ["reviews", "correct", "again", "hard", "good", "easy", "goalReachedAt"]) {
         normalized[key] = Number(normalized[key]) || 0;
@@ -78,6 +120,7 @@ export function recordDailyPractice(stats, { cardId, rating, dailyGoal, now = Da
     const entry = normalizeDailyEntry(normalized[dateKey], dateKey);
     const goal = clampDailyGoal(dailyGoal);
     const normalizedCardId = String(cardId || "unknown");
+    const card = normalizeDailyCard(entry.cards[normalizedCardId], normalizedCardId);
     const next = {
         ...entry,
         goal,
@@ -85,14 +128,37 @@ export function recordDailyPractice(stats, { cardId, rating, dailyGoal, now = Da
         uniqueCards: entry.uniqueCards.includes(normalizedCardId)
             ? entry.uniqueCards
             : [...entry.uniqueCards, normalizedCardId],
+        cards: {
+            ...entry.cards,
+            [normalizedCardId]: {
+                ...card,
+                reviews: card.reviews + 1,
+                firstReviewedAt: card.firstReviewedAt || now,
+                lastReviewedAt: now,
+                lastRating: String(rating || ""),
+            },
+        },
     };
 
-    if (rating === "again") next.again += 1;
-    else {
+    const nextCard = next.cards[normalizedCardId];
+    if (rating === "again") {
+        next.again += 1;
+        nextCard.again += 1;
+    } else {
         next.correct += 1;
-        if (rating === "hard") next.hard += 1;
-        if (rating === "good") next.good += 1;
-        if (rating === "easy") next.easy += 1;
+        nextCard.correct += 1;
+        if (rating === "hard") {
+            next.hard += 1;
+            nextCard.hard += 1;
+        }
+        if (rating === "good") {
+            next.good += 1;
+            nextCard.good += 1;
+        }
+        if (rating === "easy") {
+            next.easy += 1;
+            nextCard.easy += 1;
+        }
     }
 
     if (!next.goalReachedAt && next.uniqueCards.length >= goal) {
@@ -103,6 +169,12 @@ export function recordDailyPractice(stats, { cardId, rating, dailyGoal, now = Da
         ...normalized,
         [dateKey]: next,
     };
+}
+
+export function dailyEntry(stats, now = Date.now()) {
+    const normalized = normalizeDailyStats(stats);
+    const dateKey = localDateKey(now);
+    return normalizeDailyEntry(normalized[dateKey], dateKey);
 }
 
 export function dailySummary(stats, profile, now = Date.now()) {
@@ -121,6 +193,7 @@ export function dailySummary(stats, profile, now = Date.now()) {
         uniqueCount,
         correct: entry.correct,
         again: entry.again,
+        failedUniqueCount: Object.values(entry.cards).filter(card => card.again > 0).length,
         goalReached: uniqueCount >= goal,
         goalReachedAt: entry.goalReachedAt,
         percent,

@@ -19,6 +19,7 @@ import {
     shouldNotifyPracticeReminder,
 } from "../js/reminders.js";
 import {
+    dailyEntry,
     dailySummary,
     practiceStats,
     recordDailyPractice,
@@ -95,8 +96,14 @@ assert.equal(today.uniqueCount, 2);
 assert.equal(today.reviews, 3);
 assert.equal(today.correct, 2);
 assert.equal(today.again, 1);
+assert.equal(today.failedUniqueCount, 1);
 assert.equal(today.goalReached, true);
 assert.equal(dailySummary(dailyStats, { ...dailyProfile, dailyGoal: 10 }, now).goalReached, true);
+const todayEntry = dailyEntry(dailyStats, now);
+assert.equal(todayEntry.cards["kanji_水"].reviews, 2);
+assert.equal(todayEntry.cards["kanji_水"].lastRating, "easy");
+assert.equal(todayEntry.cards["hiragana_あ"].again, 1);
+assert.equal(todayEntry.cards["hiragana_あ"].lastRating, "again");
 const dailyPractice = practiceStats(dailyStats, dailyProfile, now);
 assert.equal(dailyPractice.activeDays, 1);
 assert.equal(dailyPractice.goalDays, 1);
@@ -147,6 +154,20 @@ for (const code of localeCodes) {
         "profileSummary",
         "profileUniqueToday",
         "historyTitle",
+        "profileListsTitle",
+        "viewedTodayTitle",
+        "failedTodayTitle",
+        "masteredListTitle",
+        "upcomingReviewTitle",
+        "emptyViewedToday",
+        "emptyFailedToday",
+        "emptyMastered",
+        "emptyUpcoming",
+        "viewedCardMeta",
+        "failedCardMeta",
+        "masteredCardMeta",
+        "upcomingCardMeta",
+        "noRating",
         "goalMet",
         "goalNotMet",
         "dataTitle",

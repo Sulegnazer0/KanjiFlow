@@ -8,6 +8,7 @@ Aplicación web estática para aprender hiragana, katakana y kanji N5 mediante e
 - 293 tarjetas: hiragana, katakana, reglas especiales y 80 kanji.
 - Repetición espaciada con cuatro niveles de respuesta.
 - Perfil local con nombre, meta diaria, historial de 7 días y rachas de meta.
+- Listas de perfil con tarjetas vistas hoy, falladas, dominadas y próximas por repasar.
 - Estadísticas, favoritas y migración del progreso de la versión anterior.
 - Exportación e importación de copias de seguridad con progreso, perfil y recordatorios.
 - Escritura táctil responsive y guía de orden de trazos.
@@ -92,7 +93,13 @@ no el dominio total acumulado. Los repasos repetidos de la misma tarjeta sí sum
 en “Repasos hoy”, pero solo cuentan una vez para completar la meta.
 
 El apartado Perfil guarda nombre, meta diaria, días activos, metas cumplidas y
-racha. También concentra la exportación/importación de datos.
+racha. También concentra la exportación/importación de datos y muestra qué
+tarjetas fueron vistas hoy, cuáles fallaron, cuáles ya están dominadas y cuáles
+vienen próximas.
+
+En modo “Recomendado”, la práctica evita repetir tarjetas ya vistas durante el
+día cuando existen mejores opciones. Las excepciones son tarjetas vencidas,
+marcadas como “Otra vez” o casos donde no quedan alternativas disponibles.
 
 El botón “Acerca de” abre una ventana con versión, últimas actualizaciones,
 crédito “Desarrollada por S0 Labs” y un campo para recomendaciones. El envío
