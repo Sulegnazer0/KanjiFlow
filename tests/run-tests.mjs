@@ -18,6 +18,11 @@ import {
     REMINDER_INTERVAL_MS,
     shouldNotifyPracticeReminder,
 } from "../js/reminders.js";
+import {
+    dailySummary,
+    practiceStats,
+    recordDailyPractice,
+} from "../js/profile.js";
 
 const csvSample = 'name,meaning,note\n"水","agua, líquido","dice ""mizu"""\n';
 assert.deepEqual(parseCSV(csvSample), [{
@@ -59,6 +64,45 @@ assert.equal(shouldNotifyPracticeReminder(practicedEarly, practicedEarly.nextRem
 const notifiedReminder = markPracticeReminderNotified(practicedEarly, practicedEarly.nextReminderAt);
 assert.equal(shouldNotifyPracticeReminder(notifiedReminder, practicedEarly.nextReminderAt + 60_000), false);
 
+const dailyProfile = { name: "S0", dailyGoal: 2, createdAt: now };
+let dailyStats = {};
+dailyStats = recordDailyPractice(dailyStats, {
+    cardId: "kanji_水",
+    rating: "good",
+    dailyGoal: dailyProfile.dailyGoal,
+    now,
+});
+dailyStats = recordDailyPractice(dailyStats, {
+    cardId: "kanji_水",
+    rating: "easy",
+    dailyGoal: dailyProfile.dailyGoal,
+    now,
+});
+let today = dailySummary(dailyStats, dailyProfile, now);
+assert.equal(today.uniqueCount, 1);
+assert.equal(today.reviews, 2);
+assert.equal(today.goal, 2);
+assert.equal(today.percent, 50);
+assert.equal(today.goalReached, false);
+dailyStats = recordDailyPractice(dailyStats, {
+    cardId: "hiragana_あ",
+    rating: "again",
+    dailyGoal: dailyProfile.dailyGoal,
+    now,
+});
+today = dailySummary(dailyStats, dailyProfile, now);
+assert.equal(today.uniqueCount, 2);
+assert.equal(today.reviews, 3);
+assert.equal(today.correct, 2);
+assert.equal(today.again, 1);
+assert.equal(today.goalReached, true);
+assert.equal(dailySummary(dailyStats, { ...dailyProfile, dailyGoal: 10 }, now).goalReached, true);
+const dailyPractice = practiceStats(dailyStats, dailyProfile, now);
+assert.equal(dailyPractice.activeDays, 1);
+assert.equal(dailyPractice.goalDays, 1);
+assert.equal(dailyPractice.currentGoalStreak, 1);
+assert.equal(dailyPractice.bestGoalStreak, 1);
+
 const rawData = await readFile(new URL("../datos.csv", import.meta.url), "utf8");
 const dictionary = parseCSV(rawData);
 assert.equal(dictionary.length, 293);
@@ -94,6 +138,28 @@ for (const code of localeCodes) {
     ]) {
         assert.ok(locale.ui?.[reminderKey], `Falta ${reminderKey} en ${code}`);
     }
+    for (const profileKey of [
+        "profileTab",
+        "dailyGoalSummary",
+        "dailyGoalReachedSummary",
+        "profileGreeting",
+        "profileGreetingNamed",
+        "profileSummary",
+        "profileUniqueToday",
+        "historyTitle",
+        "goalMet",
+        "goalNotMet",
+        "dataTitle",
+        "aboutButton",
+        "aboutVersion",
+        "latestUpdates",
+        "feedbackTitle",
+        "feedbackPlaceholder",
+        "feedbackTooShort",
+        "feedbackMailOpened",
+    ]) {
+        assert.ok(locale.ui?.[profileKey], `Falta ${profileKey} en ${code}`);
+    }
     for (const lessonId of ["recommended", "hira-basic-1", "kata-basic-1", "kana-special", "kanji-4", "all"]) {
         assert.ok(locale.lessons?.[lessonId]?.title, `Falta título ${lessonId} en ${code}`);
         assert.ok(locale.lessons?.[lessonId]?.description, `Falta descripción ${lessonId} en ${code}`);
@@ -121,6 +187,7 @@ assert.equal(stats.masteredCount, 0);
 console.log("✓ Parser CSV con campos entrecomillados");
 console.log("✓ Programación de repetición espaciada");
 console.log("✓ Recordatorio de práctica de 24 horas");
+console.log("✓ Meta diaria y estadísticas de perfil");
 console.log("✓ Datos únicos y 80 ejemplos de kanji");
 console.log("✓ Currículo y estadísticas de progreso");
 console.log("✓ Locales ES/EN/DE completos para kanji y kana especial");

@@ -7,7 +7,7 @@
     <meta name="description" content="Aprende hiragana, katakana y kanji con escritura, audio y repetición espaciada.">
     <title>KanjiFlow — Aprende japonés</title>
     <link rel="manifest" href="manifest.webmanifest">
-    <link rel="stylesheet" href="style.css?v=500">
+    <link rel="stylesheet" href="style.css?v=600">
 </head>
 <body>
     <main class="app-shell">
@@ -36,7 +36,7 @@
         <section class="progress-card" aria-labelledby="titulo-progreso">
             <div class="progress-heading">
                 <div>
-                    <h2 id="titulo-progreso" data-i18n="ui.progressTitle">Tu progreso</h2>
+                    <h2 id="titulo-progreso" data-i18n="ui.progressTitle">Meta de hoy</h2>
                     <p id="resumen-progreso">Preparando tu sesión…</p>
                 </div>
                 <strong id="porcentaje-dominio">0%</strong>
@@ -45,15 +45,10 @@
                 <span id="barra-progreso"></span>
             </div>
             <div class="stats-grid">
-                <div><strong id="stat-nuevas">0</strong><span data-i18n="ui.statsNew">Nuevas</span></div>
-                <div><strong id="stat-repasar">0</strong><span data-i18n="ui.statsDue">Por repasar</span></div>
+                <div><strong id="stat-nuevas">0</strong><span data-i18n="ui.statsNew">Hoy</span></div>
+                <div><strong id="stat-repasar">0</strong><span data-i18n="ui.statsDue">Repasos</span></div>
                 <div><strong id="stat-dominadas">0</strong><span data-i18n="ui.statsMastered">Dominadas</span></div>
-                <div><strong id="stat-racha">0</strong><span data-i18n="ui.statsStreak">Mejor racha</span></div>
-            </div>
-            <div class="data-actions">
-                <button id="btn-exportar" class="text-button" type="button" data-i18n="ui.exportProgress">Exportar progreso</button>
-                <button id="btn-importar" class="text-button" type="button" data-i18n="ui.importProgress">Importar progreso</button>
-                <input id="archivo-importar" type="file" accept="application/json" hidden>
+                <div><strong id="stat-racha">0</strong><span data-i18n="ui.statsStreak">Racha meta</span></div>
             </div>
         </section>
 
@@ -65,6 +60,10 @@
             <button id="tab-estudio" class="tab-button" type="button" role="tab"
                     aria-selected="false" aria-controls="seccion-estudio" tabindex="-1">
                 <span aria-hidden="true">📚</span> <span data-i18n="ui.studyTab">Estudio</span>
+            </button>
+            <button id="tab-perfil" class="tab-button" type="button" role="tab"
+                    aria-selected="false" aria-controls="seccion-perfil" tabindex="-1">
+                <span aria-hidden="true">👤</span> <span data-i18n="ui.profileTab">Perfil</span>
             </button>
         </nav>
 
@@ -193,6 +192,65 @@
             <p id="contador-resultados" class="results-count" aria-live="polite"></p>
             <div id="lista-diccionario" class="dictionary-grid"></div>
         </section>
+
+        <section id="seccion-perfil" class="hidden" role="tabpanel"
+                 aria-labelledby="tab-perfil" tabindex="0">
+            <div class="profile-card">
+                <div class="profile-heading">
+                    <div>
+                        <p class="eyebrow" data-i18n="ui.profileEyebrow">Tu espacio</p>
+                        <h2 id="perfil-saludo">KanjiFlow</h2>
+                        <p id="perfil-resumen" class="lesson-description"></p>
+                    </div>
+                    <button id="btn-acerca" class="text-button" type="button" data-i18n="ui.aboutButton">Acerca de</button>
+                </div>
+
+                <div class="profile-form">
+                    <div class="field">
+                        <label for="perfil-nombre" data-i18n="ui.profileNameLabel">Nombre</label>
+                        <input id="perfil-nombre" type="text" maxlength="40"
+                               placeholder="Tu nombre"
+                               data-i18n-placeholder="ui.profileNamePlaceholder">
+                    </div>
+                    <div class="field">
+                        <label for="meta-diaria" data-i18n="ui.dailyGoalLabel">Meta diaria</label>
+                        <input id="meta-diaria" type="number" min="1" max="200" step="1">
+                    </div>
+                    <button id="btn-guardar-perfil" class="button secondary" type="button" data-i18n="ui.saveProfile">Guardar</button>
+                </div>
+
+                <div class="profile-recommendations">
+                    <button type="button" class="goal-chip" data-goal="5" data-i18n="ui.goalLight">Ligero · 5</button>
+                    <button type="button" class="goal-chip recommended" data-goal="10" data-i18n="ui.goalRecommended">Constante · 10</button>
+                    <button type="button" class="goal-chip" data-goal="20" data-i18n="ui.goalIntense">Intenso · 20</button>
+                    <button type="button" class="goal-chip" data-goal="30" data-i18n="ui.goalChallenge">Reto · 30</button>
+                </div>
+
+                <div class="profile-stats-grid">
+                    <div><strong id="perfil-hoy-unicas">0</strong><span data-i18n="ui.profileUniqueToday">Únicas hoy</span></div>
+                    <div><strong id="perfil-hoy-repasos">0</strong><span data-i18n="ui.profileReviewsToday">Repasos hoy</span></div>
+                    <div><strong id="perfil-dias-activos">0</strong><span data-i18n="ui.profileActiveDays">Días activos</span></div>
+                    <div><strong id="perfil-dias-meta">0</strong><span data-i18n="ui.profileGoalDays">Metas cumplidas</span></div>
+                    <div><strong id="perfil-racha-actual">0</strong><span data-i18n="ui.profileCurrentStreak">Racha actual</span></div>
+                    <div><strong id="perfil-mejor-racha">0</strong><span data-i18n="ui.profileBestStreak">Mejor racha</span></div>
+                </div>
+
+                <section class="history-card" aria-labelledby="historial-titulo">
+                    <h3 id="historial-titulo" data-i18n="ui.historyTitle">Últimos 7 días</h3>
+                    <div id="historial-diario" class="daily-history"></div>
+                </section>
+
+                <section class="data-card" aria-labelledby="datos-titulo">
+                    <h3 id="datos-titulo" data-i18n="ui.dataTitle">Datos y respaldo</h3>
+                    <p class="lesson-description" data-i18n="ui.dataDescription">Exporta o importa una copia local de tu avance.</p>
+                    <div class="data-actions">
+                        <button id="btn-exportar" class="text-button" type="button" data-i18n="ui.exportProgress">Exportar progreso</button>
+                        <button id="btn-importar" class="text-button" type="button" data-i18n="ui.importProgress">Importar progreso</button>
+                        <input id="archivo-importar" type="file" accept="application/json" hidden>
+                    </div>
+                </section>
+            </div>
+        </section>
     </main>
 
     <div id="modal-detalles" class="modal hidden" role="dialog" aria-modal="true"
@@ -269,7 +327,53 @@
         </div>
     </div>
 
+    <div id="modal-acerca" class="modal hidden" role="dialog" aria-modal="true"
+         aria-labelledby="acerca-titulo" aria-describedby="acerca-descripcion">
+        <div class="modal-content about-content" tabindex="-1">
+            <div class="modal-top-actions">
+                <button id="cerrar-acerca" class="close-button" type="button"
+                        aria-label="Cerrar detalles" data-i18n-aria-label="ui.closeDetails">×</button>
+            </div>
+
+            <p class="eyebrow" data-i18n="ui.aboutEyebrow">Acerca de</p>
+            <h2 id="acerca-titulo">KanjiFlow</h2>
+            <p id="acerca-descripcion" class="lesson-description" data-i18n="ui.aboutDescription">
+                Una app de práctica diaria para aprender japonés un trazo a la vez.
+            </p>
+
+            <dl class="details-list modal-details">
+                <div><dt data-i18n="ui.aboutVersion">Versión</dt><dd id="app-version">—</dd></div>
+                <div><dt data-i18n="ui.aboutDeveloper">Desarrollada por</dt><dd>S0 Labs</dd></div>
+            </dl>
+
+            <section class="context-card">
+                <h3 data-i18n="ui.latestUpdates">Últimas actualizaciones</h3>
+                <ul class="updates-list">
+                    <li data-i18n="ui.updateProfileGoals">Perfil, meta diaria y estadísticas por día.</li>
+                    <li data-i18n="ui.updateReminders">Campana de recordatorio de práctica de 24 horas.</li>
+                    <li data-i18n="ui.updateI18n">Interfaz multiidioma en español, inglés y alemán.</li>
+                </ul>
+            </section>
+
+            <section class="feedback-card">
+                <h3 data-i18n="ui.feedbackTitle">Enviar recomendación</h3>
+                <p class="lesson-description" data-i18n="ui.feedbackDescription">
+                    Escribe entre 10 y 500 caracteres. Se abrirá tu aplicación de correo.
+                </p>
+                <label class="sr-only" for="feedback-texto" data-i18n="ui.feedbackLabel">Recomendación</label>
+                <textarea id="feedback-texto" rows="5" maxlength="500"
+                          placeholder="Cuéntame qué mejorarías…"
+                          data-i18n-placeholder="ui.feedbackPlaceholder"></textarea>
+                <div class="feedback-footer">
+                    <span id="feedback-contador">0 / 500</span>
+                    <button id="btn-enviar-feedback" class="button secondary" type="button" data-i18n="ui.feedbackSend">Enviar</button>
+                </div>
+                <p id="feedback-estado" class="recognition-status" aria-live="polite"></p>
+            </section>
+        </div>
+    </div>
+
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
-    <script type="module" src="js/app.js?v=501"></script>
+    <script type="module" src="js/app.js?v=600"></script>
 </body>
 </html>

@@ -7,13 +7,15 @@ Aplicación web estática para aprender hiragana, katakana y kanji N5 mediante e
 - Ruta progresiva de 15 lecciones.
 - 293 tarjetas: hiragana, katakana, reglas especiales y 80 kanji.
 - Repetición espaciada con cuatro niveles de respuesta.
+- Perfil local con nombre, meta diaria, historial de 7 días y rachas de meta.
 - Estadísticas, favoritas y migración del progreso de la versión anterior.
-- Exportación e importación de copias de seguridad.
+- Exportación e importación de copias de seguridad con progreso, perfil y recordatorios.
 - Escritura táctil responsive y guía de orden de trazos.
 - Audio japonés mediante las voces instaladas en el dispositivo.
 - Selector de idioma con Español, English y Deutsch.
 - Progreso y favoritas compartidos entre idiomas mediante `cardId`.
 - Campana de recordatorio: guarda la última práctica y avisa tras 24 h sin estudiar.
+- Ventana “Acerca de” con versión, últimas actualizaciones, créditos de S0 Labs y envío de recomendaciones por correo.
 - Ejemplos completos para cada kanji: palabra, lectura, significado y frase.
 - Búsqueda accesible por carácter, lectura, significado o ejemplo.
 - Funcionamiento básico sin conexión después de la primera visita.
@@ -44,7 +46,7 @@ app quedará publicada en:
 npm test
 ```
 
-Las pruebas comprueban el parser CSV, el algoritmo de repetición espaciada, la integridad de los datos, los ejemplos de kanji y el currículo.
+Las pruebas comprueban el parser CSV, el algoritmo de repetición espaciada, la meta diaria, la integridad de los datos, los ejemplos de kanji, los idiomas y el currículo.
 
 ## Estructura
 
@@ -57,6 +59,7 @@ Las pruebas comprueban el parser CSV, el algoritmo de repetición espaciada, la 
 - `js/audio.js`: pronunciación japonesa.
 - `js/i18n.js`: carga de idiomas, traducción de UI y localización de tarjetas.
 - `js/kanji-examples.js`: ejemplos contextualizados.
+- `js/profile.js`: perfil, meta diaria, historial y estadísticas de práctica.
 - `js/reminders.js`: cálculo del recordatorio de práctica de 24 horas.
 - `js/app.js`: interfaz y coordinación.
 - `locales/es.json`, `locales/en.json`, `locales/de.json`: textos por idioma.
@@ -81,6 +84,22 @@ Para agregar otro idioma:
 El progreso no depende del idioma. Se guarda por `cardId`, por ejemplo
 `kanji_水`, así que aprender un carácter en español conserva el avance al cambiar
 a inglés o alemán.
+
+## Perfil, meta diaria y recomendaciones
+
+La barra superior representa la meta diaria: cuenta tarjetas únicas repasadas hoy,
+no el dominio total acumulado. Los repasos repetidos de la misma tarjeta sí suman
+en “Repasos hoy”, pero solo cuentan una vez para completar la meta.
+
+El apartado Perfil guarda nombre, meta diaria, días activos, metas cumplidas y
+racha. También concentra la exportación/importación de datos.
+
+El botón “Acerca de” abre una ventana con versión, últimas actualizaciones,
+crédito “Desarrollada por S0 Labs” y un campo para recomendaciones. En GitHub
+Pages, sin servidor, el envío usa `mailto:`: valida 10–500 caracteres y abre la
+aplicación de correo del usuario con destino `sulegnazer0@gmail.com` y asunto
+`KanjiFlow comment`. Para envío automático sin abrir correo hará falta conectar
+un backend o servicio de formularios.
 
 ## Recordatorios de práctica
 

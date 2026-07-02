@@ -1,10 +1,13 @@
 import { emptyReviewRecord, normalizeReviewRecord } from "./core.js";
+import { emptyProfile, normalizeDailyStats, normalizeProfile } from "./profile.js";
 import { emptyPracticeReminder, normalizePracticeReminder } from "./reminders.js";
 
 const PROGRESS_KEY = "kanjiflow_progress_v2";
 const FAVORITES_KEY = "kanjiflow_favorites_v2";
 const SETTINGS_KEY = "kanjiflow_settings_v2";
 const REMINDER_KEY = "kanjiflow_practice_reminder_v1";
+const PROFILE_KEY = "kanjiflow_profile_v1";
+const DAILY_STATS_KEY = "kanjiflow_daily_stats_v1";
 
 function readJSON(key, fallback) {
     try {
@@ -93,6 +96,22 @@ export function saveSettings(settings) {
     localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
 }
 
+export function loadProfile() {
+    return normalizeProfile(readJSON(PROFILE_KEY, emptyProfile()));
+}
+
+export function saveProfile(profile) {
+    localStorage.setItem(PROFILE_KEY, JSON.stringify(normalizeProfile(profile)));
+}
+
+export function loadDailyStats() {
+    return normalizeDailyStats(readJSON(DAILY_STATS_KEY, {}));
+}
+
+export function saveDailyStats(stats) {
+    localStorage.setItem(DAILY_STATS_KEY, JSON.stringify(normalizeDailyStats(stats)));
+}
+
 export function loadPracticeReminder() {
     return normalizePracticeReminder(readJSON(REMINDER_KEY, emptyPracticeReminder()));
 }
@@ -101,7 +120,14 @@ export function savePracticeReminder(reminder) {
     localStorage.setItem(REMINDER_KEY, JSON.stringify(normalizePracticeReminder(reminder)));
 }
 
-export function createBackup(progress, favorites, settings, reminder = emptyPracticeReminder()) {
+export function createBackup(
+    progress,
+    favorites,
+    settings,
+    reminder = emptyPracticeReminder(),
+    profile = emptyProfile(),
+    dailyStats = {},
+) {
     return JSON.stringify({
         app: "KanjiFlow",
         version: 2,
@@ -110,6 +136,8 @@ export function createBackup(progress, favorites, settings, reminder = emptyPrac
         favorites,
         settings,
         reminder: normalizePracticeReminder(reminder),
+        profile: normalizeProfile(profile),
+        dailyStats: normalizeDailyStats(dailyStats),
     }, null, 2);
 }
 
@@ -128,12 +156,16 @@ export function parseBackup(text) {
         favorites: data.favorites,
         settings: data.settings,
         reminder: normalizePracticeReminder(data.reminder),
+        profile: normalizeProfile(data.profile),
+        dailyStats: normalizeDailyStats(data.dailyStats),
     };
 }
 
-export function replaceStoredData({ progress, favorites, settings, reminder }) {
+export function replaceStoredData({ progress, favorites, settings, reminder, profile, dailyStats }) {
     saveProgress(progress);
     saveFavorites(favorites);
     saveSettings(settings);
     savePracticeReminder(reminder);
+    saveProfile(profile);
+    saveDailyStats(dailyStats);
 }

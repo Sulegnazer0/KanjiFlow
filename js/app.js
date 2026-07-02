@@ -4,9 +4,6 @@ import {
     chooseNext,
     filterBySession,
     filterLesson,
-    isDue,
-    isMastered,
-    isNew,
     itemId,
     normalizeSearch,
     progressStats,
@@ -14,20 +11,30 @@ import {
 } from "./core.js";
 import {
     createBackup,
+    loadDailyStats,
     loadFavorites,
     loadPracticeReminder,
+    loadProfile,
     loadProgress,
     loadSettings,
     parseBackup,
     replaceStoredData,
+    saveDailyStats,
     saveFavorites,
     savePracticeReminder,
+    saveProfile,
     saveProgress,
     saveSettings,
 } from "./storage.js";
 import { createDrawingPad } from "./drawing.js";
 import { exampleJapanese, itemPronunciation, japaneseOnly, speakJapanese } from "./audio.js";
 import { loadDictionary } from "./data.js";
+import {
+    dailySummary,
+    practiceStats,
+    recentDailySummaries,
+    recordDailyPractice,
+} from "./profile.js?v=600";
 import {
     disablePracticeReminder,
     enablePracticeReminder,
@@ -49,7 +56,11 @@ import {
     localizeDictionary,
     t,
     translateCardState,
-} from "./i18n.js?v=501";
+} from "./i18n.js?v=600";
+
+const APP_VERSION = "0.6.0";
+const FEEDBACK_EMAIL = "sulegnazer0@gmail.com";
+const FEEDBACK_SUBJECT = "KanjiFlow comment";
 
 const $ = selector => document.querySelector(selector);
 const elements = {
@@ -66,8 +77,10 @@ const elements = {
     importFile: $("#archivo-importar"),
     practiceTab: $("#tab-practica"),
     studyTab: $("#tab-estudio"),
+    profileTab: $("#tab-perfil"),
     practiceSection: $("#seccion-practica"),
     studySection: $("#seccion-estudio"),
+    profileSection: $("#seccion-perfil"),
     lessonSelect: $("#selector-leccion"),
     scriptSelect: $("#selector-modo"),
     sessionSelect: $("#selector-progreso"),
@@ -144,6 +157,28 @@ const elements = {
     reminderButton: $("#btn-recordatorio"),
     reminderIcon: $("#icono-recordatorio"),
     reminderText: $("#texto-recordatorio"),
+    profileGreeting: $("#perfil-saludo"),
+    profileSummary: $("#perfil-resumen"),
+    profileName: $("#perfil-nombre"),
+    dailyGoal: $("#meta-diaria"),
+    saveProfile: $("#btn-guardar-perfil"),
+    goalChips: document.querySelectorAll("[data-goal]"),
+    profileTodayUnique: $("#perfil-hoy-unicas"),
+    profileTodayReviews: $("#perfil-hoy-repasos"),
+    profileActiveDays: $("#perfil-dias-activos"),
+    profileGoalDays: $("#perfil-dias-meta"),
+    profileCurrentStreak: $("#perfil-racha-actual"),
+    profileBestStreak: $("#perfil-mejor-racha"),
+    dailyHistory: $("#historial-diario"),
+    aboutButton: $("#btn-acerca"),
+    aboutModal: $("#modal-acerca"),
+    aboutContent: $(".about-content"),
+    closeAbout: $("#cerrar-acerca"),
+    appVersion: $("#app-version"),
+    feedbackText: $("#feedback-texto"),
+    feedbackCounter: $("#feedback-contador"),
+    feedbackSend: $("#btn-enviar-feedback"),
+    feedbackStatus: $("#feedback-estado"),
 };
 
 let baseDictionary = [];
@@ -158,6 +193,8 @@ let progress = loadProgress();
 let favorites = loadFavorites();
 let settings = loadSettings();
 let practiceReminder = loadPracticeReminder();
+let profile = loadProfile();
+let dailyStats = loadDailyStats();
 let toastTimer = null;
 let reminderTimer = null;
 let touchStartX = 0;
@@ -269,8 +306,17 @@ async function togglePracticeReminder() {
     checkPracticeReminder({ notify: false });
 }
 
-function trackPracticeActivity(now = Date.now()) {
+function trackPracticeActivity(now = Date.now(), cardId = "", rating = "") {
+    const before = dailySummary(dailyStats, profile, now);
+    dailyStats = recordDailyPractice(dailyStats, {
+        cardId,
+        rating,
+        dailyGoal: profile.dailyGoal,
+        now,
+    });
+    saveDailyStats(dailyStats);
     saveReminderState(recordPractice(practiceReminder, now));
+    return !before.goalReached && dailySummary(dailyStats, profile, now).goalReached;
 }
 
 function setVisibility(element, visible) {
@@ -325,6 +371,8 @@ function applyLanguageToUI() {
     restoreSettings();
     updateConnection();
     updateReminderUI();
+    renderProfile();
+    updateFeedbackCounter();
     if (baseDictionary.length) {
         localizeLoadedDictionary();
         updateProgressUI();
@@ -358,16 +406,19 @@ function currentLessonData() {
 }
 
 function updateProgressUI() {
-    const stats = progressStats(dictionary, progress);
-    elements.statNew.textContent = stats.newCount;
-    elements.statDue.textContent = stats.dueCount;
-    elements.statMastered.textContent = stats.masteredCount;
-    elements.statStreak.textContent = stats.bestStreak;
-    elements.progressPercent.textContent = `${stats.percent}%`;
-    elements.progressBar.style.width = `${stats.percent}%`;
-    elements.progressSummary.textContent = stats.dueCount
-        ? t(stats.dueCount === 1 ? "ui.progressDueOne" : "ui.progressDueMany", { count: stats.dueCount })
-        : t("ui.progressReady");
+    const mastery = progressStats(dictionary, progress);
+    const today = dailySummary(dailyStats, profile);
+    const practice = practiceStats(dailyStats, profile);
+    elements.statNew.textContent = today.uniqueCount;
+    elements.statDue.textContent = today.reviews;
+    elements.statMastered.textContent = mastery.masteredCount;
+    elements.statStreak.textContent = practice.currentGoalStreak;
+    elements.progressPercent.textContent = `${today.percent}%`;
+    elements.progressBar.style.width = `${today.percent}%`;
+    elements.progressSummary.textContent = today.goalReached
+        ? t("ui.dailyGoalReachedSummary", { count: today.uniqueCount, goal: today.goal })
+        : t("ui.dailyGoalSummary", { count: today.uniqueCount, goal: today.goal });
+    renderProfile();
 }
 
 function getPracticePool() {
@@ -461,31 +512,165 @@ function rateCurrent(rating) {
     const nextRecord = scheduleReview(progress[id], rating);
     progress[id] = nextRecord;
     saveProgress(progress);
-    trackPracticeActivity(nextRecord.lastReviewedAt);
+    const reachedDailyGoal = trackPracticeActivity(nextRecord.lastReviewedAt, id, rating);
     updateProgressUI();
     const dueText = rating === "again"
         ? t("ui.dueAgain")
         : t("ui.nextReview", { time: formatRelativeTime(nextRecord.dueAt) });
     showToast(dueText);
+    if (reachedDailyGoal) {
+        setTimeout(() => showToast(t("ui.dailyGoalReachedToast")), 850);
+    }
     presentChallenge();
 }
 
 function switchTab(tab) {
-    const practice = tab === "practice";
-    elements.practiceTab.classList.toggle("active", practice);
-    elements.studyTab.classList.toggle("active", !practice);
-    elements.practiceTab.setAttribute("aria-selected", String(practice));
-    elements.studyTab.setAttribute("aria-selected", String(!practice));
-    elements.practiceTab.tabIndex = practice ? 0 : -1;
-    elements.studyTab.tabIndex = practice ? -1 : 0;
-    setVisibility(elements.practiceSection, practice);
-    setVisibility(elements.studySection, !practice);
-    if (practice) {
+    const tabs = {
+        practice: [elements.practiceTab, elements.practiceSection],
+        study: [elements.studyTab, elements.studySection],
+        profile: [elements.profileTab, elements.profileSection],
+    };
+    for (const [name, [button, section]] of Object.entries(tabs)) {
+        const active = name === tab;
+        button.classList.toggle("active", active);
+        button.setAttribute("aria-selected", String(active));
+        button.tabIndex = active ? 0 : -1;
+        setVisibility(section, active);
+    }
+    if (tab === "practice") {
         presentChallenge();
-    } else {
+    } else if (tab === "study") {
         renderDictionary();
         elements.search.focus();
+    } else {
+        renderProfile();
     }
+}
+
+function dateFromKey(dateKey) {
+    const [year, month, day] = dateKey.split("-").map(Number);
+    return new Date(year, month - 1, day);
+}
+
+function formatDateKey(dateKey, options = { weekday: "short", day: "numeric", month: "short" }) {
+    return new Intl.DateTimeFormat(currentLanguage(), options).format(dateFromKey(dateKey));
+}
+
+function renderDailyHistory() {
+    const fragment = document.createDocumentFragment();
+    for (const day of recentDailySummaries(dailyStats, profile, 7)) {
+        const dayElement = document.createElement("div");
+        dayElement.className = "history-day";
+        dayElement.classList.toggle("goal-met", day.goalReached);
+        dayElement.title = day.goalReached
+            ? t("ui.goalMet", {
+                count: day.uniqueCount,
+                goal: day.goal,
+                date: formatDateKey(day.dateKey, { dateStyle: "medium" }),
+            })
+            : t("ui.goalNotMet", {
+                count: day.uniqueCount,
+                goal: day.goal,
+                date: formatDateKey(day.dateKey, { dateStyle: "medium" }),
+            });
+
+        const label = document.createElement("span");
+        label.textContent = formatDateKey(day.dateKey, { weekday: "short" });
+        const check = document.createElement("strong");
+        check.className = "history-check";
+        check.textContent = day.goalReached ? "✓" : "•";
+        const amount = document.createElement("small");
+        amount.textContent = `${day.uniqueCount}/${day.goal}`;
+        dayElement.append(label, check, amount);
+        fragment.appendChild(dayElement);
+    }
+    elements.dailyHistory.replaceChildren(fragment);
+}
+
+function renderProfile() {
+    const today = dailySummary(dailyStats, profile);
+    const stats = practiceStats(dailyStats, profile);
+    elements.profileGreeting.textContent = profile.name
+        ? t("ui.profileGreetingNamed", { name: profile.name })
+        : t("ui.profileGreeting");
+    elements.profileSummary.textContent = t("ui.profileSummary", {
+        count: today.uniqueCount,
+        goal: today.goal,
+        reviews: today.reviews,
+    });
+
+    if (document.activeElement !== elements.profileName) elements.profileName.value = profile.name;
+    if (document.activeElement !== elements.dailyGoal) elements.dailyGoal.value = profile.dailyGoal;
+    elements.goalChips.forEach(chip => {
+        chip.classList.toggle("active", Number(chip.dataset.goal) === Number(profile.dailyGoal));
+    });
+
+    elements.profileTodayUnique.textContent = today.uniqueCount;
+    elements.profileTodayReviews.textContent = today.reviews;
+    elements.profileActiveDays.textContent = stats.activeDays;
+    elements.profileGoalDays.textContent = stats.goalDays;
+    elements.profileCurrentStreak.textContent = stats.currentGoalStreak;
+    elements.profileBestStreak.textContent = stats.bestGoalStreak;
+    renderDailyHistory();
+}
+
+function saveProfileFromForm() {
+    profile = {
+        ...profile,
+        name: elements.profileName.value,
+        dailyGoal: elements.dailyGoal.value,
+    };
+    saveProfile(profile);
+    profile = loadProfile();
+    updateProgressUI();
+    showToast(t("ui.profileSaved"));
+}
+
+function openAboutModal() {
+    elements.appVersion.textContent = `v${APP_VERSION}`;
+    updateFeedbackCounter();
+    elements.aboutModal.classList.remove("hidden");
+    document.body.style.overflow = "hidden";
+    elements.aboutContent.focus();
+}
+
+function closeAboutModal() {
+    if (elements.aboutModal.classList.contains("hidden")) return;
+    elements.aboutModal.classList.add("hidden");
+    document.body.style.overflow = "";
+    elements.aboutButton.focus();
+}
+
+function updateFeedbackCounter() {
+    const count = elements.feedbackText.value.length;
+    elements.feedbackCounter.textContent = t("ui.feedbackCounter", { count, max: 500 }, `${count} / 500`);
+}
+
+function sendFeedback() {
+    const message = elements.feedbackText.value.trim();
+    if (message.length < 10) {
+        elements.feedbackStatus.textContent = t("ui.feedbackTooShort");
+        return;
+    }
+    if (message.length > 500) {
+        elements.feedbackStatus.textContent = t("ui.feedbackTooLong");
+        return;
+    }
+
+    const body = [
+        message,
+        "",
+        "---",
+        `KanjiFlow v${APP_VERSION}`,
+        profile.name ? `Usuario: ${profile.name}` : "Usuario: sin nombre",
+        `Idioma: ${currentLanguage()}`,
+    ].join("\n");
+    const params = new URLSearchParams({
+        subject: FEEDBACK_SUBJECT,
+        body,
+    });
+    window.location.href = `mailto:${FEEDBACK_EMAIL}?${params.toString()}`;
+    elements.feedbackStatus.textContent = t("ui.feedbackMailOpened");
 }
 
 function matchesStudyFilter(item) {
@@ -676,9 +861,9 @@ function toggleFavorite() {
     if (elements.studyFilter.value === "importantes") renderDictionary();
 }
 
-function trapModalFocus(event) {
-    if (event.key !== "Tab" || elements.modal.classList.contains("hidden")) return;
-    const focusable = [...elements.modal.querySelectorAll(
+function trapModalFocus(event, modal = elements.modal) {
+    if (event.key !== "Tab" || modal.classList.contains("hidden")) return;
+    const focusable = [...modal.querySelectorAll(
         'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])',
     )].filter(element => !element.classList.contains("hidden"));
     if (!focusable.length) return;
@@ -770,7 +955,7 @@ async function recognizeDrawing() {
 
 function exportProgress() {
     const blob = new Blob(
-        [createBackup(progress, favorites, settings, practiceReminder)],
+        [createBackup(progress, favorites, settings, practiceReminder, profile, dailyStats)],
         { type: "application/json" },
     );
     const url = URL.createObjectURL(blob);
@@ -790,9 +975,12 @@ async function importProgress(file) {
         favorites = imported.favorites;
         settings = imported.settings;
         practiceReminder = imported.reminder;
+        profile = imported.profile;
+        dailyStats = imported.dailyStats;
         restoreSettings();
         saveReminderState(practiceReminder);
         updateProgressUI();
+        renderProfile();
         presentChallenge();
         renderDictionary();
         showToast(t("ui.backupImported"));
@@ -821,13 +1009,16 @@ function registerServiceWorker() {
 function bindEvents() {
     elements.practiceTab.addEventListener("click", () => switchTab("practice"));
     elements.studyTab.addEventListener("click", () => switchTab("study"));
+    elements.profileTab.addEventListener("click", () => switchTab("profile"));
     elements.languageSelect.addEventListener("change", () => changeLanguage(elements.languageSelect.value));
     elements.reminderButton.addEventListener("click", togglePracticeReminder);
-    for (const tab of [elements.practiceTab, elements.studyTab]) {
+    const tabs = [elements.practiceTab, elements.studyTab, elements.profileTab];
+    for (const tab of tabs) {
         tab.addEventListener("keydown", event => {
             if (!["ArrowLeft", "ArrowRight"].includes(event.key)) return;
             event.preventDefault();
-            const target = tab === elements.practiceTab ? elements.studyTab : elements.practiceTab;
+            const direction = event.key === "ArrowRight" ? 1 : -1;
+            const target = tabs[(tabs.indexOf(tab) + direction + tabs.length) % tabs.length];
             target.click();
             target.focus();
         });
@@ -839,6 +1030,27 @@ function bindEvents() {
             presentChallenge();
         });
     }
+
+    elements.saveProfile.addEventListener("click", saveProfileFromForm);
+    elements.profileName.addEventListener("keydown", event => {
+        if (event.key === "Enter") saveProfileFromForm();
+    });
+    elements.dailyGoal.addEventListener("keydown", event => {
+        if (event.key === "Enter") saveProfileFromForm();
+    });
+    elements.goalChips.forEach(chip => {
+        chip.addEventListener("click", () => {
+            elements.dailyGoal.value = chip.dataset.goal;
+            saveProfileFromForm();
+        });
+    });
+    elements.aboutButton.addEventListener("click", openAboutModal);
+    elements.closeAbout.addEventListener("click", closeAboutModal);
+    elements.aboutModal.addEventListener("click", event => {
+        if (event.target === elements.aboutModal) closeAboutModal();
+    });
+    elements.feedbackText.addEventListener("input", updateFeedbackCounter);
+    elements.feedbackSend.addEventListener("click", sendFeedback);
 
     elements.clearBoard.addEventListener("click", practicePad.clear);
     elements.reveal.addEventListener("click", revealAnswer);
@@ -888,6 +1100,11 @@ function bindEvents() {
     }, { passive: true });
 
     document.addEventListener("keydown", event => {
+        if (!elements.aboutModal.classList.contains("hidden")) {
+            if (event.key === "Escape") closeAboutModal();
+            trapModalFocus(event, elements.aboutModal);
+            return;
+        }
         if (elements.modal.classList.contains("hidden")) return;
         if (event.key === "Escape") closeModal();
         else if (event.key === "ArrowLeft" && !elements.modalPrevious.disabled) elements.modalPrevious.click();
@@ -922,6 +1139,9 @@ async function init() {
     populateLessons();
     restoreSettings();
     bindEvents();
+    elements.appVersion.textContent = `v${APP_VERSION}`;
+    renderProfile();
+    updateFeedbackCounter();
     updateConnection();
     updateReminderUI();
     scheduleReminderTimer();
