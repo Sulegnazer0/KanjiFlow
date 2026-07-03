@@ -11,6 +11,8 @@
     "onboardingEyebrow": "Bienvenida",
     "onboardingTitle": "Te damos la bienvenida",
     "onboardingDescription": "Dime tu nombre y tu hora preferida de recordatorio para personalizar tu progreso. Después puedes tomar un tour rápido o entrar directo.",
+    "onboardingLanguageLabel": "Elige tu idioma",
+    "onboardingLanguageHint": "Puedes cambiarlo después desde el globo superior.",
     "onboardingSkipTour": "Entrar sin tour",
     "onboardingStartTour": "Iniciar tour",
     "onboardingNameRequired": "Escribe tu nombre para guardar tu perfil.",

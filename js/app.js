@@ -39,14 +39,14 @@ import {
     achievementSummary,
     buildAchievementStats,
     syncAchievements,
-} from "./achievements.js?v=801";
+} from "./achievements.js?v=802";
 import {
     dailyEntry,
     dailySummary,
     practiceStats,
     recentDailySummaries,
     recordDailyPractice,
-} from "./profile.js?v=801";
+} from "./profile.js?v=802";
 import {
     disablePracticeReminder,
     enablePracticeReminder,
@@ -55,7 +55,7 @@ import {
     recordPractice,
     setPracticeReminderTime,
     shouldNotifyPracticeReminder,
-} from "./reminders.js?v=801";
+} from "./reminders.js?v=802";
 import {
     AVAILABLE_LANGUAGES,
     applyDocumentTranslations,
@@ -69,9 +69,9 @@ import {
     localizeDictionary,
     t,
     translateCardState,
-} from "./i18n.js?v=801";
+} from "./i18n.js?v=802";
 
-const APP_VERSION = "0.8.1";
+const APP_VERSION = "0.8.2";
 const FEEDBACK_ENDPOINT = "https://script.google.com/macros/s/AKfycbxiz6058zwMxfPTDTmIBpG8JutOPw8YBxCRJ0BeMHp-py6IXZy4zkZs2IdTqwmSSzC1jw/exec";
 const SPLASH_MIN_MS = 2400;
 const startupStartedAt = performance.now();
@@ -206,6 +206,7 @@ const elements = {
     onboardingModal: $("#modal-bienvenida"),
     onboardingContent: $(".onboarding-content"),
     onboardingForm: $("#form-bienvenida"),
+    onboardingLanguageButtons: document.querySelectorAll("[data-onboarding-language]"),
     onboardingName: $("#onboarding-nombre"),
     onboardingReminderTime: $("#onboarding-recordatorio"),
     onboardingError: $("#onboarding-error"),
@@ -709,6 +710,15 @@ function setVisibility(element, visible) {
     element.classList.toggle("hidden", !visible);
 }
 
+function syncLanguageControls() {
+    elements.languageSelect.value = currentLanguage();
+    elements.onboardingLanguageButtons.forEach(button => {
+        const active = button.dataset.onboardingLanguage === currentLanguage();
+        button.classList.toggle("active", active);
+        button.setAttribute("aria-pressed", String(active));
+    });
+}
+
 function populateLanguageSelect() {
     const fragment = document.createDocumentFragment();
     for (const language of AVAILABLE_LANGUAGES) {
@@ -718,7 +728,7 @@ function populateLanguageSelect() {
         fragment.appendChild(option);
     }
     elements.languageSelect.replaceChildren(fragment);
-    elements.languageSelect.value = currentLanguage();
+    syncLanguageControls();
 }
 
 function populateLessons() {
@@ -769,7 +779,10 @@ function applyLanguageToUI() {
 }
 
 async function changeLanguage(language) {
-    if (language === currentLanguage()) return;
+    if (language === currentLanguage()) {
+        syncLanguageControls();
+        return;
+    }
     settings = {
         ...settings,
         lesson: elements.lessonSelect.value || settings.lesson,
@@ -783,6 +796,7 @@ async function changeLanguage(language) {
         applyLanguageToUI();
     } catch (error) {
         console.error(error);
+        syncLanguageControls();
         showToast(t("ui.loadErrorQuestion"));
     }
 }
@@ -1603,6 +1617,9 @@ function bindEvents() {
     elements.studyTab.addEventListener("click", () => switchTab("study"));
     elements.profileTab.addEventListener("click", () => switchTab("profile"));
     elements.languageSelect.addEventListener("change", () => changeLanguage(elements.languageSelect.value));
+    elements.onboardingLanguageButtons.forEach(button => {
+        button.addEventListener("click", () => changeLanguage(button.dataset.onboardingLanguage));
+    });
     elements.reminderButton.addEventListener("click", togglePracticeReminder);
     const tabs = [elements.practiceTab, elements.studyTab, elements.profileTab];
     for (const tab of tabs) {

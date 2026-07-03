@@ -172,6 +172,8 @@ for (const code of localeCodes) {
         "profileTab",
         "onboardingTitle",
         "onboardingDescription",
+        "onboardingLanguageLabel",
+        "onboardingLanguageHint",
         "onboardingStartTour",
         "tourFavoritesTitle",
         "tourReminderTimeTitle",

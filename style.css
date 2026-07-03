@@ -1258,6 +1258,58 @@ canvas {
     margin-top: 16px;
 }
 
+.onboarding-language {
+    display: grid;
+    gap: 9px;
+    padding: 12px;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    background: var(--surface-soft);
+    text-align: left;
+}
+
+.onboarding-language-label {
+    margin: 0;
+    color: #475569;
+    font-size: 0.76rem;
+    font-weight: 900;
+}
+
+.onboarding-language-options {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+}
+
+.onboarding-language-button {
+    display: grid;
+    justify-items: center;
+    gap: 4px;
+    min-height: 72px;
+    padding: 10px 8px;
+    border: 1px solid #cbd5e1;
+    border-radius: 15px;
+    background: white;
+    color: var(--ink);
+    font-size: 0.76rem;
+    font-weight: 900;
+    cursor: pointer;
+    transition: transform 140ms ease, border-color 140ms ease, box-shadow 140ms ease, background 140ms ease;
+}
+
+.onboarding-language-button:hover,
+.onboarding-language-button.active {
+    border-color: rgba(37, 99, 235, 0.55);
+    background: #eff6ff;
+    box-shadow: 0 12px 28px rgba(37, 99, 235, 0.14);
+    transform: translateY(-1px);
+}
+
+.language-flag {
+    font-size: 1.45rem;
+    line-height: 1;
+}
+
 .onboarding-actions,
 .tour-actions {
     display: flex;
