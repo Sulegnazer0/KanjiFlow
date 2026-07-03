@@ -7,7 +7,7 @@
     <meta name="description" content="Aprende hiragana, katakana y kanji con escritura, audio y repetición espaciada.">
     <title>KanjiFlow — Aprende japonés</title>
     <link rel="manifest" href="manifest.webmanifest">
-    <link rel="stylesheet" href="style.css?v=800">
+    <link rel="stylesheet" href="style.css?v=801">
 </head>
 <body>
     <div id="pantalla-carga" class="splash-screen" aria-live="polite">
@@ -15,7 +15,7 @@
             <img src="assets/s0labsHorizontal.png" alt="S0 Labs" class="splash-logo">
             <p data-i18n="ui.splashTagline">Preparando tu flujo de práctica…</p>
         </div>
-        <span id="splash-version" class="splash-version">v0.8.0</span>
+        <span id="splash-version" class="splash-version">v0.8.1</span>
     </div>
 
     <main class="app-shell">
@@ -354,7 +354,7 @@
 
             <div class="modal-board-controls">
                 <button id="btn-toggle-trazos" class="button secondary" type="button"
-                        aria-pressed="false" data-i18n="ui.showStrokeOrder">Mostrar orden de trazos</button>
+                        aria-pressed="true" data-i18n="ui.hideStrokeOrder">Ocultar orden de trazos</button>
                 <button id="btn-limpiar-modal" class="button secondary" type="button" data-i18n="ui.clear">Limpiar</button>
             </div>
 
@@ -431,7 +431,7 @@
                 <h3 data-i18n="ui.latestUpdates">Últimas actualizaciones</h3>
                 <ul class="updates-list">
                     <li data-i18n="ui.updateOnboarding">Pantalla de marca, bienvenida y tour inicial.</li>
-                    <li data-i18n="ui.updateAchievements">Sistema de logros y versión visible en la pantalla de carga.</li>
+                    <li data-i18n="ui.updateAchievements">Sistema de logros, niveles y versión visible en la pantalla de carga.</li>
                     <li data-i18n="ui.updateReminderTime">Hora configurable para recordatorios.</li>
                     <li data-i18n="ui.updateProfileGoals">Perfil, meta diaria y estadísticas por día.</li>
                     <li data-i18n="ui.updateDirectFeedback">Envío directo de recomendaciones a Google Sheets.</li>
@@ -471,7 +471,8 @@
         </div>
     </div>
 
+    <div id="aviso-nivel" class="level-notice" role="status" aria-live="polite"></div>
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
-    <script type="module" src="js/app.js?v=800"></script>
+    <script type="module" src="js/app.js?v=801"></script>
 </body>
 </html>

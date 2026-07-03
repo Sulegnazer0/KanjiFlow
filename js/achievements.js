@@ -116,6 +116,15 @@ export const ACHIEVEMENT_DEFINITIONS = [
     },
 ];
 
+export const ACHIEVEMENT_LEVELS = [
+    { level: 0, name: "Atarashi gakkusei", maxPercent: 1 },
+    { level: 1, name: "Shougakusei", maxPercent: 20 },
+    { level: 2, name: "Chuugakusei", maxPercent: 40 },
+    { level: 3, name: "Koukousei", maxPercent: 60 },
+    { level: 4, name: "Daigakusei", maxPercent: 79 },
+    { level: 5, name: "Sensei", maxPercent: 100 },
+];
+
 export function emptyAchievements() {
     return {
         unlocked: {},
@@ -221,5 +230,22 @@ export function achievementSummary(state = {}) {
     return {
         unlocked: ACHIEVEMENT_DEFINITIONS.filter(achievement => normalized.unlocked[achievement.id]).length,
         total: ACHIEVEMENT_DEFINITIONS.length,
+    };
+}
+
+export function achievementPercent(summary = {}) {
+    const total = Math.max(0, Number(summary.total) || 0);
+    const unlocked = Math.max(0, Number(summary.unlocked) || 0);
+    if (!total) return 0;
+    return Math.min(100, Math.round((unlocked / total) * 100));
+}
+
+export function achievementLevel(summary = {}) {
+    const percent = achievementPercent(summary);
+    const level = ACHIEVEMENT_LEVELS.find(candidate => percent <= candidate.maxPercent)
+        ?? ACHIEVEMENT_LEVELS[ACHIEVEMENT_LEVELS.length - 1];
+    return {
+        ...level,
+        percent,
     };
 }

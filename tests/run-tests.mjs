@@ -12,6 +12,8 @@ import {
 import { KANJI_EXAMPLES } from "../js/kanji-examples.js";
 import {
     ACHIEVEMENT_DEFINITIONS,
+    achievementLevel,
+    achievementPercent,
     achievementProgress,
     achievementSummary,
     buildAchievementStats,
@@ -187,6 +189,8 @@ for (const code of localeCodes) {
         "achievementUnlockedAt",
         "achievementUnlockedToast",
         "achievementsUnlockedToast",
+        "achievementLevelLabel",
+        "achievementStartupNotice",
         "historyTitle",
         "profileListsTitle",
         "viewedTodayTitle",
@@ -330,6 +334,11 @@ const visibleAchievements = achievementProgress(syncedAchievements.state, builtA
 assert.equal(visibleAchievements.find(achievement => achievement.id === "review_100").percent, 14);
 assert.equal(visibleAchievements.find(achievement => achievement.id === "mastered_50").percent, 60);
 assert.equal(achievementSummary(syncedAchievements.state).unlocked, syncedAchievements.newlyUnlocked.length);
+assert.equal(achievementPercent({ unlocked: 0, total: ACHIEVEMENT_DEFINITIONS.length }), 0);
+assert.equal(achievementLevel({ unlocked: 0, total: ACHIEVEMENT_DEFINITIONS.length }).level, 0);
+assert.equal(achievementLevel({ unlocked: 1, total: ACHIEVEMENT_DEFINITIONS.length }).level, 1);
+assert.equal(achievementLevel({ unlocked: 6, total: ACHIEVEMENT_DEFINITIONS.length }).level, 3);
+assert.equal(achievementLevel({ unlocked: 12, total: ACHIEVEMENT_DEFINITIONS.length }).level, 5);
 
 console.log("✓ Parser CSV con campos entrecomillados");
 console.log("✓ Programación de repetición espaciada");

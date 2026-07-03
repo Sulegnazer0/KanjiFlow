@@ -9,11 +9,13 @@ Aplicación web estática para aprender hiragana, katakana y kanji N5 mediante e
 - Repetición espaciada con cuatro niveles de respuesta.
 - Perfil local con nombre, meta diaria, historial de 7 días y rachas de meta.
 - Sistema de logros por hitos de práctica, metas, favoritos y caracteres dominados.
+- Niveles de usuario calculados por porcentaje de logros desbloqueados.
 - Pantalla de arranque con marca S0 Labs, bienvenida inicial de KanjiFlow y tour visual.
 - Listas de perfil con tarjetas vistas hoy, falladas, dominadas y próximas por repasar.
 - Estadísticas, favoritas y migración del progreso de la versión anterior.
 - Exportación e importación de copias de seguridad con progreso, perfil y recordatorios.
 - Escritura táctil responsive y guía de orden de trazos.
+- En Estudio, la guía de orden de trazos aparece activa de forma inicial.
 - Audio japonés mediante las voces instaladas en el dispositivo.
 - Selector de idioma con Español, English y Deutsch.
 - Progreso y favoritas compartidos entre idiomas mediante `cardId`.
@@ -100,6 +102,11 @@ El apartado Perfil guarda nombre, meta diaria, días activos, metas cumplidas y
 racha. También concentra la exportación/importación de datos y muestra qué
 tarjetas fueron vistas hoy, cuáles fallaron, cuáles ya están dominadas y cuáles
 vienen próximas.
+
+Los niveles se calculan por porcentaje de logros desbloqueados, no por un número
+fijo. Esto permite agregar más logros sin romper la progresión: Nivel 0
+`Atarashi gakkusei`, Nivel 1 `Shougakusei`, Nivel 2 `Chuugakusei`, Nivel 3
+`Koukousei`, Nivel 4 `Daigakusei` y Nivel 5 `Sensei`.
 
 La primera visita muestra una pantalla de marca de 2–3 segundos. Si no existe un
 perfil local, la app pide el nombre, una hora preferida de recordatorio y pregunta

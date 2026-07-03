@@ -34,18 +34,19 @@ import { createDrawingPad } from "./drawing.js";
 import { exampleJapanese, itemPronunciation, japaneseOnly, speakJapanese } from "./audio.js";
 import { loadDictionary } from "./data.js";
 import {
+    achievementLevel,
     achievementProgress,
     achievementSummary,
     buildAchievementStats,
     syncAchievements,
-} from "./achievements.js?v=800";
+} from "./achievements.js?v=801";
 import {
     dailyEntry,
     dailySummary,
     practiceStats,
     recentDailySummaries,
     recordDailyPractice,
-} from "./profile.js?v=800";
+} from "./profile.js?v=801";
 import {
     disablePracticeReminder,
     enablePracticeReminder,
@@ -54,7 +55,7 @@ import {
     recordPractice,
     setPracticeReminderTime,
     shouldNotifyPracticeReminder,
-} from "./reminders.js?v=800";
+} from "./reminders.js?v=801";
 import {
     AVAILABLE_LANGUAGES,
     applyDocumentTranslations,
@@ -68,9 +69,9 @@ import {
     localizeDictionary,
     t,
     translateCardState,
-} from "./i18n.js?v=800";
+} from "./i18n.js?v=801";
 
-const APP_VERSION = "0.8.0";
+const APP_VERSION = "0.8.1";
 const FEEDBACK_ENDPOINT = "https://script.google.com/macros/s/AKfycbxiz6058zwMxfPTDTmIBpG8JutOPw8YBxCRJ0BeMHp-py6IXZy4zkZs2IdTqwmSSzC1jw/exec";
 const SPLASH_MIN_MS = 2400;
 const startupStartedAt = performance.now();
@@ -166,6 +167,7 @@ const elements = {
     modalPrevious: $("#btn-modal-prev"),
     modalNext: $("#btn-modal-next"),
     modalCounter: $("#contador-modal"),
+    levelNotice: $("#aviso-nivel"),
     toast: $("#toast"),
     languageSelect: $("#selector-idioma"),
     reminderButton: $("#btn-recordatorio"),
@@ -235,6 +237,7 @@ let profile = loadProfile();
 let dailyStats = loadDailyStats();
 let achievements = loadAchievements();
 let toastTimer = null;
+let levelNoticeTimer = null;
 let reminderTimer = null;
 let touchStartX = 0;
 let tourIndex = 0;
@@ -273,6 +276,30 @@ function showToast(message) {
     elements.toast.textContent = message;
     elements.toast.classList.add("visible");
     toastTimer = setTimeout(() => elements.toast.classList.remove("visible"), 2600);
+}
+
+function formatAchievementLevel(level) {
+    return t("ui.achievementLevelLabel", {
+        level: level.level,
+        name: level.name,
+    }, `Nivel ${level.level} · ${level.name}`);
+}
+
+function showAchievementLevelNotice() {
+    if (!profile.name) return;
+    const { summary } = refreshAchievements();
+    const level = achievementLevel(summary);
+    clearTimeout(levelNoticeTimer);
+    elements.levelNotice.textContent = t("ui.achievementStartupNotice", {
+        unlocked: summary.unlocked,
+        total: summary.total,
+        level: formatAchievementLevel(level),
+        percent: level.percent,
+    });
+    elements.levelNotice.classList.add("visible");
+    levelNoticeTimer = setTimeout(() => {
+        elements.levelNotice.classList.remove("visible");
+    }, 3000);
 }
 
 function announceUnlockedAchievements(unlocked = []) {
@@ -439,7 +466,11 @@ function sendUserSignup(tourAccepted) {
 async function finishSplashAndMaybeOnboard() {
     await wait(SPLASH_MIN_MS - (performance.now() - startupStartedAt));
     elements.splash?.classList.add("hidden");
-    if (!profile.name) openOnboardingModal();
+    if (!profile.name) {
+        openOnboardingModal();
+        return;
+    }
+    showAchievementLevelNotice();
 }
 
 function openOnboardingModal() {
@@ -488,6 +519,7 @@ function completeOnboarding(startTour) {
         return;
     }
     showToast(t("ui.onboardingReadyToast"));
+    showAchievementLevelNotice();
 }
 
 function clearTourHighlight() {
@@ -1411,10 +1443,10 @@ function openModal(index, trigger = modalTrigger) {
     if (!item) return;
     modalIndex = index;
     modalTrigger = trigger;
-    strokeOrderVisible = false;
-    elements.modalCharacter.classList.remove("stroke-order");
-    elements.toggleStrokes.setAttribute("aria-pressed", "false");
-    elements.toggleStrokes.textContent = t("ui.showStrokeOrder");
+    strokeOrderVisible = true;
+    elements.modalCharacter.classList.add("stroke-order");
+    elements.toggleStrokes.setAttribute("aria-pressed", "true");
+    elements.toggleStrokes.textContent = t("ui.hideStrokeOrder");
     modalPad.clear();
 
     elements.modalCharacter.textContent = item.caracter || "?";
