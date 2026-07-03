@@ -599,4 +599,104 @@ export const KANJI_EXAMPLES = {
         sentence: "本を持っています。", sentenceReading: "ほんを もっています。",
         sentenceMeaning: "Tengo un libro.",
     },
+    "近": {
+        word: "近い", reading: "ちかい", meaning: "cerca",
+        sentence: "駅は家から近いです。", sentenceReading: "えきは いえから ちかいです。",
+        sentenceMeaning: "La estación está cerca de casa.",
+    },
+    "遠": {
+        word: "遠い", reading: "とおい", meaning: "lejos",
+        sentence: "学校は家から遠いです。", sentenceReading: "がっこうは いえから とおいです。",
+        sentenceMeaning: "La escuela está lejos de casa.",
+    },
+    "速": {
+        word: "速い", reading: "はやい", meaning: "rápido",
+        sentence: "新幹線は速いです。", sentenceReading: "しんかんせんは はやいです。",
+        sentenceMeaning: "El tren bala es rápido.",
+    },
+    "遅": {
+        word: "遅い", reading: "おそい", meaning: "tarde; lento",
+        sentence: "バスが遅いです。", sentenceReading: "ばすが おそいです。",
+        sentenceMeaning: "El autobús va lento.",
+    },
+    "道": {
+        word: "道", reading: "みち", meaning: "camino; vía",
+        sentence: "この道をまっすぐ行きます。", sentenceReading: "この みちを まっすぐ いきます。",
+        sentenceMeaning: "Voy derecho por este camino.",
+    },
+    "通": {
+        word: "通う", reading: "かよう", meaning: "ir regularmente",
+        sentence: "学校に通っています。", sentenceReading: "がっこうに かよっています。",
+        sentenceMeaning: "Voy regularmente a la escuela.",
+    },
+    "運": {
+        word: "運動", reading: "うんどう", meaning: "ejercicio",
+        sentence: "毎朝運動します。", sentenceReading: "まいあさ うんどうします。",
+        sentenceMeaning: "Hago ejercicio cada mañana.",
+    },
+    "動": {
+        word: "動く", reading: "うごく", meaning: "moverse",
+        sentence: "車が動きます。", sentenceReading: "くるまが うごきます。",
+        sentenceMeaning: "El coche se mueve.",
+    },
+    "止": {
+        word: "止まる", reading: "とまる", meaning: "detenerse",
+        sentence: "車が止まります。", sentenceReading: "くるまが とまります。",
+        sentenceMeaning: "El coche se detiene.",
+    },
+    "待": {
+        word: "待つ", reading: "まつ", meaning: "esperar",
+        sentence: "友だちを待ちます。", sentenceReading: "ともだちを まちます。",
+        sentenceMeaning: "Espero a mi amigo.",
+    },
+    "貸": {
+        word: "貸す", reading: "かす", meaning: "prestar",
+        sentence: "友だちに本を貸します。", sentenceReading: "ともだちに ほんを かします。",
+        sentenceMeaning: "Le presto un libro a mi amigo.",
+    },
+    "借": {
+        word: "借りる", reading: "かりる", meaning: "pedir prestado",
+        sentence: "図書館で本を借ります。", sentenceReading: "としょかんで ほんを かります。",
+        sentenceMeaning: "Pido prestado un libro en la biblioteca.",
+    },
+    "返": {
+        word: "返す", reading: "かえす", meaning: "devolver",
+        sentence: "明日本を返します。", sentenceReading: "あした ほんを かえします。",
+        sentenceMeaning: "Mañana devuelvo el libro.",
+    },
+    "送": {
+        word: "送る", reading: "おくる", meaning: "enviar",
+        sentence: "メールを送ります。", sentenceReading: "めーるを おくります。",
+        sentenceMeaning: "Envío un correo.",
+    },
+    "集": {
+        word: "集まる", reading: "あつまる", meaning: "reunirse",
+        sentence: "公園に集まります。", sentenceReading: "こうえんに あつまります。",
+        sentenceMeaning: "Nos reunimos en el parque.",
+    },
+    "始": {
+        word: "始まる", reading: "はじまる", meaning: "empezar",
+        sentence: "授業が始まります。", sentenceReading: "じゅぎょうが はじまります。",
+        sentenceMeaning: "La clase empieza.",
+    },
+    "終": {
+        word: "終わる", reading: "おわる", meaning: "terminar",
+        sentence: "仕事が終わります。", sentenceReading: "しごとが おわります。",
+        sentenceMeaning: "El trabajo termina.",
+    },
+    "着": {
+        word: "着く", reading: "つく", meaning: "llegar",
+        sentence: "駅に着きます。", sentenceReading: "えきに つきます。",
+        sentenceMeaning: "Llego a la estación.",
+    },
+    "服": {
+        word: "服", reading: "ふく", meaning: "ropa",
+        sentence: "新しい服を買います。", sentenceReading: "あたらしい ふくを かいます。",
+        sentenceMeaning: "Compro ropa nueva.",
+    },
+    "洋": {
+        word: "洋食", reading: "ようしょく", meaning: "comida occidental",
+        sentence: "昼ごはんに洋食を食べます。", sentenceReading: "ひるごはんに ようしょくを たべます。",
+        sentenceMeaning: "Como comida occidental en el almuerzo.",
+    },
 };

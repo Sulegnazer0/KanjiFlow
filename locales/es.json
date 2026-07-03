@@ -136,7 +136,7 @@
     "latestUpdates": "Últimas actualizaciones",
     "updateOnboarding": "Pantalla de marca, bienvenida y tour inicial.",
     "updateAchievements": "Sistema de logros, niveles y versión visible en la pantalla de carga.",
-    "updateN4": "Dos bloques N4 con 40 kanji, ejemplos y trazos.",
+    "updateN4": "Tres bloques N4 con 60 kanji, ejemplos y trazos.",
     "updateKanjiAudio": "Audio de kanji ajustado a lecturas principales y pausas.",
     "updateStudyFavorites": "Favoritos directos y filtro de dominadas en Estudio.",
     "updateReminderTime": "Hora configurable para recordatorios.",
@@ -366,6 +366,10 @@
       "title": "17. Kanji N4: vida diaria y pensamiento",
       "description": "Casa, hábitos, comunicación, pensamiento y acciones de rutina."
     },
+    "kanji-n4-3": {
+      "title": "18. Kanji N4: movimiento y acciones prácticas",
+      "description": "Distancias, transporte, préstamos, envíos, reuniones e inicio o cierre de actividades."
+    },
     "all": {
       "title": "Todo el contenido",
       "description": "Mezcla libre de todos los caracteres disponibles."
@@ -496,7 +500,27 @@
     "kanji_起": { "meaning": "Levantarse / Ocurrir", "exampleMeaning": "levantarse", "sentenceMeaning": "Me levanto a las siete." },
     "kanji_寝": { "meaning": "Dormir", "exampleMeaning": "dormir", "sentenceMeaning": "Me duermo temprano." },
     "kanji_休": { "meaning": "Descansar", "exampleMeaning": "descansar", "sentenceMeaning": "Descanso el domingo." },
-    "kanji_持": { "meaning": "Tener / Sostener", "exampleMeaning": "tener; sostener", "sentenceMeaning": "Tengo un libro." }
+    "kanji_持": { "meaning": "Tener / Sostener", "exampleMeaning": "tener; sostener", "sentenceMeaning": "Tengo un libro." },
+    "kanji_近": { "meaning": "Cerca", "exampleMeaning": "cerca", "sentenceMeaning": "La estación está cerca de casa." },
+    "kanji_遠": { "meaning": "Lejos", "exampleMeaning": "lejos", "sentenceMeaning": "La escuela está lejos de casa." },
+    "kanji_速": { "meaning": "Rápido", "exampleMeaning": "rápido", "sentenceMeaning": "El tren bala es rápido." },
+    "kanji_遅": { "meaning": "Tarde / Lento", "exampleMeaning": "tarde; lento", "sentenceMeaning": "El autobús va lento." },
+    "kanji_道": { "meaning": "Camino / Vía", "exampleMeaning": "camino; vía", "sentenceMeaning": "Voy derecho por este camino." },
+    "kanji_通": { "meaning": "Pasar / Comunicar", "exampleMeaning": "ir regularmente", "sentenceMeaning": "Voy regularmente a la escuela." },
+    "kanji_運": { "meaning": "Llevar / Suerte", "exampleMeaning": "ejercicio", "sentenceMeaning": "Hago ejercicio cada mañana." },
+    "kanji_動": { "meaning": "Mover", "exampleMeaning": "moverse", "sentenceMeaning": "El coche se mueve." },
+    "kanji_止": { "meaning": "Detener", "exampleMeaning": "detenerse", "sentenceMeaning": "El coche se detiene." },
+    "kanji_待": { "meaning": "Esperar", "exampleMeaning": "esperar", "sentenceMeaning": "Espero a mi amigo." },
+    "kanji_貸": { "meaning": "Prestar", "exampleMeaning": "prestar", "sentenceMeaning": "Le presto un libro a mi amigo." },
+    "kanji_借": { "meaning": "Pedir prestado", "exampleMeaning": "pedir prestado", "sentenceMeaning": "Pido prestado un libro en la biblioteca." },
+    "kanji_返": { "meaning": "Devolver", "exampleMeaning": "devolver", "sentenceMeaning": "Mañana devuelvo el libro." },
+    "kanji_送": { "meaning": "Enviar", "exampleMeaning": "enviar", "sentenceMeaning": "Envío un correo." },
+    "kanji_集": { "meaning": "Reunir", "exampleMeaning": "reunirse", "sentenceMeaning": "Nos reunimos en el parque." },
+    "kanji_始": { "meaning": "Empezar", "exampleMeaning": "empezar", "sentenceMeaning": "La clase empieza." },
+    "kanji_終": { "meaning": "Terminar", "exampleMeaning": "terminar", "sentenceMeaning": "El trabajo termina." },
+    "kanji_着": { "meaning": "Llegar / Vestir", "exampleMeaning": "llegar", "sentenceMeaning": "Llego a la estación." },
+    "kanji_服": { "meaning": "Ropa", "exampleMeaning": "ropa", "sentenceMeaning": "Compro ropa nueva." },
+    "kanji_洋": { "meaning": "Occidente / Océano", "exampleMeaning": "comida occidental", "sentenceMeaning": "Como comida occidental en el almuerzo." }
   },
   "exampleTerms": {}
 }

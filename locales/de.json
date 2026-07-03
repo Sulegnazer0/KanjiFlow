@@ -136,7 +136,7 @@
     "latestUpdates": "Letzte Aktualisierungen",
     "updateOnboarding": "Marken-Startbildschirm, Willkommen und erste Tour.",
     "updateAchievements": "Erfolgslevel und sichtbare Version auf dem Startbildschirm.",
-    "updateN4": "Zwei N4-Blöcke mit 40 Kanji, Beispielen und Strichführungen.",
+    "updateN4": "Drei N4-Blöcke mit 60 Kanji, Beispielen und Strichführungen.",
     "updateKanjiAudio": "Kanji-Audio nutzt jetzt Hauptlesungen mit Pausen.",
     "updateStudyFavorites": "Direkte Favoriten und ein Filter für gemeisterte Zeichen im Lernbereich.",
     "updateReminderTime": "Konfigurierbare Erinnerungszeit.",
@@ -366,6 +366,10 @@
       "title": "17. Kanji N4: Alltag und Denken",
       "description": "Zuhause, Gewohnheiten, Kommunikation, Denken und alltägliche Handlungen."
     },
+    "kanji-n4-3": {
+      "title": "18. Kanji N4: Bewegung und praktische Handlungen",
+      "description": "Entfernungen, Transport, Leihen, Senden, Treffen sowie Beginn und Ende von Aktivitäten."
+    },
     "all": {
       "title": "Alle Inhalte",
       "description": "Eine freie Mischung aller verfügbaren Zeichen."
@@ -496,7 +500,27 @@
     "kanji_起": { "meaning": "Aufstehen / Geschehen", "exampleMeaning": "aufstehen", "sentenceMeaning": "Ich stehe um sieben auf." },
     "kanji_寝": { "meaning": "Schlafen", "exampleMeaning": "schlafen", "sentenceMeaning": "Ich gehe früh schlafen." },
     "kanji_休": { "meaning": "Ausruhen", "exampleMeaning": "ausruhen", "sentenceMeaning": "Ich ruhe mich am Sonntag aus." },
-    "kanji_持": { "meaning": "Haben / Halten", "exampleMeaning": "haben; halten", "sentenceMeaning": "Ich habe ein Buch." }
+    "kanji_持": { "meaning": "Haben / Halten", "exampleMeaning": "haben; halten", "sentenceMeaning": "Ich habe ein Buch." },
+    "kanji_近": { "meaning": "Nah", "exampleMeaning": "nah", "sentenceMeaning": "Der Bahnhof ist nahe am Haus." },
+    "kanji_遠": { "meaning": "Fern / Weit", "exampleMeaning": "weit weg", "sentenceMeaning": "Die Schule ist weit vom Haus entfernt." },
+    "kanji_速": { "meaning": "Schnell", "exampleMeaning": "schnell", "sentenceMeaning": "Der Shinkansen ist schnell." },
+    "kanji_遅": { "meaning": "Spät / Langsam", "exampleMeaning": "spät; langsam", "sentenceMeaning": "Der Bus ist langsam." },
+    "kanji_道": { "meaning": "Straße / Weg", "exampleMeaning": "Straße; Weg", "sentenceMeaning": "Ich gehe geradeaus auf diesem Weg." },
+    "kanji_通": { "meaning": "Durchgehen / Pendeln", "exampleMeaning": "regelmäßig gehen", "sentenceMeaning": "Ich gehe regelmäßig zur Schule." },
+    "kanji_運": { "meaning": "Tragen / Glück", "exampleMeaning": "Bewegung; Sport", "sentenceMeaning": "Ich mache jeden Morgen Sport." },
+    "kanji_動": { "meaning": "Bewegen", "exampleMeaning": "sich bewegen", "sentenceMeaning": "Das Auto bewegt sich." },
+    "kanji_止": { "meaning": "Anhalten", "exampleMeaning": "anhalten", "sentenceMeaning": "Das Auto hält an." },
+    "kanji_待": { "meaning": "Warten", "exampleMeaning": "warten", "sentenceMeaning": "Ich warte auf meinen Freund." },
+    "kanji_貸": { "meaning": "Verleihen", "exampleMeaning": "verleihen", "sentenceMeaning": "Ich leihe meinem Freund ein Buch." },
+    "kanji_借": { "meaning": "Ausleihen", "exampleMeaning": "ausleihen", "sentenceMeaning": "Ich leihe ein Buch in der Bibliothek aus." },
+    "kanji_返": { "meaning": "Zurückgeben", "exampleMeaning": "zurückgeben", "sentenceMeaning": "Morgen gebe ich das Buch zurück." },
+    "kanji_送": { "meaning": "Senden", "exampleMeaning": "senden", "sentenceMeaning": "Ich sende eine E-Mail." },
+    "kanji_集": { "meaning": "Sammeln / Versammeln", "exampleMeaning": "sich versammeln", "sentenceMeaning": "Wir versammeln uns im Park." },
+    "kanji_始": { "meaning": "Beginnen", "exampleMeaning": "beginnen", "sentenceMeaning": "Der Unterricht beginnt." },
+    "kanji_終": { "meaning": "Beenden", "exampleMeaning": "enden; beenden", "sentenceMeaning": "Die Arbeit endet." },
+    "kanji_着": { "meaning": "Ankommen / Tragen", "exampleMeaning": "ankommen", "sentenceMeaning": "Ich komme am Bahnhof an." },
+    "kanji_服": { "meaning": "Kleidung", "exampleMeaning": "Kleidung", "sentenceMeaning": "Ich kaufe neue Kleidung." },
+    "kanji_洋": { "meaning": "Westlich / Ozean", "exampleMeaning": "westliches Essen", "sentenceMeaning": "Ich esse westliches Essen zum Mittagessen." }
   },
   "exampleTerms": {
     "Abreviación": "Abkürzung",

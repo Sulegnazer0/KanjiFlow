@@ -136,7 +136,7 @@
     "latestUpdates": "Latest updates",
     "updateOnboarding": "Brand splash screen, welcome prompt, and first-run tour.",
     "updateAchievements": "Achievement levels and visible version on the splash screen.",
-    "updateN4": "Two N4 blocks with 40 kanji, examples, and stroke guides.",
+    "updateN4": "Three N4 blocks with 60 kanji, examples, and stroke guides.",
     "updateKanjiAudio": "Kanji audio now uses main readings with pauses.",
     "updateStudyFavorites": "Direct favorites and a mastered filter in Study.",
     "updateReminderTime": "Configurable reminder time.",
@@ -366,6 +366,10 @@
       "title": "17. Kanji N4: daily life and thought",
       "description": "Home, habits, communication, thinking, and routine actions."
     },
+    "kanji-n4-3": {
+      "title": "18. Kanji N4: movement and practical actions",
+      "description": "Distances, transport, lending, sending, gathering, and starting or finishing activities."
+    },
     "all": {
       "title": "All content",
       "description": "A free mix of all available characters."
@@ -496,7 +500,27 @@
     "kanji_起": { "meaning": "Wake up / Happen", "exampleMeaning": "to wake up", "sentenceMeaning": "I wake up at seven." },
     "kanji_寝": { "meaning": "Sleep", "exampleMeaning": "to sleep", "sentenceMeaning": "I go to sleep early." },
     "kanji_休": { "meaning": "Rest", "exampleMeaning": "to rest", "sentenceMeaning": "I rest on Sunday." },
-    "kanji_持": { "meaning": "Have / Hold", "exampleMeaning": "to have; to hold", "sentenceMeaning": "I have a book." }
+    "kanji_持": { "meaning": "Have / Hold", "exampleMeaning": "to have; to hold", "sentenceMeaning": "I have a book." },
+    "kanji_近": { "meaning": "Near", "exampleMeaning": "near", "sentenceMeaning": "The station is near my house." },
+    "kanji_遠": { "meaning": "Far", "exampleMeaning": "far", "sentenceMeaning": "The school is far from home." },
+    "kanji_速": { "meaning": "Fast", "exampleMeaning": "fast", "sentenceMeaning": "The bullet train is fast." },
+    "kanji_遅": { "meaning": "Late / Slow", "exampleMeaning": "late; slow", "sentenceMeaning": "The bus is slow." },
+    "kanji_道": { "meaning": "Road / Way", "exampleMeaning": "road; way", "sentenceMeaning": "I go straight on this road." },
+    "kanji_通": { "meaning": "Pass / Commute", "exampleMeaning": "to go regularly", "sentenceMeaning": "I go to school regularly." },
+    "kanji_運": { "meaning": "Carry / Luck", "exampleMeaning": "exercise", "sentenceMeaning": "I exercise every morning." },
+    "kanji_動": { "meaning": "Move", "exampleMeaning": "to move", "sentenceMeaning": "The car moves." },
+    "kanji_止": { "meaning": "Stop", "exampleMeaning": "to stop", "sentenceMeaning": "The car stops." },
+    "kanji_待": { "meaning": "Wait", "exampleMeaning": "to wait", "sentenceMeaning": "I wait for my friend." },
+    "kanji_貸": { "meaning": "Lend", "exampleMeaning": "to lend", "sentenceMeaning": "I lend a book to my friend." },
+    "kanji_借": { "meaning": "Borrow", "exampleMeaning": "to borrow", "sentenceMeaning": "I borrow a book at the library." },
+    "kanji_返": { "meaning": "Return", "exampleMeaning": "to return", "sentenceMeaning": "I return the book tomorrow." },
+    "kanji_送": { "meaning": "Send", "exampleMeaning": "to send", "sentenceMeaning": "I send an email." },
+    "kanji_集": { "meaning": "Gather", "exampleMeaning": "to gather", "sentenceMeaning": "We gather in the park." },
+    "kanji_始": { "meaning": "Begin", "exampleMeaning": "to begin", "sentenceMeaning": "Class begins." },
+    "kanji_終": { "meaning": "Finish", "exampleMeaning": "to finish", "sentenceMeaning": "Work finishes." },
+    "kanji_着": { "meaning": "Arrive / Wear", "exampleMeaning": "to arrive", "sentenceMeaning": "I arrive at the station." },
+    "kanji_服": { "meaning": "Clothes", "exampleMeaning": "clothes", "sentenceMeaning": "I buy new clothes." },
+    "kanji_洋": { "meaning": "Western / Ocean", "exampleMeaning": "Western food", "sentenceMeaning": "I eat Western food for lunch." }
   },
   "exampleTerms": {
     "Abreviación": "Abbreviation",

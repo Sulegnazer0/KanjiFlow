@@ -111,6 +111,12 @@ export const LESSONS = [
         test: item => item.tipo === "kanji" && item.categoria === "N4" && Number(item.id_jlpt) >= 101 && Number(item.id_jlpt) <= 120,
     },
     {
+        id: "kanji-n4-3",
+        title: "18. Kanji N4: movimiento y acciones prácticas",
+        description: "Distancias, transporte, préstamos, envíos, reuniones e inicio o cierre de actividades.",
+        test: item => item.tipo === "kanji" && item.categoria === "N4" && Number(item.id_jlpt) >= 121 && Number(item.id_jlpt) <= 140,
+    },
+    {
         id: "all",
         title: "Todo el contenido",
         description: "Mezcla libre de todos los caracteres disponibles.",

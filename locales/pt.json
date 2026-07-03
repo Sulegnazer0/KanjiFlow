@@ -136,7 +136,7 @@
     "latestUpdates": "Ultimas atualizacoes",
     "updateOnboarding": "Tela de marca, boas-vindas e tour inicial.",
     "updateAchievements": "Niveis de conquistas e versao visivel na tela de carregamento.",
-    "updateN4": "Dois blocos N4 com 40 kanji, exemplos e tracos.",
+    "updateN4": "Tres blocos N4 com 60 kanji, exemplos e tracos.",
     "updateKanjiAudio": "Audio de kanji ajustado para leituras principais com pausas.",
     "updateStudyFavorites": "Favoritos diretos e filtro de dominadas em Estudo.",
     "updateReminderTime": "Horario configuravel para lembretes.",
@@ -414,6 +414,10 @@
     "kanji-n4-2": {
       "title": "17. Kanji N4: vida diaria e pensamento",
       "description": "Casa, habitos, comunicacao, pensamento e acoes de rotina."
+    },
+    "kanji-n4-3": {
+      "title": "18. Kanji N4: movimento e acoes praticas",
+      "description": "Distancias, transporte, emprestimos, envios, reunioes e inicio ou fim de atividades."
     },
     "all": {
       "title": "Todo o conteudo",
@@ -1035,6 +1039,106 @@
       "meaning": "Ter / Segurar",
       "exampleMeaning": "ter; segurar",
       "sentenceMeaning": "Tenho um livro."
+    },
+    "kanji_近": {
+      "meaning": "Perto",
+      "exampleMeaning": "perto",
+      "sentenceMeaning": "A estacao fica perto de casa."
+    },
+    "kanji_遠": {
+      "meaning": "Longe",
+      "exampleMeaning": "longe",
+      "sentenceMeaning": "A escola fica longe de casa."
+    },
+    "kanji_速": {
+      "meaning": "Rapido",
+      "exampleMeaning": "rapido",
+      "sentenceMeaning": "O trem-bala e rapido."
+    },
+    "kanji_遅": {
+      "meaning": "Tarde / Lento",
+      "exampleMeaning": "tarde; lento",
+      "sentenceMeaning": "O onibus esta lento."
+    },
+    "kanji_道": {
+      "meaning": "Caminho / Via",
+      "exampleMeaning": "caminho; via",
+      "sentenceMeaning": "Sigo reto por este caminho."
+    },
+    "kanji_通": {
+      "meaning": "Passar / Frequentar",
+      "exampleMeaning": "ir regularmente",
+      "sentenceMeaning": "Vou regularmente para a escola."
+    },
+    "kanji_運": {
+      "meaning": "Levar / Sorte",
+      "exampleMeaning": "exercicio",
+      "sentenceMeaning": "Faco exercicio todas as manhas."
+    },
+    "kanji_動": {
+      "meaning": "Mover",
+      "exampleMeaning": "mover-se",
+      "sentenceMeaning": "O carro se move."
+    },
+    "kanji_止": {
+      "meaning": "Parar",
+      "exampleMeaning": "parar",
+      "sentenceMeaning": "O carro para."
+    },
+    "kanji_待": {
+      "meaning": "Esperar",
+      "exampleMeaning": "esperar",
+      "sentenceMeaning": "Espero meu amigo."
+    },
+    "kanji_貸": {
+      "meaning": "Emprestar",
+      "exampleMeaning": "emprestar",
+      "sentenceMeaning": "Empresto um livro ao meu amigo."
+    },
+    "kanji_借": {
+      "meaning": "Pegar emprestado",
+      "exampleMeaning": "pegar emprestado",
+      "sentenceMeaning": "Pego um livro emprestado na biblioteca."
+    },
+    "kanji_返": {
+      "meaning": "Devolver",
+      "exampleMeaning": "devolver",
+      "sentenceMeaning": "Amanha devolvo o livro."
+    },
+    "kanji_送": {
+      "meaning": "Enviar",
+      "exampleMeaning": "enviar",
+      "sentenceMeaning": "Envio um e-mail."
+    },
+    "kanji_集": {
+      "meaning": "Reunir",
+      "exampleMeaning": "reunir-se",
+      "sentenceMeaning": "Nos nos reunimos no parque."
+    },
+    "kanji_始": {
+      "meaning": "Comecar",
+      "exampleMeaning": "comecar",
+      "sentenceMeaning": "A aula comeca."
+    },
+    "kanji_終": {
+      "meaning": "Terminar",
+      "exampleMeaning": "terminar",
+      "sentenceMeaning": "O trabalho termina."
+    },
+    "kanji_着": {
+      "meaning": "Chegar / Vestir",
+      "exampleMeaning": "chegar",
+      "sentenceMeaning": "Chego a estacao."
+    },
+    "kanji_服": {
+      "meaning": "Roupa",
+      "exampleMeaning": "roupa",
+      "sentenceMeaning": "Compro roupas novas."
+    },
+    "kanji_洋": {
+      "meaning": "Ocidental / Oceano",
+      "exampleMeaning": "comida ocidental",
+      "sentenceMeaning": "Como comida ocidental no almoco."
     }
   },
   "exampleTerms": {
