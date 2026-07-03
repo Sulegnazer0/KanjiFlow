@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
+import { inflateSync } from "node:zlib";
 import { ACHIEVEMENT_DEFINITIONS } from "../js/achievements.js";
 import { LESSONS, itemId, parseCSV } from "../js/core.js";
 import { AVAILABLE_LANGUAGES } from "../js/i18n.js";
@@ -18,7 +19,7 @@ const REQUIRED_HEADERS = [
     "palabra_ejemplo",
 ];
 const SUPPORTED_TYPES = new Set(["hiragana", "katakana", "kanji"]);
-const SUPPORTED_KANJI_LEVELS = new Set(["N5"]);
+const SUPPORTED_KANJI_LEVELS = new Set(["N5", "N4"]);
 const KANA_CATEGORIES = new Set(["basico", "dakuten", "combinacion", "especial"]);
 const REQUIRED_EXAMPLE_FIELDS = [
     "word",
@@ -30,6 +31,7 @@ const REQUIRED_EXAMPLE_FIELDS = [
 ];
 const JAPANESE_RE = /[\u3040-\u30ff\u3400-\u9fff]/u;
 const KANJI_RE = /^[\u3400-\u9fff]$/u;
+const STROKE_ORDER_FONT_PATH = "../KanjiStrokeOrders.woff";
 
 const failures = [];
 const notes = [];
@@ -48,6 +50,112 @@ function readPath(object, path) {
 
 async function readJSON(path) {
     return JSON.parse(await readFile(new URL(path, import.meta.url), "utf8"));
+}
+
+async function readStrokeOrderGlyphs() {
+    const data = await readFile(new URL(STROKE_ORDER_FONT_PATH, import.meta.url));
+    if (data.subarray(0, 4).toString("latin1") !== "wOFF") {
+        fail(`${STROKE_ORDER_FONT_PATH} debe estar en formato WOFF`);
+        return new Set();
+    }
+
+    const tableCount = data.readUInt16BE(12);
+    let cmap = null;
+
+    for (let index = 0; index < tableCount; index += 1) {
+        const entryOffset = 44 + index * 20;
+        const tag = data.subarray(entryOffset, entryOffset + 4).toString("latin1");
+        if (tag !== "cmap") continue;
+
+        const offset = data.readUInt32BE(entryOffset + 4);
+        const compressedLength = data.readUInt32BE(entryOffset + 8);
+        const originalLength = data.readUInt32BE(entryOffset + 12);
+        const rawTable = data.subarray(offset, offset + compressedLength);
+        cmap = compressedLength === originalLength ? rawTable : inflateSync(rawTable);
+        break;
+    }
+
+    if (!cmap) {
+        fail(`${STROKE_ORDER_FONT_PATH} no contiene tabla cmap`);
+        return new Set();
+    }
+
+    return parseCmapGlyphs(cmap);
+}
+
+function parseCmapGlyphs(cmap) {
+    const glyphs = new Set();
+    const subtableCount = cmap.readUInt16BE(2);
+
+    for (let index = 0; index < subtableCount; index += 1) {
+        const recordOffset = 4 + index * 8;
+        const subtableOffset = cmap.readUInt32BE(recordOffset + 4);
+        const format = cmap.readUInt16BE(subtableOffset);
+
+        if (format === 4) addFormat4Glyphs(cmap, subtableOffset, glyphs);
+        if (format === 12) addFormat12Glyphs(cmap, subtableOffset, glyphs);
+    }
+
+    if (!glyphs.size) fail(`${STROKE_ORDER_FONT_PATH} no contiene subtablas cmap compatibles`);
+    return glyphs;
+}
+
+function addFormat4Glyphs(cmap, offset, glyphs) {
+    const length = cmap.readUInt16BE(offset + 2);
+    const segmentCount = cmap.readUInt16BE(offset + 6) / 2;
+    let cursor = offset + 14;
+    const endCodes = readUInt16Array(cmap, cursor, segmentCount);
+    cursor += segmentCount * 2 + 2;
+    const startCodes = readUInt16Array(cmap, cursor, segmentCount);
+    cursor += segmentCount * 2;
+    const deltas = readInt16Array(cmap, cursor, segmentCount);
+    cursor += segmentCount * 2;
+    const rangeOffsetStart = cursor;
+    const rangeOffsets = readUInt16Array(cmap, cursor, segmentCount);
+
+    for (let index = 0; index < segmentCount; index += 1) {
+        const start = startCodes[index];
+        const end = endCodes[index];
+        const delta = deltas[index];
+        const rangeOffset = rangeOffsets[index];
+        if (start === 0xffff && end === 0xffff) continue;
+
+        for (let codePoint = start; codePoint <= end; codePoint += 1) {
+            let glyph = 0;
+            if (rangeOffset === 0) {
+                glyph = (codePoint + delta) & 0xffff;
+            } else {
+                const glyphOffset = rangeOffsetStart + index * 2 + rangeOffset + (codePoint - start) * 2;
+                if (glyphOffset + 2 <= offset + length) {
+                    glyph = cmap.readUInt16BE(glyphOffset);
+                    if (glyph) glyph = (glyph + delta) & 0xffff;
+                }
+            }
+            if (glyph) glyphs.add(codePoint);
+        }
+    }
+}
+
+function addFormat12Glyphs(cmap, offset, glyphs) {
+    const groupCount = cmap.readUInt32BE(offset + 12);
+    let cursor = offset + 16;
+
+    for (let index = 0; index < groupCount; index += 1) {
+        const start = cmap.readUInt32BE(cursor);
+        const end = cmap.readUInt32BE(cursor + 4);
+        const startGlyph = cmap.readUInt32BE(cursor + 8);
+        cursor += 12;
+        if (!startGlyph) continue;
+        for (let codePoint = start; codePoint <= end; codePoint += 1) glyphs.add(codePoint);
+    }
+}
+
+function readUInt16Array(buffer, offset, length) {
+    return Array.from({ length }, (_, index) => buffer.readUInt16BE(offset + index * 2));
+}
+
+function readInt16Array(buffer, offset, length) {
+    return Array.from({ length }, (_, index) => buffer.readInt16BE(offset + index * 2));
 }
 
 function requireText(value, label) {
@@ -125,6 +233,15 @@ function validateKanjiExamples(dictionary) {
     }
 }
 
+function validateStrokeOrderFont(dictionary, glyphs) {
+    for (const item of dictionary.filter(entry => entry.tipo === "kanji")) {
+        const codePoint = item.caracter.codePointAt(0);
+        if (!glyphs.has(codePoint)) {
+            fail(`${STROKE_ORDER_FONT_PATH} no contiene glifo de orden de trazos para ${itemId(item)} (${item.caracter})`);
+        }
+    }
+}
+
 function validateLessonCoverage(dictionary) {
     const contentLessons = LESSONS.filter(lesson => !["recommended", "all"].includes(lesson.id));
     for (const item of dictionary) {
@@ -191,10 +308,12 @@ const dictionary = parseCSV(rawData);
 validateRows(dictionary);
 validateKanjiExamples(dictionary);
 validateLessonCoverage(dictionary);
+validateStrokeOrderFont(dictionary, await readStrokeOrderGlyphs());
 await validateLocales(dictionary);
 
 note(`${dictionary.length} tarjetas validadas`);
 note(`${dictionary.filter(item => item.tipo === "kanji").length} kanji con ejemplos completos`);
+note("Fuente de orden de trazos validada para todos los kanji publicados");
 note(`${AVAILABLE_LANGUAGES.length} idiomas activos validados: ${AVAILABLE_LANGUAGES.map(language => language.code).join(", ")}`);
 
 if (failures.length) {

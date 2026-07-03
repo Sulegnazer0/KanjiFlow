@@ -1,29 +1,44 @@
 let japaneseVoice = null;
 
+const JAPANESE_SEGMENT_RE = /[\u3000-\u30ff\u3400-\u9fff々〆ヵヶー]+/g;
+
+function canSpeak() {
+    return typeof window !== "undefined" && "speechSynthesis" in window;
+}
+
 function refreshVoices() {
-    if (!("speechSynthesis" in window)) return;
+    if (!canSpeak()) return;
     japaneseVoice = window.speechSynthesis
         .getVoices()
         .find(voice => voice.lang.toLowerCase().startsWith("ja")) ?? null;
 }
 
-if ("speechSynthesis" in window) {
+if (canSpeak()) {
     refreshVoices();
     window.speechSynthesis.addEventListener?.("voiceschanged", refreshVoices);
 }
 
-export function japaneseOnly(text = "") {
-    const withoutParentheses = text.replace(/\([^)]*\)/g, " ");
-    const japaneseSegments = withoutParentheses.match(/[\u3000-\u30ff\u3400-\u9fff々〆ヵヶー]+/g);
-    return japaneseSegments?.join(" ") || withoutParentheses.trim();
+function japaneseSegments(text = "") {
+    const withoutParentheses = String(text || "").replace(/\([^)]*\)/g, " ");
+    return withoutParentheses.match(JAPANESE_SEGMENT_RE)?.filter(Boolean) ?? [];
+}
+
+function firstJapaneseSegment(text = "") {
+    return japaneseSegments(text)[0] || "";
+}
+
+export function japaneseOnly(text = "", separator = "、") {
+    const withoutParentheses = String(text || "").replace(/\([^)]*\)/g, " ");
+    const segments = japaneseSegments(withoutParentheses);
+    return segments.length ? segments.join(separator) : withoutParentheses.trim();
 }
 
 export function exampleJapanese(text = "") {
-    return text.split("(")[0].trim();
+    return String(text || "").split("(")[0].trim();
 }
 
 export function speakJapanese(text) {
-    if (!text || !("speechSynthesis" in window)) return false;
+    if (!text || !canSpeak()) return false;
     const clean = japaneseOnly(text);
     if (!clean) return false;
     window.speechSynthesis.cancel();
@@ -38,7 +53,7 @@ export function speakJapanese(text) {
 export function itemPronunciation(item) {
     if (!item) return "";
     if (item.tipo === "kanji") {
-        return japaneseOnly(item.kunyomi) || japaneseOnly(item.onyomi) || item.caracter;
+        return firstJapaneseSegment(item.onyomi) || firstJapaneseSegment(item.kunyomi) || item.caracter;
     }
     return item.caracter;
 }

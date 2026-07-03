@@ -1,11 +1,12 @@
 {
   "name": "kanjiflow",
-  "version": "3.0.0",
+  "version": "0.8.5",
   "private": true,
   "type": "module",
   "scripts": {
     "test": "npm run validate:content && node tests/run-tests.mjs",
     "validate:content": "node tools/validate-content.mjs",
+    "build:stroke-font": "node tools/build-stroke-font.mjs",
     "serve": "python -m http.server 8765"
   }
 }

@@ -1,0 +1,2 @@
+# Caracteres preparados para la siguiente tanda de contenido.
+# Mantener aquí kanji planeados que aún no estén publicados en datos.csv.
