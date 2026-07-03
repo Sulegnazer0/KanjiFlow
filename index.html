@@ -7,7 +7,7 @@
     <meta name="description" content="Aprende hiragana, katakana y kanji con escritura, audio y repetición espaciada.">
     <title>KanjiFlow — Aprende japonés</title>
     <link rel="manifest" href="manifest.webmanifest">
-    <link rel="stylesheet" href="style.css?v=712">
+    <link rel="stylesheet" href="style.css?v=800">
 </head>
 <body>
     <div id="pantalla-carga" class="splash-screen" aria-live="polite">
@@ -15,6 +15,7 @@
             <img src="assets/s0labsHorizontal.png" alt="S0 Labs" class="splash-logo">
             <p data-i18n="ui.splashTagline">Preparando tu flujo de práctica…</p>
         </div>
+        <span id="splash-version" class="splash-version">v0.8.0</span>
     </div>
 
     <main class="app-shell">
@@ -241,6 +242,17 @@
                     <div><strong id="perfil-mejor-racha">0</strong><span data-i18n="ui.profileBestStreak">Mejor racha</span></div>
                 </div>
 
+                <section class="achievements-card" aria-labelledby="logros-titulo">
+                    <div class="achievements-heading">
+                        <div>
+                            <h3 id="logros-titulo" data-i18n="ui.achievementsTitle">Logros</h3>
+                            <p id="resumen-logros" class="lesson-description"></p>
+                        </div>
+                        <strong id="contador-logros">0/0</strong>
+                    </div>
+                    <div id="lista-logros" class="achievements-grid"></div>
+                </section>
+
                 <section class="history-card" aria-labelledby="historial-titulo">
                     <h3 id="historial-titulo" data-i18n="ui.historyTitle">Últimos 7 días</h3>
                     <div id="historial-diario" class="daily-history"></div>
@@ -419,6 +431,7 @@
                 <h3 data-i18n="ui.latestUpdates">Últimas actualizaciones</h3>
                 <ul class="updates-list">
                     <li data-i18n="ui.updateOnboarding">Pantalla de marca, bienvenida y tour inicial.</li>
+                    <li data-i18n="ui.updateAchievements">Sistema de logros y versión visible en la pantalla de carga.</li>
                     <li data-i18n="ui.updateReminderTime">Hora configurable para recordatorios.</li>
                     <li data-i18n="ui.updateProfileGoals">Perfil, meta diaria y estadísticas por día.</li>
                     <li data-i18n="ui.updateDirectFeedback">Envío directo de recomendaciones a Google Sheets.</li>
@@ -459,6 +472,6 @@
     </div>
 
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
-    <script type="module" src="js/app.js?v=712"></script>
+    <script type="module" src="js/app.js?v=800"></script>
 </body>
 </html>

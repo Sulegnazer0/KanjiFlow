@@ -8,6 +8,7 @@ Aplicación web estática para aprender hiragana, katakana y kanji N5 mediante e
 - 293 tarjetas: hiragana, katakana, reglas especiales y 80 kanji.
 - Repetición espaciada con cuatro niveles de respuesta.
 - Perfil local con nombre, meta diaria, historial de 7 días y rachas de meta.
+- Sistema de logros por hitos de práctica, metas, favoritos y caracteres dominados.
 - Pantalla de arranque con marca S0 Labs, bienvenida inicial de KanjiFlow y tour visual.
 - Listas de perfil con tarjetas vistas hoy, falladas, dominadas y próximas por repasar.
 - Estadísticas, favoritas y migración del progreso de la versión anterior.
@@ -62,6 +63,7 @@ Las pruebas comprueban el parser CSV, el algoritmo de repetición espaciada, la 
 - `js/i18n.js`: carga de idiomas, traducción de UI y localización de tarjetas.
 - `js/kanji-examples.js`: ejemplos contextualizados.
 - `js/profile.js`: perfil, meta diaria, historial y estadísticas de práctica.
+- `js/achievements.js`: definición, sincronización y avance de logros.
 - `js/reminders.js`: cálculo del recordatorio de práctica con hora configurable.
 - `js/app.js`: interfaz y coordinación.
 - `locales/es.json`, `locales/en.json`, `locales/de.json`: textos por idioma.

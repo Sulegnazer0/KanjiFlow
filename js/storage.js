@@ -1,4 +1,5 @@
 import { emptyReviewRecord, normalizeReviewRecord } from "./core.js";
+import { emptyAchievements, normalizeAchievements } from "./achievements.js";
 import { emptyProfile, normalizeDailyStats, normalizeProfile } from "./profile.js";
 import { emptyPracticeReminder, normalizePracticeReminder } from "./reminders.js";
 
@@ -8,6 +9,7 @@ const SETTINGS_KEY = "kanjiflow_settings_v2";
 const REMINDER_KEY = "kanjiflow_practice_reminder_v1";
 const PROFILE_KEY = "kanjiflow_profile_v1";
 const DAILY_STATS_KEY = "kanjiflow_daily_stats_v1";
+const ACHIEVEMENTS_KEY = "kanjiflow_achievements_v1";
 
 function readJSON(key, fallback) {
     try {
@@ -120,6 +122,14 @@ export function savePracticeReminder(reminder) {
     localStorage.setItem(REMINDER_KEY, JSON.stringify(normalizePracticeReminder(reminder)));
 }
 
+export function loadAchievements() {
+    return normalizeAchievements(readJSON(ACHIEVEMENTS_KEY, emptyAchievements()));
+}
+
+export function saveAchievements(achievements) {
+    localStorage.setItem(ACHIEVEMENTS_KEY, JSON.stringify(normalizeAchievements(achievements)));
+}
+
 export function createBackup(
     progress,
     favorites,
@@ -127,6 +137,7 @@ export function createBackup(
     reminder = emptyPracticeReminder(),
     profile = emptyProfile(),
     dailyStats = {},
+    achievements = emptyAchievements(),
 ) {
     return JSON.stringify({
         app: "KanjiFlow",
@@ -138,6 +149,7 @@ export function createBackup(
         reminder: normalizePracticeReminder(reminder),
         profile: normalizeProfile(profile),
         dailyStats: normalizeDailyStats(dailyStats),
+        achievements: normalizeAchievements(achievements),
     }, null, 2);
 }
 
@@ -158,14 +170,16 @@ export function parseBackup(text) {
         reminder: normalizePracticeReminder(data.reminder),
         profile: normalizeProfile(data.profile),
         dailyStats: normalizeDailyStats(data.dailyStats),
+        achievements: normalizeAchievements(data.achievements),
     };
 }
 
-export function replaceStoredData({ progress, favorites, settings, reminder, profile, dailyStats }) {
+export function replaceStoredData({ progress, favorites, settings, reminder, profile, dailyStats, achievements }) {
     saveProgress(progress);
     saveFavorites(favorites);
     saveSettings(settings);
     savePracticeReminder(reminder);
     saveProfile(profile);
     saveDailyStats(dailyStats);
+    saveAchievements(achievements);
 }
