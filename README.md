@@ -51,7 +51,7 @@ app quedará publicada en:
 npm test
 ```
 
-Las pruebas comprueban el parser CSV, el algoritmo de repetición espaciada, la meta diaria, la integridad de los datos, los ejemplos de kanji, los idiomas y el currículo.
+Las pruebas comprueban el parser CSV, el algoritmo de repetición espaciada, la meta diaria, la integridad de los datos, los ejemplos de kanji, los idiomas, la fuente de orden de trazos y el currículo.
 
 Para validar solo contenido, ejemplos y traducciones:
 
@@ -79,11 +79,14 @@ npm run validate:content
 - `service-worker.js`: caché para uso sin conexión.
 - `docs/apps-script-users.md`: contrato temporal para registrar altas en la pestaña `Usuarios`.
 - `docs/content-pipeline.md`: flujo para agregar JLPT N4/N3 e idiomas nuevos con validaciones.
+- `docs/jlpt-n4-starter.md`: primera tanda propuesta para crecer hacia JLPT N4 sin romper trazos ni traducciones.
 - `tools/validate-content.mjs`: validador de contenido, ejemplos, lecciones y locales.
 
 La fuente original de trazos se conserva como referencia, pero la aplicación carga
 `KanjiStrokeOrders.woff`, una versión reducida a los caracteres utilizados (aprox.
 112 KB frente a 18 MB).
+El validador de contenido revisa que todos los kanji publicados existan en ese
+WOFF antes de permitir una entrega nueva.
 
 ## Agregar idiomas
 

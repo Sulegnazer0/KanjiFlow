@@ -19,6 +19,7 @@ npm test
 - niveles JLPT soportados actualmente;
 - ejemplo completo para cada kanji;
 - que cada tarjeta pertenezca a una lección;
+- cobertura de glifos en `KanjiStrokeOrders.woff` para todos los kanji publicados;
 - traducciones obligatorias por idioma activo;
 - términos de ejemplos kana para idiomas no españoles;
 - títulos/descripciones de logros en todos los idiomas.
@@ -42,7 +43,7 @@ Para kana:
 Para kanji:
 
 - `tipo`: `kanji`;
-- `categoria`: nivel JLPT, por ahora `N5`;
+- `categoria`: nivel JLPT soportado por la app, actualmente `N5` y preparación para `N4`;
 - `id_jlpt` positivo;
 - `onyomi` y `kunyomi` obligatorios, con japonés; `kunyomi` puede ser `-`;
 - ejemplo completo en `js/kanji-examples.js`.
@@ -57,22 +58,26 @@ Para kanji:
 
 2. Actualizar el soporte de nivel:
 
-   - agregar `N4` a `SUPPORTED_KANJI_LEVELS` en `tools/validate-content.mjs`;
+   - confirmar que `N4` está permitido en `SUPPORTED_KANJI_LEVELS` en `tools/validate-content.mjs`;
    - agregar lecciones N4 en `js/core.js`;
    - agregar traducciones de esas lecciones en `locales/`.
 
-3. Agregar tarjetas N4 en `datos.csv`.
+3. Revisar el bloque inicial propuesto en `docs/jlpt-n4-starter.md`.
 
-4. Agregar ejemplos N4 en `js/kanji-examples.js`.
+4. Regenerar `KanjiStrokeOrders.woff` con los kanji nuevos antes de publicar tarjetas.
 
-5. Agregar traducciones por idioma activo en `locales/{idioma}.json`.
+5. Agregar tarjetas N4 en `datos.csv`.
 
-6. Revisar fuente de trazos:
+6. Agregar ejemplos N4 en `js/kanji-examples.js`.
 
-   - si hay kanji nuevos, confirmar que se ven con `KanjiStrokeOrders.woff`;
+7. Agregar traducciones por idioma activo en `locales/{idioma}.json`.
+
+8. Revisar fuente de trazos:
+
+   - `validate:content` falla si falta un glifo en `KanjiStrokeOrders.woff`;
    - si faltan glifos, regenerar la fuente reducida antes de publicar.
 
-7. Ejecutar:
+9. Ejecutar:
 
    ```powershell
    npm run validate:content
