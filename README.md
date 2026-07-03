@@ -20,7 +20,7 @@ Historial de cambios: consulta [CHANGELOG.md](CHANGELOG.md).
 - Escritura táctil responsive y guía de orden de trazos.
 - En Estudio, la guía de orden de trazos aparece activa de forma inicial.
 - Audio japonés mediante las voces instaladas en el dispositivo.
-- Selector de idioma con Español, English y Deutsch.
+- Selector de idioma con Español, English, Deutsch, Français y Português.
 - Progreso y favoritas compartidos entre idiomas mediante `cardId`.
 - Campana de recordatorio: permite elegir hora preferida y avisa en ese horario.
 - Ventana “Acerca de” con versión, últimas actualizaciones, créditos de S0 Labs y envío directo de recomendaciones.
@@ -85,7 +85,7 @@ npm run build:stroke-font
 - `js/achievements.js`: definición, sincronización y avance de logros.
 - `js/reminders.js`: cálculo del recordatorio de práctica con hora configurable.
 - `js/app.js`: interfaz y coordinación.
-- `locales/es.json`, `locales/en.json`, `locales/de.json`: textos por idioma.
+- `locales/es.json`, `locales/en.json`, `locales/de.json`, `locales/fr.json`, `locales/pt.json`: textos por idioma.
 - `service-worker.js`: caché para uso sin conexión.
 - `docs/apps-script-users.md`: contrato temporal para registrar altas en la pestaña `Usuarios`.
 - `docs/content-pipeline.md`: flujo para agregar JLPT N4/N3 e idiomas nuevos con validaciones.

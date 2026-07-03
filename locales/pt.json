@@ -1,0 +1,1136 @@
+{
+  "meta": {
+    "htmlLang": "pt",
+    "title": "KanjiFlow — Aprender japones",
+    "description": "Aprenda hiragana, katakana e kanji com escrita, audio e repeticao espacada."
+  },
+  "ui": {
+    "eyebrow": "Vamos aprender japones",
+    "subtitle": "Kana e kanji, uma revisao por vez.",
+    "splashTagline": "Preparando seu fluxo de pratica...",
+    "onboardingEyebrow": "Boas-vindas",
+    "onboardingTitle": "Boas-vindas",
+    "onboardingDescription": "Informe seu nome e horario preferido de lembrete para personalizar seu progresso. Depois voce pode fazer um tour rapido ou entrar direto.",
+    "onboardingLanguageLabel": "Escolha seu idioma",
+    "onboardingLanguageHint": "Voce pode alterar depois pelo globo no topo.",
+    "onboardingSkipTour": "Entrar sem tour",
+    "onboardingStartTour": "Iniciar tour",
+    "onboardingNameRequired": "Digite seu nome para salvar seu perfil.",
+    "onboardingReadyToast": "Perfil pronto. Voce pode comecar a praticar.",
+    "tourSkip": "Pular",
+    "tourStepCounter": "Etapa {current} de {total}",
+    "tourFinish": "Concluir",
+    "tourDoneToast": "Tour concluido. Hora de praticar.",
+    "tourSkippedToast": "Tour pulado. Explore KanjiFlow no seu ritmo.",
+    "tourGoalTitle": "Sua meta diaria",
+    "tourGoalText": "Esta barra acompanha cartas unicas revisadas hoje. Voce define a meta no Perfil.",
+    "tourLessonTitle": "Escolha o que praticar",
+    "tourLessonText": "Escolha licao, escrita e sessao. Recomendado evita repeticoes desnecessarias.",
+    "tourBoardTitle": "Area de pratica",
+    "tourBoardText": "Desenhe o caractere aqui com mouse, caneta ou dedo.",
+    "tourRevealTitle": "Mostrar resposta",
+    "tourRevealText": "Este botao mostra a resposta com o guia de ordem dos tracos sobreposto.",
+    "tourRatingTitle": "Avalie sua memoria",
+    "tourRatingText": "Depois da resposta, marque de novo, dificil, bom ou facil para agendar a revisao.",
+    "tourStudyTitle": "Area de estudo",
+    "tourStudyText": "Em Estudo voce navega pelos caracteres sem alterar a sessao de pratica.",
+    "tourSearchTitle": "Buscar e filtrar",
+    "tourSearchText": "Busque por caractere, leitura ou significado, e filtre kana, kanji ou favoritos.",
+    "tourCardsTitle": "Cartas de referencia",
+    "tourCardsText": "Abra uma carta para ouvir audio, ver exemplos e praticar a ordem dos tracos.",
+    "tourFavoritesTitle": "Favoritos",
+    "tourFavoritesText": "A estrela salva uma carta como favorita. Depois voce pode filtrar ou praticar favoritos.",
+    "tourProfileGoalTitle": "Personalize a meta",
+    "tourProfileGoalText": "No Perfil, escolha quantas cartas unicas revisar por dia. Dez por dia e um ritmo constante.",
+    "tourReminderTimeTitle": "Horario do lembrete",
+    "tourReminderTimeText": "Escolha o horario em que prefere estudar. O sino usara esse horario.",
+    "tourStatsTitle": "Seu historico",
+    "tourStatsText": "Aqui voce ve dias ativos, metas atingidas, sequencias e listas de cartas.",
+    "languageLabel": "Idioma",
+    "reminderOff": "Lembrar-me",
+    "reminderOn": "Ativo",
+    "reminderOnAt": "{time}",
+    "reminderDueButton": "Praticar",
+    "reminderOffLabel": "Ativar lembrete de pratica",
+    "reminderOnLabel": "O lembrete esta ativo. Proximo lembrete: {time}.",
+    "reminderDueLabel": "O lembrete venceu. Hora de praticar.",
+    "reminderEnabledToast": "Lembrete ativo. Vou lembrar voce no horario escolhido.",
+    "reminderEnabledToastWithNotifications": "Lembrete ativo. Tambem usarei notificacoes do navegador se disponiveis.",
+    "reminderDisabledToast": "Lembrete desativado.",
+    "reminderDueToast": "Ja passaram 24 h desde sua ultima pratica. Pronto para revisar?",
+    "reminderNotificationTitle": "Hora de praticar japones",
+    "reminderNotificationBody": "Sua revisao KanjiFlow esta pronta.",
+    "online": "Online",
+    "offline": "Offline",
+    "progressTitle": "Meta de hoje",
+    "progressDueOne": "{count} carta aguardando revisao.",
+    "progressDueMany": "{count} cartas aguardando revisao.",
+    "progressReady": "Voce esta em dia. Pode aprender novas cartas.",
+    "dailyGoalSummary": "{count} / {goal} cartas unicas hoje.",
+    "dailyGoalReachedSummary": "Meta atingida: {count} / {goal} cartas unicas ✅",
+    "dailyGoalReachedToast": "Meta diaria atingida! Bom ritmo.",
+    "statsNew": "Hoje",
+    "statsDue": "Revisoes",
+    "statsMastered": "Dominadas",
+    "statsStreak": "Sequencia de meta",
+    "exportProgress": "Exportar progresso",
+    "importProgress": "Importar progresso",
+    "profileEyebrow": "Seu espaco",
+    "profileGreeting": "Seu perfil de pratica",
+    "profileGreetingNamed": "Ola, {name}",
+    "profileSummary": "Hoje voce revisou {count} de {goal} cartas unicas e {reviews} revisoes no total.",
+    "profileNameLabel": "Nome",
+    "profileNamePlaceholder": "Seu nome",
+    "dailyGoalLabel": "Meta diaria",
+    "reminderTimeLabel": "Horario do lembrete",
+    "reminderTimeHint": "O sino usara esse horario quando os lembretes estiverem ativos.",
+    "saveProfile": "Salvar",
+    "profileSaved": "Perfil salvo.",
+    "goalLight": "Leve · 5",
+    "goalRecommended": "Constante · 10",
+    "goalIntense": "Intense · 20",
+    "goalChallenge": "Desafio · 30",
+    "profileUniqueToday": "Unique today",
+    "profileReviewsToday": "Reviews today",
+    "profileActiveDays": "Active days",
+    "profileGoalDays": "Goals reached",
+    "profileCurrentStreak": "Current streak",
+    "profileBestStreak": "Best streak",
+    "achievementsTitle": "Achievements",
+    "achievementsSummary": "{unlocked} of {total} achievements unlocked.",
+    "achievementProgress": "{count} / {goal}",
+    "achievementUnlockedAt": "Unlocked {date}",
+    "achievementUnlockedToast": "Achievement unlocked: {title}",
+    "achievementsUnlockedToast": "{count} achievements unlocked.",
+    "achievementLevelLabel": "Level {level} · {name}",
+    "achievementStartupNotice": "{unlocked}/{total} achievements unlocked. Your level is {level}.",
+    "historyTitle": "Last 7 days",
+    "goalMet": "{date}: goal reached with {count} of {goal} cards.",
+    "goalNotMet": "{date}: {count} of {goal} cards.",
+    "profileListsTitle": "Detalhe das cartas",
+    "profileListsDescription": "Veja o que revisou hoje, o que errou, o que domina e o que vem em breve.",
+    "viewedTodayTitle": "Vistas hoje",
+    "failedTodayTitle": "Erradas hoje",
+    "masteredListTitle": "Mastered",
+    "upcomingReviewTitle": "Proximas revisoes",
+    "emptyViewedToday": "Nenhuma carta revisada hoje.",
+    "emptyFailedToday": "Nenhum erro registrado hoje.",
+    "emptyMastered": "Nenhuma carta dominada ainda.",
+    "emptyUpcoming": "Nenhuma revisao agendada por enquanto.",
+    "cardViewedBadge": "Vista",
+    "cardFailedBadge": "Erro",
+    "cardMasteredBadge": "Dominada",
+    "cardUpcomingBadge": "Em breve",
+    "viewedCardMeta": "Ultimo: {rating} · revisoes hoje: {count}",
+    "failedCardMeta": "Erros hoje: {count}",
+    "masteredCardMeta": "Proxima revisao {time}",
+    "upcomingCardMeta": "Volta {time}",
+    "noRating": "Sem nota",
+    "dataTitle": "Dados e backup",
+    "dataDescription": "Exporte ou importe uma copia local do progresso, perfil e estatisticas.",
+    "aboutButton": "Sobre",
+    "aboutEyebrow": "Sobre",
+    "aboutDescription": "Um app de pratica diaria para aprender japones traco por traco.",
+    "aboutVersion": "Versao",
+    "aboutDeveloper": "Desenvolvida por",
+    "latestUpdates": "Ultimas atualizacoes",
+    "updateOnboarding": "Tela de marca, boas-vindas e tour inicial.",
+    "updateAchievements": "Niveis de conquistas e versao visivel na tela de carregamento.",
+    "updateN4": "Primeiro bloco de 20 kanji N4 com exemplos e tracos.",
+    "updateKanjiAudio": "Audio de kanji ajustado para leituras principais com pausas.",
+    "updateStudyFavorites": "Favoritos diretos e filtro de dominadas em Estudo.",
+    "updateReminderTime": "Horario configuravel para lembretes.",
+    "updateProfileGoals": "Perfil, meta diaria e estatisticas por dia.",
+    "updateDirectFeedback": "Envio direto de recomendacoes para Google Sheets.",
+    "updateReminders": "Sino de lembrete de pratica de 24 horas.",
+    "updateI18n": "Interface multiidioma em espanhol, ingles, alemao, frances e portugues.",
+    "feedbackTitle": "Enviar recomendacao",
+    "feedbackDescription": "Escreva entre 10 e 500 caracteres. Sera salva para revisao.",
+    "feedbackLabel": "Recomendacao",
+    "feedbackPlaceholder": "Conte o que voce melhoraria...",
+    "feedbackSend": "Enviar",
+    "feedbackCounter": "{count} / {max}",
+    "feedbackTooShort": "Escreva pelo menos 10 caracteres antes de enviar.",
+    "feedbackTooLong": "O comentario deve ter menos de 500 caracteres.",
+    "feedbackSending": "Enviando recomendacao...",
+    "feedbackSent": "Obrigado. Sua recomendacao foi enviada.",
+    "feedbackSendError": "Nao foi possivel enviar agora. Tente novamente em instantes.",
+    "tabsLabel": "Secoes de aprendizagem",
+    "practiceTab": "Pratica",
+    "studyTab": "Estudo",
+    "profileTab": "Perfil",
+    "lessonLabel": "Licao",
+    "scriptLabel": "Escrita",
+    "scriptAll": "Todas",
+    "sessionLabel": "Sessao",
+    "sessionRecommended": "Recomendada",
+    "sessionDue": "Para revisar",
+    "sessionNew": "Somente novas",
+    "sessionLearning": "Aprendendo",
+    "sessionMastered": "Dominadas",
+    "sessionFavorites": "Favoritas",
+    "sessionAll": "Tudo",
+    "loading": "Carregando...",
+    "loadingVocabulary": "Carregando vocabulario...",
+    "noCardsTag": "Sem cartas",
+    "noCardsQuestion": "Nao ha caracteres com esses filtros.",
+    "noCardsHint": "Tente outra licao ou outra sessao.",
+    "drawMeaning": "Desenhe \"{meaning}\"",
+    "writeMeaning": "Escreva \"{meaning}\"",
+    "writeSound": "Escreva o som \"{romaji}\"",
+    "kanjiHint": "Voce pode ouvir uma leitura como dica.",
+    "specialHint": "Confira a descricao da licao se precisar lembrar a regra.",
+    "kanaHint": "Trace o caractere dentro da grade.",
+    "listenPronunciation": "Ouvir pronuncia",
+    "practiceCanvasLabel": "Quadro para escrever o caractere japones",
+    "clear": "Limpar",
+    "revealAnswer": "Ver resposta",
+    "recognizeDrawing": "Recognize drawing",
+    "recognitionIntro": "Recognition compares the final shape; it does not evaluate stroke order yet.",
+    "listenAnswer": "Ouvir resposta",
+    "reading": "Leitura",
+    "category": "Categoria",
+    "counterpart": "Contraparte",
+    "example": "Exemplo",
+    "jlptNumber": "Nº JLPT",
+    "inContext": "Em contexto",
+    "ratingLegend": "Foi facil lembrar?",
+    "ratingAgain": "De novo",
+    "ratingAgainTime": "< 1 min",
+    "ratingHard": "Dificil",
+    "ratingHardTime": "soon",
+    "ratingGood": "Bom",
+    "ratingGoodTime": "normal",
+    "ratingEasy": "Facil",
+    "ratingEasyTime": "later",
+    "dueAgain": "Veremos de novo nesta sessao.",
+    "nextReview": "Proxima revisao {time}.",
+    "searchLabel": "Busca",
+    "searchPlaceholder": "Caractere, leitura ou significado...",
+    "contentLabel": "Conteudo",
+    "contentAll": "Todos os caracteres",
+    "contentKana": "Hiragana + katakana",
+    "contentFavorites": "Meus favoritos",
+    "contentMastered": "Dominadas",
+    "resultCountOne": "{count} resultado",
+    "resultCountMany": "{count} resultados",
+    "emptyResults": "Nenhum caractere encontrado com esses filtros.",
+    "openDetails": "{character}, {reading}, {meaning}. Abrir detalhes",
+    "studyFavoriteBadge": "Favorita",
+    "studyMasteredBadge": "Dominada",
+    "addFavorite": "Adicionar aos favoritos",
+    "removeFavorite": "Remover dos favoritos",
+    "closeDetails": "Fechar detalhes",
+    "traceCanvasLabel": "Quadro para tracar o caractere",
+    "showStrokeOrder": "Mostrar ordem dos tracos",
+    "hideStrokeOrder": "Ocultar ordem dos tracos",
+    "listenCharacter": "Ouvir caractere",
+    "listenExample": "Ouvir exemplo",
+    "listenOnyomi": "Ouvir onyomi",
+    "listenKunyomi": "Ouvir kunyomi",
+    "kanjiContext": "Kanji em contexto",
+    "listenSentence": "Ouvir frase",
+    "previous": "Anterior",
+    "next": "Proximo",
+    "drawFirst": "Draw a character first.",
+    "recognitionNeedsConnection": "Recognition needs a connection.",
+    "recognitionAnalyzing": "Analyzing…",
+    "recognitionLoading": "Loading Japanese recognition. The first time can take a while.",
+    "recognitionMatched": "Recognized as “{detected}”. Check the stroke order with the guide.",
+    "recognitionMatchedToast": "The shape was recognized.",
+    "recognitionNothing": "nothing clear",
+    "recognitionMissed": "Detected “{detected}”; expected “{expected}”.",
+    "recognitionMissedToast": "The shape was not recognized. You can self-evaluate.",
+    "recognitionError": "Recognition could not be used. Practice and self-evaluation are still available.",
+    "recognitionErrorToast": "External recognition failed.",
+    "backupCreated": "Progress backup created.",
+    "backupImported": "Progress imported successfully.",
+    "backupInvalid": "The backup could not be imported.",
+    "loadErrorTag": "Erro",
+    "loadErrorQuestion": "Nao foi possivel carregar o conteudo.",
+    "loadErrorHint": "Abra o app por um servidor local ou verifique datos.csv.",
+    "daysActive": "Dias ativos",
+    "goalsReached": "Metas atingidas",
+    "currentGoalStreak": "Sequencia atual",
+    "bestGoalStreak": "Melhor sequencia",
+    "practiceHistoryTitle": "Historico de 7 dias",
+    "practiceHistoryEmpty": "Seu historico aparecera depois das primeiras revisoes.",
+    "masteredTitle": "Dominadas"
+  },
+  "states": {
+    "new": "Nova",
+    "due": "Para revisar",
+    "mastered": "Dominada",
+    "learning": "Aprendendo"
+  },
+  "achievements": {
+    "firstReview": {
+      "title": "Primeira revisao",
+      "description": "Complete sua primeira carta de pratica."
+    },
+    "review100": {
+      "title": "Cem tracos",
+      "description": "Alcance 100 revisoes no total."
+    },
+    "firstDailyGoal": {
+      "title": "Meta atingida",
+      "description": "Atinja sua meta diaria pela primeira vez."
+    },
+    "dailyGoal7": {
+      "title": "Sete metas",
+      "description": "Atinja sua meta diaria 7 vezes."
+    },
+    "streak7": {
+      "title": "Semana sem falhar",
+      "description": "Mantenha uma sequencia de 7 dias cumprindo sua meta."
+    },
+    "active14": {
+      "title": "Ritmo de duas semanas",
+      "description": "Pratique em 14 dias diferentes."
+    },
+    "firstMastered": {
+      "title": "Primeiro caractere dominado",
+      "description": "Domine seu primeiro caractere."
+    },
+    "mastered10": {
+      "title": "Dez dominados",
+      "description": "Domine 10 caracteres."
+    },
+    "mastered50": {
+      "title": "Meia centena",
+      "description": "Domine 50 caracteres."
+    },
+    "firstKanji": {
+      "title": "Primeiro kanji dominado",
+      "description": "Domine seu primeiro kanji."
+    },
+    "kanji10": {
+      "title": "Dez kanji firmes",
+      "description": "Domine 10 kanji."
+    },
+    "kana20": {
+      "title": "Base kana",
+      "description": "Domine 20 hiragana ou katakana."
+    },
+    "firstFavorite": {
+      "title": "Primeiro favorito",
+      "description": "Salve sua primeira carta favorita."
+    },
+    "favorites10": {
+      "title": "Colecao pessoal",
+      "description": "Adicione 10 cartas aos favoritos."
+    }
+  },
+  "types": {
+    "hiragana": "Hiragana",
+    "katakana": "Katakana",
+    "kanji": "Kanji"
+  },
+  "categories": {
+    "basico": "Basico",
+    "dakuten": "Dakuten",
+    "combinacion": "Combinacao",
+    "especial": "Especial",
+    "N5": "N5",
+    "N4": "N4"
+  },
+  "content": {
+    "kanaLetter": "Letra {romaji}"
+  },
+  "time": {
+    "inOneMinute": "em 1 min",
+    "inHours": "em {count} h",
+    "inDays": "em {count} d"
+  },
+  "lessons": {
+    "recommended": {
+      "title": "Proxima licao recomendada",
+      "description": "Avance em ordem. O app escolhe a primeira licao que voce ainda nao domina."
+    },
+    "hira-basic-1": {
+      "title": "1. Hiragana: vogais e K/S",
+      "description": "Comece pelas vogais e pelas linhas K e S."
+    },
+    "hira-basic-2": {
+      "title": "2. Hiragana: T/N/H",
+      "description": "Continue com as linhas T, N e H."
+    },
+    "hira-basic-3": {
+      "title": "3. Hiragana: M/Y/R/W",
+      "description": "Complete o gojuon basico e o n."
+    },
+    "hira-voiced": {
+      "title": "4. Hiragana com dakuten",
+      "description": "Pratique os sons G, Z, D, B e P."
+    },
+    "hira-combinations": {
+      "title": "5. Hiragana combinado",
+      "description": "Sons com ya, yu e yo pequenos."
+    },
+    "kata-basic-1": {
+      "title": "6. Katakana: vogais e K/S",
+      "description": "Aprenda as formas katakana das primeiras linhas."
+    },
+    "kata-basic-2": {
+      "title": "7. Katakana: T/N/H",
+      "description": "Continue com as linhas T, N e H."
+    },
+    "kata-basic-3": {
+      "title": "8. Katakana: M/Y/R/W",
+      "description": "Complete o silabario katakana basico."
+    },
+    "kata-voiced": {
+      "title": "9. Katakana com dakuten",
+      "description": "Pratique os sons G, Z, D, B e P em katakana."
+    },
+    "kata-combinations": {
+      "title": "10. Katakana combinado",
+      "description": "Combinacoes frequentes em palavras estrangeiras."
+    },
+    "kana-special": {
+      "title": "11. Regras especiais de kana",
+      "description": "O pequeno tsu dobra consoantes, o traco alonga vogais e vu representa o som v."
+    },
+    "kanji-1": {
+      "title": "12. Kanji: numeros e calendario",
+      "description": "Numeros, dinheiro, dias e elementos basicos."
+    },
+    "kanji-2": {
+      "title": "13. Kanji: pessoas e escola",
+      "description": "Pessoas, tamanhos, escola e conceitos cotidianos."
+    },
+    "kanji-3": {
+      "title": "14. Kanji: direcao e movimento",
+      "description": "Pontos cardeais, posicoes, tempo e acoes comuns."
+    },
+    "kanji-4": {
+      "title": "15. Kanji: vida diaria",
+      "description": "Corpo, cores, quantidades e vocabulario cotidiano."
+    },
+    "kanji-n4-1": {
+      "title": "16. Kanji N4: sociedade e acoes",
+      "description": "Reunioes, lugares, trabalho, perguntas e acoes frequentes."
+    },
+    "all": {
+      "title": "Todo o conteudo",
+      "description": "Uma mistura livre de todos os caracteres disponiveis."
+    }
+  },
+  "cards": {
+    "hiragana_っ": {
+      "meaning": "Consoante dupla"
+    },
+    "katakana_ッ": {
+      "meaning": "Consoante dupla"
+    },
+    "katakana_ー": {
+      "meaning": "Vogal longa"
+    },
+    "hiragana_ゔ": {
+      "meaning": "Som V"
+    },
+    "katakana_ヴ": {
+      "meaning": "Som V"
+    },
+    "kanji_一": {
+      "meaning": "Um",
+      "exampleMeaning": "one (object)",
+      "sentenceMeaning": "Please give me one apple."
+    },
+    "kanji_二": {
+      "meaning": "Dois",
+      "exampleMeaning": "two people",
+      "sentenceMeaning": "The two of us are going."
+    },
+    "kanji_三": {
+      "meaning": "Tres",
+      "exampleMeaning": "March",
+      "sentenceMeaning": "I am going to Japan in March."
+    },
+    "kanji_四": {
+      "meaning": "Quatro",
+      "exampleMeaning": "four o’clock",
+      "sentenceMeaning": "Let’s meet at four o’clock."
+    },
+    "kanji_五": {
+      "meaning": "Cinco",
+      "exampleMeaning": "five minutes",
+      "sentenceMeaning": "Please wait five minutes."
+    },
+    "kanji_六": {
+      "meaning": "Seis",
+      "exampleMeaning": "June",
+      "sentenceMeaning": "It rains a lot in June."
+    },
+    "kanji_七": {
+      "meaning": "Sete",
+      "exampleMeaning": "July",
+      "sentenceMeaning": "It is hot in July."
+    },
+    "kanji_八": {
+      "meaning": "Oito",
+      "exampleMeaning": "greengrocer",
+      "sentenceMeaning": "I buy vegetables at the greengrocer."
+    },
+    "kanji_九": {
+      "meaning": "Nove",
+      "exampleMeaning": "nine o’clock",
+      "sentenceMeaning": "School starts at nine o’clock."
+    },
+    "kanji_十": {
+      "meaning": "Dez",
+      "exampleMeaning": "ten yen",
+      "sentenceMeaning": "This costs ten yen."
+    },
+    "kanji_百": {
+      "meaning": "Cem",
+      "exampleMeaning": "one hundred yen",
+      "sentenceMeaning": "The water costs one hundred yen."
+    },
+    "kanji_千": {
+      "meaning": "Mil",
+      "exampleMeaning": "one thousand yen",
+      "sentenceMeaning": "This book costs one thousand yen."
+    },
+    "kanji_万": {
+      "meaning": "Dez mil",
+      "exampleMeaning": "ten thousand yen",
+      "sentenceMeaning": "I am carrying ten thousand yen."
+    },
+    "kanji_円": {
+      "meaning": "Iene / Circulo",
+      "exampleMeaning": "yen",
+      "sentenceMeaning": "This costs five hundred yen."
+    },
+    "kanji_日": {
+      "meaning": "Dia / Sol",
+      "exampleMeaning": "Japan",
+      "sentenceMeaning": "I study Japanese."
+    },
+    "kanji_月": {
+      "meaning": "Mes / Lua",
+      "exampleMeaning": "Monday",
+      "sentenceMeaning": "I go to school on Monday."
+    },
+    "kanji_火": {
+      "meaning": "Fogo",
+      "exampleMeaning": "Tuesday",
+      "sentenceMeaning": "I work on Tuesday."
+    },
+    "kanji_水": {
+      "meaning": "Agua",
+      "exampleMeaning": "water",
+      "sentenceMeaning": "I drink water."
+    },
+    "kanji_木": {
+      "meaning": "Arvore / Madeira",
+      "exampleMeaning": "Thursday",
+      "sentenceMeaning": "Let’s meet on Thursday."
+    },
+    "kanji_金": {
+      "meaning": "Ouro / Dinheiro",
+      "exampleMeaning": "money",
+      "sentenceMeaning": "I do not have money."
+    },
+    "kanji_土": {
+      "meaning": "Terra / Solo",
+      "exampleMeaning": "Saturday",
+      "sentenceMeaning": "Saturday is a day off."
+    },
+    "kanji_国": {
+      "meaning": "Pais",
+      "exampleMeaning": "foreign country",
+      "sentenceMeaning": "I want to go abroad."
+    },
+    "kanji_人": {
+      "meaning": "Pessoa",
+      "exampleMeaning": "Japanese person",
+      "sentenceMeaning": "Tanaka is Japanese."
+    },
+    "kanji_年": {
+      "meaning": "Ano",
+      "exampleMeaning": "this year",
+      "sentenceMeaning": "I am going to Japan this year."
+    },
+    "kanji_大": {
+      "meaning": "Grande",
+      "exampleMeaning": "university",
+      "sentenceMeaning": "I study Japanese at university."
+    },
+    "kanji_小": {
+      "meaning": "Pequeno",
+      "exampleMeaning": "elementary school",
+      "sentenceMeaning": "My younger sister goes to elementary school."
+    },
+    "kanji_中": {
+      "meaning": "Meio / Dentro",
+      "exampleMeaning": "China",
+      "sentenceMeaning": "I speak Chinese."
+    },
+    "kanji_本": {
+      "meaning": "Livro / Origem",
+      "exampleMeaning": "book",
+      "sentenceMeaning": "I read a book every day."
+    },
+    "kanji_長": {
+      "meaning": "Longo",
+      "exampleMeaning": "long",
+      "sentenceMeaning": "This road is long."
+    },
+    "kanji_出": {
+      "meaning": "Saida / Sair",
+      "exampleMeaning": "exit",
+      "sentenceMeaning": "The exit is over there."
+    },
+    "kanji_入": {
+      "meaning": "Entrar",
+      "exampleMeaning": "entrance",
+      "sentenceMeaning": "I enter through the entrance."
+    },
+    "kanji_生": {
+      "meaning": "Vida / Nascer",
+      "exampleMeaning": "student",
+      "sentenceMeaning": "I am a student."
+    },
+    "kanji_学": {
+      "meaning": "Estudo / Aprender",
+      "exampleMeaning": "to learn",
+      "sentenceMeaning": "I learn Japanese at school."
+    },
+    "kanji_校": {
+      "meaning": "Escola",
+      "exampleMeaning": "school",
+      "sentenceMeaning": "School starts at eight."
+    },
+    "kanji_先": {
+      "meaning": "Antes / A frente",
+      "exampleMeaning": "teacher",
+      "sentenceMeaning": "I ask the teacher."
+    },
+    "kanji_男": {
+      "meaning": "Homem",
+      "exampleMeaning": "man",
+      "sentenceMeaning": "That man is my father."
+    },
+    "kanji_女": {
+      "meaning": "Mulher",
+      "exampleMeaning": "woman",
+      "sentenceMeaning": "There is a woman."
+    },
+    "kanji_子": {
+      "meaning": "Crianca",
+      "exampleMeaning": "child",
+      "sentenceMeaning": "There are two children."
+    },
+    "kanji_車": {
+      "meaning": "Carro / Veiculo",
+      "exampleMeaning": "train",
+      "sentenceMeaning": "I go to school by train."
+    },
+    "kanji_気": {
+      "meaning": "Energia / Espirito",
+      "exampleMeaning": "well; energetic",
+      "sentenceMeaning": "I feel well today."
+    },
+    "kanji_北": {
+      "meaning": "Norte",
+      "exampleMeaning": "north exit",
+      "sentenceMeaning": "Let’s meet at the north exit."
+    },
+    "kanji_南": {
+      "meaning": "Sul",
+      "exampleMeaning": "south exit",
+      "sentenceMeaning": "I leave through the south exit."
+    },
+    "kanji_西": {
+      "meaning": "Oeste",
+      "exampleMeaning": "west exit",
+      "sentenceMeaning": "Where is the west exit?"
+    },
+    "kanji_東": {
+      "meaning": "Leste",
+      "exampleMeaning": "Tokyo",
+      "sentenceMeaning": "I live in Tokyo."
+    },
+    "kanji_上": {
+      "meaning": "Cima / Acima",
+      "exampleMeaning": "above",
+      "sentenceMeaning": "There is a book on the desk."
+    },
+    "kanji_下": {
+      "meaning": "Baixo / Abaixo",
+      "exampleMeaning": "below",
+      "sentenceMeaning": "There is a cat under the chair."
+    },
+    "kanji_左": {
+      "meaning": "Esquerda",
+      "exampleMeaning": "left",
+      "sentenceMeaning": "I turn left."
+    },
+    "kanji_右": {
+      "meaning": "Direita",
+      "exampleMeaning": "right",
+      "sentenceMeaning": "There is a bank on the right."
+    },
+    "kanji_前": {
+      "meaning": "Antes / Frente",
+      "exampleMeaning": "in front of the station",
+      "sentenceMeaning": "I wait in front of the station."
+    },
+    "kanji_後": {
+      "meaning": "Depois / Atras",
+      "exampleMeaning": "afternoon; p.m.",
+      "sentenceMeaning": "See you at three in the afternoon."
+    },
+    "kanji_午": {
+      "meaning": "Meio-dia",
+      "exampleMeaning": "morning; a.m.",
+      "sentenceMeaning": "It starts at nine in the morning."
+    },
+    "kanji_門": {
+      "meaning": "Portao",
+      "exampleMeaning": "main gate",
+      "sentenceMeaning": "Let’s meet at the main gate."
+    },
+    "kanji_間": {
+      "meaning": "Intervalo / Espaco",
+      "exampleMeaning": "time; hour",
+      "sentenceMeaning": "I do not have time."
+    },
+    "kanji_聞": {
+      "meaning": "Ouvir",
+      "exampleMeaning": "newspaper",
+      "sentenceMeaning": "I read the newspaper every morning."
+    },
+    "kanji_見": {
+      "meaning": "Ver",
+      "exampleMeaning": "to see",
+      "sentenceMeaning": "I watch television."
+    },
+    "kanji_行": {
+      "meaning": "Ir",
+      "exampleMeaning": "to go",
+      "sentenceMeaning": "I go to school."
+    },
+    "kanji_来": {
+      "meaning": "Vir",
+      "exampleMeaning": "to come",
+      "sentenceMeaning": "A friend is coming tomorrow."
+    },
+    "kanji_食": {
+      "meaning": "Comer",
+      "exampleMeaning": "to eat",
+      "sentenceMeaning": "I eat rice."
+    },
+    "kanji_飲": {
+      "meaning": "Beber",
+      "exampleMeaning": "to drink",
+      "sentenceMeaning": "I drink tea."
+    },
+    "kanji_買": {
+      "meaning": "Comprar",
+      "exampleMeaning": "to buy",
+      "sentenceMeaning": "I buy bread."
+    },
+    "kanji_話": {
+      "meaning": "Falar",
+      "exampleMeaning": "to speak",
+      "sentenceMeaning": "I speak in Japanese."
+    },
+    "kanji_語": {
+      "meaning": "Idioma / Palavra",
+      "exampleMeaning": "Japanese language",
+      "sentenceMeaning": "I like Japanese."
+    },
+    "kanji_読": {
+      "meaning": "Ler",
+      "exampleMeaning": "to read",
+      "sentenceMeaning": "I read a book."
+    },
+    "kanji_書": {
+      "meaning": "Escrever",
+      "exampleMeaning": "to write",
+      "sentenceMeaning": "I write my name."
+    },
+    "kanji_友": {
+      "meaning": "Amigo",
+      "exampleMeaning": "friend",
+      "sentenceMeaning": "I talk with a friend."
+    },
+    "kanji_足": {
+      "meaning": "Pe / Perna",
+      "exampleMeaning": "foot; leg",
+      "sentenceMeaning": "My leg hurts."
+    },
+    "kanji_目": {
+      "meaning": "Olho",
+      "exampleMeaning": "eye",
+      "sentenceMeaning": "I close my eyes."
+    },
+    "kanji_耳": {
+      "meaning": "Orelha",
+      "exampleMeaning": "ear",
+      "sentenceMeaning": "I hear sounds with my ears."
+    },
+    "kanji_安": {
+      "meaning": "Barato / Seguro",
+      "exampleMeaning": "cheap",
+      "sentenceMeaning": "This store is cheap."
+    },
+    "kanji_口": {
+      "meaning": "Boca",
+      "exampleMeaning": "entrance",
+      "sentenceMeaning": "The entrance is on the right."
+    },
+    "kanji_手": {
+      "meaning": "Mao",
+      "exampleMeaning": "hand",
+      "sentenceMeaning": "I wash my hands."
+    },
+    "kanji_白": {
+      "meaning": "Branco",
+      "exampleMeaning": "white",
+      "sentenceMeaning": "There is a white cat."
+    },
+    "kanji_新": {
+      "meaning": "Novo",
+      "exampleMeaning": "new",
+      "sentenceMeaning": "I bought a new book."
+    },
+    "kanji_古": {
+      "meaning": "Antigo",
+      "exampleMeaning": "old",
+      "sentenceMeaning": "This is an old car."
+    },
+    "kanji_高": {
+      "meaning": "Alto / Caro",
+      "exampleMeaning": "tall; expensive",
+      "sentenceMeaning": "This store is expensive."
+    },
+    "kanji_多": {
+      "meaning": "Muito",
+      "exampleMeaning": "numerous",
+      "sentenceMeaning": "There are many people in Tokyo."
+    },
+    "kanji_少": {
+      "meaning": "Pouco",
+      "exampleMeaning": "scarce",
+      "sentenceMeaning": "There are few people today."
+    },
+    "kanji_何": {
+      "meaning": "O que",
+      "exampleMeaning": "what",
+      "sentenceMeaning": "What is this?"
+    },
+    "kanji_時": {
+      "meaning": "Tempo / Hora",
+      "exampleMeaning": "time; hour",
+      "sentenceMeaning": "I study for one hour."
+    },
+    "kanji_分": {
+      "meaning": "Minuto / Dividir",
+      "exampleMeaning": "five minutes",
+      "sentenceMeaning": "The station is five minutes away."
+    },
+    "kanji_会": {
+      "meaning": "Reuniao / Encontrar",
+      "exampleMeaning": "company",
+      "sentenceMeaning": "There is a meeting at the company tomorrow."
+    },
+    "kanji_同": {
+      "meaning": "Mesmo / Igual",
+      "exampleMeaning": "same; equal",
+      "sentenceMeaning": "I read the same book."
+    },
+    "kanji_事": {
+      "meaning": "Coisa / Assunto",
+      "exampleMeaning": "work",
+      "sentenceMeaning": "Work starts at nine."
+    },
+    "kanji_自": {
+      "meaning": "Si mesmo",
+      "exampleMeaning": "oneself",
+      "sentenceMeaning": "I write my own name."
+    },
+    "kanji_社": {
+      "meaning": "Empresa / Santuario",
+      "exampleMeaning": "company employee",
+      "sentenceMeaning": "My father is a company employee."
+    },
+    "kanji_発": {
+      "meaning": "Partida / Emissao",
+      "exampleMeaning": "departure",
+      "sentenceMeaning": "The train departs at eight."
+    },
+    "kanji_者": {
+      "meaning": "Pessoa",
+      "exampleMeaning": "doctor",
+      "sentenceMeaning": "I met with the doctor."
+    },
+    "kanji_地": {
+      "meaning": "Terra / Lugar",
+      "exampleMeaning": "map",
+      "sentenceMeaning": "I look at the map and go to the station."
+    },
+    "kanji_業": {
+      "meaning": "Trabalho / Industria",
+      "exampleMeaning": "class",
+      "sentenceMeaning": "I study kanji in class."
+    },
+    "kanji_方": {
+      "meaning": "Direcao / Metodo",
+      "exampleMeaning": "way of reading",
+      "sentenceMeaning": "Please teach me how to read this kanji."
+    },
+    "kanji_場": {
+      "meaning": "Lugar",
+      "exampleMeaning": "place",
+      "sentenceMeaning": "The meeting point is in front of the station."
+    },
+    "kanji_員": {
+      "meaning": "Membro",
+      "exampleMeaning": "shop clerk",
+      "sentenceMeaning": "I ask the shop clerk the price."
+    },
+    "kanji_立": {
+      "meaning": "Levantar / Ficar de pe",
+      "exampleMeaning": "to stand",
+      "sentenceMeaning": "Please stand here."
+    },
+    "kanji_開": {
+      "meaning": "Abrir",
+      "exampleMeaning": "to open",
+      "sentenceMeaning": "I open the window."
+    },
+    "kanji_力": {
+      "meaning": "Forca",
+      "exampleMeaning": "strength",
+      "sentenceMeaning": "I write with force."
+    },
+    "kanji_問": {
+      "meaning": "Pergunta / Problema",
+      "exampleMeaning": "question",
+      "sentenceMeaning": "I ask the teacher a question."
+    },
+    "kanji_代": {
+      "meaning": "Geracao / Substituto",
+      "exampleMeaning": "era; age",
+      "sentenceMeaning": "A new era begins."
+    },
+    "kanji_明": {
+      "meaning": "Claro / Brilhante",
+      "exampleMeaning": "bright; clear",
+      "sentenceMeaning": "The room is bright."
+    },
+    "kanji_文": {
+      "meaning": "Texto / Frase",
+      "exampleMeaning": "composition",
+      "sentenceMeaning": "I write a composition in Japanese."
+    },
+    "kanji_使": {
+      "meaning": "Usar",
+      "exampleMeaning": "to use",
+      "sentenceMeaning": "I use the dictionary."
+    }
+  },
+  "exampleTerms": {
+    "Abreviación": "Abbreviation",
+    "Agua": "Water",
+    "Almuerzo": "Lunch",
+    "Alumbre": "Alum",
+    "Animal": "Animal",
+    "Apellido": "Surname",
+    "Apretado": "Tight",
+    "Árbol": "Tree",
+    "Arroz/Comida": "Rice/Food",
+    "Ascensor": "Elevator",
+    "Autobús": "Bus",
+    "Avión": "Airplane",
+    "Baile": "Dance",
+    "Banco": "Bank",
+    "Barco": "Boat",
+    "Bebida": "Drink",
+    "Belleza": "Beauty",
+    "Bjork": "Björk",
+    "Bloque": "Block",
+    "Bola de arroz": "Rice ball",
+    "Boleto": "Ticket",
+    "Bolígrafo": "Ballpoint pen",
+    "Buzón": "Mailbox",
+    "Café": "Coffee",
+    "Calentador": "Heater",
+    "Cama": "Bed",
+    "Cámara": "Camera",
+    "Camisa": "Shirt",
+    "Cangrejo": "Crab",
+    "Carne": "Meat",
+    "Carne de res": "Beef",
+    "Cerdo": "Pork",
+    "Cero": "Zero",
+    "Cerveza": "Beer",
+    "China": "China",
+    "Chocolate": "Chocolate",
+    "Cielo": "Sky",
+    "Cien": "Hundred",
+    "Clase": "Class",
+    "Cliente": "Customer",
+    "Coche": "Car",
+    "Cocina": "Kitchen",
+    "Comedor": "Dining room",
+    "Condición": "Condition",
+    "Continuar": "Continue",
+    "Corbata": "Tie",
+    "Cristal": "Glass",
+    "Cuaderno": "Notebook",
+    "Cuchillo": "Knife",
+    "Cupido": "Cupid",
+    "Diez": "Ten",
+    "Diseño": "Design",
+    "Dragón": "Dragon",
+    "Durazno": "Peach",
+    "Elefante": "Elephant",
+    "Empanadilla": "Dumpling",
+    "Enfermedad": "Illness",
+    "Ensalada": "Salad",
+    "Escuela": "School",
+    "Estación": "Station",
+    "Estados Unidos": "United States",
+    "Europa": "Europe",
+    "Fideos": "Noodles",
+    "Flor": "Flower",
+    "Fósforo": "Match",
+    "Foto": "Photo",
+    "Gafas": "Glasses",
+    "Gatito": "Kitten",
+    "Gato": "Cat",
+    "Goma": "Eraser",
+    "Guitarra": "Guitar",
+    "Habitación": "Room",
+    "Hambriento": "Hungry",
+    "Helicóptero": "Helicopter",
+    "Historia": "Story",
+    "Hospital": "Hospital",
+    "Hotel": "Hotel",
+    "Hoy": "Today",
+    "Huevo": "Egg",
+    "Humano": "Human",
+    "Humo": "Smoke",
+    "Humor": "Humor",
+    "Insecto": "Insect",
+    "Internet": "Internet",
+    "Jacinto": "Hyacinth",
+    "Jamón": "Ham",
+    "Juego": "Game",
+    "Jugo": "Juice",
+    "Kilo": "Kilo",
+    "Konjac": "Konjac",
+    "Lápiz": "Pencil",
+    "Leche": "Milk",
+    "León": "Lion",
+    "Leopardo": "Leopard",
+    "Libro": "Book",
+    "Litro": "Liter",
+    "Llama": "Flame",
+    "Lluvia": "Rain",
+    "Luna": "Moon",
+    "Mano": "Hand",
+    "Manzana": "Apple",
+    "Mar": "Sea",
+    "Matrioska": "Matryoshka doll",
+    "Mariposa": "Butterfly",
+    "Melón": "Melon",
+    "Mermelada": "Jam",
+    "Mirar": "Look",
+    "Mochila": "Backpack",
+    "Montaña": "Mountain",
+    "Motor": "Engine",
+    "Mujer": "Woman",
+    "Música": "Music",
+    "Músico": "Musician",
+    "Myanmar": "Myanmar",
+    "Movimiento ondulante": "Wavy motion",
+    "Naranja": "Orange",
+    "Nieve": "Snow",
+    "Niño": "Child",
+    "Noche": "Night",
+    "Noticias": "News",
+    "Número": "Number",
+    "Ñoquis": "Gnocchi",
+    "Oportunidad": "Opportunity",
+    "Padre": "Father",
+    "Pajarito": "Little bird",
+    "Pan": "Bread",
+    "Pandilla": "Gang",
+    "Pantalones": "Pants",
+    "Papa": "Potato",
+    "Paraguas": "Umbrella",
+    "Partícula": "Particle",
+    "Paseo": "Walk",
+    "Pastel": "Cake",
+    "Película": "Movie",
+    "Pelota": "Ball",
+    "Peluca": "Wig",
+    "Peluche": "Stuffed toy",
+    "Pepino": "Cucumber",
+    "Perro": "Dog",
+    "Pescado": "Fish",
+    "Pez dorado": "Goldfish",
+    "Piano": "Piano",
+    "Piscina": "Pool",
+    "Profesor": "Teacher",
+    "Puerta": "Door",
+    "Pulso": "Pulse",
+    "Puré": "Puree",
+    "Pyotr": "Pyotr",
+    "Queso": "Cheese",
+    "Radio": "Radio",
+    "Regla": "Ruler",
+    "Reloj": "Clock",
+    "Repollo": "Cabbage",
+    "Restaurante": "Restaurant",
+    "Reverso": "Reverse",
+    "Revista": "Magazine",
+    "Robot": "Robot",
+    "Sal": "Salt",
+    "Salchicha": "Sausage",
+    "Salto": "Jump",
+    "Salud": "Health",
+    "Sándalo": "Sandalwood",
+    "Sandía": "Watermelon",
+    "Sangrado nasal": "Nosebleed",
+    "Seis": "Six",
+    "Silbido": "Whistle",
+    "Sombrero": "Hat",
+    "Sonido": "Sound",
+    "Sopa": "Soup",
+    "Suéter": "Sweater",
+    "Tarea": "Homework",
+    "Taxi": "Taxi",
+    "Té": "Tea",
+    "Teléfono": "Phone",
+    "Tenis": "Tennis",
+    "Tiempo": "Weather",
+    "Tienda": "Store",
+    "Tomate": "Tomato",
+    "Tortita coreana": "Korean pancake",
+    "Tour": "Tour",
+    "Trescientos": "Three hundred",
+    "Trotar": "Jogging",
+    "Tulipán": "Tulip",
+    "Uniforme": "Uniform",
+    "Universidad": "University",
+    "Uso histórico": "Historical usage",
+    "Vaso": "Glass",
+    "Ventana": "Window",
+    "Verano": "Summer",
+    "Viento": "Wind",
+    "Vino": "Wine",
+    "Violín": "Violin",
+    "Virus": "Virus",
+    "Yankees": "Yankees",
+    "Yo": "I",
+    "Zapatos": "Shoes",
+    "Zombi": "Zombie",
+    "Zumbido": "Buzz"
+  }
+}

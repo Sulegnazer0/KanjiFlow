@@ -10,6 +10,20 @@ El número de versión visible de la app debe mantenerse alineado en:
 - `CHANGELOG.md`;
 - `service-worker.js` y query strings `?v=...` cuando cambien archivos cacheados.
 
+## [0.8.6] - 2026-07-03
+
+### Agregado
+
+- Idioma Francés (`fr`) en selector superior y bienvenida.
+- Idioma Portugués (`pt`) en selector superior y bienvenida.
+- Archivos `locales/fr.json` y `locales/pt.json` con interfaz, logros, lecciones, categorías y tarjetas principales.
+- Precache offline para los nuevos idiomas.
+
+### Cambiado
+
+- La app muestra `v0.8.6` y renueva caché para cargar los nuevos locales.
+- La lista de últimas actualizaciones menciona los cinco idiomas activos.
+
 ## [0.8.5] - 2026-07-03
 
 ### Corregido

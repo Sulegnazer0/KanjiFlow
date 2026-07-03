@@ -7,7 +7,7 @@
     <meta name="description" content="Aprende hiragana, katakana y kanji con escritura, audio y repetición espaciada.">
     <title>KanjiFlow — Aprende japonés</title>
     <link rel="manifest" href="manifest.webmanifest">
-    <link rel="stylesheet" href="style.css?v=805">
+    <link rel="stylesheet" href="style.css?v=806">
 </head>
 <body>
     <div id="pantalla-carga" class="splash-screen" aria-live="polite">
@@ -15,7 +15,7 @@
             <img src="assets/s0labsHorizontal.png" alt="S0 Labs" class="splash-logo">
             <p data-i18n="ui.splashTagline">Preparando tu flujo de práctica…</p>
         </div>
-        <span id="splash-version" class="splash-version">v0.8.5</span>
+        <span id="splash-version" class="splash-version">v0.8.6</span>
     </div>
 
     <main class="app-shell">
@@ -332,6 +332,16 @@
                             <span class="language-flag" aria-hidden="true">🇩🇪</span>
                             <span>Deutsch</span>
                         </button>
+                        <button class="onboarding-language-button" type="button"
+                                data-onboarding-language="fr" aria-pressed="false">
+                            <span class="language-flag" aria-hidden="true">🇫🇷</span>
+                            <span>Français</span>
+                        </button>
+                        <button class="onboarding-language-button" type="button"
+                                data-onboarding-language="pt" aria-pressed="false">
+                            <span class="language-flag" aria-hidden="true">🇵🇹</span>
+                            <span>Português</span>
+                        </button>
                     </div>
                     <small class="field-hint" data-i18n="ui.onboardingLanguageHint">
                         Puedes cambiarlo después desde el globo superior.
@@ -465,7 +475,7 @@
                     <li data-i18n="ui.updateProfileGoals">Perfil, meta diaria y estadísticas por día.</li>
                     <li data-i18n="ui.updateDirectFeedback">Envío directo de recomendaciones a Google Sheets.</li>
                     <li data-i18n="ui.updateReminders">Campana de recordatorio de práctica de 24 horas.</li>
-                    <li data-i18n="ui.updateI18n">Interfaz multiidioma en español, inglés y alemán.</li>
+                    <li data-i18n="ui.updateI18n">Interfaz multiidioma en español, inglés, alemán, francés y portugués.</li>
                 </ul>
             </section>
 
@@ -502,6 +512,6 @@
 
     <div id="aviso-nivel" class="level-notice" role="status" aria-live="polite"></div>
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
-    <script type="module" src="js/app.js?v=805"></script>
+    <script type="module" src="js/app.js?v=806"></script>
 </body>
 </html>
