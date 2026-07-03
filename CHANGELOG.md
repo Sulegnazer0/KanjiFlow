@@ -10,6 +10,14 @@ El número de versión visible de la app debe mantenerse alineado en:
 - `CHANGELOG.md`;
 - `service-worker.js` y query strings `?v=...` cuando cambien archivos cacheados.
 
+## [0.8.5] - 2026-07-03
+
+### Corregido
+
+- El botón principal de audio en kanji ahora lee la lectura principal del kanji, no la palabra de ejemplo en contexto.
+- Los botones de onyomi y kunyomi separan lecturas múltiples con pausa, por ejemplo `カイ、エ` en vez de unirlo como una sola lectura.
+- Se versionó `js/audio.js` para evitar caché viejo en GitHub Pages.
+
 ## [0.8.4] - 2026-07-03
 
 ### Agregado

@@ -11,6 +11,10 @@ import {
 } from "../js/core.js";
 import { KANJI_EXAMPLES } from "../js/kanji-examples.js";
 import {
+    itemPronunciation,
+    japaneseOnly,
+} from "../js/audio.js";
+import {
     ACHIEVEMENT_DEFINITIONS,
     achievementLevel,
     achievementPercent,
@@ -140,6 +144,10 @@ assert.equal(new Set(dictionary.map(itemId)).size, dictionary.length);
 assert.equal(dictionary.filter(item => item.tipo === "kanji").length, 100);
 assert.equal(Object.keys(KANJI_EXAMPLES).length, 100);
 assert.equal(itemId(dictionary.find(item => item.caracter === "水")), "kanji_水");
+assert.equal(itemPronunciation(dictionary.find(item => item.caracter === "小")), "ショウ");
+assert.equal(itemPronunciation(dictionary.find(item => item.caracter === "会")), "カイ");
+assert.equal(japaneseOnly(dictionary.find(item => item.caracter === "会").onyomi), "カイ、エ");
+assert.equal(japaneseOnly(dictionary.find(item => item.caracter === "行").kunyomi), "い、ゆ");
 
 for (const item of dictionary.filter(item => item.tipo === "kanji")) {
     assert.ok(KANJI_EXAMPLES[item.caracter], `Falta ejemplo para ${item.caracter}`);
@@ -216,6 +224,7 @@ for (const code of localeCodes) {
         "latestUpdates",
         "updateAchievements",
         "updateN4",
+        "updateKanjiAudio",
         "updateStudyFavorites",
         "updateDirectFeedback",
         "updateReminderTime",

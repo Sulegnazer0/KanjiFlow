@@ -137,6 +137,7 @@
     "updateOnboarding": "Brand splash screen, welcome prompt, and first-run tour.",
     "updateAchievements": "Achievement levels and visible version on the splash screen.",
     "updateN4": "First block of 20 N4 kanji with examples and stroke guides.",
+    "updateKanjiAudio": "Kanji audio now uses main readings with pauses.",
     "updateStudyFavorites": "Direct favorites and a mastered filter in Study.",
     "updateReminderTime": "Configurable reminder time.",
     "updateProfileGoals": "Profile, daily goal, and per-day statistics.",
