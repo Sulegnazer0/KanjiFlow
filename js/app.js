@@ -6,30 +6,70 @@ import {
     filterLesson,
     isDue,
     isMastered,
-    isNew,
     itemId,
     normalizeSearch,
     progressStats,
     scheduleReview,
-    timeUntil,
 } from "./core.js";
 import {
     createBackup,
+    loadDailyStats,
     loadFavorites,
+    loadPracticeReminder,
+    loadProfile,
     loadProgress,
     loadSettings,
     parseBackup,
     replaceStoredData,
+    saveDailyStats,
     saveFavorites,
+    savePracticeReminder,
+    saveProfile,
     saveProgress,
     saveSettings,
 } from "./storage.js";
 import { createDrawingPad } from "./drawing.js";
 import { exampleJapanese, itemPronunciation, japaneseOnly, speakJapanese } from "./audio.js";
 import { loadDictionary } from "./data.js";
+import {
+    dailyEntry,
+    dailySummary,
+    practiceStats,
+    recentDailySummaries,
+    recordDailyPractice,
+} from "./profile.js?v=700";
+import {
+    disablePracticeReminder,
+    enablePracticeReminder,
+    isPracticeReminderDue,
+    markPracticeReminderNotified,
+    recordPractice,
+    setPracticeReminderTime,
+    shouldNotifyPracticeReminder,
+} from "./reminders.js?v=712";
+import {
+    AVAILABLE_LANGUAGES,
+    applyDocumentTranslations,
+    currentLanguage,
+    detectInitialLanguage,
+    formatRelativeTime,
+    formatResultCount,
+    lessonDescription,
+    lessonTitle,
+    loadLocale,
+    localizeDictionary,
+    t,
+    translateCardState,
+} from "./i18n.js?v=712";
+
+const APP_VERSION = "0.7.3";
+const FEEDBACK_ENDPOINT = "https://script.google.com/macros/s/AKfycbxiz6058zwMxfPTDTmIBpG8JutOPw8YBxCRJ0BeMHp-py6IXZy4zkZs2IdTqwmSSzC1jw/exec";
+const SPLASH_MIN_MS = 2400;
+const startupStartedAt = performance.now();
 
 const $ = selector => document.querySelector(selector);
 const elements = {
+    splash: $("#pantalla-carga"),
     connection: $("#estado-conexion"),
     progressSummary: $("#resumen-progreso"),
     progressPercent: $("#porcentaje-dominio"),
@@ -43,8 +83,10 @@ const elements = {
     importFile: $("#archivo-importar"),
     practiceTab: $("#tab-practica"),
     studyTab: $("#tab-estudio"),
+    profileTab: $("#tab-perfil"),
     practiceSection: $("#seccion-practica"),
     studySection: $("#seccion-estudio"),
+    profileSection: $("#seccion-perfil"),
     lessonSelect: $("#selector-leccion"),
     scriptSelect: $("#selector-modo"),
     sessionSelect: $("#selector-progreso"),
@@ -55,10 +97,9 @@ const elements = {
     hint: $("#pista-romaji"),
     practiceSound: $("#btn-sonido-practica"),
     board: $("#pizarra"),
+    practiceGuide: $("#guia-practica"),
     clearBoard: $("#btn-limpiar"),
     reveal: $("#btn-revelar"),
-    recognition: $("#btn-evaluar-ia"),
-    recognitionStatus: $("#estado-reconocimiento"),
     answerPanel: $("#panel-respuesta"),
     answerCharacter: $("#resp-caracter"),
     answerSound: $("#btn-sonido-respuesta"),
@@ -117,8 +158,56 @@ const elements = {
     modalNext: $("#btn-modal-next"),
     modalCounter: $("#contador-modal"),
     toast: $("#toast"),
+    languageSelect: $("#selector-idioma"),
+    reminderButton: $("#btn-recordatorio"),
+    reminderIcon: $("#icono-recordatorio"),
+    reminderText: $("#texto-recordatorio"),
+    profileGreeting: $("#perfil-saludo"),
+    profileSummary: $("#perfil-resumen"),
+    profileName: $("#perfil-nombre"),
+    dailyGoal: $("#meta-diaria"),
+    reminderTime: $("#hora-recordatorio"),
+    saveProfile: $("#btn-guardar-perfil"),
+    goalChips: document.querySelectorAll("[data-goal]"),
+    profileTodayUnique: $("#perfil-hoy-unicas"),
+    profileTodayReviews: $("#perfil-hoy-repasos"),
+    profileActiveDays: $("#perfil-dias-activos"),
+    profileGoalDays: $("#perfil-dias-meta"),
+    profileCurrentStreak: $("#perfil-racha-actual"),
+    profileBestStreak: $("#perfil-mejor-racha"),
+    dailyHistory: $("#historial-diario"),
+    profileViewedToday: $("#perfil-vistas-hoy"),
+    profileFailedToday: $("#perfil-falladas-hoy"),
+    profileMasteredList: $("#perfil-lista-dominadas"),
+    profileUpcomingList: $("#perfil-proximas-repasar"),
+    aboutButton: $("#btn-acerca"),
+    aboutModal: $("#modal-acerca"),
+    aboutContent: $(".about-content"),
+    closeAbout: $("#cerrar-acerca"),
+    appVersion: $("#app-version"),
+    feedbackText: $("#feedback-texto"),
+    feedbackCounter: $("#feedback-contador"),
+    feedbackSend: $("#btn-enviar-feedback"),
+    feedbackStatus: $("#feedback-estado"),
+    onboardingModal: $("#modal-bienvenida"),
+    onboardingContent: $(".onboarding-content"),
+    onboardingForm: $("#form-bienvenida"),
+    onboardingName: $("#onboarding-nombre"),
+    onboardingReminderTime: $("#onboarding-recordatorio"),
+    onboardingError: $("#onboarding-error"),
+    onboardingSkipTour: $("#btn-onboarding-sin-tour"),
+    onboardingStartTour: $("#btn-onboarding-tour"),
+    tourOverlay: $("#tour-overlay"),
+    tourPopover: $("#tour-popover"),
+    tourCounter: $("#tour-contador"),
+    tourTitle: $("#tour-titulo"),
+    tourText: $("#tour-texto"),
+    tourSkip: $("#btn-tour-saltar"),
+    tourPrevious: $("#btn-tour-atras"),
+    tourNext: $("#btn-tour-siguiente"),
 };
 
+let baseDictionary = [];
 let dictionary = [];
 let currentItem = null;
 let previousItemId = "";
@@ -129,11 +218,42 @@ let strokeOrderVisible = false;
 let progress = loadProgress();
 let favorites = loadFavorites();
 let settings = loadSettings();
+let practiceReminder = loadPracticeReminder();
+let profile = loadProfile();
+let dailyStats = loadDailyStats();
 let toastTimer = null;
+let reminderTimer = null;
 let touchStartX = 0;
+let tourIndex = 0;
+let tourHighlightedElement = null;
 
 const practicePad = createDrawingPad(elements.board, { lineWidth: 12 });
 const modalPad = createDrawingPad(elements.modalBoard, { lineWidth: 7 });
+
+const wait = ms => new Promise(resolve => setTimeout(resolve, Math.max(0, ms)));
+
+function hidePracticeGuide() {
+    elements.practiceGuide.textContent = "";
+    elements.practiceGuide.classList.add("hidden");
+}
+
+function showPracticeGuide(character) {
+    elements.practiceGuide.textContent = character || "";
+    elements.practiceGuide.classList.toggle("hidden", !character);
+}
+
+function clearPracticeBoard() {
+    practicePad.clear();
+    hidePracticeGuide();
+}
+
+function itemStateLabel(record) {
+    return translateCardState(cardState(record));
+}
+
+function localizeLoadedDictionary() {
+    dictionary = localizeDictionary(baseDictionary);
+}
 
 function showToast(message) {
     clearTimeout(toastTimer);
@@ -142,8 +262,407 @@ function showToast(message) {
     toastTimer = setTimeout(() => elements.toast.classList.remove("visible"), 2600);
 }
 
+const TOUR_STEPS = [
+    {
+        target: () => document.querySelector(".progress-card"),
+        titleKey: "ui.tourGoalTitle",
+        textKey: "ui.tourGoalText",
+    },
+    {
+        before: () => switchTab("practice"),
+        target: () => elements.lessonSelect,
+        titleKey: "ui.tourLessonTitle",
+        textKey: "ui.tourLessonText",
+    },
+    {
+        before: () => switchTab("practice"),
+        target: () => elements.board,
+        titleKey: "ui.tourBoardTitle",
+        textKey: "ui.tourBoardText",
+    },
+    {
+        before: () => switchTab("practice"),
+        target: () => elements.reveal,
+        titleKey: "ui.tourRevealTitle",
+        textKey: "ui.tourRevealText",
+    },
+    {
+        before: () => {
+            switchTab("practice");
+            if (currentItem && elements.answerPanel.classList.contains("hidden")) revealAnswer();
+        },
+        target: () => document.querySelector(".rating-grid"),
+        titleKey: "ui.tourRatingTitle",
+        textKey: "ui.tourRatingText",
+    },
+    {
+        before: () => switchTab("study"),
+        target: () => elements.studyTab,
+        titleKey: "ui.tourStudyTitle",
+        textKey: "ui.tourStudyText",
+    },
+    {
+        before: () => switchTab("study"),
+        target: () => elements.search,
+        titleKey: "ui.tourSearchTitle",
+        textKey: "ui.tourSearchText",
+    },
+    {
+        before: () => switchTab("study"),
+        target: () => elements.dictionary,
+        titleKey: "ui.tourCardsTitle",
+        textKey: "ui.tourCardsText",
+    },
+    {
+        before: () => showFavoriteTourExample(),
+        target: () => elements.favorite,
+        titleKey: "ui.tourFavoritesTitle",
+        textKey: "ui.tourFavoritesText",
+    },
+    {
+        before: () => {
+            closeModal();
+            switchTab("profile");
+        },
+        target: () => elements.dailyGoal,
+        titleKey: "ui.tourProfileGoalTitle",
+        textKey: "ui.tourProfileGoalText",
+    },
+    {
+        before: () => {
+            closeModal();
+            switchTab("profile");
+        },
+        target: () => elements.reminderTime,
+        titleKey: "ui.tourReminderTimeTitle",
+        textKey: "ui.tourReminderTimeText",
+    },
+    {
+        before: () => {
+            closeModal();
+            switchTab("profile");
+        },
+        target: () => document.querySelector(".profile-stats-grid"),
+        titleKey: "ui.tourStatsTitle",
+        textKey: "ui.tourStatsText",
+    },
+];
+
+function showFavoriteTourExample() {
+    switchTab("study");
+    if (!filteredStudyItems.length) renderDictionary();
+    if (filteredStudyItems.length && elements.modal.classList.contains("hidden")) {
+        openModal(0, elements.studyTab);
+    }
+}
+
+function createUserId() {
+    if (globalThis.crypto?.randomUUID) return globalThis.crypto.randomUUID();
+    return `kf_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 10)}`;
+}
+
+function ensureExistingProfileIdentity() {
+    if (!profile.name || profile.userId) return;
+    profile = {
+        ...profile,
+        userId: createUserId(),
+        onboardedAt: profile.onboardedAt || profile.createdAt || Date.now(),
+    };
+    saveProfile(profile);
+    profile = loadProfile();
+}
+
+async function sendAppEvent(type, payload = {}) {
+    if (typeof fetch !== "function") return;
+    try {
+        await fetch(FEEDBACK_ENDPOINT, {
+            method: "POST",
+            mode: "no-cors",
+            body: new URLSearchParams({
+                type,
+                app: "KanjiFlow",
+                version: APP_VERSION,
+                language: currentLanguage(),
+                url: window.location.href,
+                userAgent: navigator.userAgent,
+                ...payload,
+            }),
+        });
+    } catch (error) {
+        console.warn(`No se pudo enviar evento ${type}.`, error);
+    }
+}
+
+function sendUserSignup(tourAccepted) {
+    const createdAt = profile.createdAt ? new Date(profile.createdAt).toISOString() : "";
+    const onboardedAt = profile.onboardedAt ? new Date(profile.onboardedAt).toISOString() : "";
+    return sendAppEvent("user_signup", {
+        sheet: "Usuarios",
+        notification: "false",
+        email: "false",
+        subject: "KanjiFlow user signup",
+        userId: profile.userId,
+        userName: profile.name,
+        dailyGoal: String(profile.dailyGoal),
+        reminderTime: practiceReminder.preferredTime,
+        createdAt,
+        onboardedAt,
+        tourAccepted: String(Boolean(tourAccepted)),
+        comment: `Nuevo usuario: ${profile.name}`,
+    });
+}
+
+async function finishSplashAndMaybeOnboard() {
+    await wait(SPLASH_MIN_MS - (performance.now() - startupStartedAt));
+    elements.splash?.classList.add("hidden");
+    if (!profile.name) openOnboardingModal();
+}
+
+function openOnboardingModal() {
+    elements.onboardingName.value = profile.name || "";
+    elements.onboardingReminderTime.value = practiceReminder.preferredTime || "19:00";
+    elements.onboardingError.textContent = "";
+    elements.onboardingModal.classList.remove("hidden");
+    document.body.style.overflow = "hidden";
+    setTimeout(() => elements.onboardingName.focus(), 80);
+}
+
+function closeOnboardingModal() {
+    elements.onboardingModal.classList.add("hidden");
+    document.body.style.overflow = "";
+}
+
+function saveOnboardingProfile(startTour) {
+    const name = elements.onboardingName.value.trim();
+    if (!name) {
+        elements.onboardingError.textContent = t("ui.onboardingNameRequired");
+        elements.onboardingName.focus();
+        return false;
+    }
+
+    const now = Date.now();
+    profile = {
+        ...profile,
+        userId: profile.userId || createUserId(),
+        name,
+        onboardedAt: profile.onboardedAt || now,
+        tourSkippedAt: startTour ? profile.tourSkippedAt : now,
+    };
+    saveProfile(profile);
+    profile = loadProfile();
+    saveReminderTime(elements.onboardingReminderTime.value);
+    updateProgressUI();
+    sendUserSignup(startTour);
+    return true;
+}
+
+function completeOnboarding(startTour) {
+    if (!saveOnboardingProfile(startTour)) return;
+    closeOnboardingModal();
+    if (startTour) {
+        startTourGuide();
+        return;
+    }
+    showToast(t("ui.onboardingReadyToast"));
+}
+
+function clearTourHighlight() {
+    tourHighlightedElement?.classList.remove("tour-highlight");
+    tourHighlightedElement = null;
+    elements.modal.classList.remove("tour-modal");
+}
+
+async function showTourStep(index) {
+    const nextIndex = Math.max(0, index);
+    if (nextIndex >= TOUR_STEPS.length) {
+        finishTour(true);
+        return;
+    }
+
+    tourIndex = nextIndex;
+    clearTourHighlight();
+    const step = TOUR_STEPS[tourIndex];
+    step.before?.();
+    await wait(90);
+
+    const target = step.target?.();
+    if (!target) {
+        showTourStep(tourIndex + 1);
+        return;
+    }
+
+    tourHighlightedElement = target;
+    tourHighlightedElement.classList.add("tour-highlight");
+    if (tourHighlightedElement.closest(".modal")) elements.modal.classList.add("tour-modal");
+    tourHighlightedElement.scrollIntoView?.({ behavior: "smooth", block: "center", inline: "center" });
+
+    elements.tourCounter.textContent = t("ui.tourStepCounter", {
+        current: tourIndex + 1,
+        total: TOUR_STEPS.length,
+    }, `${tourIndex + 1} / ${TOUR_STEPS.length}`);
+    elements.tourTitle.textContent = t(step.titleKey);
+    elements.tourText.textContent = t(step.textKey);
+    elements.tourPrevious.disabled = tourIndex === 0;
+    elements.tourNext.textContent = tourIndex === TOUR_STEPS.length - 1
+        ? t("ui.tourFinish")
+        : t("ui.next");
+    elements.tourOverlay.classList.remove("hidden");
+    elements.tourPopover.classList.remove("hidden");
+    elements.tourPopover.focus?.();
+}
+
+function startTourGuide() {
+    closeAboutModal();
+    closeModal();
+    showTourStep(0);
+}
+
+function finishTour(completed = false) {
+    clearTourHighlight();
+    elements.tourOverlay.classList.add("hidden");
+    elements.tourPopover.classList.add("hidden");
+    closeModal();
+    const now = Date.now();
+    profile = {
+        ...profile,
+        tourCompletedAt: completed ? now : profile.tourCompletedAt,
+        tourSkippedAt: completed ? profile.tourSkippedAt : now,
+    };
+    saveProfile(profile);
+    profile = loadProfile();
+    switchTab("practice");
+    showToast(completed ? t("ui.tourDoneToast") : t("ui.tourSkippedToast"));
+}
+
+function saveReminderState(nextReminder = practiceReminder) {
+    practiceReminder = nextReminder;
+    savePracticeReminder(practiceReminder);
+    updateReminderUI();
+    scheduleReminderTimer();
+}
+
+function formatReminderDateTime(timestamp) {
+    if (!timestamp) return practiceReminder.preferredTime || "";
+    return new Intl.DateTimeFormat(currentLanguage(), {
+        weekday: "short",
+        hour: "2-digit",
+        minute: "2-digit",
+    }).format(new Date(timestamp));
+}
+
+function saveReminderTime(value) {
+    saveReminderState(setPracticeReminderTime(practiceReminder, value));
+}
+
+function reminderButtonText() {
+    if (!practiceReminder.enabled) return t("ui.reminderOff");
+    if (isPracticeReminderDue(practiceReminder)) return t("ui.reminderDueButton");
+    return t("ui.reminderOnAt", { time: practiceReminder.preferredTime }, practiceReminder.preferredTime);
+}
+
+function updateReminderUI() {
+    const due = isPracticeReminderDue(practiceReminder);
+    elements.reminderButton.classList.toggle("active", practiceReminder.enabled && !due);
+    elements.reminderButton.classList.toggle("due", due);
+    elements.reminderButton.setAttribute("aria-pressed", String(practiceReminder.enabled));
+    elements.reminderIcon.textContent = practiceReminder.enabled ? "🔔" : "🔕";
+    elements.reminderText.textContent = reminderButtonText();
+    const label = practiceReminder.enabled
+        ? due
+            ? t("ui.reminderDueLabel")
+            : t("ui.reminderOnLabel", { time: formatReminderDateTime(practiceReminder.nextReminderAt) })
+        : t("ui.reminderOffLabel");
+    elements.reminderButton.setAttribute("aria-label", label);
+    elements.reminderButton.title = label;
+}
+
+async function showSystemReminderNotification() {
+    if (!("Notification" in window) || Notification.permission !== "granted") return;
+    const title = t("ui.reminderNotificationTitle");
+    const options = {
+        body: t("ui.reminderNotificationBody"),
+        tag: "kanjiflow-practice-reminder",
+        renotify: true,
+    };
+    try {
+        if ("serviceWorker" in navigator) {
+            const registration = await navigator.serviceWorker.ready;
+            await registration.showNotification(title, options);
+            return;
+        }
+        new Notification(title, options);
+    } catch (error) {
+        console.warn("No se pudo mostrar el recordatorio.", error);
+    }
+}
+
+function checkPracticeReminder({ notify = false } = {}) {
+    updateReminderUI();
+    if (!shouldNotifyPracticeReminder(practiceReminder)) return;
+    showToast(t("ui.reminderDueToast"));
+    if (notify) showSystemReminderNotification();
+    saveReminderState(markPracticeReminderNotified(practiceReminder));
+}
+
+function scheduleReminderTimer() {
+    clearTimeout(reminderTimer);
+    if (!practiceReminder.enabled || !practiceReminder.nextReminderAt) return;
+    const delay = Math.max(0, practiceReminder.nextReminderAt - Date.now());
+    reminderTimer = setTimeout(
+        () => checkPracticeReminder({ notify: true }),
+        Math.min(delay, 2_147_483_647),
+    );
+}
+
+async function togglePracticeReminder() {
+    if (practiceReminder.enabled) {
+        saveReminderState(disablePracticeReminder(practiceReminder));
+        showToast(t("ui.reminderDisabledToast"));
+        return;
+    }
+
+    let notificationStatus = "unsupported";
+    if ("Notification" in window) {
+        notificationStatus = Notification.permission;
+        if (notificationStatus === "default") {
+            notificationStatus = await Notification.requestPermission();
+        }
+    }
+
+    saveReminderState(enablePracticeReminder(practiceReminder));
+    showToast(notificationStatus === "granted"
+        ? t("ui.reminderEnabledToastWithNotifications")
+        : t("ui.reminderEnabledToast"));
+    checkPracticeReminder({ notify: false });
+}
+
+function trackPracticeActivity(now = Date.now(), cardId = "", rating = "") {
+    const before = dailySummary(dailyStats, profile, now);
+    dailyStats = recordDailyPractice(dailyStats, {
+        cardId,
+        rating,
+        dailyGoal: profile.dailyGoal,
+        now,
+    });
+    saveDailyStats(dailyStats);
+    saveReminderState(recordPractice(practiceReminder, now));
+    return !before.goalReached && dailySummary(dailyStats, profile, now).goalReached;
+}
+
 function setVisibility(element, visible) {
     element.classList.toggle("hidden", !visible);
+}
+
+function populateLanguageSelect() {
+    const fragment = document.createDocumentFragment();
+    for (const language of AVAILABLE_LANGUAGES) {
+        const option = document.createElement("option");
+        option.value = language.code;
+        option.textContent = language.label;
+        fragment.appendChild(option);
+    }
+    elements.languageSelect.replaceChildren(fragment);
+    elements.languageSelect.value = currentLanguage();
 }
 
 function populateLessons() {
@@ -151,7 +670,7 @@ function populateLessons() {
     for (const lesson of LESSONS) {
         const option = document.createElement("option");
         option.value = lesson.id;
-        option.textContent = lesson.title;
+        option.textContent = lessonTitle(lesson);
         fragment.appendChild(option);
     }
     elements.lessonSelect.replaceChildren(fragment);
@@ -159,9 +678,11 @@ function populateLessons() {
 
 function saveCurrentSettings() {
     settings = {
+        ...settings,
         lesson: elements.lessonSelect.value,
         script: elements.scriptSelect.value,
         session: elements.sessionSelect.value,
+        language: currentLanguage(),
     };
     saveSettings(settings);
 }
@@ -173,21 +694,81 @@ function restoreSettings() {
     elements.sessionSelect.value = settings.session || "recomendado";
 }
 
+function applyLanguageToUI() {
+    applyDocumentTranslations();
+    populateLanguageSelect();
+    populateLessons();
+    restoreSettings();
+    updateConnection();
+    updateReminderUI();
+    renderProfile();
+    updateFeedbackCounter();
+    if (baseDictionary.length) {
+        localizeLoadedDictionary();
+        updateProgressUI();
+        presentChallenge();
+        renderDictionary();
+        if (!elements.modal.classList.contains("hidden")) openModal(modalIndex, modalTrigger);
+    }
+}
+
+async function changeLanguage(language) {
+    if (language === currentLanguage()) return;
+    settings = {
+        ...settings,
+        lesson: elements.lessonSelect.value || settings.lesson,
+        script: elements.scriptSelect.value || settings.script,
+        session: elements.sessionSelect.value || settings.session,
+        language,
+    };
+    saveSettings(settings);
+    try {
+        await loadLocale(language);
+        applyLanguageToUI();
+    } catch (error) {
+        console.error(error);
+        showToast(t("ui.loadErrorQuestion"));
+    }
+}
+
 function currentLessonData() {
     return filterLesson(dictionary, elements.lessonSelect.value, progress);
 }
 
+function todayPracticeEntry(now = Date.now()) {
+    return dailyEntry(dailyStats, now);
+}
+
 function updateProgressUI() {
-    const stats = progressStats(dictionary, progress);
-    elements.statNew.textContent = stats.newCount;
-    elements.statDue.textContent = stats.dueCount;
-    elements.statMastered.textContent = stats.masteredCount;
-    elements.statStreak.textContent = stats.bestStreak;
-    elements.progressPercent.textContent = `${stats.percent}%`;
-    elements.progressBar.style.width = `${stats.percent}%`;
-    elements.progressSummary.textContent = stats.dueCount
-        ? `${stats.dueCount} tarjeta${stats.dueCount === 1 ? "" : "s"} esperando repaso.`
-        : "Estás al día. Puedes aprender tarjetas nuevas.";
+    const mastery = progressStats(dictionary, progress);
+    const today = dailySummary(dailyStats, profile);
+    const practice = practiceStats(dailyStats, profile);
+    elements.statNew.textContent = today.uniqueCount;
+    elements.statDue.textContent = today.reviews;
+    elements.statMastered.textContent = mastery.masteredCount;
+    elements.statStreak.textContent = practice.currentGoalStreak;
+    elements.progressPercent.textContent = `${today.percent}%`;
+    elements.progressBar.style.width = `${today.percent}%`;
+    elements.progressSummary.textContent = today.goalReached
+        ? t("ui.dailyGoalReachedSummary", { count: today.uniqueCount, goal: today.goal })
+        : t("ui.dailyGoalSummary", { count: today.uniqueCount, goal: today.goal });
+    renderProfile();
+}
+
+function avoidUnneededRepeats(pool) {
+    if (elements.sessionSelect.value !== "recomendado" || pool.length < 2) return pool;
+    const today = todayPracticeEntry();
+    const viewedToday = new Set(today.uniqueCards);
+    if (!viewedToday.size) return pool;
+
+    const preferred = pool.filter(item => {
+        const id = itemId(item);
+        if (!viewedToday.has(id)) return true;
+        const record = progress[id];
+        const todayCard = today.cards[id];
+        return isDue(record) || todayCard?.lastRating === "again";
+    });
+    return preferred.length ? preferred : pool;
 }
 
 function getPracticePool() {
@@ -202,42 +783,41 @@ function getPracticePool() {
         progress,
         favorites,
     );
+    pool = avoidUnneededRepeats(pool);
     return { ...lessonData, items: pool };
 }
 
 function presentChallenge() {
     elements.answerPanel.classList.add("hidden");
-    practicePad.clear();
+    clearPracticeBoard();
     const poolData = getPracticePool();
-    elements.lessonDescription.textContent = poolData.lesson.description;
+    elements.lessonDescription.textContent = lessonDescription(poolData.lesson);
     currentItem = chooseNext(poolData.items, previousItemId, progress);
 
     if (!currentItem) {
-        elements.typeInfo.textContent = "Sin tarjetas";
+        elements.typeInfo.textContent = t("ui.noCardsTag");
         elements.cardState.textContent = "";
-        elements.question.textContent = "No hay caracteres con estos filtros.";
-        elements.hint.textContent = "Prueba otra lección o una sesión diferente.";
+        elements.question.textContent = t("ui.noCardsQuestion");
+        elements.hint.textContent = t("ui.noCardsHint");
         elements.reveal.disabled = true;
-        elements.recognition.disabled = true;
         return;
     }
 
     previousItemId = itemId(currentItem);
     const record = progress[previousItemId];
     elements.reveal.disabled = false;
-    elements.recognition.disabled = !navigator.onLine;
-    elements.typeInfo.textContent = `${currentItem.tipo} · ${currentItem.categoria}`;
-    elements.cardState.textContent = cardState(record);
+    elements.typeInfo.textContent = `${currentItem.tipoLabel} · ${currentItem.categoriaLabel}`;
+    elements.cardState.textContent = itemStateLabel(record);
     elements.question.textContent = currentItem.tipo === "kanji"
-        ? `Dibuja «${currentItem.significado}»`
+        ? t("ui.drawMeaning", { meaning: currentItem.significado })
         : currentItem.categoria === "especial"
-            ? `Escribe «${currentItem.significado}»`
-            : `Escribe el sonido «${currentItem.romaji}»`;
+            ? t("ui.writeMeaning", { meaning: currentItem.significado })
+            : t("ui.writeSound", { romaji: currentItem.romaji });
     elements.hint.textContent = currentItem.tipo === "kanji"
-        ? "Puedes escuchar una lectura como pista."
+        ? t("ui.kanjiHint")
         : currentItem.categoria === "especial"
-            ? "Revisa la descripción de la lección si necesitas recordar la regla."
-            : "Traza el carácter dentro de la cuadrícula.";
+            ? t("ui.specialHint")
+            : t("ui.kanaHint");
 }
 
 function answerAudioText(item = currentItem) {
@@ -247,10 +827,10 @@ function answerAudioText(item = currentItem) {
 
 function revealAnswer() {
     if (!currentItem) return;
-    practicePad.overlay(currentItem.caracter);
+    showPracticeGuide(currentItem.caracter);
     elements.answerCharacter.textContent = currentItem.caracter;
     elements.answerRomaji.textContent = currentItem.romaji || "—";
-    elements.answerCategory.textContent = currentItem.categoria || "—";
+    elements.answerCategory.textContent = currentItem.categoriaLabel || "—";
 
     const kanji = currentItem.tipo === "kanji";
     setVisibility(elements.rowCounterpart, !kanji);
@@ -281,27 +861,308 @@ function rateCurrent(rating) {
     const nextRecord = scheduleReview(progress[id], rating);
     progress[id] = nextRecord;
     saveProgress(progress);
+    const reachedDailyGoal = trackPracticeActivity(nextRecord.lastReviewedAt, id, rating);
     updateProgressUI();
-    const dueText = rating === "again" ? "La veremos de nuevo en esta sesión." : `Próximo repaso ${timeUntil(nextRecord.dueAt)}.`;
+    const dueText = rating === "again"
+        ? t("ui.dueAgain")
+        : t("ui.nextReview", { time: formatRelativeTime(nextRecord.dueAt) });
     showToast(dueText);
+    if (reachedDailyGoal) {
+        setTimeout(() => showToast(t("ui.dailyGoalReachedToast")), 850);
+    }
     presentChallenge();
 }
 
 function switchTab(tab) {
-    const practice = tab === "practice";
-    elements.practiceTab.classList.toggle("active", practice);
-    elements.studyTab.classList.toggle("active", !practice);
-    elements.practiceTab.setAttribute("aria-selected", String(practice));
-    elements.studyTab.setAttribute("aria-selected", String(!practice));
-    elements.practiceTab.tabIndex = practice ? 0 : -1;
-    elements.studyTab.tabIndex = practice ? -1 : 0;
-    setVisibility(elements.practiceSection, practice);
-    setVisibility(elements.studySection, !practice);
-    if (practice) {
+    const tabs = {
+        practice: [elements.practiceTab, elements.practiceSection],
+        study: [elements.studyTab, elements.studySection],
+        profile: [elements.profileTab, elements.profileSection],
+    };
+    for (const [name, [button, section]] of Object.entries(tabs)) {
+        const active = name === tab;
+        button.classList.toggle("active", active);
+        button.setAttribute("aria-selected", String(active));
+        button.tabIndex = active ? 0 : -1;
+        setVisibility(section, active);
+    }
+    if (tab === "practice") {
         presentChallenge();
-    } else {
+    } else if (tab === "study") {
         renderDictionary();
         elements.search.focus();
+    } else {
+        renderProfile();
+    }
+}
+
+function dateFromKey(dateKey) {
+    const [year, month, day] = dateKey.split("-").map(Number);
+    return new Date(year, month - 1, day);
+}
+
+function formatDateKey(dateKey, options = { weekday: "short", day: "numeric", month: "short" }) {
+    return new Intl.DateTimeFormat(currentLanguage(), options).format(dateFromKey(dateKey));
+}
+
+function renderDailyHistory() {
+    const fragment = document.createDocumentFragment();
+    for (const day of recentDailySummaries(dailyStats, profile, 7)) {
+        const dayElement = document.createElement("div");
+        dayElement.className = "history-day";
+        dayElement.classList.toggle("goal-met", day.goalReached);
+        dayElement.title = day.goalReached
+            ? t("ui.goalMet", {
+                count: day.uniqueCount,
+                goal: day.goal,
+                date: formatDateKey(day.dateKey, { dateStyle: "medium" }),
+            })
+            : t("ui.goalNotMet", {
+                count: day.uniqueCount,
+                goal: day.goal,
+                date: formatDateKey(day.dateKey, { dateStyle: "medium" }),
+            });
+
+        const label = document.createElement("span");
+        label.textContent = formatDateKey(day.dateKey, { weekday: "short" });
+        const check = document.createElement("strong");
+        check.className = "history-check";
+        check.textContent = day.goalReached ? "✓" : "•";
+        const amount = document.createElement("small");
+        amount.textContent = `${day.uniqueCount}/${day.goal}`;
+        dayElement.append(label, check, amount);
+        fragment.appendChild(dayElement);
+    }
+    elements.dailyHistory.replaceChildren(fragment);
+}
+
+function cardById(id) {
+    return dictionary.find(item => itemId(item) === id) ?? null;
+}
+
+function ratingLabel(rating) {
+    const keys = {
+        again: "ui.ratingAgain",
+        hard: "ui.ratingHard",
+        good: "ui.ratingGood",
+        easy: "ui.ratingEasy",
+    };
+    return keys[rating] ? t(keys[rating]) : t("ui.noRating");
+}
+
+function openProfileCard(item, trigger) {
+    filteredStudyItems = [item];
+    openModal(0, trigger);
+}
+
+function makeProfileListItem({ item, meta, badge }) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "profile-list-item";
+
+    const character = document.createElement("span");
+    character.className = "profile-list-character";
+    character.textContent = item.caracter;
+
+    const body = document.createElement("span");
+    body.className = "profile-list-body";
+    const title = document.createElement("strong");
+    title.textContent = `${item.romaji || "—"} · ${item.significado || "—"}`;
+    const detail = document.createElement("small");
+    detail.textContent = meta;
+    body.append(title, detail);
+
+    const status = document.createElement("span");
+    status.className = "profile-list-badge";
+    status.textContent = badge;
+
+    button.append(character, body, status);
+    button.addEventListener("click", () => openProfileCard(item, button));
+    return button;
+}
+
+function renderProfileList(container, entries, emptyKey) {
+    if (!container) return;
+    if (!entries.length) {
+        const empty = document.createElement("p");
+        empty.className = "profile-list-empty";
+        empty.textContent = t(emptyKey);
+        container.replaceChildren(empty);
+        return;
+    }
+
+    const fragment = document.createDocumentFragment();
+    for (const entry of entries) {
+        fragment.appendChild(makeProfileListItem(entry));
+    }
+    container.replaceChildren(fragment);
+}
+
+function renderProfileLists() {
+    const today = todayPracticeEntry();
+    const viewedEntries = [...today.uniqueCards]
+        .sort((left, right) =>
+            (today.cards[right]?.lastReviewedAt || 0) - (today.cards[left]?.lastReviewedAt || 0))
+        .map(id => {
+            const item = cardById(id);
+            if (!item) return null;
+            const card = today.cards[id];
+            return {
+                item,
+                badge: t("ui.cardViewedBadge"),
+                meta: t("ui.viewedCardMeta", {
+                    rating: ratingLabel(card?.lastRating),
+                    count: card?.reviews || 0,
+                }),
+            };
+        })
+        .filter(Boolean);
+
+    const failedEntries = Object.values(today.cards)
+        .filter(card => card.again > 0)
+        .sort((left, right) => right.lastReviewedAt - left.lastReviewedAt)
+        .map(card => {
+            const item = cardById(card.cardId);
+            return item
+                ? {
+                    item,
+                    badge: t("ui.cardFailedBadge"),
+                    meta: t("ui.failedCardMeta", { count: card.again }),
+                }
+                : null;
+        })
+        .filter(Boolean);
+
+    const masteredEntries = dictionary
+        .filter(item => isMastered(progress[itemId(item)]))
+        .sort((left, right) =>
+            (progress[itemId(right)]?.lastReviewedAt || 0) - (progress[itemId(left)]?.lastReviewedAt || 0))
+        .map(item => {
+            const record = progress[itemId(item)];
+            return {
+                item,
+                badge: t("ui.cardMasteredBadge"),
+                meta: record?.dueAt
+                    ? t("ui.masteredCardMeta", { time: formatRelativeTime(record.dueAt) })
+                    : itemStateLabel(record),
+            };
+        });
+
+    const upcomingEntries = dictionary
+        .map(item => ({ item, record: progress[itemId(item)] }))
+        .filter(({ record }) => record?.lastReviewedAt && record.dueAt > Date.now() && !isDue(record))
+        .sort((left, right) => left.record.dueAt - right.record.dueAt)
+        .map(({ item, record }) => ({
+            item,
+            badge: t("ui.cardUpcomingBadge"),
+            meta: t("ui.upcomingCardMeta", { time: formatRelativeTime(record.dueAt) }),
+        }));
+
+    renderProfileList(elements.profileViewedToday, viewedEntries, "ui.emptyViewedToday");
+    renderProfileList(elements.profileFailedToday, failedEntries, "ui.emptyFailedToday");
+    renderProfileList(elements.profileMasteredList, masteredEntries, "ui.emptyMastered");
+    renderProfileList(elements.profileUpcomingList, upcomingEntries, "ui.emptyUpcoming");
+}
+
+function renderProfile() {
+    const today = dailySummary(dailyStats, profile);
+    const stats = practiceStats(dailyStats, profile);
+    elements.profileGreeting.textContent = profile.name
+        ? t("ui.profileGreetingNamed", { name: profile.name })
+        : t("ui.profileGreeting");
+    elements.profileSummary.textContent = t("ui.profileSummary", {
+        count: today.uniqueCount,
+        goal: today.goal,
+        reviews: today.reviews,
+    });
+
+    if (document.activeElement !== elements.profileName) elements.profileName.value = profile.name;
+    if (document.activeElement !== elements.dailyGoal) elements.dailyGoal.value = profile.dailyGoal;
+    if (document.activeElement !== elements.reminderTime) {
+        elements.reminderTime.value = practiceReminder.preferredTime || "19:00";
+    }
+    elements.goalChips.forEach(chip => {
+        chip.classList.toggle("active", Number(chip.dataset.goal) === Number(profile.dailyGoal));
+    });
+
+    elements.profileTodayUnique.textContent = today.uniqueCount;
+    elements.profileTodayReviews.textContent = today.reviews;
+    elements.profileActiveDays.textContent = stats.activeDays;
+    elements.profileGoalDays.textContent = stats.goalDays;
+    elements.profileCurrentStreak.textContent = stats.currentGoalStreak;
+    elements.profileBestStreak.textContent = stats.bestGoalStreak;
+    renderDailyHistory();
+    renderProfileLists();
+}
+
+function saveProfileFromForm() {
+    profile = {
+        ...profile,
+        name: elements.profileName.value,
+        dailyGoal: elements.dailyGoal.value,
+    };
+    saveProfile(profile);
+    profile = loadProfile();
+    saveReminderTime(elements.reminderTime.value);
+    updateProgressUI();
+    showToast(t("ui.profileSaved"));
+}
+
+function openAboutModal() {
+    elements.appVersion.textContent = `v${APP_VERSION}`;
+    updateFeedbackCounter();
+    elements.aboutModal.classList.remove("hidden");
+    document.body.style.overflow = "hidden";
+    elements.aboutContent.focus();
+}
+
+function closeAboutModal() {
+    if (elements.aboutModal.classList.contains("hidden")) return;
+    elements.aboutModal.classList.add("hidden");
+    document.body.style.overflow = "";
+    elements.aboutButton.focus();
+}
+
+function updateFeedbackCounter() {
+    const count = elements.feedbackText.value.length;
+    elements.feedbackCounter.textContent = t("ui.feedbackCounter", { count, max: 500 }, `${count} / 500`);
+}
+
+async function sendFeedback() {
+    const message = elements.feedbackText.value.trim();
+    if (message.length < 10) {
+        elements.feedbackStatus.textContent = t("ui.feedbackTooShort");
+        return;
+    }
+    if (message.length > 500) {
+        elements.feedbackStatus.textContent = t("ui.feedbackTooLong");
+        return;
+    }
+
+    elements.feedbackSend.disabled = true;
+    elements.feedbackStatus.textContent = t("ui.feedbackSending");
+
+    try {
+        await fetch(FEEDBACK_ENDPOINT, {
+            method: "POST",
+            mode: "no-cors",
+            body: new URLSearchParams({
+                comment: message,
+                language: currentLanguage(),
+                version: APP_VERSION,
+                userName: profile.name,
+                url: window.location.href,
+                userAgent: navigator.userAgent,
+            }),
+        });
+        elements.feedbackText.value = "";
+        updateFeedbackCounter();
+        elements.feedbackStatus.textContent = t("ui.feedbackSent");
+    } catch (error) {
+        console.warn("No se pudo enviar la recomendación.", error);
+        elements.feedbackStatus.textContent = t("ui.feedbackSendError");
+    } finally {
+        elements.feedbackSend.disabled = false;
     }
 }
 
@@ -345,14 +1206,45 @@ function matchesSearch(item, query, includeContext = true) {
 }
 
 function makeDictionaryCard(item, index) {
+    const id = itemId(item);
+    const record = progress[id];
+    const favorite = Boolean(favorites[id]);
+    const mastered = isMastered(record);
+    const statusLabels = [
+        favorite ? t("ui.studyFavoriteBadge") : "",
+        mastered ? t("ui.studyMasteredBadge") : "",
+    ].filter(Boolean);
     const button = document.createElement("button");
     button.type = "button";
     button.className = "dictionary-card";
+    button.classList.toggle("is-favorite", favorite);
+    button.classList.toggle("is-mastered", mastered);
     button.setAttribute(
         "aria-label",
-        `${item.caracter}, ${item.romaji}, ${item.significado}. Abrir detalles`,
+        `${t("ui.openDetails", {
+            character: item.caracter,
+            reading: item.romaji,
+            meaning: item.significado,
+        })}${statusLabels.length ? `. ${statusLabels.join(", ")}` : ""}`,
     );
 
+    const badges = document.createElement("span");
+    badges.className = "dictionary-badges";
+    badges.setAttribute("aria-hidden", "true");
+    if (favorite) {
+        const favoriteBadge = document.createElement("span");
+        favoriteBadge.className = "dictionary-badge favorite";
+        favoriteBadge.title = t("ui.studyFavoriteBadge");
+        favoriteBadge.textContent = "★";
+        badges.appendChild(favoriteBadge);
+    }
+    if (mastered) {
+        const masteredBadge = document.createElement("span");
+        masteredBadge.className = "dictionary-badge mastered";
+        masteredBadge.title = t("ui.studyMasteredBadge");
+        masteredBadge.textContent = "✓";
+        badges.appendChild(masteredBadge);
+    }
     const character = document.createElement("span");
     character.className = "dictionary-character";
     character.textContent = item.caracter;
@@ -364,9 +1256,9 @@ function makeDictionaryCard(item, index) {
     meaning.textContent = item.significado;
     const type = document.createElement("span");
     type.className = "dictionary-type";
-    type.textContent = `${item.tipo} · ${cardState(progress[itemId(item)])}`;
+    type.textContent = `${item.tipoLabel} · ${itemStateLabel(record)}`;
 
-    button.append(character, reading, meaning, type);
+    button.append(badges, character, reading, meaning, type);
     button.addEventListener("click", () => openModal(index, button));
     return button;
 }
@@ -380,12 +1272,12 @@ function renderDictionary() {
     filteredStudyItems = primaryMatches.length
         ? primaryMatches
         : baseItems.filter(item => matchesSearch(item, query, true));
-    elements.resultCount.textContent = `${filteredStudyItems.length} resultado${filteredStudyItems.length === 1 ? "" : "s"}`;
+    elements.resultCount.textContent = formatResultCount(filteredStudyItems.length);
 
     if (!filteredStudyItems.length) {
         const empty = document.createElement("p");
         empty.className = "empty-state";
-        empty.textContent = "No se encontraron caracteres con esos filtros.";
+        empty.textContent = t("ui.emptyResults");
         elements.dictionary.replaceChildren(empty);
         return;
     }
@@ -409,13 +1301,13 @@ function openModal(index, trigger = modalTrigger) {
     strokeOrderVisible = false;
     elements.modalCharacter.classList.remove("stroke-order");
     elements.toggleStrokes.setAttribute("aria-pressed", "false");
-    elements.toggleStrokes.textContent = "Mostrar orden de trazos";
+    elements.toggleStrokes.textContent = t("ui.showStrokeOrder");
     modalPad.clear();
 
     elements.modalCharacter.textContent = item.caracter || "?";
     elements.modalRomaji.textContent = item.romaji || "—";
     elements.modalMeaning.textContent = item.significado || "—";
-    elements.modalCategory.textContent = item.categoria || "—";
+    elements.modalCategory.textContent = item.categoriaLabel || "—";
     elements.modalCounter.textContent = `${index + 1} / ${filteredStudyItems.length}`;
 
     const favorite = Boolean(favorites[itemId(item)]);
@@ -424,7 +1316,7 @@ function openModal(index, trigger = modalTrigger) {
     elements.favorite.setAttribute("aria-pressed", String(favorite));
     elements.favorite.setAttribute(
         "aria-label",
-        favorite ? "Quitar de favoritas" : "Añadir a favoritas",
+        favorite ? t("ui.removeFavorite") : t("ui.addFavorite"),
     );
 
     const kanji = item.tipo === "kanji";
@@ -489,9 +1381,9 @@ function toggleFavorite() {
     if (elements.studyFilter.value === "importantes") renderDictionary();
 }
 
-function trapModalFocus(event) {
-    if (event.key !== "Tab" || elements.modal.classList.contains("hidden")) return;
-    const focusable = [...elements.modal.querySelectorAll(
+function trapModalFocus(event, modal = elements.modal) {
+    if (event.key !== "Tab" || modal.classList.contains("hidden")) return;
+    const focusable = [...modal.querySelectorAll(
         'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])',
     )].filter(element => !element.classList.contains("hidden"));
     if (!focusable.length) return;
@@ -506,76 +1398,9 @@ function trapModalFocus(event) {
     }
 }
 
-function loadTesseract() {
-    if (window.Tesseract) return Promise.resolve(window.Tesseract);
-    return new Promise((resolve, reject) => {
-        const existing = document.querySelector('script[data-tesseract]');
-        if (existing) {
-            existing.addEventListener("load", () => resolve(window.Tesseract), { once: true });
-            existing.addEventListener("error", reject, { once: true });
-            return;
-        }
-        const script = document.createElement("script");
-        script.src = "https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js";
-        script.dataset.tesseract = "true";
-        script.async = true;
-        script.addEventListener("load", () => resolve(window.Tesseract), { once: true });
-        script.addEventListener("error", () => reject(new Error("No se pudo descargar el reconocedor.")), { once: true });
-        document.head.appendChild(script);
-    });
-}
-
-async function recognizeDrawing() {
-    if (!currentItem || !practicePad.hasDrawing()) {
-        showToast("Primero dibuja un carácter.");
-        return;
-    }
-    if (!navigator.onLine) {
-        showToast("El reconocimiento necesita conexión.");
-        return;
-    }
-
-    const original = elements.recognition.textContent;
-    elements.recognition.disabled = true;
-    elements.recognition.textContent = "Analizando…";
-    elements.recognitionStatus.textContent = "Cargando el reconocimiento japonés. La primera vez puede tardar.";
-    let worker;
-
-    try {
-        const tesseract = await loadTesseract();
-        worker = await tesseract.createWorker("jpn");
-        await worker.setParameters({
-            tessedit_pageseg_mode: currentItem.caracter.length > 1 ? "8" : "10",
-        });
-        const result = await worker.recognize(practicePad.recognitionDataURL());
-        const detected = result.data.text.replace(/\s+/g, "");
-        const expected = currentItem.caracter.replace(/\s+/g, "");
-        if (detected.includes(expected)) {
-            elements.recognitionStatus.textContent = `Reconocido como «${result.data.text.trim()}». Comprueba el orden de trazos con la guía.`;
-            showToast("La forma fue reconocida.");
-            revealAnswer();
-        } else {
-            elements.recognitionStatus.textContent = `Se detectó «${result.data.text.trim() || "nada claro"}»; se esperaba «${currentItem.caracter}».`;
-            showToast("No se reconoció la forma. Puedes autoevaluarte.");
-        }
-    } catch (error) {
-        console.error(error);
-        elements.recognitionStatus.textContent = "No fue posible usar el reconocimiento. La práctica y la autoevaluación siguen disponibles.";
-        showToast("Falló el reconocimiento externo.");
-    } finally {
-        await worker?.terminate?.();
-        const beta = document.createElement("span");
-        beta.className = "beta-label";
-        beta.textContent = "beta";
-        elements.recognition.replaceChildren("Reconocer dibujo ", beta);
-        elements.recognition.disabled = !navigator.onLine;
-        if (!elements.recognition.textContent.trim()) elements.recognition.textContent = original;
-    }
-}
-
 function exportProgress() {
     const blob = new Blob(
-        [createBackup(progress, favorites, settings)],
+        [createBackup(progress, favorites, settings, practiceReminder, profile, dailyStats)],
         { type: "application/json" },
     );
     const url = URL.createObjectURL(blob);
@@ -584,7 +1409,7 @@ function exportProgress() {
     link.download = `kanjiflow-progreso-${new Date().toISOString().slice(0, 10)}.json`;
     link.click();
     URL.revokeObjectURL(url);
-    showToast("Copia de progreso creada.");
+    showToast(t("ui.backupCreated"));
 }
 
 async function importProgress(file) {
@@ -594,13 +1419,18 @@ async function importProgress(file) {
         progress = imported.progress;
         favorites = imported.favorites;
         settings = imported.settings;
+        practiceReminder = imported.reminder;
+        profile = imported.profile;
+        dailyStats = imported.dailyStats;
         restoreSettings();
+        saveReminderState(practiceReminder);
         updateProgressUI();
+        renderProfile();
         presentChallenge();
         renderDictionary();
-        showToast("Progreso importado correctamente.");
+        showToast(t("ui.backupImported"));
     } catch (error) {
-        showToast(error.message || "No se pudo importar la copia.");
+        showToast(error.message || t("ui.backupInvalid"));
     } finally {
         elements.importFile.value = "";
     }
@@ -608,9 +1438,8 @@ async function importProgress(file) {
 
 function updateConnection() {
     const online = navigator.onLine;
-    elements.connection.textContent = online ? "En línea" : "Sin conexión";
+    elements.connection.textContent = online ? t("ui.online") : t("ui.offline");
     elements.connection.classList.toggle("offline", !online);
-    if (currentItem) elements.recognition.disabled = !online;
 }
 
 function registerServiceWorker() {
@@ -624,11 +1453,16 @@ function registerServiceWorker() {
 function bindEvents() {
     elements.practiceTab.addEventListener("click", () => switchTab("practice"));
     elements.studyTab.addEventListener("click", () => switchTab("study"));
-    for (const tab of [elements.practiceTab, elements.studyTab]) {
+    elements.profileTab.addEventListener("click", () => switchTab("profile"));
+    elements.languageSelect.addEventListener("change", () => changeLanguage(elements.languageSelect.value));
+    elements.reminderButton.addEventListener("click", togglePracticeReminder);
+    const tabs = [elements.practiceTab, elements.studyTab, elements.profileTab];
+    for (const tab of tabs) {
         tab.addEventListener("keydown", event => {
             if (!["ArrowLeft", "ArrowRight"].includes(event.key)) return;
             event.preventDefault();
-            const target = tab === elements.practiceTab ? elements.studyTab : elements.practiceTab;
+            const direction = event.key === "ArrowRight" ? 1 : -1;
+            const target = tabs[(tabs.indexOf(tab) + direction + tabs.length) % tabs.length];
             target.click();
             target.focus();
         });
@@ -641,9 +1475,43 @@ function bindEvents() {
         });
     }
 
-    elements.clearBoard.addEventListener("click", practicePad.clear);
+    elements.saveProfile.addEventListener("click", saveProfileFromForm);
+    elements.profileName.addEventListener("keydown", event => {
+        if (event.key === "Enter") saveProfileFromForm();
+    });
+    elements.dailyGoal.addEventListener("keydown", event => {
+        if (event.key === "Enter") saveProfileFromForm();
+    });
+    elements.reminderTime.addEventListener("keydown", event => {
+        if (event.key === "Enter") saveProfileFromForm();
+    });
+    elements.goalChips.forEach(chip => {
+        chip.addEventListener("click", () => {
+            elements.dailyGoal.value = chip.dataset.goal;
+            saveProfileFromForm();
+        });
+    });
+    elements.aboutButton.addEventListener("click", openAboutModal);
+    elements.closeAbout.addEventListener("click", closeAboutModal);
+    elements.aboutModal.addEventListener("click", event => {
+        if (event.target === elements.aboutModal) closeAboutModal();
+    });
+    elements.feedbackText.addEventListener("input", updateFeedbackCounter);
+    elements.feedbackSend.addEventListener("click", sendFeedback);
+    elements.onboardingForm.addEventListener("submit", event => {
+        event.preventDefault();
+        completeOnboarding(true);
+    });
+    elements.onboardingSkipTour.addEventListener("click", () => completeOnboarding(false));
+    elements.onboardingName.addEventListener("input", () => {
+        elements.onboardingError.textContent = "";
+    });
+    elements.tourSkip.addEventListener("click", () => finishTour(false));
+    elements.tourPrevious.addEventListener("click", () => showTourStep(tourIndex - 1));
+    elements.tourNext.addEventListener("click", () => showTourStep(tourIndex + 1));
+
+    elements.clearBoard.addEventListener("click", clearPracticeBoard);
     elements.reveal.addEventListener("click", revealAnswer);
-    elements.recognition.addEventListener("click", recognizeDrawing);
     elements.practiceSound.addEventListener("click", () => speakJapanese(itemPronunciation(currentItem)));
     elements.answerSound.addEventListener("click", () => speakJapanese(answerAudioText()));
     document.querySelectorAll("[data-rating]").forEach(button => {
@@ -664,8 +1532,8 @@ function bindEvents() {
         elements.modalCharacter.classList.toggle("stroke-order", strokeOrderVisible);
         elements.toggleStrokes.setAttribute("aria-pressed", String(strokeOrderVisible));
         elements.toggleStrokes.textContent = strokeOrderVisible
-            ? "Ocultar orden de trazos"
-            : "Mostrar orden de trazos";
+            ? t("ui.hideStrokeOrder")
+            : t("ui.showStrokeOrder");
     });
     elements.modalPrevious.addEventListener("click", () => openModal(modalIndex - 1, modalTrigger));
     elements.modalNext.addEventListener("click", () => openModal(modalIndex + 1, modalTrigger));
@@ -689,6 +1557,19 @@ function bindEvents() {
     }, { passive: true });
 
     document.addEventListener("keydown", event => {
+        if (!elements.tourPopover.classList.contains("hidden")) {
+            if (event.key === "Escape") finishTour(false);
+            return;
+        }
+        if (!elements.onboardingModal.classList.contains("hidden")) {
+            trapModalFocus(event, elements.onboardingModal);
+            return;
+        }
+        if (!elements.aboutModal.classList.contains("hidden")) {
+            if (event.key === "Escape") closeAboutModal();
+            trapModalFocus(event, elements.aboutModal);
+            return;
+        }
         if (elements.modal.classList.contains("hidden")) return;
         if (event.key === "Escape") closeModal();
         else if (event.key === "ArrowLeft" && !elements.modalPrevious.disabled) elements.modalPrevious.click();
@@ -705,27 +1586,48 @@ function bindEvents() {
 
     window.addEventListener("online", updateConnection);
     window.addEventListener("offline", updateConnection);
+    window.addEventListener("focus", () => checkPracticeReminder({ notify: false }));
+    document.addEventListener("visibilitychange", () => {
+        if (!document.hidden) checkPracticeReminder({ notify: false });
+    });
 }
 
 async function init() {
+    settings = {
+        ...settings,
+        language: detectInitialLanguage(settings.language),
+    };
+    await loadLocale(settings.language);
+    saveSettings(settings);
+    ensureExistingProfileIdentity();
+    applyDocumentTranslations();
+    populateLanguageSelect();
     populateLessons();
     restoreSettings();
     bindEvents();
+    elements.appVersion.textContent = `v${APP_VERSION}`;
+    renderProfile();
+    updateFeedbackCounter();
     updateConnection();
+    updateReminderUI();
+    scheduleReminderTimer();
     registerServiceWorker();
 
     try {
-        dictionary = await loadDictionary();
+        baseDictionary = await loadDictionary();
+        localizeLoadedDictionary();
         updateProgressUI();
         presentChallenge();
         renderDictionary();
+        setTimeout(() => checkPracticeReminder({ notify: false }), 700);
     } catch (error) {
         console.error(error);
-        elements.typeInfo.textContent = "Error";
-        elements.question.textContent = "No se pudo cargar el contenido.";
-        elements.hint.textContent = "Abre la app desde un servidor local o revisa datos.csv.";
+        elements.typeInfo.textContent = t("ui.loadErrorTag");
+        elements.question.textContent = t("ui.loadErrorQuestion");
+        elements.hint.textContent = t("ui.loadErrorHint");
         elements.reveal.disabled = true;
-        elements.recognition.disabled = true;
+    } finally {
+        finishSplashAndMaybeOnboard();
     }
 }
 

@@ -7,14 +7,20 @@ Aplicación web estática para aprender hiragana, katakana y kanji N5 mediante e
 - Ruta progresiva de 15 lecciones.
 - 293 tarjetas: hiragana, katakana, reglas especiales y 80 kanji.
 - Repetición espaciada con cuatro niveles de respuesta.
+- Perfil local con nombre, meta diaria, historial de 7 días y rachas de meta.
+- Pantalla de arranque con marca S0 Labs, bienvenida inicial de KanjiFlow y tour visual.
+- Listas de perfil con tarjetas vistas hoy, falladas, dominadas y próximas por repasar.
 - Estadísticas, favoritas y migración del progreso de la versión anterior.
-- Exportación e importación de copias de seguridad.
+- Exportación e importación de copias de seguridad con progreso, perfil y recordatorios.
 - Escritura táctil responsive y guía de orden de trazos.
 - Audio japonés mediante las voces instaladas en el dispositivo.
+- Selector de idioma con Español, English y Deutsch.
+- Progreso y favoritas compartidos entre idiomas mediante `cardId`.
+- Campana de recordatorio: permite elegir hora preferida y avisa en ese horario.
+- Ventana “Acerca de” con versión, últimas actualizaciones, créditos de S0 Labs y envío directo de recomendaciones.
 - Ejemplos completos para cada kanji: palabra, lectura, significado y frase.
 - Búsqueda accesible por carácter, lectura, significado o ejemplo.
 - Funcionamiento básico sin conexión después de la primera visita.
-- Reconocimiento óptico opcional. Necesita conexión y solo compara la forma final.
 
 ## Ejecutar
 
@@ -41,25 +47,91 @@ app quedará publicada en:
 npm test
 ```
 
-Las pruebas comprueban el parser CSV, el algoritmo de repetición espaciada, la integridad de los datos, los ejemplos de kanji y el currículo.
+Las pruebas comprueban el parser CSV, el algoritmo de repetición espaciada, la meta diaria, la integridad de los datos, los ejemplos de kanji, los idiomas y el currículo.
 
 ## Estructura
 
 - `index.html`: estructura semántica y accesible.
 - `style.css`: diseño responsive.
+- `assets/s0labsHorizontal.png`: logo de S0 Labs usado en la pantalla de arranque.
 - `datos.csv`: contenido de kana y kanji.
 - `js/core.js`: currículo, filtros y repetición espaciada.
 - `js/storage.js`: persistencia, migración y copias de seguridad.
 - `js/drawing.js`: pizarras y escalado de coordenadas.
 - `js/audio.js`: pronunciación japonesa.
+- `js/i18n.js`: carga de idiomas, traducción de UI y localización de tarjetas.
 - `js/kanji-examples.js`: ejemplos contextualizados.
+- `js/profile.js`: perfil, meta diaria, historial y estadísticas de práctica.
+- `js/reminders.js`: cálculo del recordatorio de práctica con hora configurable.
 - `js/app.js`: interfaz y coordinación.
+- `locales/es.json`, `locales/en.json`, `locales/de.json`: textos por idioma.
 - `service-worker.js`: caché para uso sin conexión.
+- `docs/apps-script-users.md`: contrato temporal para registrar altas en la pestaña `Usuarios`.
 
 La fuente original de trazos se conserva como referencia, pero la aplicación carga
 `KanjiStrokeOrders.woff`, una versión reducida a los caracteres utilizados (aprox.
 112 KB frente a 18 MB).
 
+## Agregar idiomas
+
+El japonés base vive en `datos.csv` y los ejemplos japoneses en
+`js/kanji-examples.js`. Las traducciones viven en `locales/`.
+
+Para agregar otro idioma:
+
+1. Duplica `locales/en.json` como `locales/fr.json`, `locales/pt.json`, etc.
+2. Traduce `meta`, `ui`, `states`, `categories`, `lessons` y `cards`.
+3. Agrega el idioma a `AVAILABLE_LANGUAGES` en `js/i18n.js`.
+4. Añade el JSON al precache de `service-worker.js`.
+
+El progreso no depende del idioma. Se guarda por `cardId`, por ejemplo
+`kanji_水`, así que aprender un carácter en español conserva el avance al cambiar
+a inglés o alemán.
+
+## Perfil, meta diaria y recomendaciones
+
+La barra superior representa la meta diaria: cuenta tarjetas únicas repasadas hoy,
+no el dominio total acumulado. Los repasos repetidos de la misma tarjeta sí suman
+en “Repasos hoy”, pero solo cuentan una vez para completar la meta.
+
+El apartado Perfil guarda nombre, meta diaria, días activos, metas cumplidas y
+racha. También concentra la exportación/importación de datos y muestra qué
+tarjetas fueron vistas hoy, cuáles fallaron, cuáles ya están dominadas y cuáles
+vienen próximas.
+
+La primera visita muestra una pantalla de marca de 2–3 segundos. Si no existe un
+perfil local, la app pide el nombre, una hora preferida de recordatorio y pregunta
+si se desea tomar un tour visual. El tour resalta práctica, estudio, favoritos,
+metas y estadísticas sin modificar el progreso.
+
+En modo “Recomendado”, la práctica evita repetir tarjetas ya vistas durante el
+día cuando existen mejores opciones. Las excepciones son tarjetas vencidas,
+marcadas como “Otra vez” o casos donde no quedan alternativas disponibles.
+
+El botón “Acerca de” abre una ventana con versión, últimas actualizaciones,
+crédito “Desarrollada por S0 Labs” y un campo para recomendaciones. El envío
+valida 10–500 caracteres y manda el comentario a un endpoint de Google Apps
+Script, que lo registra en una Google Sheet y puede notificar por correo sin
+exponer la dirección destinataria en la interfaz.
+
+El alta inicial de usuario también se envía al endpoint como `type=user_signup`
+para registrarla temporalmente en una pestaña `Usuarios`. El contrato sugerido
+para Apps Script está en `docs/apps-script-users.md`.
+
+## Recordatorios de práctica
+
+La campana `🔔` activa un recordatorio local. El usuario elige una hora preferida
+en la bienvenida o en Perfil. Cada vez que califica una tarjeta, la app guarda
+`lastPracticeAt` y programa `nextReminderAt` para la siguiente aparición de esa
+hora, normalmente al día siguiente. Si estudia antes, el aviso se vuelve a
+programar para el próximo horario elegido.
+
+En GitHub Pages, sin backend, el recordatorio es confiable dentro de la app: se
+muestra al volver a abrir KanjiFlow o cuando la pestaña sigue abierta. Si el
+navegador concede permisos de notificación, la app también intenta mostrar una
+notificación del sistema mientras el navegador permite ejecutar la PWA.
+
 ## Notas pedagógicas
 
-“Reconocer dibujo” usa OCR y no verifica la dirección ni el orden real de cada trazo. Para aprender la escritura correcta se debe comparar con la guía de orden de trazos y autoevaluarse con honestidad.
+La autoevaluación sigue siendo importante: para aprender la escritura correcta se
+debe comparar el dibujo con la guía de orden de trazos y calificar con honestidad.
