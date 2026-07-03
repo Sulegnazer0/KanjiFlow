@@ -96,7 +96,13 @@ export const LESSONS = [
         id: "kanji-4",
         title: "15. Kanji: vida diaria",
         description: "Cuerpo, colores, cantidades y vocabulario cotidiano.",
-        test: item => item.tipo === "kanji" && Number(item.id_jlpt) >= 65,
+        test: item => item.tipo === "kanji" && Number(item.id_jlpt) >= 65 && Number(item.id_jlpt) <= 80,
+    },
+    {
+        id: "kanji-n4-1",
+        title: "16. Kanji N4: sociedad y acciones",
+        description: "Reuniones, lugares, trabajo, preguntas y acciones frecuentes.",
+        test: item => item.tipo === "kanji" && item.categoria === "N4" && Number(item.id_jlpt) >= 81 && Number(item.id_jlpt) <= 100,
     },
     {
         id: "all",

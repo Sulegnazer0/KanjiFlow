@@ -399,4 +399,104 @@ export const KANJI_EXAMPLES = {
         sentence: "駅まで五分です。", sentenceReading: "えきまで ごふんです。",
         sentenceMeaning: "La estación está a cinco minutos.",
     },
+    "会": {
+        word: "会社", reading: "かいしゃ", meaning: "empresa",
+        sentence: "明日、会社で会議があります。", sentenceReading: "あした、かいしゃで かいぎが あります。",
+        sentenceMeaning: "Mañana hay una reunión en la empresa.",
+    },
+    "同": {
+        word: "同じ", reading: "おなじ", meaning: "igual; mismo",
+        sentence: "同じ本を読みました。", sentenceReading: "おなじ ほんを よみました。",
+        sentenceMeaning: "Leí el mismo libro.",
+    },
+    "事": {
+        word: "仕事", reading: "しごと", meaning: "trabajo",
+        sentence: "仕事は九時に始まります。", sentenceReading: "しごとは くじに はじまります。",
+        sentenceMeaning: "El trabajo empieza a las nueve.",
+    },
+    "自": {
+        word: "自分", reading: "じぶん", meaning: "uno mismo",
+        sentence: "自分の名前を書きます。", sentenceReading: "じぶんの なまえを かきます。",
+        sentenceMeaning: "Escribo mi propio nombre.",
+    },
+    "社": {
+        word: "社員", reading: "しゃいん", meaning: "empleado de empresa",
+        sentence: "父は会社の社員です。", sentenceReading: "ちちは かいしゃの しゃいんです。",
+        sentenceMeaning: "Mi padre es empleado de una empresa.",
+    },
+    "発": {
+        word: "出発", reading: "しゅっぱつ", meaning: "salida; partida",
+        sentence: "電車は八時に出発します。", sentenceReading: "でんしゃは はちじに しゅっぱつします。",
+        sentenceMeaning: "El tren sale a las ocho.",
+    },
+    "者": {
+        word: "医者", reading: "いしゃ", meaning: "médico",
+        sentence: "医者に会いました。", sentenceReading: "いしゃに あいました。",
+        sentenceMeaning: "Me reuní con el médico.",
+    },
+    "地": {
+        word: "地図", reading: "ちず", meaning: "mapa",
+        sentence: "地図を見て駅へ行きます。", sentenceReading: "ちずを みて えきへ いきます。",
+        sentenceMeaning: "Miro el mapa y voy a la estación.",
+    },
+    "業": {
+        word: "授業", reading: "じゅぎょう", meaning: "clase",
+        sentence: "授業で漢字を勉強します。", sentenceReading: "じゅぎょうで かんじを べんきょうします。",
+        sentenceMeaning: "Estudio kanji en clase.",
+    },
+    "方": {
+        word: "読み方", reading: "よみかた", meaning: "forma de leer",
+        sentence: "この漢字の読み方を教えてください。", sentenceReading: "この かんじの よみかたを おしえてください。",
+        sentenceMeaning: "Por favor, enséñeme cómo se lee este kanji.",
+    },
+    "場": {
+        word: "場所", reading: "ばしょ", meaning: "lugar",
+        sentence: "集合場所は駅の前です。", sentenceReading: "しゅうごうばしょは えきの まえです。",
+        sentenceMeaning: "El punto de reunión está frente a la estación.",
+    },
+    "員": {
+        word: "店員", reading: "てんいん", meaning: "dependiente",
+        sentence: "店員に値段を聞きます。", sentenceReading: "てんいんに ねだんを ききます。",
+        sentenceMeaning: "Le pregunto el precio al dependiente.",
+    },
+    "立": {
+        word: "立つ", reading: "たつ", meaning: "estar de pie",
+        sentence: "ここに立ってください。", sentenceReading: "ここに たってください。",
+        sentenceMeaning: "Por favor, párese aquí.",
+    },
+    "開": {
+        word: "開ける", reading: "あける", meaning: "abrir",
+        sentence: "窓を開けます。", sentenceReading: "まどを あけます。",
+        sentenceMeaning: "Abro la ventana.",
+    },
+    "力": {
+        word: "力", reading: "ちから", meaning: "fuerza",
+        sentence: "力を入れて書きます。", sentenceReading: "ちからを いれて かきます。",
+        sentenceMeaning: "Escribo aplicando fuerza.",
+    },
+    "問": {
+        word: "質問", reading: "しつもん", meaning: "pregunta",
+        sentence: "先生に質問します。", sentenceReading: "せんせいに しつもんします。",
+        sentenceMeaning: "Le hago una pregunta al profesor.",
+    },
+    "代": {
+        word: "時代", reading: "じだい", meaning: "época; era",
+        sentence: "新しい時代が始まります。", sentenceReading: "あたらしい じだいが はじまります。",
+        sentenceMeaning: "Comienza una nueva era.",
+    },
+    "明": {
+        word: "明るい", reading: "あかるい", meaning: "claro; luminoso",
+        sentence: "部屋は明るいです。", sentenceReading: "へやは あかるいです。",
+        sentenceMeaning: "La habitación es luminosa.",
+    },
+    "文": {
+        word: "作文", reading: "さくぶん", meaning: "redacción",
+        sentence: "日本語で作文を書きます。", sentenceReading: "にほんごで さくぶんを かきます。",
+        sentenceMeaning: "Escribo una redacción en japonés.",
+    },
+    "使": {
+        word: "使う", reading: "つかう", meaning: "usar",
+        sentence: "辞書を使います。", sentenceReading: "じしょを つかいます。",
+        sentenceMeaning: "Uso el diccionario.",
+    },
 };

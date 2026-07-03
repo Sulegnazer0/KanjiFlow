@@ -39,14 +39,14 @@ import {
     achievementSummary,
     buildAchievementStats,
     syncAchievements,
-} from "./achievements.js?v=803";
+} from "./achievements.js?v=804";
 import {
     dailyEntry,
     dailySummary,
     practiceStats,
     recentDailySummaries,
     recordDailyPractice,
-} from "./profile.js?v=803";
+} from "./profile.js?v=804";
 import {
     disablePracticeReminder,
     enablePracticeReminder,
@@ -55,7 +55,7 @@ import {
     recordPractice,
     setPracticeReminderTime,
     shouldNotifyPracticeReminder,
-} from "./reminders.js?v=803";
+} from "./reminders.js?v=804";
 import {
     AVAILABLE_LANGUAGES,
     applyDocumentTranslations,
@@ -69,9 +69,9 @@ import {
     localizeDictionary,
     t,
     translateCardState,
-} from "./i18n.js?v=803";
+} from "./i18n.js?v=804";
 
-const APP_VERSION = "0.8.3";
+const APP_VERSION = "0.8.4";
 const FEEDBACK_ENDPOINT = "https://script.google.com/macros/s/AKfycbxiz6058zwMxfPTDTmIBpG8JutOPw8YBxCRJ0BeMHp-py6IXZy4zkZs2IdTqwmSSzC1jw/exec";
 const SPLASH_MIN_MS = 2400;
 const startupStartedAt = performance.now();
@@ -1331,7 +1331,7 @@ function matchesStudyFilter(item) {
     if (filter === "kana") return item.tipo === "hiragana" || item.tipo === "katakana";
     if (filter === "importantes") return Boolean(favorites[itemId(item)]);
     if (filter === "dominadas") return isMastered(progress[itemId(item)]);
-    if (filter === "N5") return item.tipo === "kanji" && item.categoria === "N5";
+    if (/^N\d$/u.test(filter)) return item.tipo === "kanji" && item.categoria === filter;
     return item.tipo === filter;
 }
 

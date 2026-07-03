@@ -135,10 +135,10 @@ function readPath(object, path) {
 
 const rawData = await readFile(new URL("../datos.csv", import.meta.url), "utf8");
 const dictionary = parseCSV(rawData);
-assert.equal(dictionary.length, 293);
+assert.equal(dictionary.length, 313);
 assert.equal(new Set(dictionary.map(itemId)).size, dictionary.length);
-assert.equal(dictionary.filter(item => item.tipo === "kanji").length, 80);
-assert.equal(Object.keys(KANJI_EXAMPLES).length, 80);
+assert.equal(dictionary.filter(item => item.tipo === "kanji").length, 100);
+assert.equal(Object.keys(KANJI_EXAMPLES).length, 100);
 assert.equal(itemId(dictionary.find(item => item.caracter === "水")), "kanji_水");
 
 for (const item of dictionary.filter(item => item.tipo === "kanji")) {
@@ -215,6 +215,7 @@ for (const code of localeCodes) {
         "aboutVersion",
         "latestUpdates",
         "updateAchievements",
+        "updateN4",
         "updateStudyFavorites",
         "updateDirectFeedback",
         "updateReminderTime",
@@ -228,7 +229,7 @@ for (const code of localeCodes) {
     ]) {
         assert.ok(locale.ui?.[profileKey], `Falta ${profileKey} en ${code}`);
     }
-    for (const lessonId of ["recommended", "hira-basic-1", "kata-basic-1", "kana-special", "kanji-4", "all"]) {
+    for (const lessonId of ["recommended", "hira-basic-1", "kata-basic-1", "kana-special", "kanji-4", "kanji-n4-1", "all"]) {
         assert.ok(locale.lessons?.[lessonId]?.title, `Falta título ${lessonId} en ${code}`);
         assert.ok(locale.lessons?.[lessonId]?.description, `Falta descripción ${lessonId} en ${code}`);
     }
@@ -252,8 +253,8 @@ assert.ok(lesson.items.length > 0);
 assert.ok(lesson.items.every(item => item.tipo === "hiragana"));
 
 const stats = progressStats(dictionary, progress, now);
-assert.equal(stats.total, 293);
-assert.equal(stats.newCount, 293);
+assert.equal(stats.total, 313);
+assert.equal(stats.newCount, 313);
 assert.equal(stats.masteredCount, 0);
 
 const DAY_MS = 24 * 60 * 60 * 1000;
@@ -349,6 +350,6 @@ console.log("✓ Programación de repetición espaciada");
 console.log("✓ Recordatorio de práctica con hora configurable");
 console.log("✓ Meta diaria y estadísticas de perfil");
 console.log("✓ Sistema de logros, progreso y traducciones");
-console.log("✓ Datos únicos y 80 ejemplos de kanji");
+console.log("✓ Datos únicos y 100 ejemplos de kanji");
 console.log("✓ Currículo y estadísticas de progreso");
 console.log("✓ Locales ES/EN/DE completos para kanji y kana especial");

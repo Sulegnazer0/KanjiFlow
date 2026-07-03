@@ -136,6 +136,7 @@
     "latestUpdates": "Últimas actualizaciones",
     "updateOnboarding": "Pantalla de marca, bienvenida y tour inicial.",
     "updateAchievements": "Sistema de logros, niveles y versión visible en la pantalla de carga.",
+    "updateN4": "Primer bloque de 20 kanji N4 con ejemplos y trazos.",
     "updateStudyFavorites": "Favoritos directos y filtro de dominadas en Estudio.",
     "updateReminderTime": "Hora configurable para recordatorios.",
     "updateProfileGoals": "Perfil, meta diaria y estadísticas por día.",
@@ -280,7 +281,8 @@
     "dakuten": "Dakuten",
     "combinacion": "Combinación",
     "especial": "Especial",
-    "N5": "N5"
+    "N5": "N5",
+    "N4": "N4"
   },
   "content": {
     "kanaLetter": "Letra {romaji}"
@@ -354,6 +356,10 @@
     "kanji-4": {
       "title": "15. Kanji: vida diaria",
       "description": "Cuerpo, colores, cantidades y vocabulario cotidiano."
+    },
+    "kanji-n4-1": {
+      "title": "16. Kanji N4: sociedad y acciones",
+      "description": "Reuniones, lugares, trabajo, preguntas y acciones frecuentes."
     },
     "all": {
       "title": "Todo el contenido",
@@ -445,7 +451,27 @@
     "kanji_少": { "meaning": "Poco", "exampleMeaning": "escaso", "sentenceMeaning": "Hoy hay poca gente." },
     "kanji_何": { "meaning": "Qué", "exampleMeaning": "qué", "sentenceMeaning": "¿Qué es esto?" },
     "kanji_時": { "meaning": "Tiempo / Hora", "exampleMeaning": "tiempo; hora", "sentenceMeaning": "Estudio durante una hora." },
-    "kanji_分": { "meaning": "Minuto / Dividir", "exampleMeaning": "cinco minutos", "sentenceMeaning": "La estación está a cinco minutos." }
+    "kanji_分": { "meaning": "Minuto / Dividir", "exampleMeaning": "cinco minutos", "sentenceMeaning": "La estación está a cinco minutos." },
+    "kanji_会": { "meaning": "Reunión / Encontrarse", "exampleMeaning": "empresa", "sentenceMeaning": "Mañana hay una reunión en la empresa." },
+    "kanji_同": { "meaning": "Mismo / Igual", "exampleMeaning": "igual; mismo", "sentenceMeaning": "Leí el mismo libro." },
+    "kanji_事": { "meaning": "Cosa / Asunto", "exampleMeaning": "trabajo", "sentenceMeaning": "El trabajo empieza a las nueve." },
+    "kanji_自": { "meaning": "Uno mismo", "exampleMeaning": "uno mismo", "sentenceMeaning": "Escribo mi propio nombre." },
+    "kanji_社": { "meaning": "Empresa / Santuario", "exampleMeaning": "empleado de empresa", "sentenceMeaning": "Mi padre es empleado de una empresa." },
+    "kanji_発": { "meaning": "Salida / Emisión", "exampleMeaning": "salida; partida", "sentenceMeaning": "El tren sale a las ocho." },
+    "kanji_者": { "meaning": "Persona", "exampleMeaning": "médico", "sentenceMeaning": "Me reuní con el médico." },
+    "kanji_地": { "meaning": "Tierra / Lugar", "exampleMeaning": "mapa", "sentenceMeaning": "Miro el mapa y voy a la estación." },
+    "kanji_業": { "meaning": "Trabajo / Industria", "exampleMeaning": "clase", "sentenceMeaning": "Estudio kanji en clase." },
+    "kanji_方": { "meaning": "Dirección / Forma", "exampleMeaning": "forma de leer", "sentenceMeaning": "Por favor, enséñeme cómo se lee este kanji." },
+    "kanji_場": { "meaning": "Lugar", "exampleMeaning": "lugar", "sentenceMeaning": "El punto de reunión está frente a la estación." },
+    "kanji_員": { "meaning": "Miembro", "exampleMeaning": "dependiente", "sentenceMeaning": "Le pregunto el precio al dependiente." },
+    "kanji_立": { "meaning": "Levantarse / Estar de pie", "exampleMeaning": "estar de pie", "sentenceMeaning": "Por favor, párese aquí." },
+    "kanji_開": { "meaning": "Abrir", "exampleMeaning": "abrir", "sentenceMeaning": "Abro la ventana." },
+    "kanji_力": { "meaning": "Fuerza", "exampleMeaning": "fuerza", "sentenceMeaning": "Escribo aplicando fuerza." },
+    "kanji_問": { "meaning": "Pregunta / Problema", "exampleMeaning": "pregunta", "sentenceMeaning": "Le hago una pregunta al profesor." },
+    "kanji_代": { "meaning": "Generación / Sustituto", "exampleMeaning": "época; era", "sentenceMeaning": "Comienza una nueva era." },
+    "kanji_明": { "meaning": "Claro / Brillante", "exampleMeaning": "claro; luminoso", "sentenceMeaning": "La habitación es luminosa." },
+    "kanji_文": { "meaning": "Texto / Frase", "exampleMeaning": "redacción", "sentenceMeaning": "Escribo una redacción en japonés." },
+    "kanji_使": { "meaning": "Usar", "exampleMeaning": "usar", "sentenceMeaning": "Uso el diccionario." }
   },
   "exampleTerms": {}
 }

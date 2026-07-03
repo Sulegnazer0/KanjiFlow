@@ -1,5 +1,6 @@
 # Dependencias y salidas locales
 node_modules/
+.codex-fonttools/
 coverage/
 dist/
 build/

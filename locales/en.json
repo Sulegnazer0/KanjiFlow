@@ -136,6 +136,7 @@
     "latestUpdates": "Latest updates",
     "updateOnboarding": "Brand splash screen, welcome prompt, and first-run tour.",
     "updateAchievements": "Achievement levels and visible version on the splash screen.",
+    "updateN4": "First block of 20 N4 kanji with examples and stroke guides.",
     "updateStudyFavorites": "Direct favorites and a mastered filter in Study.",
     "updateReminderTime": "Configurable reminder time.",
     "updateProfileGoals": "Profile, daily goal, and per-day statistics.",
@@ -280,7 +281,8 @@
     "dakuten": "Dakuten",
     "combinacion": "Combination",
     "especial": "Special",
-    "N5": "N5"
+    "N5": "N5",
+    "N4": "N4"
   },
   "content": {
     "kanaLetter": "Letter {romaji}"
@@ -354,6 +356,10 @@
     "kanji-4": {
       "title": "15. Kanji: daily life",
       "description": "Body, colors, quantities, and everyday vocabulary."
+    },
+    "kanji-n4-1": {
+      "title": "16. Kanji N4: society and actions",
+      "description": "Meetings, places, work, questions, and frequent actions."
     },
     "all": {
       "title": "All content",
@@ -445,7 +451,27 @@
     "kanji_少": { "meaning": "Few / Little", "exampleMeaning": "scarce", "sentenceMeaning": "There are few people today." },
     "kanji_何": { "meaning": "What", "exampleMeaning": "what", "sentenceMeaning": "What is this?" },
     "kanji_時": { "meaning": "Time / Hour", "exampleMeaning": "time; hour", "sentenceMeaning": "I study for one hour." },
-    "kanji_分": { "meaning": "Minute / Divide", "exampleMeaning": "five minutes", "sentenceMeaning": "The station is five minutes away." }
+    "kanji_分": { "meaning": "Minute / Divide", "exampleMeaning": "five minutes", "sentenceMeaning": "The station is five minutes away." },
+    "kanji_会": { "meaning": "Meeting / To meet", "exampleMeaning": "company", "sentenceMeaning": "There is a meeting at the company tomorrow." },
+    "kanji_同": { "meaning": "Same / Equal", "exampleMeaning": "same; equal", "sentenceMeaning": "I read the same book." },
+    "kanji_事": { "meaning": "Thing / Matter", "exampleMeaning": "work", "sentenceMeaning": "Work starts at nine." },
+    "kanji_自": { "meaning": "Oneself", "exampleMeaning": "oneself", "sentenceMeaning": "I write my own name." },
+    "kanji_社": { "meaning": "Company / Shrine", "exampleMeaning": "company employee", "sentenceMeaning": "My father is a company employee." },
+    "kanji_発": { "meaning": "Departure / Emission", "exampleMeaning": "departure", "sentenceMeaning": "The train departs at eight." },
+    "kanji_者": { "meaning": "Person", "exampleMeaning": "doctor", "sentenceMeaning": "I met with the doctor." },
+    "kanji_地": { "meaning": "Ground / Place", "exampleMeaning": "map", "sentenceMeaning": "I look at the map and go to the station." },
+    "kanji_業": { "meaning": "Work / Industry", "exampleMeaning": "class", "sentenceMeaning": "I study kanji in class." },
+    "kanji_方": { "meaning": "Direction / Method", "exampleMeaning": "way of reading", "sentenceMeaning": "Please teach me how to read this kanji." },
+    "kanji_場": { "meaning": "Place", "exampleMeaning": "place", "sentenceMeaning": "The meeting point is in front of the station." },
+    "kanji_員": { "meaning": "Member", "exampleMeaning": "shop clerk", "sentenceMeaning": "I ask the shop clerk the price." },
+    "kanji_立": { "meaning": "Stand / Stand up", "exampleMeaning": "to stand", "sentenceMeaning": "Please stand here." },
+    "kanji_開": { "meaning": "Open", "exampleMeaning": "to open", "sentenceMeaning": "I open the window." },
+    "kanji_力": { "meaning": "Power / Strength", "exampleMeaning": "strength", "sentenceMeaning": "I write with force." },
+    "kanji_問": { "meaning": "Question / Problem", "exampleMeaning": "question", "sentenceMeaning": "I ask the teacher a question." },
+    "kanji_代": { "meaning": "Generation / Substitute", "exampleMeaning": "era; age", "sentenceMeaning": "A new era begins." },
+    "kanji_明": { "meaning": "Bright / Clear", "exampleMeaning": "bright; clear", "sentenceMeaning": "The room is bright." },
+    "kanji_文": { "meaning": "Text / Sentence", "exampleMeaning": "composition", "sentenceMeaning": "I write a composition in Japanese." },
+    "kanji_使": { "meaning": "Use", "exampleMeaning": "to use", "sentenceMeaning": "I use the dictionary." }
   },
   "exampleTerms": {
     "Abreviación": "Abbreviation",

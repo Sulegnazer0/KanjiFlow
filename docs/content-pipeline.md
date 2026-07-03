@@ -43,7 +43,7 @@ Para kana:
 Para kanji:
 
 - `tipo`: `kanji`;
-- `categoria`: nivel JLPT soportado por la app, actualmente `N5` y preparación para `N4`;
+- `categoria`: nivel JLPT soportado por la app, actualmente `N5` y `N4`;
 - `id_jlpt` positivo;
 - `onyomi` y `kunyomi` obligatorios, con japonés; `kunyomi` puede ser `-`;
 - ejemplo completo en `js/kanji-examples.js`.
@@ -65,6 +65,14 @@ Para kanji:
 3. Revisar el bloque inicial propuesto en `docs/jlpt-n4-starter.md`.
 
 4. Regenerar `KanjiStrokeOrders.woff` con los kanji nuevos antes de publicar tarjetas.
+
+   ```powershell
+   python -m pip install fonttools brotli
+   npm run build:stroke-font
+   ```
+
+   Si hay kanji planeados que todavía no están en `datos.csv`, agrégalos temporalmente a
+   `tools/stroke-font-extra.txt` para que entren al subset.
 
 5. Agregar tarjetas N4 en `datos.csv`.
 

@@ -1,8 +1,8 @@
 # Bloque inicial JLPT N4
 
-Este documento propone el primer bloque de kanji N4 para KanjiFlow. La idea es crecer en tandas revisables, no cargar cientos de tarjetas de golpe.
+Este documento registra el primer bloque de kanji N4 para KanjiFlow. La idea es crecer en tandas revisables, no cargar cientos de tarjetas de golpe.
 
-Importante: este bloque es una lista curricular interna de KanjiFlow. Debe revisarse antes de publicarse y no debe añadirse a `datos.csv` hasta que `KanjiStrokeOrders.woff` incluya los glifos de orden de trazos correspondientes.
+Importante: este bloque es una lista curricular interna de KanjiFlow. Antes de pasarla a `main`, debe revisarse visualmente en navegador junto con ejemplos, traducciones, lecciones y orden de trazos.
 
 ## Criterios
 
@@ -27,37 +27,39 @@ Importante: este bloque es una lista curricular interna de KanjiFlow. Debe revis
 | 88 | 地 | tierra, lugar | チ、ジ | - | Base de 地図, 地下. |
 | 89 | 業 | trabajo, industria | ギョウ、ゴウ | わざ | Base de 授業, 卒業. |
 | 90 | 方 | dirección, forma, persona | ホウ | かた | Muy común en preguntas y modales. |
-| 91 | 新 | nuevo | シン | あたら-しい、あら-た、にい | Ya existe en el WOFF actual. |
-| 92 | 場 | lugar | ジョウ | ば | Base de 場所, 会場. |
-| 93 | 員 | miembro, empleado | イン | - | Base de 社員, 店員. |
-| 94 | 立 | levantarse, estar de pie | リツ、リュウ | た-つ、た-てる | Verbo esencial. |
-| 95 | 開 | abrir | カイ | ひら-く、あ-く、あ-ける | Base de 開ける, 開始. |
-| 96 | 手 | mano | シュ | て、た | Ya existe en el WOFF actual. |
-| 97 | 力 | fuerza | リョク、リキ | ちから | Base de 能力, 力. |
-| 98 | 問 | pregunta, problema | モン | と-う、と-い | Base de 問題, 質問. |
-| 99 | 代 | generación, sustitución | ダイ、タイ | か-わる、よ、しろ | Base de 時代, 代わり. |
-| 100 | 明 | claro, brillante | メイ、ミョウ | あか-るい、あ-ける | Base de 明日, 説明. |
+| 91 | 場 | lugar | ジョウ | ば | Base de 場所, 会場. |
+| 92 | 員 | miembro, empleado | イン | - | Base de 社員, 店員. |
+| 93 | 立 | levantarse, estar de pie | リツ、リュウ | た-つ、た-てる | Verbo esencial. |
+| 94 | 開 | abrir | カイ | ひら-く、あ-く、あ-ける | Base de 開ける, 開始. |
+| 95 | 力 | fuerza | リョク、リキ | ちから | Base de 能力, 力. |
+| 96 | 問 | pregunta, problema | モン | と-う、と-い | Base de 問題, 質問. |
+| 97 | 代 | generación, sustitución | ダイ、タイ | か-わる、よ、しろ | Base de 時代, 代わり. |
+| 98 | 明 | claro, brillante | メイ、ミョウ | あか-るい、あ-ける | Base de 明日, 説明. |
+| 99 | 文 | texto, frase | ブン、モン | ふみ | Base de 作文, 文字. |
+| 100 | 使 | usar | シ | つか-う | Verbo esencial para objetos y herramientas. |
 
 ## Estado de fuente
 
-Validación preliminar contra `KanjiStrokeOrders.woff` actual:
+Estado en la rama `feature/jlpt-n4`:
 
-- Presentes: 新, 手.
-- Pendientes de agregar a la fuente reducida: 会, 同, 事, 自, 社, 発, 者, 地, 業, 方, 場, 員, 立, 開, 力, 問, 代, 明.
+- `KanjiStrokeOrders.woff` ya fue regenerado con los 20 kanji nuevos de la tanda N4-1.
+- El archivo sigue siendo liviano: aprox. 130 KB.
+- Los kanji N4-1 ya están publicados en `datos.csv`; `tools/stroke-font-extra.txt` queda reservado para próximas tandas.
 
-Antes de cargar esta tanda en la app, hay que regenerar `KanjiStrokeOrders.woff` desde `KanjiStrokeOrders.ttf` incluyendo:
+Para regenerar `KanjiStrokeOrders.woff` desde `KanjiStrokeOrders.ttf`:
 
-- todos los kana y kanji ya publicados;
-- los 20 kanji de esta tanda N4-1;
-- cualquier símbolo japonés que use la interfaz o los ejemplos.
+```powershell
+python -m pip install fonttools brotli
+npm run build:stroke-font
+```
 
 ## Checklist para publicar N4-1
 
-1. Regenerar `KanjiStrokeOrders.woff`.
-2. Agregar las 20 filas en `datos.csv`.
-3. Agregar 20 ejemplos en `js/kanji-examples.js`.
-4. Crear lección N4-1 en `js/core.js`.
-5. Agregar textos de lección y tarjetas en `locales/es.json`, `locales/en.json` y `locales/de.json`.
-6. Agregar filtro visible N4 en Estudio.
-7. Actualizar conteos de pruebas.
+1. Regenerar `KanjiStrokeOrders.woff`. Listo en esta rama para N4-1.
+2. Agregar las 20 filas en `datos.csv`. Listo.
+3. Agregar 20 ejemplos en `js/kanji-examples.js`. Listo.
+4. Crear lección N4-1 en `js/core.js`. Listo.
+5. Agregar textos de lección y tarjetas en `locales/es.json`, `locales/en.json` y `locales/de.json`. Listo.
+6. Agregar filtro visible N4 en Estudio. Listo.
+7. Actualizar conteos de pruebas. Listo.
 8. Ejecutar `npm run validate:content` y `npm test`.

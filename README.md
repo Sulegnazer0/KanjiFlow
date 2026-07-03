@@ -1,11 +1,13 @@
 # KanjiFlow
 
-Aplicación web estática para aprender hiragana, katakana y kanji N5 mediante escritura, audio, ejemplos y repetición espaciada.
+Aplicación web estática para aprender hiragana, katakana y kanji N5/N4 mediante escritura, audio, ejemplos y repetición espaciada.
+
+Historial de cambios: consulta [CHANGELOG.md](CHANGELOG.md).
 
 ## Funciones
 
-- Ruta progresiva de 15 lecciones.
-- 293 tarjetas: hiragana, katakana, reglas especiales y 80 kanji.
+- Ruta progresiva de 16 lecciones.
+- 313 tarjetas: hiragana, katakana, reglas especiales y 100 kanji.
 - Repetición espaciada con cuatro niveles de respuesta.
 - Perfil local con nombre, meta diaria, historial de 7 días y rachas de meta.
 - Sistema de logros por hitos de práctica, metas, favoritos y caracteres dominados.
@@ -59,9 +61,17 @@ Para validar solo contenido, ejemplos y traducciones:
 npm run validate:content
 ```
 
+Para regenerar la fuente reducida de orden de trazos cuando se agreguen kanji:
+
+```powershell
+python -m pip install fonttools brotli
+npm run build:stroke-font
+```
+
 ## Estructura
 
 - `index.html`: estructura semántica y accesible.
+- `CHANGELOG.md`: historial de cambios por versión.
 - `style.css`: diseño responsive.
 - `assets/s0labsHorizontal.png`: logo de S0 Labs usado en la pantalla de arranque.
 - `datos.csv`: contenido de kana y kanji.
@@ -80,6 +90,8 @@ npm run validate:content
 - `docs/apps-script-users.md`: contrato temporal para registrar altas en la pestaña `Usuarios`.
 - `docs/content-pipeline.md`: flujo para agregar JLPT N4/N3 e idiomas nuevos con validaciones.
 - `docs/jlpt-n4-starter.md`: primera tanda propuesta para crecer hacia JLPT N4 sin romper trazos ni traducciones.
+- `tools/build-stroke-font.mjs`: generador del WOFF reducido de orden de trazos.
+- `tools/stroke-font-extra.txt`: caracteres planeados que deben entrar al WOFF antes de publicarse.
 - `tools/validate-content.mjs`: validador de contenido, ejemplos, lecciones y locales.
 
 La fuente original de trazos se conserva como referencia, pero la aplicación carga
