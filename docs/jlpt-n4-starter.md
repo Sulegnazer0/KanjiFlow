@@ -59,7 +59,7 @@ npm run build:stroke-font
 2. Agregar las 20 filas en `datos.csv`. Listo.
 3. Agregar 20 ejemplos en `js/kanji-examples.js`. Listo.
 4. Crear lección N4-1 en `js/core.js`. Listo.
-5. Agregar textos de lección y tarjetas en `locales/es.json`, `locales/en.json` y `locales/de.json`. Listo.
+5. Agregar textos de lección y tarjetas en `locales/es.json`, `locales/en.json`, `locales/de.json`, `locales/fr.json` y `locales/pt.json`. Listo.
 6. Agregar filtro visible N4 en Estudio. Listo.
 7. Actualizar conteos de pruebas. Listo.
 8. Ejecutar `npm run validate:content` y `npm test`.

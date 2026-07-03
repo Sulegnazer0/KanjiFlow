@@ -143,7 +143,7 @@
     "updateProfileGoals": "Perfil, meta diaria y estadísticas por día.",
     "updateDirectFeedback": "Envío directo de recomendaciones a Google Sheets.",
     "updateReminders": "Campana de recordatorio de práctica de 24 horas.",
-    "updateI18n": "Interfaz multiidioma en español, inglés y alemán.",
+    "updateI18n": "Interfaz multiidioma en español, inglés, alemán, francés y portugués.",
     "feedbackTitle": "Enviar recomendación",
     "feedbackDescription": "Escribe entre 10 y 500 caracteres. Se guardará directo para revisión.",
     "feedbackLabel": "Recomendación",

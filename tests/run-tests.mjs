@@ -361,4 +361,4 @@ console.log("✓ Meta diaria y estadísticas de perfil");
 console.log("✓ Sistema de logros, progreso y traducciones");
 console.log("✓ Datos únicos y 100 ejemplos de kanji");
 console.log("✓ Currículo y estadísticas de progreso");
-console.log("✓ Locales ES/EN/DE completos para kanji y kana especial");
+console.log("✓ Locales activos completos para kanji y kana especial");
