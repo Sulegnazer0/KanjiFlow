@@ -39,14 +39,14 @@ import {
     achievementSummary,
     buildAchievementStats,
     syncAchievements,
-} from "./achievements.js?v=802";
+} from "./achievements.js?v=803";
 import {
     dailyEntry,
     dailySummary,
     practiceStats,
     recentDailySummaries,
     recordDailyPractice,
-} from "./profile.js?v=802";
+} from "./profile.js?v=803";
 import {
     disablePracticeReminder,
     enablePracticeReminder,
@@ -55,7 +55,7 @@ import {
     recordPractice,
     setPracticeReminderTime,
     shouldNotifyPracticeReminder,
-} from "./reminders.js?v=802";
+} from "./reminders.js?v=803";
 import {
     AVAILABLE_LANGUAGES,
     applyDocumentTranslations,
@@ -69,9 +69,9 @@ import {
     localizeDictionary,
     t,
     translateCardState,
-} from "./i18n.js?v=802";
+} from "./i18n.js?v=803";
 
-const APP_VERSION = "0.8.2";
+const APP_VERSION = "0.8.3";
 const FEEDBACK_ENDPOINT = "https://script.google.com/macros/s/AKfycbxiz6058zwMxfPTDTmIBpG8JutOPw8YBxCRJ0BeMHp-py6IXZy4zkZs2IdTqwmSSzC1jw/exec";
 const SPLASH_MIN_MS = 2400;
 const startupStartedAt = performance.now();
@@ -1330,6 +1330,7 @@ function matchesStudyFilter(item) {
     if (filter === "todos") return true;
     if (filter === "kana") return item.tipo === "hiragana" || item.tipo === "katakana";
     if (filter === "importantes") return Boolean(favorites[itemId(item)]);
+    if (filter === "dominadas") return isMastered(progress[itemId(item)]);
     if (filter === "N5") return item.tipo === "kanji" && item.categoria === "N5";
     return item.tipo === filter;
 }
@@ -1373,12 +1374,25 @@ function makeDictionaryCard(item, index) {
         favorite ? t("ui.studyFavoriteBadge") : "",
         mastered ? t("ui.studyMasteredBadge") : "",
     ].filter(Boolean);
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = "dictionary-card";
-    button.classList.toggle("is-favorite", favorite);
-    button.classList.toggle("is-mastered", mastered);
-    button.setAttribute(
+    const card = document.createElement("article");
+    card.className = "dictionary-card";
+    card.classList.toggle("is-favorite", favorite);
+    card.classList.toggle("is-mastered", mastered);
+
+    const favoriteToggle = document.createElement("button");
+    favoriteToggle.type = "button";
+    favoriteToggle.className = "dictionary-favorite-toggle";
+    favoriteToggle.classList.toggle("active", favorite);
+    favoriteToggle.textContent = favorite ? "★" : "☆";
+    favoriteToggle.setAttribute("aria-pressed", String(favorite));
+    favoriteToggle.setAttribute("aria-label", favorite ? t("ui.removeFavorite") : t("ui.addFavorite"));
+    favoriteToggle.title = favorite ? t("ui.removeFavorite") : t("ui.addFavorite");
+    favoriteToggle.addEventListener("click", () => toggleFavoriteForItem(item));
+
+    const detailsButton = document.createElement("button");
+    detailsButton.type = "button";
+    detailsButton.className = "dictionary-card-main";
+    detailsButton.setAttribute(
         "aria-label",
         `${t("ui.openDetails", {
             character: item.caracter,
@@ -1390,13 +1404,6 @@ function makeDictionaryCard(item, index) {
     const badges = document.createElement("span");
     badges.className = "dictionary-badges";
     badges.setAttribute("aria-hidden", "true");
-    if (favorite) {
-        const favoriteBadge = document.createElement("span");
-        favoriteBadge.className = "dictionary-badge favorite";
-        favoriteBadge.title = t("ui.studyFavoriteBadge");
-        favoriteBadge.textContent = "★";
-        badges.appendChild(favoriteBadge);
-    }
     if (mastered) {
         const masteredBadge = document.createElement("span");
         masteredBadge.className = "dictionary-badge mastered";
@@ -1417,9 +1424,10 @@ function makeDictionaryCard(item, index) {
     type.className = "dictionary-type";
     type.textContent = `${item.tipoLabel} · ${itemStateLabel(record)}`;
 
-    button.append(badges, character, reading, meaning, type);
-    button.addEventListener("click", () => openModal(index, button));
-    return button;
+    detailsButton.append(character, reading, meaning, type);
+    detailsButton.addEventListener("click", () => openModal(index, detailsButton));
+    card.append(favoriteToggle, badges, detailsButton);
+    return card;
 }
 
 function renderDictionary() {
@@ -1521,8 +1529,7 @@ function currentModalItem() {
     return filteredStudyItems[modalIndex] ?? null;
 }
 
-function toggleFavorite() {
-    const item = currentModalItem();
+function toggleFavoriteForItem(item, { keepModalOpen = false } = {}) {
     if (!item) return;
     const id = itemId(item);
     const wasFavorite = Boolean(favorites[id]);
@@ -1531,14 +1538,19 @@ function toggleFavorite() {
     saveFavorites(favorites);
     refreshAchievements({ announce: true });
     updateProgressUI();
+    renderDictionary();
     if (elements.studyFilter.value === "importantes" && wasFavorite) {
-        renderDictionary();
-        closeModal();
-        elements.search.focus();
+        if (keepModalOpen) {
+            closeModal();
+            elements.search.focus();
+        }
         return;
     }
-    openModal(modalIndex, modalTrigger);
-    if (elements.studyFilter.value === "importantes") renderDictionary();
+    if (keepModalOpen) openModal(modalIndex, modalTrigger);
+}
+
+function toggleFavorite() {
+    toggleFavoriteForItem(currentModalItem(), { keepModalOpen: true });
 }
 
 function trapModalFocus(event, modal = elements.modal) {

@@ -12,6 +12,7 @@ Aplicación web estática para aprender hiragana, katakana y kanji N5 mediante e
 - Niveles de usuario calculados por porcentaje de logros desbloqueados.
 - Pantalla de arranque con marca S0 Labs, bienvenida inicial de KanjiFlow y tour visual.
 - Listas de perfil con tarjetas vistas hoy, falladas, dominadas y próximas por repasar.
+- Favoritos directos desde las tarjetas de Estudio y filtro de tarjetas dominadas.
 - Estadísticas, favoritas y migración del progreso de la versión anterior.
 - Exportación e importación de copias de seguridad con progreso, perfil y recordatorios.
 - Escritura táctil responsive y guía de orden de trazos.

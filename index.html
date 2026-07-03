@@ -7,7 +7,7 @@
     <meta name="description" content="Aprende hiragana, katakana y kanji con escritura, audio y repetición espaciada.">
     <title>KanjiFlow — Aprende japonés</title>
     <link rel="manifest" href="manifest.webmanifest">
-    <link rel="stylesheet" href="style.css?v=802">
+    <link rel="stylesheet" href="style.css?v=803">
 </head>
 <body>
     <div id="pantalla-carga" class="splash-screen" aria-live="polite">
@@ -15,7 +15,7 @@
             <img src="assets/s0labsHorizontal.png" alt="S0 Labs" class="splash-logo">
             <p data-i18n="ui.splashTagline">Preparando tu flujo de práctica…</p>
         </div>
-        <span id="splash-version" class="splash-version">v0.8.2</span>
+        <span id="splash-version" class="splash-version">v0.8.3</span>
     </div>
 
     <main class="app-shell">
@@ -189,6 +189,7 @@
                         <option value="kana" data-i18n="ui.contentKana">Hiragana + katakana</option>
                         <option value="N5">Kanji N5</option>
                         <option value="importantes" data-i18n="ui.contentFavorites">Mis favoritas</option>
+                        <option value="dominadas" data-i18n="ui.contentMastered">Dominadas</option>
                     </select>
                 </div>
             </div>
@@ -456,6 +457,7 @@
                 <ul class="updates-list">
                     <li data-i18n="ui.updateOnboarding">Pantalla de marca, bienvenida y tour inicial.</li>
                     <li data-i18n="ui.updateAchievements">Sistema de logros, niveles y versión visible en la pantalla de carga.</li>
+                    <li data-i18n="ui.updateStudyFavorites">Favoritos directos y filtro de dominadas en Estudio.</li>
                     <li data-i18n="ui.updateReminderTime">Hora configurable para recordatorios.</li>
                     <li data-i18n="ui.updateProfileGoals">Perfil, meta diaria y estadísticas por día.</li>
                     <li data-i18n="ui.updateDirectFeedback">Envío directo de recomendaciones a Google Sheets.</li>
@@ -497,6 +499,6 @@
 
     <div id="aviso-nivel" class="level-notice" role="status" aria-live="polite"></div>
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
-    <script type="module" src="js/app.js?v=802"></script>
+    <script type="module" src="js/app.js?v=803"></script>
 </body>
 </html>

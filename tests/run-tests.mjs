@@ -215,6 +215,7 @@ for (const code of localeCodes) {
         "aboutVersion",
         "latestUpdates",
         "updateAchievements",
+        "updateStudyFavorites",
         "updateDirectFeedback",
         "updateReminderTime",
         "feedbackTitle",
@@ -223,6 +224,7 @@ for (const code of localeCodes) {
         "feedbackSending",
         "feedbackSent",
         "feedbackSendError",
+        "contentMastered",
     ]) {
         assert.ok(locale.ui?.[profileKey], `Falta ${profileKey} en ${code}`);
     }
