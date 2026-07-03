@@ -13,6 +13,7 @@ import {
 } from "./core.js";
 import {
     createBackup,
+    loadAchievements,
     loadDailyStats,
     loadFavorites,
     loadPracticeReminder,
@@ -23,6 +24,7 @@ import {
     replaceStoredData,
     saveDailyStats,
     saveFavorites,
+    saveAchievements,
     savePracticeReminder,
     saveProfile,
     saveProgress,
@@ -32,12 +34,19 @@ import { createDrawingPad } from "./drawing.js";
 import { exampleJapanese, itemPronunciation, japaneseOnly, speakJapanese } from "./audio.js";
 import { loadDictionary } from "./data.js";
 import {
+    achievementLevel,
+    achievementProgress,
+    achievementSummary,
+    buildAchievementStats,
+    syncAchievements,
+} from "./achievements.js?v=803";
+import {
     dailyEntry,
     dailySummary,
     practiceStats,
     recentDailySummaries,
     recordDailyPractice,
-} from "./profile.js?v=700";
+} from "./profile.js?v=803";
 import {
     disablePracticeReminder,
     enablePracticeReminder,
@@ -46,7 +55,7 @@ import {
     recordPractice,
     setPracticeReminderTime,
     shouldNotifyPracticeReminder,
-} from "./reminders.js?v=712";
+} from "./reminders.js?v=803";
 import {
     AVAILABLE_LANGUAGES,
     applyDocumentTranslations,
@@ -60,9 +69,9 @@ import {
     localizeDictionary,
     t,
     translateCardState,
-} from "./i18n.js?v=712";
+} from "./i18n.js?v=803";
 
-const APP_VERSION = "0.7.3";
+const APP_VERSION = "0.8.3";
 const FEEDBACK_ENDPOINT = "https://script.google.com/macros/s/AKfycbxiz6058zwMxfPTDTmIBpG8JutOPw8YBxCRJ0BeMHp-py6IXZy4zkZs2IdTqwmSSzC1jw/exec";
 const SPLASH_MIN_MS = 2400;
 const startupStartedAt = performance.now();
@@ -70,6 +79,7 @@ const startupStartedAt = performance.now();
 const $ = selector => document.querySelector(selector);
 const elements = {
     splash: $("#pantalla-carga"),
+    splashVersion: $("#splash-version"),
     connection: $("#estado-conexion"),
     progressSummary: $("#resumen-progreso"),
     progressPercent: $("#porcentaje-dominio"),
@@ -157,6 +167,7 @@ const elements = {
     modalPrevious: $("#btn-modal-prev"),
     modalNext: $("#btn-modal-next"),
     modalCounter: $("#contador-modal"),
+    levelNotice: $("#aviso-nivel"),
     toast: $("#toast"),
     languageSelect: $("#selector-idioma"),
     reminderButton: $("#btn-recordatorio"),
@@ -175,6 +186,9 @@ const elements = {
     profileGoalDays: $("#perfil-dias-meta"),
     profileCurrentStreak: $("#perfil-racha-actual"),
     profileBestStreak: $("#perfil-mejor-racha"),
+    achievementSummary: $("#resumen-logros"),
+    achievementCount: $("#contador-logros"),
+    achievementList: $("#lista-logros"),
     dailyHistory: $("#historial-diario"),
     profileViewedToday: $("#perfil-vistas-hoy"),
     profileFailedToday: $("#perfil-falladas-hoy"),
@@ -192,6 +206,7 @@ const elements = {
     onboardingModal: $("#modal-bienvenida"),
     onboardingContent: $(".onboarding-content"),
     onboardingForm: $("#form-bienvenida"),
+    onboardingLanguageButtons: document.querySelectorAll("[data-onboarding-language]"),
     onboardingName: $("#onboarding-nombre"),
     onboardingReminderTime: $("#onboarding-recordatorio"),
     onboardingError: $("#onboarding-error"),
@@ -221,7 +236,9 @@ let settings = loadSettings();
 let practiceReminder = loadPracticeReminder();
 let profile = loadProfile();
 let dailyStats = loadDailyStats();
+let achievements = loadAchievements();
 let toastTimer = null;
+let levelNoticeTimer = null;
 let reminderTimer = null;
 let touchStartX = 0;
 let tourIndex = 0;
@@ -260,6 +277,41 @@ function showToast(message) {
     elements.toast.textContent = message;
     elements.toast.classList.add("visible");
     toastTimer = setTimeout(() => elements.toast.classList.remove("visible"), 2600);
+}
+
+function formatAchievementLevel(level) {
+    return t("ui.achievementLevelLabel", {
+        level: level.level,
+        name: level.name,
+    }, `Nivel ${level.level} · ${level.name}`);
+}
+
+function showAchievementLevelNotice() {
+    if (!profile.name) return;
+    const { summary } = refreshAchievements();
+    const level = achievementLevel(summary);
+    clearTimeout(levelNoticeTimer);
+    elements.levelNotice.textContent = t("ui.achievementStartupNotice", {
+        unlocked: summary.unlocked,
+        total: summary.total,
+        level: formatAchievementLevel(level),
+        percent: level.percent,
+    });
+    elements.levelNotice.classList.add("visible");
+    levelNoticeTimer = setTimeout(() => {
+        elements.levelNotice.classList.remove("visible");
+    }, 3000);
+}
+
+function announceUnlockedAchievements(unlocked = []) {
+    if (!unlocked.length) return;
+    if (unlocked.length === 1) {
+        showToast(t("ui.achievementUnlockedToast", {
+            title: t(unlocked[0].titleKey),
+        }));
+        return;
+    }
+    showToast(t("ui.achievementsUnlockedToast", { count: unlocked.length }));
 }
 
 const TOUR_STEPS = [
@@ -415,7 +467,11 @@ function sendUserSignup(tourAccepted) {
 async function finishSplashAndMaybeOnboard() {
     await wait(SPLASH_MIN_MS - (performance.now() - startupStartedAt));
     elements.splash?.classList.add("hidden");
-    if (!profile.name) openOnboardingModal();
+    if (!profile.name) {
+        openOnboardingModal();
+        return;
+    }
+    showAchievementLevelNotice();
 }
 
 function openOnboardingModal() {
@@ -464,6 +520,7 @@ function completeOnboarding(startTour) {
         return;
     }
     showToast(t("ui.onboardingReadyToast"));
+    showAchievementLevelNotice();
 }
 
 function clearTourHighlight() {
@@ -653,6 +710,15 @@ function setVisibility(element, visible) {
     element.classList.toggle("hidden", !visible);
 }
 
+function syncLanguageControls() {
+    elements.languageSelect.value = currentLanguage();
+    elements.onboardingLanguageButtons.forEach(button => {
+        const active = button.dataset.onboardingLanguage === currentLanguage();
+        button.classList.toggle("active", active);
+        button.setAttribute("aria-pressed", String(active));
+    });
+}
+
 function populateLanguageSelect() {
     const fragment = document.createDocumentFragment();
     for (const language of AVAILABLE_LANGUAGES) {
@@ -662,7 +728,7 @@ function populateLanguageSelect() {
         fragment.appendChild(option);
     }
     elements.languageSelect.replaceChildren(fragment);
-    elements.languageSelect.value = currentLanguage();
+    syncLanguageControls();
 }
 
 function populateLessons() {
@@ -713,7 +779,10 @@ function applyLanguageToUI() {
 }
 
 async function changeLanguage(language) {
-    if (language === currentLanguage()) return;
+    if (language === currentLanguage()) {
+        syncLanguageControls();
+        return;
+    }
     settings = {
         ...settings,
         lesson: elements.lessonSelect.value || settings.lesson,
@@ -727,6 +796,7 @@ async function changeLanguage(language) {
         applyLanguageToUI();
     } catch (error) {
         console.error(error);
+        syncLanguageControls();
         showToast(t("ui.loadErrorQuestion"));
     }
 }
@@ -862,6 +932,7 @@ function rateCurrent(rating) {
     progress[id] = nextRecord;
     saveProgress(progress);
     const reachedDailyGoal = trackPracticeActivity(nextRecord.lastReviewedAt, id, rating);
+    refreshAchievements({ announce: true });
     updateProgressUI();
     const dueText = rating === "again"
         ? t("ui.dueAgain")
@@ -1064,6 +1135,93 @@ function renderProfileLists() {
     renderProfileList(elements.profileUpcomingList, upcomingEntries, "ui.emptyUpcoming");
 }
 
+function currentAchievementStats() {
+    return buildAchievementStats({
+        dictionary,
+        progress,
+        favorites,
+        dailyStats,
+        profile,
+    });
+}
+
+function refreshAchievements({ announce = false } = {}) {
+    const stats = currentAchievementStats();
+    const result = syncAchievements(achievements, stats);
+    if (result.changed) {
+        achievements = result.state;
+        saveAchievements(achievements);
+    }
+    if (announce) announceUnlockedAchievements(result.newlyUnlocked);
+    return {
+        stats,
+        items: achievementProgress(achievements, stats),
+        summary: achievementSummary(achievements),
+    };
+}
+
+function formatAchievementDate(timestamp) {
+    return new Intl.DateTimeFormat(currentLanguage(), {
+        day: "numeric",
+        month: "short",
+    }).format(new Date(timestamp));
+}
+
+function makeAchievementCard(achievement) {
+    const card = document.createElement("article");
+    card.className = "achievement-card";
+    card.classList.toggle("unlocked", achievement.unlocked);
+    card.classList.toggle("locked", !achievement.unlocked);
+
+    const icon = document.createElement("span");
+    icon.className = "achievement-icon";
+    icon.textContent = achievement.icon;
+    icon.setAttribute("aria-hidden", "true");
+
+    const body = document.createElement("span");
+    body.className = "achievement-body";
+
+    const title = document.createElement("strong");
+    title.textContent = t(achievement.titleKey);
+
+    const description = document.createElement("small");
+    description.textContent = t(achievement.descriptionKey);
+
+    const progressLine = document.createElement("span");
+    progressLine.className = "achievement-progress-text";
+    progressLine.textContent = achievement.unlocked
+        ? t("ui.achievementUnlockedAt", { date: formatAchievementDate(achievement.unlockedAt) })
+        : t("ui.achievementProgress", {
+            count: achievement.clampedValue,
+            goal: achievement.goal,
+        });
+
+    const bar = document.createElement("span");
+    bar.className = "achievement-track";
+    const fill = document.createElement("span");
+    fill.style.width = `${achievement.percent}%`;
+    bar.appendChild(fill);
+
+    body.append(title, description, progressLine, bar);
+    card.append(icon, body);
+    return card;
+}
+
+function renderAchievements() {
+    const { items, summary } = refreshAchievements();
+    elements.achievementSummary.textContent = t("ui.achievementsSummary", {
+        unlocked: summary.unlocked,
+        total: summary.total,
+    });
+    elements.achievementCount.textContent = `${summary.unlocked}/${summary.total}`;
+
+    const fragment = document.createDocumentFragment();
+    for (const achievement of items) {
+        fragment.appendChild(makeAchievementCard(achievement));
+    }
+    elements.achievementList.replaceChildren(fragment);
+}
+
 function renderProfile() {
     const today = dailySummary(dailyStats, profile);
     const stats = practiceStats(dailyStats, profile);
@@ -1091,6 +1249,7 @@ function renderProfile() {
     elements.profileGoalDays.textContent = stats.goalDays;
     elements.profileCurrentStreak.textContent = stats.currentGoalStreak;
     elements.profileBestStreak.textContent = stats.bestGoalStreak;
+    renderAchievements();
     renderDailyHistory();
     renderProfileLists();
 }
@@ -1171,6 +1330,7 @@ function matchesStudyFilter(item) {
     if (filter === "todos") return true;
     if (filter === "kana") return item.tipo === "hiragana" || item.tipo === "katakana";
     if (filter === "importantes") return Boolean(favorites[itemId(item)]);
+    if (filter === "dominadas") return isMastered(progress[itemId(item)]);
     if (filter === "N5") return item.tipo === "kanji" && item.categoria === "N5";
     return item.tipo === filter;
 }
@@ -1214,12 +1374,25 @@ function makeDictionaryCard(item, index) {
         favorite ? t("ui.studyFavoriteBadge") : "",
         mastered ? t("ui.studyMasteredBadge") : "",
     ].filter(Boolean);
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = "dictionary-card";
-    button.classList.toggle("is-favorite", favorite);
-    button.classList.toggle("is-mastered", mastered);
-    button.setAttribute(
+    const card = document.createElement("article");
+    card.className = "dictionary-card";
+    card.classList.toggle("is-favorite", favorite);
+    card.classList.toggle("is-mastered", mastered);
+
+    const favoriteToggle = document.createElement("button");
+    favoriteToggle.type = "button";
+    favoriteToggle.className = "dictionary-favorite-toggle";
+    favoriteToggle.classList.toggle("active", favorite);
+    favoriteToggle.textContent = favorite ? "★" : "☆";
+    favoriteToggle.setAttribute("aria-pressed", String(favorite));
+    favoriteToggle.setAttribute("aria-label", favorite ? t("ui.removeFavorite") : t("ui.addFavorite"));
+    favoriteToggle.title = favorite ? t("ui.removeFavorite") : t("ui.addFavorite");
+    favoriteToggle.addEventListener("click", () => toggleFavoriteForItem(item));
+
+    const detailsButton = document.createElement("button");
+    detailsButton.type = "button";
+    detailsButton.className = "dictionary-card-main";
+    detailsButton.setAttribute(
         "aria-label",
         `${t("ui.openDetails", {
             character: item.caracter,
@@ -1231,13 +1404,6 @@ function makeDictionaryCard(item, index) {
     const badges = document.createElement("span");
     badges.className = "dictionary-badges";
     badges.setAttribute("aria-hidden", "true");
-    if (favorite) {
-        const favoriteBadge = document.createElement("span");
-        favoriteBadge.className = "dictionary-badge favorite";
-        favoriteBadge.title = t("ui.studyFavoriteBadge");
-        favoriteBadge.textContent = "★";
-        badges.appendChild(favoriteBadge);
-    }
     if (mastered) {
         const masteredBadge = document.createElement("span");
         masteredBadge.className = "dictionary-badge mastered";
@@ -1258,9 +1424,10 @@ function makeDictionaryCard(item, index) {
     type.className = "dictionary-type";
     type.textContent = `${item.tipoLabel} · ${itemStateLabel(record)}`;
 
-    button.append(badges, character, reading, meaning, type);
-    button.addEventListener("click", () => openModal(index, button));
-    return button;
+    detailsButton.append(character, reading, meaning, type);
+    detailsButton.addEventListener("click", () => openModal(index, detailsButton));
+    card.append(favoriteToggle, badges, detailsButton);
+    return card;
 }
 
 function renderDictionary() {
@@ -1298,10 +1465,10 @@ function openModal(index, trigger = modalTrigger) {
     if (!item) return;
     modalIndex = index;
     modalTrigger = trigger;
-    strokeOrderVisible = false;
-    elements.modalCharacter.classList.remove("stroke-order");
-    elements.toggleStrokes.setAttribute("aria-pressed", "false");
-    elements.toggleStrokes.textContent = t("ui.showStrokeOrder");
+    strokeOrderVisible = true;
+    elements.modalCharacter.classList.add("stroke-order");
+    elements.toggleStrokes.setAttribute("aria-pressed", "true");
+    elements.toggleStrokes.textContent = t("ui.hideStrokeOrder");
     modalPad.clear();
 
     elements.modalCharacter.textContent = item.caracter || "?";
@@ -1362,23 +1529,28 @@ function currentModalItem() {
     return filteredStudyItems[modalIndex] ?? null;
 }
 
-function toggleFavorite() {
-    const item = currentModalItem();
+function toggleFavoriteForItem(item, { keepModalOpen = false } = {}) {
     if (!item) return;
     const id = itemId(item);
     const wasFavorite = Boolean(favorites[id]);
     if (wasFavorite) delete favorites[id];
     else favorites[id] = true;
     saveFavorites(favorites);
+    refreshAchievements({ announce: true });
     updateProgressUI();
+    renderDictionary();
     if (elements.studyFilter.value === "importantes" && wasFavorite) {
-        renderDictionary();
-        closeModal();
-        elements.search.focus();
+        if (keepModalOpen) {
+            closeModal();
+            elements.search.focus();
+        }
         return;
     }
-    openModal(modalIndex, modalTrigger);
-    if (elements.studyFilter.value === "importantes") renderDictionary();
+    if (keepModalOpen) openModal(modalIndex, modalTrigger);
+}
+
+function toggleFavorite() {
+    toggleFavoriteForItem(currentModalItem(), { keepModalOpen: true });
 }
 
 function trapModalFocus(event, modal = elements.modal) {
@@ -1400,7 +1572,7 @@ function trapModalFocus(event, modal = elements.modal) {
 
 function exportProgress() {
     const blob = new Blob(
-        [createBackup(progress, favorites, settings, practiceReminder, profile, dailyStats)],
+        [createBackup(progress, favorites, settings, practiceReminder, profile, dailyStats, achievements)],
         { type: "application/json" },
     );
     const url = URL.createObjectURL(blob);
@@ -1422,8 +1594,10 @@ async function importProgress(file) {
         practiceReminder = imported.reminder;
         profile = imported.profile;
         dailyStats = imported.dailyStats;
+        achievements = imported.achievements;
         restoreSettings();
         saveReminderState(practiceReminder);
+        refreshAchievements();
         updateProgressUI();
         renderProfile();
         presentChallenge();
@@ -1455,6 +1629,9 @@ function bindEvents() {
     elements.studyTab.addEventListener("click", () => switchTab("study"));
     elements.profileTab.addEventListener("click", () => switchTab("profile"));
     elements.languageSelect.addEventListener("change", () => changeLanguage(elements.languageSelect.value));
+    elements.onboardingLanguageButtons.forEach(button => {
+        button.addEventListener("click", () => changeLanguage(button.dataset.onboardingLanguage));
+    });
     elements.reminderButton.addEventListener("click", togglePracticeReminder);
     const tabs = [elements.practiceTab, elements.studyTab, elements.profileTab];
     for (const tab of tabs) {
@@ -1605,6 +1782,7 @@ async function init() {
     populateLessons();
     restoreSettings();
     bindEvents();
+    elements.splashVersion.textContent = `v${APP_VERSION}`;
     elements.appVersion.textContent = `v${APP_VERSION}`;
     renderProfile();
     updateFeedbackCounter();
@@ -1616,6 +1794,7 @@ async function init() {
     try {
         baseDictionary = await loadDictionary();
         localizeLoadedDictionary();
+        refreshAchievements();
         updateProgressUI();
         presentChallenge();
         renderDictionary();

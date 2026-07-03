@@ -77,6 +77,16 @@ body {
     text-transform: uppercase;
 }
 
+.splash-version {
+    position: fixed;
+    right: 18px;
+    bottom: 14px;
+    color: rgba(255, 255, 255, 0.46);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+}
+
 button,
 input,
 select {
@@ -378,6 +388,7 @@ select:focus-visible,
 
 .profile-heading h2,
 .history-card h3,
+.achievements-card h3,
 .data-card h3,
 .feedback-card h3,
 .context-card h3 {
@@ -458,6 +469,7 @@ select:focus-visible,
 }
 
 .history-card,
+.achievements-card,
 .profile-lists-card,
 .data-card,
 .feedback-card {
@@ -465,6 +477,110 @@ select:focus-visible,
     border: 1px solid var(--line);
     border-radius: 20px;
     background: var(--surface);
+}
+
+.achievements-card {
+    display: grid;
+    gap: 14px;
+}
+
+.achievements-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.achievements-heading strong {
+    flex: 0 0 auto;
+    padding: 7px 10px;
+    border-radius: 999px;
+    background: #eff6ff;
+    color: var(--blue-dark);
+    font-size: 0.82rem;
+}
+
+.achievements-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.achievement-card {
+    display: grid;
+    grid-template-columns: 42px 1fr;
+    gap: 10px;
+    min-width: 0;
+    padding: 12px;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    background: var(--surface-soft);
+}
+
+.achievement-card.unlocked {
+    border-color: rgba(5, 150, 105, 0.28);
+    background: linear-gradient(135deg, #ecfdf5, #ffffff);
+}
+
+.achievement-card.locked {
+    opacity: 0.78;
+}
+
+.achievement-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 15px;
+    background: #e2e8f0;
+    color: #334155;
+    font-size: 1.2rem;
+    font-weight: 900;
+}
+
+.achievement-card.unlocked .achievement-icon {
+    background: #d1fae5;
+    color: #047857;
+}
+
+.achievement-body {
+    display: grid;
+    min-width: 0;
+    gap: 4px;
+}
+
+.achievement-body strong,
+.achievement-body small,
+.achievement-progress-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.achievement-body strong {
+    font-size: 0.88rem;
+}
+
+.achievement-body small,
+.achievement-progress-text {
+    color: var(--muted);
+    font-size: 0.7rem;
+    line-height: 1.35;
+}
+
+.achievement-track {
+    display: block;
+    height: 6px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: #e2e8f0;
+}
+
+.achievement-track span {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, var(--blue), var(--green));
 }
 
 .profile-lists-card {
@@ -988,7 +1104,7 @@ canvas {
 .dictionary-card {
     position: relative;
     min-width: 0;
-    padding: 22px 8px 14px;
+    padding: 0;
     border: 1px solid var(--line);
     border-radius: 14px;
     background: var(--surface-soft);
@@ -1011,10 +1127,60 @@ canvas {
     box-shadow: inset 0 0 0 1px rgba(5, 150, 105, 0.12);
 }
 
+.dictionary-card-main {
+    display: block;
+    width: 100%;
+    min-height: 100%;
+    padding: 28px 8px 14px;
+    border: 0;
+    border-radius: inherit;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    text-align: center;
+    cursor: pointer;
+}
+
+.dictionary-card-main:focus-visible,
+.dictionary-favorite-toggle:focus-visible {
+    outline: 3px solid rgba(37, 99, 235, 0.35);
+    outline-offset: 2px;
+}
+
+.dictionary-favorite-toggle {
+    position: absolute;
+    z-index: 2;
+    top: 7px;
+    right: 7px;
+    display: inline-grid;
+    width: 28px;
+    height: 28px;
+    place-items: center;
+    border: 1px solid #cbd5e1;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.92);
+    color: #94a3b8;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 900;
+    line-height: 1;
+    cursor: pointer;
+    box-shadow: 0 6px 16px rgba(15, 23, 42, 0.08);
+    transition: transform 120ms ease, border-color 120ms ease, color 120ms ease, background 120ms ease;
+}
+
+.dictionary-favorite-toggle:hover,
+.dictionary-favorite-toggle.active {
+    border-color: rgba(217, 119, 6, 0.36);
+    background: #fef3c7;
+    color: #b45309;
+    transform: translateY(-1px);
+}
+
 .dictionary-badges {
     position: absolute;
     top: 7px;
-    right: 7px;
+    left: 7px;
     display: inline-flex;
     gap: 4px;
     pointer-events: none;
@@ -1140,6 +1306,58 @@ canvas {
     display: grid;
     gap: 12px;
     margin-top: 16px;
+}
+
+.onboarding-language {
+    display: grid;
+    gap: 9px;
+    padding: 12px;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    background: var(--surface-soft);
+    text-align: left;
+}
+
+.onboarding-language-label {
+    margin: 0;
+    color: #475569;
+    font-size: 0.76rem;
+    font-weight: 900;
+}
+
+.onboarding-language-options {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+}
+
+.onboarding-language-button {
+    display: grid;
+    justify-items: center;
+    gap: 4px;
+    min-height: 72px;
+    padding: 10px 8px;
+    border: 1px solid #cbd5e1;
+    border-radius: 15px;
+    background: white;
+    color: var(--ink);
+    font-size: 0.76rem;
+    font-weight: 900;
+    cursor: pointer;
+    transition: transform 140ms ease, border-color 140ms ease, box-shadow 140ms ease, background 140ms ease;
+}
+
+.onboarding-language-button:hover,
+.onboarding-language-button.active {
+    border-color: rgba(37, 99, 235, 0.55);
+    background: #eff6ff;
+    box-shadow: 0 12px 28px rgba(37, 99, 235, 0.14);
+    transform: translateY(-1px);
+}
+
+.language-flag {
+    font-size: 1.45rem;
+    line-height: 1;
 }
 
 .onboarding-actions,
@@ -1360,6 +1578,31 @@ canvas {
     transform: translate(-50%, 0);
 }
 
+.level-notice {
+    position: fixed;
+    z-index: 1990;
+    left: 50%;
+    bottom: max(64px, calc(env(safe-area-inset-bottom) + 58px));
+    max-width: calc(100% - 32px);
+    padding: 9px 14px;
+    border: 1px solid rgba(37, 99, 235, 0.24);
+    border-radius: 999px;
+    background: rgba(239, 246, 255, 0.96);
+    color: var(--blue-dark);
+    box-shadow: var(--shadow);
+    font-size: 0.78rem;
+    font-weight: 800;
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, 10px);
+    transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.level-notice.visible {
+    opacity: 1;
+    transform: translate(-50%, 0);
+}
+
 @keyframes reveal {
     from { opacity: 0; transform: translateY(-8px); }
     to { opacity: 1; transform: translateY(0); }
@@ -1428,6 +1671,14 @@ canvas {
     .profile-recommendations,
     .profile-stats-grid {
         grid-template-columns: 1fr 1fr;
+    }
+
+    .achievements-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .achievements-heading {
+        flex-direction: column;
     }
 
     .profile-lists-grid {

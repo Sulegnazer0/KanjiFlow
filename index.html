@@ -7,7 +7,7 @@
     <meta name="description" content="Aprende hiragana, katakana y kanji con escritura, audio y repetición espaciada.">
     <title>KanjiFlow — Aprende japonés</title>
     <link rel="manifest" href="manifest.webmanifest">
-    <link rel="stylesheet" href="style.css?v=712">
+    <link rel="stylesheet" href="style.css?v=803">
 </head>
 <body>
     <div id="pantalla-carga" class="splash-screen" aria-live="polite">
@@ -15,6 +15,7 @@
             <img src="assets/s0labsHorizontal.png" alt="S0 Labs" class="splash-logo">
             <p data-i18n="ui.splashTagline">Preparando tu flujo de práctica…</p>
         </div>
+        <span id="splash-version" class="splash-version">v0.8.3</span>
     </div>
 
     <main class="app-shell">
@@ -188,6 +189,7 @@
                         <option value="kana" data-i18n="ui.contentKana">Hiragana + katakana</option>
                         <option value="N5">Kanji N5</option>
                         <option value="importantes" data-i18n="ui.contentFavorites">Mis favoritas</option>
+                        <option value="dominadas" data-i18n="ui.contentMastered">Dominadas</option>
                     </select>
                 </div>
             </div>
@@ -240,6 +242,17 @@
                     <div><strong id="perfil-racha-actual">0</strong><span data-i18n="ui.profileCurrentStreak">Racha actual</span></div>
                     <div><strong id="perfil-mejor-racha">0</strong><span data-i18n="ui.profileBestStreak">Mejor racha</span></div>
                 </div>
+
+                <section class="achievements-card" aria-labelledby="logros-titulo">
+                    <div class="achievements-heading">
+                        <div>
+                            <h3 id="logros-titulo" data-i18n="ui.achievementsTitle">Logros</h3>
+                            <p id="resumen-logros" class="lesson-description"></p>
+                        </div>
+                        <strong id="contador-logros">0/0</strong>
+                    </div>
+                    <div id="lista-logros" class="achievements-grid"></div>
+                </section>
 
                 <section class="history-card" aria-labelledby="historial-titulo">
                     <h3 id="historial-titulo" data-i18n="ui.historyTitle">Últimos 7 días</h3>
@@ -299,6 +312,30 @@
             </p>
 
             <form id="form-bienvenida" class="onboarding-form">
+                <section class="onboarding-language" aria-labelledby="onboarding-idioma-label">
+                    <p id="onboarding-idioma-label" class="onboarding-language-label"
+                       data-i18n="ui.onboardingLanguageLabel">Elige tu idioma</p>
+                    <div class="onboarding-language-options">
+                        <button class="onboarding-language-button" type="button"
+                                data-onboarding-language="es" aria-pressed="false">
+                            <span class="language-flag" aria-hidden="true">🇪🇸</span>
+                            <span>Español</span>
+                        </button>
+                        <button class="onboarding-language-button" type="button"
+                                data-onboarding-language="en" aria-pressed="false">
+                            <span class="language-flag" aria-hidden="true">🇬🇧</span>
+                            <span>English</span>
+                        </button>
+                        <button class="onboarding-language-button" type="button"
+                                data-onboarding-language="de" aria-pressed="false">
+                            <span class="language-flag" aria-hidden="true">🇩🇪</span>
+                            <span>Deutsch</span>
+                        </button>
+                    </div>
+                    <small class="field-hint" data-i18n="ui.onboardingLanguageHint">
+                        Puedes cambiarlo después desde el globo superior.
+                    </small>
+                </section>
                 <div class="field">
                     <label for="onboarding-nombre" data-i18n="ui.profileNameLabel">Nombre</label>
                     <input id="onboarding-nombre" type="text" maxlength="40" required
@@ -342,7 +379,7 @@
 
             <div class="modal-board-controls">
                 <button id="btn-toggle-trazos" class="button secondary" type="button"
-                        aria-pressed="false" data-i18n="ui.showStrokeOrder">Mostrar orden de trazos</button>
+                        aria-pressed="true" data-i18n="ui.hideStrokeOrder">Ocultar orden de trazos</button>
                 <button id="btn-limpiar-modal" class="button secondary" type="button" data-i18n="ui.clear">Limpiar</button>
             </div>
 
@@ -419,6 +456,8 @@
                 <h3 data-i18n="ui.latestUpdates">Últimas actualizaciones</h3>
                 <ul class="updates-list">
                     <li data-i18n="ui.updateOnboarding">Pantalla de marca, bienvenida y tour inicial.</li>
+                    <li data-i18n="ui.updateAchievements">Sistema de logros, niveles y versión visible en la pantalla de carga.</li>
+                    <li data-i18n="ui.updateStudyFavorites">Favoritos directos y filtro de dominadas en Estudio.</li>
                     <li data-i18n="ui.updateReminderTime">Hora configurable para recordatorios.</li>
                     <li data-i18n="ui.updateProfileGoals">Perfil, meta diaria y estadísticas por día.</li>
                     <li data-i18n="ui.updateDirectFeedback">Envío directo de recomendaciones a Google Sheets.</li>
@@ -458,7 +497,8 @@
         </div>
     </div>
 
+    <div id="aviso-nivel" class="level-notice" role="status" aria-live="polite"></div>
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
-    <script type="module" src="js/app.js?v=712"></script>
+    <script type="module" src="js/app.js?v=803"></script>
 </body>
 </html>
