@@ -4,7 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node tests/run-tests.mjs",
+    "test": "npm run validate:content && node tests/run-tests.mjs",
+    "validate:content": "node tools/validate-content.mjs",
     "serve": "python -m http.server 8765"
   }
 }
