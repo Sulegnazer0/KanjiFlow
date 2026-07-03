@@ -499,4 +499,104 @@ export const KANJI_EXAMPLES = {
         sentence: "辞書を使います。", sentenceReading: "じしょを つかいます。",
         sentenceMeaning: "Uso el diccionario.",
     },
+    "私": {
+        word: "私", reading: "わたし", meaning: "yo",
+        sentence: "私は学生です。", sentenceReading: "わたしは がくせいです。",
+        sentenceMeaning: "Soy estudiante.",
+    },
+    "家": {
+        word: "家", reading: "いえ", meaning: "casa",
+        sentence: "家で本を読みます。", sentenceReading: "いえで ほんを よみます。",
+        sentenceMeaning: "Leo un libro en casa.",
+    },
+    "電": {
+        word: "電車", reading: "でんしゃ", meaning: "tren",
+        sentence: "電車で学校へ行きます。", sentenceReading: "でんしゃで がっこうへ いきます。",
+        sentenceMeaning: "Voy a la escuela en tren.",
+    },
+    "毎": {
+        word: "毎日", reading: "まいにち", meaning: "todos los días",
+        sentence: "毎日日本語を勉強します。", sentenceReading: "まいにち にほんごを べんきょうします。",
+        sentenceMeaning: "Estudio japonés todos los días.",
+    },
+    "週": {
+        word: "週末", reading: "しゅうまつ", meaning: "fin de semana",
+        sentence: "週末に友だちと会います。", sentenceReading: "しゅうまつに ともだちと あいます。",
+        sentenceMeaning: "Me reúno con un amigo el fin de semana.",
+    },
+    "曜": {
+        word: "曜日", reading: "ようび", meaning: "día de la semana",
+        sentence: "今日は何曜日ですか。", sentenceReading: "きょうは なんようびですか。",
+        sentenceMeaning: "¿Qué día de la semana es hoy?",
+    },
+    "言": {
+        word: "言う", reading: "いう", meaning: "decir",
+        sentence: "先生にありがとうと言います。", sentenceReading: "せんせいに ありがとうと いいます。",
+        sentenceMeaning: "Le digo gracias al profesor.",
+    },
+    "知": {
+        word: "知る", reading: "しる", meaning: "saber; conocer",
+        sentence: "その人を知っています。", sentenceReading: "その ひとを しっています。",
+        sentenceMeaning: "Conozco a esa persona.",
+    },
+    "思": {
+        word: "思う", reading: "おもう", meaning: "pensar; sentir",
+        sentence: "いいと思います。", sentenceReading: "いいと おもいます。",
+        sentenceMeaning: "Creo que está bien.",
+    },
+    "考": {
+        word: "考える", reading: "かんがえる", meaning: "pensar; considerar",
+        sentence: "答えを考えます。", sentenceReading: "こたえを かんがえます。",
+        sentenceMeaning: "Pienso en la respuesta.",
+    },
+    "作": {
+        word: "作る", reading: "つくる", meaning: "hacer; crear",
+        sentence: "朝ごはんを作ります。", sentenceReading: "あさごはんを つくります。",
+        sentenceMeaning: "Preparo el desayuno.",
+    },
+    "住": {
+        word: "住む", reading: "すむ", meaning: "vivir; residir",
+        sentence: "東京に住んでいます。", sentenceReading: "とうきょうに すんでいます。",
+        sentenceMeaning: "Vivo en Tokio.",
+    },
+    "正": {
+        word: "正しい", reading: "ただしい", meaning: "correcto",
+        sentence: "正しい答えを書きます。", sentenceReading: "ただしい こたえを かきます。",
+        sentenceMeaning: "Escribo la respuesta correcta.",
+    },
+    "教": {
+        word: "教える", reading: "おしえる", meaning: "enseñar",
+        sentence: "先生が漢字を教えます。", sentenceReading: "せんせいが かんじを おしえます。",
+        sentenceMeaning: "El profesor enseña kanji.",
+    },
+    "歩": {
+        word: "歩く", reading: "あるく", meaning: "caminar",
+        sentence: "駅まで歩きます。", sentenceReading: "えきまで あるきます。",
+        sentenceMeaning: "Camino hasta la estación.",
+    },
+    "走": {
+        word: "走る", reading: "はしる", meaning: "correr",
+        sentence: "公園で走ります。", sentenceReading: "こうえんで はしります。",
+        sentenceMeaning: "Corro en el parque.",
+    },
+    "起": {
+        word: "起きる", reading: "おきる", meaning: "levantarse",
+        sentence: "七時に起きます。", sentenceReading: "しちじに おきます。",
+        sentenceMeaning: "Me levanto a las siete.",
+    },
+    "寝": {
+        word: "寝る", reading: "ねる", meaning: "dormir",
+        sentence: "早く寝ます。", sentenceReading: "はやく ねます。",
+        sentenceMeaning: "Me duermo temprano.",
+    },
+    "休": {
+        word: "休む", reading: "やすむ", meaning: "descansar",
+        sentence: "日曜日に休みます。", sentenceReading: "にちようびに やすみます。",
+        sentenceMeaning: "Descanso el domingo.",
+    },
+    "持": {
+        word: "持つ", reading: "もつ", meaning: "tener; sostener",
+        sentence: "本を持っています。", sentenceReading: "ほんを もっています。",
+        sentenceMeaning: "Tengo un libro.",
+    },
 };

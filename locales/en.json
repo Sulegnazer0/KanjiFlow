@@ -136,7 +136,7 @@
     "latestUpdates": "Latest updates",
     "updateOnboarding": "Brand splash screen, welcome prompt, and first-run tour.",
     "updateAchievements": "Achievement levels and visible version on the splash screen.",
-    "updateN4": "First block of 20 N4 kanji with examples and stroke guides.",
+    "updateN4": "Two N4 blocks with 40 kanji, examples, and stroke guides.",
     "updateKanjiAudio": "Kanji audio now uses main readings with pauses.",
     "updateStudyFavorites": "Direct favorites and a mastered filter in Study.",
     "updateReminderTime": "Configurable reminder time.",
@@ -362,6 +362,10 @@
       "title": "16. Kanji N4: society and actions",
       "description": "Meetings, places, work, questions, and frequent actions."
     },
+    "kanji-n4-2": {
+      "title": "17. Kanji N4: daily life and thought",
+      "description": "Home, habits, communication, thinking, and routine actions."
+    },
     "all": {
       "title": "All content",
       "description": "A free mix of all available characters."
@@ -472,7 +476,27 @@
     "kanji_代": { "meaning": "Generation / Substitute", "exampleMeaning": "era; age", "sentenceMeaning": "A new era begins." },
     "kanji_明": { "meaning": "Bright / Clear", "exampleMeaning": "bright; clear", "sentenceMeaning": "The room is bright." },
     "kanji_文": { "meaning": "Text / Sentence", "exampleMeaning": "composition", "sentenceMeaning": "I write a composition in Japanese." },
-    "kanji_使": { "meaning": "Use", "exampleMeaning": "to use", "sentenceMeaning": "I use the dictionary." }
+    "kanji_使": { "meaning": "Use", "exampleMeaning": "to use", "sentenceMeaning": "I use the dictionary." },
+    "kanji_私": { "meaning": "I / Private", "exampleMeaning": "I; me", "sentenceMeaning": "I am a student." },
+    "kanji_家": { "meaning": "House / Family", "exampleMeaning": "house", "sentenceMeaning": "I read a book at home." },
+    "kanji_電": { "meaning": "Electricity", "exampleMeaning": "train", "sentenceMeaning": "I go to school by train." },
+    "kanji_毎": { "meaning": "Every", "exampleMeaning": "every day", "sentenceMeaning": "I study Japanese every day." },
+    "kanji_週": { "meaning": "Week", "exampleMeaning": "weekend", "sentenceMeaning": "I meet a friend on the weekend." },
+    "kanji_曜": { "meaning": "Day of the week", "exampleMeaning": "day of the week", "sentenceMeaning": "What day of the week is it today?" },
+    "kanji_言": { "meaning": "Say / Word", "exampleMeaning": "to say", "sentenceMeaning": "I say thank you to the teacher." },
+    "kanji_知": { "meaning": "Know", "exampleMeaning": "to know", "sentenceMeaning": "I know that person." },
+    "kanji_思": { "meaning": "Think / Feel", "exampleMeaning": "to think; to feel", "sentenceMeaning": "I think it is good." },
+    "kanji_考": { "meaning": "Think / Consider", "exampleMeaning": "to think; to consider", "sentenceMeaning": "I think about the answer." },
+    "kanji_作": { "meaning": "Make / Create", "exampleMeaning": "to make; to create", "sentenceMeaning": "I make breakfast." },
+    "kanji_住": { "meaning": "Live / Reside", "exampleMeaning": "to live; to reside", "sentenceMeaning": "I live in Tokyo." },
+    "kanji_正": { "meaning": "Correct / Just", "exampleMeaning": "correct", "sentenceMeaning": "I write the correct answer." },
+    "kanji_教": { "meaning": "Teach", "exampleMeaning": "to teach", "sentenceMeaning": "The teacher teaches kanji." },
+    "kanji_歩": { "meaning": "Walk", "exampleMeaning": "to walk", "sentenceMeaning": "I walk to the station." },
+    "kanji_走": { "meaning": "Run", "exampleMeaning": "to run", "sentenceMeaning": "I run in the park." },
+    "kanji_起": { "meaning": "Wake up / Happen", "exampleMeaning": "to wake up", "sentenceMeaning": "I wake up at seven." },
+    "kanji_寝": { "meaning": "Sleep", "exampleMeaning": "to sleep", "sentenceMeaning": "I go to sleep early." },
+    "kanji_休": { "meaning": "Rest", "exampleMeaning": "to rest", "sentenceMeaning": "I rest on Sunday." },
+    "kanji_持": { "meaning": "Have / Hold", "exampleMeaning": "to have; to hold", "sentenceMeaning": "I have a book." }
   },
   "exampleTerms": {
     "Abreviación": "Abbreviation",

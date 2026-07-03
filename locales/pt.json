@@ -136,7 +136,7 @@
     "latestUpdates": "Ultimas atualizacoes",
     "updateOnboarding": "Tela de marca, boas-vindas e tour inicial.",
     "updateAchievements": "Niveis de conquistas e versao visivel na tela de carregamento.",
-    "updateN4": "Primeiro bloco de 20 kanji N4 com exemplos e tracos.",
+    "updateN4": "Dois blocos N4 com 40 kanji, exemplos e tracos.",
     "updateKanjiAudio": "Audio de kanji ajustado para leituras principais com pausas.",
     "updateStudyFavorites": "Favoritos diretos e filtro de dominadas em Estudo.",
     "updateReminderTime": "Horario configuravel para lembretes.",
@@ -410,6 +410,10 @@
     "kanji-n4-1": {
       "title": "16. Kanji N4: sociedade e acoes",
       "description": "Reunioes, lugares, trabalho, perguntas e acoes frequentes."
+    },
+    "kanji-n4-2": {
+      "title": "17. Kanji N4: vida diaria e pensamento",
+      "description": "Casa, habitos, comunicacao, pensamento e acoes de rotina."
     },
     "all": {
       "title": "Todo o conteudo",
@@ -931,6 +935,106 @@
       "meaning": "Usar",
       "exampleMeaning": "to use",
       "sentenceMeaning": "I use the dictionary."
+    },
+    "kanji_私": {
+      "meaning": "Eu / Privado",
+      "exampleMeaning": "eu",
+      "sentenceMeaning": "Sou estudante."
+    },
+    "kanji_家": {
+      "meaning": "Casa / Familia",
+      "exampleMeaning": "casa",
+      "sentenceMeaning": "Leio um livro em casa."
+    },
+    "kanji_電": {
+      "meaning": "Eletricidade",
+      "exampleMeaning": "trem",
+      "sentenceMeaning": "Vou para a escola de trem."
+    },
+    "kanji_毎": {
+      "meaning": "Cada",
+      "exampleMeaning": "todos os dias",
+      "sentenceMeaning": "Estudo japones todos os dias."
+    },
+    "kanji_週": {
+      "meaning": "Semana",
+      "exampleMeaning": "fim de semana",
+      "sentenceMeaning": "Encontro um amigo no fim de semana."
+    },
+    "kanji_曜": {
+      "meaning": "Dia da semana",
+      "exampleMeaning": "dia da semana",
+      "sentenceMeaning": "Que dia da semana e hoje?"
+    },
+    "kanji_言": {
+      "meaning": "Dizer / Palavra",
+      "exampleMeaning": "dizer",
+      "sentenceMeaning": "Digo obrigado ao professor."
+    },
+    "kanji_知": {
+      "meaning": "Saber / Conhecer",
+      "exampleMeaning": "saber; conhecer",
+      "sentenceMeaning": "Conheco essa pessoa."
+    },
+    "kanji_思": {
+      "meaning": "Pensar / Sentir",
+      "exampleMeaning": "pensar; sentir",
+      "sentenceMeaning": "Acho que esta bom."
+    },
+    "kanji_考": {
+      "meaning": "Pensar / Considerar",
+      "exampleMeaning": "pensar; considerar",
+      "sentenceMeaning": "Penso na resposta."
+    },
+    "kanji_作": {
+      "meaning": "Fazer / Criar",
+      "exampleMeaning": "fazer; criar",
+      "sentenceMeaning": "Preparo o cafe da manha."
+    },
+    "kanji_住": {
+      "meaning": "Viver / Morar",
+      "exampleMeaning": "viver; morar",
+      "sentenceMeaning": "Moro em Toquio."
+    },
+    "kanji_正": {
+      "meaning": "Correto / Justo",
+      "exampleMeaning": "correto",
+      "sentenceMeaning": "Escrevo a resposta correta."
+    },
+    "kanji_教": {
+      "meaning": "Ensinar",
+      "exampleMeaning": "ensinar",
+      "sentenceMeaning": "O professor ensina kanji."
+    },
+    "kanji_歩": {
+      "meaning": "Caminhar",
+      "exampleMeaning": "caminhar",
+      "sentenceMeaning": "Caminho ate a estacao."
+    },
+    "kanji_走": {
+      "meaning": "Correr",
+      "exampleMeaning": "correr",
+      "sentenceMeaning": "Corro no parque."
+    },
+    "kanji_起": {
+      "meaning": "Acordar / Acontecer",
+      "exampleMeaning": "acordar",
+      "sentenceMeaning": "Acordo as sete."
+    },
+    "kanji_寝": {
+      "meaning": "Dormir",
+      "exampleMeaning": "dormir",
+      "sentenceMeaning": "Durmo cedo."
+    },
+    "kanji_休": {
+      "meaning": "Descansar",
+      "exampleMeaning": "descansar",
+      "sentenceMeaning": "Descanso no domingo."
+    },
+    "kanji_持": {
+      "meaning": "Ter / Segurar",
+      "exampleMeaning": "ter; segurar",
+      "sentenceMeaning": "Tenho um livro."
     }
   },
   "exampleTerms": {

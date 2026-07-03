@@ -10,6 +10,20 @@ El número de versión visible de la app debe mantenerse alineado en:
 - `CHANGELOG.md`;
 - `service-worker.js` y query strings `?v=...` cuando cambien archivos cacheados.
 
+## [0.8.7] - 2026-07-03
+
+### Agregado
+
+- Segunda tanda N4 con 20 kanji nuevos: 私, 家, 電, 毎, 週, 曜, 言, 知, 思, 考, 作, 住, 正, 教, 歩, 走, 起, 寝, 休 y 持.
+- Lección “Kanji N4: vida diaria y pensamiento”.
+- Ejemplos contextualizados para los 20 kanji nuevos.
+- Traducciones ES/EN/DE/FR/PT para las nuevas tarjetas.
+- Fuente `KanjiStrokeOrders.woff` regenerada para cubrir 120 kanji publicados.
+
+### Cambiado
+
+- La app muestra `v0.8.7`, 333 tarjetas y 120 kanji con ejemplos.
+
 ## [0.8.6] - 2026-07-03
 
 ### Agregado

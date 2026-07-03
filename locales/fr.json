@@ -136,7 +136,7 @@
     "latestUpdates": "Dernieres nouveautes",
     "updateOnboarding": "Ecran de marque, bienvenue et visite initiale.",
     "updateAchievements": "Niveaux de succes et version visible au demarrage.",
-    "updateN4": "Premier bloc de 20 kanji N4 avec exemples et traits.",
+    "updateN4": "Deux blocs N4 avec 40 kanji, exemples et traits.",
     "updateKanjiAudio": "Audio des kanji ajuste aux lectures principales avec pauses.",
     "updateStudyFavorites": "Favoris directs et filtre des caracteres maitrises dans Etude.",
     "updateReminderTime": "Heure de rappel configurable.",
@@ -410,6 +410,10 @@
     "kanji-n4-1": {
       "title": "16. Kanji N4 : societe et actions",
       "description": "Reunions, lieux, travail, questions et actions frequentes."
+    },
+    "kanji-n4-2": {
+      "title": "17. Kanji N4 : vie quotidienne et pensee",
+      "description": "Maison, habitudes, communication, pensee et actions de routine."
     },
     "all": {
       "title": "Tout le contenu",
@@ -931,6 +935,106 @@
       "meaning": "Utiliser",
       "exampleMeaning": "to use",
       "sentenceMeaning": "I use the dictionary."
+    },
+    "kanji_私": {
+      "meaning": "Je / Prive",
+      "exampleMeaning": "je; moi",
+      "sentenceMeaning": "Je suis etudiant."
+    },
+    "kanji_家": {
+      "meaning": "Maison / Famille",
+      "exampleMeaning": "maison",
+      "sentenceMeaning": "Je lis un livre a la maison."
+    },
+    "kanji_電": {
+      "meaning": "Electricite",
+      "exampleMeaning": "train",
+      "sentenceMeaning": "Je vais a l'ecole en train."
+    },
+    "kanji_毎": {
+      "meaning": "Chaque",
+      "exampleMeaning": "tous les jours",
+      "sentenceMeaning": "J'etudie le japonais tous les jours."
+    },
+    "kanji_週": {
+      "meaning": "Semaine",
+      "exampleMeaning": "week-end",
+      "sentenceMeaning": "Je rencontre un ami le week-end."
+    },
+    "kanji_曜": {
+      "meaning": "Jour de la semaine",
+      "exampleMeaning": "jour de la semaine",
+      "sentenceMeaning": "Quel jour de la semaine sommes-nous ?"
+    },
+    "kanji_言": {
+      "meaning": "Dire / Mot",
+      "exampleMeaning": "dire",
+      "sentenceMeaning": "Je dis merci au professeur."
+    },
+    "kanji_知": {
+      "meaning": "Savoir / Connaitre",
+      "exampleMeaning": "savoir; connaitre",
+      "sentenceMeaning": "Je connais cette personne."
+    },
+    "kanji_思": {
+      "meaning": "Penser / Ressentir",
+      "exampleMeaning": "penser; ressentir",
+      "sentenceMeaning": "Je pense que c'est bien."
+    },
+    "kanji_考": {
+      "meaning": "Penser / Considerer",
+      "exampleMeaning": "penser; considerer",
+      "sentenceMeaning": "Je reflechis a la reponse."
+    },
+    "kanji_作": {
+      "meaning": "Faire / Creer",
+      "exampleMeaning": "faire; creer",
+      "sentenceMeaning": "Je prepare le petit-dejeuner."
+    },
+    "kanji_住": {
+      "meaning": "Vivre / Resider",
+      "exampleMeaning": "vivre; resider",
+      "sentenceMeaning": "J'habite a Tokyo."
+    },
+    "kanji_正": {
+      "meaning": "Correct / Juste",
+      "exampleMeaning": "correct",
+      "sentenceMeaning": "J'ecris la bonne reponse."
+    },
+    "kanji_教": {
+      "meaning": "Enseigner",
+      "exampleMeaning": "enseigner",
+      "sentenceMeaning": "Le professeur enseigne les kanji."
+    },
+    "kanji_歩": {
+      "meaning": "Marcher",
+      "exampleMeaning": "marcher",
+      "sentenceMeaning": "Je marche jusqu'a la gare."
+    },
+    "kanji_走": {
+      "meaning": "Courir",
+      "exampleMeaning": "courir",
+      "sentenceMeaning": "Je cours dans le parc."
+    },
+    "kanji_起": {
+      "meaning": "Se lever / Se produire",
+      "exampleMeaning": "se lever",
+      "sentenceMeaning": "Je me leve a sept heures."
+    },
+    "kanji_寝": {
+      "meaning": "Dormir",
+      "exampleMeaning": "dormir",
+      "sentenceMeaning": "Je me couche tot."
+    },
+    "kanji_休": {
+      "meaning": "Se reposer",
+      "exampleMeaning": "se reposer",
+      "sentenceMeaning": "Je me repose le dimanche."
+    },
+    "kanji_持": {
+      "meaning": "Avoir / Tenir",
+      "exampleMeaning": "avoir; tenir",
+      "sentenceMeaning": "J'ai un livre."
     }
   },
   "exampleTerms": {

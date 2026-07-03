@@ -136,7 +136,7 @@
     "latestUpdates": "Letzte Aktualisierungen",
     "updateOnboarding": "Marken-Startbildschirm, Willkommen und erste Tour.",
     "updateAchievements": "Erfolgslevel und sichtbare Version auf dem Startbildschirm.",
-    "updateN4": "Erster Block mit 20 N4-Kanji, Beispielen und Strichführungen.",
+    "updateN4": "Zwei N4-Blöcke mit 40 Kanji, Beispielen und Strichführungen.",
     "updateKanjiAudio": "Kanji-Audio nutzt jetzt Hauptlesungen mit Pausen.",
     "updateStudyFavorites": "Direkte Favoriten und ein Filter für gemeisterte Zeichen im Lernbereich.",
     "updateReminderTime": "Konfigurierbare Erinnerungszeit.",
@@ -362,6 +362,10 @@
       "title": "16. Kanji N4: Gesellschaft und Handlungen",
       "description": "Treffen, Orte, Arbeit, Fragen und häufige Handlungen."
     },
+    "kanji-n4-2": {
+      "title": "17. Kanji N4: Alltag und Denken",
+      "description": "Zuhause, Gewohnheiten, Kommunikation, Denken und alltägliche Handlungen."
+    },
     "all": {
       "title": "Alle Inhalte",
       "description": "Eine freie Mischung aller verfügbaren Zeichen."
@@ -472,7 +476,27 @@
     "kanji_代": { "meaning": "Generation / Ersatz", "exampleMeaning": "Epoche; Zeitalter", "sentenceMeaning": "Eine neue Epoche beginnt." },
     "kanji_明": { "meaning": "Hell / Klar", "exampleMeaning": "hell; klar", "sentenceMeaning": "Das Zimmer ist hell." },
     "kanji_文": { "meaning": "Text / Satz", "exampleMeaning": "Aufsatz", "sentenceMeaning": "Ich schreibe einen Aufsatz auf Japanisch." },
-    "kanji_使": { "meaning": "Benutzen", "exampleMeaning": "benutzen", "sentenceMeaning": "Ich benutze das Wörterbuch." }
+    "kanji_使": { "meaning": "Benutzen", "exampleMeaning": "benutzen", "sentenceMeaning": "Ich benutze das Wörterbuch." },
+    "kanji_私": { "meaning": "Ich / Privat", "exampleMeaning": "ich", "sentenceMeaning": "Ich bin Student." },
+    "kanji_家": { "meaning": "Haus / Familie", "exampleMeaning": "Haus", "sentenceMeaning": "Ich lese zu Hause ein Buch." },
+    "kanji_電": { "meaning": "Elektrizität", "exampleMeaning": "Zug", "sentenceMeaning": "Ich fahre mit dem Zug zur Schule." },
+    "kanji_毎": { "meaning": "Jeder / Jedes", "exampleMeaning": "jeden Tag", "sentenceMeaning": "Ich lerne jeden Tag Japanisch." },
+    "kanji_週": { "meaning": "Woche", "exampleMeaning": "Wochenende", "sentenceMeaning": "Ich treffe am Wochenende einen Freund." },
+    "kanji_曜": { "meaning": "Wochentag", "exampleMeaning": "Wochentag", "sentenceMeaning": "Welcher Wochentag ist heute?" },
+    "kanji_言": { "meaning": "Sagen / Wort", "exampleMeaning": "sagen", "sentenceMeaning": "Ich sage dem Lehrer danke." },
+    "kanji_知": { "meaning": "Wissen / Kennen", "exampleMeaning": "wissen; kennen", "sentenceMeaning": "Ich kenne diese Person." },
+    "kanji_思": { "meaning": "Denken / Fühlen", "exampleMeaning": "denken; fühlen", "sentenceMeaning": "Ich denke, dass es gut ist." },
+    "kanji_考": { "meaning": "Denken / Überlegen", "exampleMeaning": "denken; überlegen", "sentenceMeaning": "Ich denke über die Antwort nach." },
+    "kanji_作": { "meaning": "Machen / Erstellen", "exampleMeaning": "machen; erstellen", "sentenceMeaning": "Ich mache Frühstück." },
+    "kanji_住": { "meaning": "Leben / Wohnen", "exampleMeaning": "leben; wohnen", "sentenceMeaning": "Ich wohne in Tokio." },
+    "kanji_正": { "meaning": "Richtig / Gerecht", "exampleMeaning": "richtig", "sentenceMeaning": "Ich schreibe die richtige Antwort." },
+    "kanji_教": { "meaning": "Lehren", "exampleMeaning": "lehren", "sentenceMeaning": "Der Lehrer unterrichtet Kanji." },
+    "kanji_歩": { "meaning": "Gehen", "exampleMeaning": "gehen", "sentenceMeaning": "Ich gehe zu Fuß zum Bahnhof." },
+    "kanji_走": { "meaning": "Laufen", "exampleMeaning": "laufen", "sentenceMeaning": "Ich laufe im Park." },
+    "kanji_起": { "meaning": "Aufstehen / Geschehen", "exampleMeaning": "aufstehen", "sentenceMeaning": "Ich stehe um sieben auf." },
+    "kanji_寝": { "meaning": "Schlafen", "exampleMeaning": "schlafen", "sentenceMeaning": "Ich gehe früh schlafen." },
+    "kanji_休": { "meaning": "Ausruhen", "exampleMeaning": "ausruhen", "sentenceMeaning": "Ich ruhe mich am Sonntag aus." },
+    "kanji_持": { "meaning": "Haben / Halten", "exampleMeaning": "haben; halten", "sentenceMeaning": "Ich habe ein Buch." }
   },
   "exampleTerms": {
     "Abreviación": "Abkürzung",
