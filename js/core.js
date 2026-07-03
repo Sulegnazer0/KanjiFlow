@@ -105,6 +105,12 @@ export const LESSONS = [
         test: item => item.tipo === "kanji" && item.categoria === "N4" && Number(item.id_jlpt) >= 81 && Number(item.id_jlpt) <= 100,
     },
     {
+        id: "kanji-n4-2",
+        title: "17. Kanji N4: vida diaria y pensamiento",
+        description: "Casa, hábitos, comunicación, pensamiento y acciones de rutina.",
+        test: item => item.tipo === "kanji" && item.categoria === "N4" && Number(item.id_jlpt) >= 101 && Number(item.id_jlpt) <= 120,
+    },
+    {
         id: "all",
         title: "Todo el contenido",
         description: "Mezcla libre de todos los caracteres disponibles.",
