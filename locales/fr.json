@@ -136,7 +136,7 @@
     "latestUpdates": "Dernieres nouveautes",
     "updateOnboarding": "Ecran de marque, bienvenue et visite initiale.",
     "updateAchievements": "Niveaux de succes et version visible au demarrage.",
-    "updateN4": "Deux blocs N4 avec 40 kanji, exemples et traits.",
+    "updateN4": "Trois blocs N4 avec 60 kanji, exemples et traits.",
     "updateKanjiAudio": "Audio des kanji ajuste aux lectures principales avec pauses.",
     "updateStudyFavorites": "Favoris directs et filtre des caracteres maitrises dans Etude.",
     "updateReminderTime": "Heure de rappel configurable.",
@@ -414,6 +414,10 @@
     "kanji-n4-2": {
       "title": "17. Kanji N4 : vie quotidienne et pensee",
       "description": "Maison, habitudes, communication, pensee et actions de routine."
+    },
+    "kanji-n4-3": {
+      "title": "18. Kanji N4 : mouvement et actions pratiques",
+      "description": "Distances, transport, prets, envois, rassemblements et debut ou fin d'activites."
     },
     "all": {
       "title": "Tout le contenu",
@@ -1035,6 +1039,106 @@
       "meaning": "Avoir / Tenir",
       "exampleMeaning": "avoir; tenir",
       "sentenceMeaning": "J'ai un livre."
+    },
+    "kanji_近": {
+      "meaning": "Proche",
+      "exampleMeaning": "proche",
+      "sentenceMeaning": "La gare est proche de la maison."
+    },
+    "kanji_遠": {
+      "meaning": "Loin",
+      "exampleMeaning": "loin",
+      "sentenceMeaning": "L'ecole est loin de la maison."
+    },
+    "kanji_速": {
+      "meaning": "Rapide",
+      "exampleMeaning": "rapide",
+      "sentenceMeaning": "Le train a grande vitesse est rapide."
+    },
+    "kanji_遅": {
+      "meaning": "Tard / Lent",
+      "exampleMeaning": "tard; lent",
+      "sentenceMeaning": "Le bus est lent."
+    },
+    "kanji_道": {
+      "meaning": "Route / Chemin",
+      "exampleMeaning": "route; chemin",
+      "sentenceMeaning": "Je vais tout droit sur ce chemin."
+    },
+    "kanji_通": {
+      "meaning": "Passer / Aller regulierement",
+      "exampleMeaning": "aller regulierement",
+      "sentenceMeaning": "Je vais regulierement a l'ecole."
+    },
+    "kanji_運": {
+      "meaning": "Porter / Chance",
+      "exampleMeaning": "exercice",
+      "sentenceMeaning": "Je fais de l'exercice chaque matin."
+    },
+    "kanji_動": {
+      "meaning": "Bouger",
+      "exampleMeaning": "bouger",
+      "sentenceMeaning": "La voiture bouge."
+    },
+    "kanji_止": {
+      "meaning": "Arreter",
+      "exampleMeaning": "s'arreter",
+      "sentenceMeaning": "La voiture s'arrete."
+    },
+    "kanji_待": {
+      "meaning": "Attendre",
+      "exampleMeaning": "attendre",
+      "sentenceMeaning": "J'attends mon ami."
+    },
+    "kanji_貸": {
+      "meaning": "Preter",
+      "exampleMeaning": "preter",
+      "sentenceMeaning": "Je prete un livre a mon ami."
+    },
+    "kanji_借": {
+      "meaning": "Emprunter",
+      "exampleMeaning": "emprunter",
+      "sentenceMeaning": "J'emprunte un livre a la bibliotheque."
+    },
+    "kanji_返": {
+      "meaning": "Rendre",
+      "exampleMeaning": "rendre",
+      "sentenceMeaning": "Je rends le livre demain."
+    },
+    "kanji_送": {
+      "meaning": "Envoyer",
+      "exampleMeaning": "envoyer",
+      "sentenceMeaning": "J'envoie un e-mail."
+    },
+    "kanji_集": {
+      "meaning": "Rassembler",
+      "exampleMeaning": "se rassembler",
+      "sentenceMeaning": "Nous nous rassemblons dans le parc."
+    },
+    "kanji_始": {
+      "meaning": "Commencer",
+      "exampleMeaning": "commencer",
+      "sentenceMeaning": "Le cours commence."
+    },
+    "kanji_終": {
+      "meaning": "Finir",
+      "exampleMeaning": "finir",
+      "sentenceMeaning": "Le travail se termine."
+    },
+    "kanji_着": {
+      "meaning": "Arriver / Porter",
+      "exampleMeaning": "arriver",
+      "sentenceMeaning": "J'arrive a la gare."
+    },
+    "kanji_服": {
+      "meaning": "Vetements",
+      "exampleMeaning": "vetements",
+      "sentenceMeaning": "J'achete de nouveaux vetements."
+    },
+    "kanji_洋": {
+      "meaning": "Occidental / Ocean",
+      "exampleMeaning": "cuisine occidentale",
+      "sentenceMeaning": "Je mange de la cuisine occidentale au dejeuner."
     }
   },
   "exampleTerms": {

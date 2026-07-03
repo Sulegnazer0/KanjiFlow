@@ -10,6 +10,21 @@ El número de versión visible de la app debe mantenerse alineado en:
 - `CHANGELOG.md`;
 - `service-worker.js` y query strings `?v=...` cuando cambien archivos cacheados.
 
+## [0.8.8] - 2026-07-03
+
+### Agregado
+
+- Tercera tanda N4 con 20 kanji nuevos: 近, 遠, 速, 遅, 道, 通, 運, 動, 止, 待, 貸, 借, 返, 送, 集, 始, 終, 着, 服 y 洋.
+- Lección “Kanji N4: movimiento y acciones prácticas”.
+- Ejemplos contextualizados para los 20 kanji nuevos.
+- Traducciones ES/EN/DE/FR/PT para las nuevas tarjetas.
+- Documento `docs/jlpt-n4-3.md`.
+- Fuente `KanjiStrokeOrders.woff` regenerada para cubrir 140 kanji publicados.
+
+### Cambiado
+
+- La app muestra `v0.8.8`, 353 tarjetas y 140 kanji con ejemplos.
+
 ## [0.8.7] - 2026-07-03
 
 ### Agregado

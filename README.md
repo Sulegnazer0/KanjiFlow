@@ -6,8 +6,8 @@ Historial de cambios: consulta [CHANGELOG.md](CHANGELOG.md).
 
 ## Funciones
 
-- Ruta progresiva de 17 lecciones.
-- 333 tarjetas: hiragana, katakana, reglas especiales y 120 kanji.
+- Ruta progresiva de 18 lecciones.
+- 353 tarjetas: hiragana, katakana, reglas especiales y 140 kanji.
 - Repetición espaciada con cuatro niveles de respuesta.
 - Perfil local con nombre, meta diaria, historial de 7 días y rachas de meta.
 - Sistema de logros por hitos de práctica, metas, favoritos y caracteres dominados.
@@ -91,6 +91,7 @@ npm run build:stroke-font
 - `docs/content-pipeline.md`: flujo para agregar JLPT N4/N3 e idiomas nuevos con validaciones.
 - `docs/jlpt-n4-starter.md`: primera tanda propuesta para crecer hacia JLPT N4 sin romper trazos ni traducciones.
 - `docs/jlpt-n4-2.md`: segunda tanda N4 con vida diaria, hábitos, pensamiento y acciones.
+- `docs/jlpt-n4-3.md`: tercera tanda N4 con movimiento, transporte y acciones prácticas.
 - `tools/build-stroke-font.mjs`: generador del WOFF reducido de orden de trazos.
 - `tools/stroke-font-extra.txt`: caracteres planeados que deben entrar al WOFF antes de publicarse.
 - `tools/validate-content.mjs`: validador de contenido, ejemplos, lecciones y locales.
