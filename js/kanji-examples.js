@@ -799,4 +799,204 @@ export const KANJI_EXAMPLES = {
         sentence: "この商品は安いです。", sentenceReading: "この しょうひんは やすいです。",
         sentenceMeaning: "Este producto es barato.",
     },
+    "理": {
+        word: "理由", reading: "りゆう", meaning: "razón",
+        sentence: "理由を説明します。", sentenceReading: "りゆうを せつめいします。",
+        sentenceMeaning: "Explico la razón.",
+    },
+    "体": {
+        word: "体", reading: "からだ", meaning: "cuerpo",
+        sentence: "毎日体を動かします。", sentenceReading: "まいにち からだを うごかします。",
+        sentenceMeaning: "Muevo el cuerpo todos los días.",
+    },
+    "田": {
+        word: "田んぼ", reading: "たんぼ", meaning: "campo de arroz",
+        sentence: "田んぼの近くを歩きます。", sentenceReading: "たんぼの ちかくを あるきます。",
+        sentenceMeaning: "Camino cerca del campo de arroz.",
+    },
+    "主": {
+        word: "主に", reading: "おもに", meaning: "principalmente",
+        sentence: "主に電車を使います。", sentenceReading: "おもに でんしゃを つかいます。",
+        sentenceMeaning: "Uso principalmente el tren.",
+    },
+    "題": {
+        word: "問題", reading: "もんだい", meaning: "problema",
+        sentence: "問題を解きます。", sentenceReading: "もんだいを ときます。",
+        sentenceMeaning: "Resuelvo el problema.",
+    },
+    "意": {
+        word: "意味", reading: "いみ", meaning: "significado",
+        sentence: "この言葉の意味を調べます。", sentenceReading: "この ことばの いみを しらべます。",
+        sentenceMeaning: "Busco el significado de esta palabra.",
+    },
+    "不": {
+        word: "不便", reading: "ふべん", meaning: "inconveniente",
+        sentence: "この駅は少し不便です。", sentenceReading: "この えきは すこし ふべんです。",
+        sentenceMeaning: "Esta estación es un poco inconveniente.",
+    },
+    "用": {
+        word: "用事", reading: "ようじ", meaning: "asunto pendiente",
+        sentence: "午後に用事があります。", sentenceReading: "ごごに ようじが あります。",
+        sentenceMeaning: "Tengo un asunto pendiente por la tarde.",
+    },
+    "度": {
+        word: "今度", reading: "こんど", meaning: "la próxima vez",
+        sentence: "今度映画を見ます。", sentenceReading: "こんど えいがを みます。",
+        sentenceMeaning: "La próxima vez veré una película.",
+    },
+    "強": {
+        word: "強い", reading: "つよい", meaning: "fuerte",
+        sentence: "今日は風が強いです。", sentenceReading: "きょうは かぜが つよいです。",
+        sentenceMeaning: "Hoy el viento es fuerte.",
+    },
+    "公": {
+        word: "公園", reading: "こうえん", meaning: "parque",
+        sentence: "公園で走ります。", sentenceReading: "こうえんで はしります。",
+        sentenceMeaning: "Corro en el parque.",
+    },
+    "野": {
+        word: "野菜", reading: "やさい", meaning: "verduras",
+        sentence: "野菜を食べます。", sentenceReading: "やさいを たべます。",
+        sentenceMeaning: "Como verduras.",
+    },
+    "以": {
+        word: "以上", reading: "いじょう", meaning: "más de",
+        sentence: "十以上の漢字を覚えます。", sentenceReading: "じゅう いじょうの かんじを おぼえます。",
+        sentenceMeaning: "Memorizo más de diez kanji.",
+    },
+    "世": {
+        word: "世界", reading: "せかい", meaning: "mundo",
+        sentence: "世界は広いです。", sentenceReading: "せかいは ひろいです。",
+        sentenceMeaning: "El mundo es amplio.",
+    },
+    "心": {
+        word: "心", reading: "こころ", meaning: "corazón; mente",
+        sentence: "心が静かです。", sentenceReading: "こころが しずかです。",
+        sentenceMeaning: "Mi mente está tranquila.",
+    },
+    "界": {
+        word: "世界", reading: "せかい", meaning: "mundo",
+        sentence: "世界を知りたいです。", sentenceReading: "せかいを しりたいです。",
+        sentenceMeaning: "Quiero conocer el mundo.",
+    },
+    "元": {
+        word: "元気", reading: "げんき", meaning: "saludable; animado",
+        sentence: "毎日元気です。", sentenceReading: "まいにち げんきです。",
+        sentenceMeaning: "Estoy animado todos los días.",
+    },
+    "重": {
+        word: "重い", reading: "おもい", meaning: "pesado",
+        sentence: "この荷物は重いです。", sentenceReading: "この にもつは おもいです。",
+        sentenceMeaning: "Este equipaje es pesado.",
+    },
+    "画": {
+        word: "映画", reading: "えいが", meaning: "película",
+        sentence: "週末に映画を見ます。", sentenceReading: "しゅうまつに えいがを みます。",
+        sentenceMeaning: "Veo una película el fin de semana.",
+    },
+    "海": {
+        word: "海", reading: "うみ", meaning: "mar",
+        sentence: "夏に海へ行きます。", sentenceReading: "なつに うみへ いきます。",
+        sentenceMeaning: "Voy al mar en verano.",
+    },
+    "売": {
+        word: "売る", reading: "うる", meaning: "vender",
+        sentence: "店で本を売ります。", sentenceReading: "みせで ほんを うります。",
+        sentenceMeaning: "Vendo libros en la tienda.",
+    },
+    "別": {
+        word: "別れる", reading: "わかれる", meaning: "separarse",
+        sentence: "駅で友だちと別れます。", sentenceReading: "えきで ともだちと わかれます。",
+        sentenceMeaning: "Me separo de mi amigo en la estación.",
+    },
+    "計": {
+        word: "時計", reading: "とけい", meaning: "reloj",
+        sentence: "時計を見ます。", sentenceReading: "とけいを みます。",
+        sentenceMeaning: "Miro el reloj.",
+    },
+    "死": {
+        word: "死ぬ", reading: "しぬ", meaning: "morir",
+        sentence: "魚が死にました。", sentenceReading: "さかなが しにました。",
+        sentenceMeaning: "El pez murió.",
+    },
+    "特": {
+        word: "特別", reading: "とくべつ", meaning: "especial",
+        sentence: "今日は特別な日です。", sentenceReading: "きょうは とくべつな ひです。",
+        sentenceMeaning: "Hoy es un día especial.",
+    },
+    "朝": {
+        word: "朝", reading: "あさ", meaning: "mañana",
+        sentence: "朝に水を飲みます。", sentenceReading: "あさに みずを のみます。",
+        sentenceMeaning: "Bebo agua por la mañana.",
+    },
+    "台": {
+        word: "一台", reading: "いちだい", meaning: "un vehículo o aparato",
+        sentence: "車が一台あります。", sentenceReading: "くるまが いちだい あります。",
+        sentenceMeaning: "Hay un coche.",
+    },
+    "広": {
+        word: "広い", reading: "ひろい", meaning: "amplio",
+        sentence: "この部屋は広いです。", sentenceReading: "この へやは ひろいです。",
+        sentenceMeaning: "Esta habitación es amplia.",
+    },
+    "無": {
+        word: "無い", reading: "ない", meaning: "no haber",
+        sentence: "お金が無いです。", sentenceReading: "おかねが ないです。",
+        sentenceMeaning: "No tengo dinero.",
+    },
+    "真": {
+        word: "真ん中", reading: "まんなか", meaning: "centro",
+        sentence: "部屋の真ん中に立ちます。", sentenceReading: "へやの まんなかに たちます。",
+        sentenceMeaning: "Me pongo en el centro de la habitación.",
+    },
+    "有": {
+        word: "有名", reading: "ゆうめい", meaning: "famoso",
+        sentence: "京都は有名です。", sentenceReading: "きょうとは ゆうめいです。",
+        sentenceMeaning: "Kioto es famoso.",
+    },
+    "料": {
+        word: "料理", reading: "りょうり", meaning: "cocina; comida preparada",
+        sentence: "料理を作ります。", sentenceReading: "りょうりを つくります。",
+        sentenceMeaning: "Cocino.",
+    },
+    "工": {
+        word: "工場", reading: "こうじょう", meaning: "fábrica",
+        sentence: "工場で働きます。", sentenceReading: "こうじょうで はたらきます。",
+        sentenceMeaning: "Trabajo en una fábrica.",
+    },
+    "建": {
+        word: "建物", reading: "たてもの", meaning: "edificio",
+        sentence: "大きな建物です。", sentenceReading: "おおきな たてものです。",
+        sentenceMeaning: "Es un edificio grande.",
+    },
+    "空": {
+        word: "空", reading: "そら", meaning: "cielo",
+        sentence: "空が青いです。", sentenceReading: "そらが あおいです。",
+        sentenceMeaning: "El cielo es azul.",
+    },
+    "急": {
+        word: "急ぐ", reading: "いそぐ", meaning: "apurarse",
+        sentence: "駅へ急ぎます。", sentenceReading: "えきへ いそぎます。",
+        sentenceMeaning: "Me apresuro hacia la estación.",
+    },
+    "切": {
+        word: "切る", reading: "きる", meaning: "cortar",
+        sentence: "紙を切ります。", sentenceReading: "かみを きります。",
+        sentenceMeaning: "Corto papel.",
+    },
+    "転": {
+        word: "自転車", reading: "じてんしゃ", meaning: "bicicleta",
+        sentence: "自転車で学校へ行きます。", sentenceReading: "じてんしゃで がっこうへ いきます。",
+        sentenceMeaning: "Voy a la escuela en bicicleta.",
+    },
+    "研": {
+        word: "研究", reading: "けんきゅう", meaning: "investigación",
+        sentence: "大学で研究します。", sentenceReading: "だいがくで けんきゅうします。",
+        sentenceMeaning: "Investigo en la universidad.",
+    },
+    "究": {
+        word: "研究", reading: "けんきゅう", meaning: "investigación",
+        sentence: "先生は日本語を研究します。", sentenceReading: "せんせいは にほんごを けんきゅうします。",
+        sentenceMeaning: "El profesor investiga el japonés.",
+    },
 };

@@ -123,6 +123,12 @@ export const LESSONS = [
         test: item => item.tipo === "kanji" && item.categoria === "N4" && Number(item.id_jlpt) >= 141 && Number(item.id_jlpt) <= 160,
     },
     {
+        id: "kanji-n4-5",
+        title: "20. Kanji N4: ideas y entorno",
+        description: "Conceptos, cuerpo, mundo, naturaleza, tiempo, acciones y lugares de uso frecuente.",
+        test: item => item.tipo === "kanji" && item.categoria === "N4" && Number(item.id_jlpt) >= 161 && Number(item.id_jlpt) <= 200,
+    },
+    {
         id: "all",
         title: "Todo el contenido",
         description: "Mezcla libre de todos los caracteres disponibles.",

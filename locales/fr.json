@@ -136,7 +136,7 @@
     "latestUpdates": "Dernieres nouveautes",
     "updateOnboarding": "Ecran de marque, bienvenue et visite initiale.",
     "updateAchievements": "Niveaux de succes et version visible au demarrage.",
-    "updateN4": "Quatre blocs N4 avec 80 kanji, exemples et traits.",
+    "updateN4": "Cinq blocs N4 avec 120 kanji, exemples et traits.",
     "updateKanjiAudio": "Audio des kanji ajuste aux lectures principales avec pauses.",
     "updateStudyFavorites": "Favoris directs et filtre des caracteres maitrises dans Etude.",
     "updateReminderTime": "Heure de rappel configurable.",
@@ -422,6 +422,10 @@
     "kanji-n4-4": {
       "title": "19. Kanji N4 : ville et services",
       "description": "Lieux, magasins, gares, sante, voyages et objets quotidiens."
+    },
+    "kanji-n4-5": {
+      "title": "20. Kanji N4 : idees et environnement",
+      "description": "Concepts, corps, monde, nature, temps, actions et lieux frequents."
     },
     "all": {
       "title": "Tout le contenu",
@@ -1243,6 +1247,206 @@
       "meaning": "Produit / Article",
       "exampleMeaning": "produit",
       "sentenceMeaning": "Ce produit est bon marche."
+    },
+    "kanji_理": {
+      "meaning": "Raison / Logique",
+      "exampleMeaning": "raison",
+      "sentenceMeaning": "J'explique la raison."
+    },
+    "kanji_体": {
+      "meaning": "Corps",
+      "exampleMeaning": "corps",
+      "sentenceMeaning": "Je bouge mon corps tous les jours."
+    },
+    "kanji_田": {
+      "meaning": "Riziere",
+      "exampleMeaning": "riziere",
+      "sentenceMeaning": "Je marche pres de la riziere."
+    },
+    "kanji_主": {
+      "meaning": "Principal / Proprietaire",
+      "exampleMeaning": "principalement",
+      "sentenceMeaning": "J'utilise surtout le train."
+    },
+    "kanji_題": {
+      "meaning": "Sujet / Titre",
+      "exampleMeaning": "probleme",
+      "sentenceMeaning": "Je resous le probleme."
+    },
+    "kanji_意": {
+      "meaning": "Idee / Sens",
+      "exampleMeaning": "sens",
+      "sentenceMeaning": "Je cherche le sens de ce mot."
+    },
+    "kanji_不": {
+      "meaning": "Non / Negation",
+      "exampleMeaning": "peu pratique",
+      "sentenceMeaning": "Cette gare n'est pas tres pratique."
+    },
+    "kanji_用": {
+      "meaning": "Usage / Affaire",
+      "exampleMeaning": "chose a faire",
+      "sentenceMeaning": "J'ai quelque chose a faire l'apres-midi."
+    },
+    "kanji_度": {
+      "meaning": "Degre / Fois",
+      "exampleMeaning": "prochaine fois",
+      "sentenceMeaning": "La prochaine fois, je regarde un film."
+    },
+    "kanji_強": {
+      "meaning": "Fort",
+      "exampleMeaning": "fort",
+      "sentenceMeaning": "Le vent est fort aujourd'hui."
+    },
+    "kanji_公": {
+      "meaning": "Public",
+      "exampleMeaning": "parc",
+      "sentenceMeaning": "Je cours dans le parc."
+    },
+    "kanji_野": {
+      "meaning": "Champ / Sauvage",
+      "exampleMeaning": "legumes",
+      "sentenceMeaning": "Je mange des legumes."
+    },
+    "kanji_以": {
+      "meaning": "Au moyen de / Depuis",
+      "exampleMeaning": "plus de",
+      "sentenceMeaning": "Je memorise plus de dix kanji."
+    },
+    "kanji_世": {
+      "meaning": "Monde / Generation",
+      "exampleMeaning": "monde",
+      "sentenceMeaning": "Le monde est vaste."
+    },
+    "kanji_心": {
+      "meaning": "Coeur / Esprit",
+      "exampleMeaning": "coeur; esprit",
+      "sentenceMeaning": "Mon esprit est calme."
+    },
+    "kanji_界": {
+      "meaning": "Monde / Limite",
+      "exampleMeaning": "monde",
+      "sentenceMeaning": "Je veux connaitre le monde."
+    },
+    "kanji_元": {
+      "meaning": "Origine / Ancien",
+      "exampleMeaning": "en forme",
+      "sentenceMeaning": "Je suis en forme tous les jours."
+    },
+    "kanji_重": {
+      "meaning": "Lourd / Important",
+      "exampleMeaning": "lourd",
+      "sentenceMeaning": "Ce bagage est lourd."
+    },
+    "kanji_画": {
+      "meaning": "Dessin / Image",
+      "exampleMeaning": "film",
+      "sentenceMeaning": "Je regarde un film le week-end."
+    },
+    "kanji_海": {
+      "meaning": "Mer",
+      "exampleMeaning": "mer",
+      "sentenceMeaning": "Je vais a la mer en ete."
+    },
+    "kanji_売": {
+      "meaning": "Vendre",
+      "exampleMeaning": "vendre",
+      "sentenceMeaning": "Je vends des livres dans le magasin."
+    },
+    "kanji_別": {
+      "meaning": "Separe / Different",
+      "exampleMeaning": "se separer",
+      "sentenceMeaning": "Je me separe de mon ami a la gare."
+    },
+    "kanji_計": {
+      "meaning": "Mesurer / Plan",
+      "exampleMeaning": "horloge",
+      "sentenceMeaning": "Je regarde l'horloge."
+    },
+    "kanji_死": {
+      "meaning": "Mort / Mourir",
+      "exampleMeaning": "mourir",
+      "sentenceMeaning": "Le poisson est mort."
+    },
+    "kanji_特": {
+      "meaning": "Special",
+      "exampleMeaning": "special",
+      "sentenceMeaning": "Aujourd'hui est un jour special."
+    },
+    "kanji_朝": {
+      "meaning": "Matin",
+      "exampleMeaning": "matin",
+      "sentenceMeaning": "Je bois de l'eau le matin."
+    },
+    "kanji_台": {
+      "meaning": "Base / Compteur",
+      "exampleMeaning": "un vehicule ou appareil",
+      "sentenceMeaning": "Il y a une voiture."
+    },
+    "kanji_広": {
+      "meaning": "Large",
+      "exampleMeaning": "spacieux",
+      "sentenceMeaning": "Cette piece est spacieuse."
+    },
+    "kanji_無": {
+      "meaning": "Rien / Sans",
+      "exampleMeaning": "ne pas avoir",
+      "sentenceMeaning": "Je n'ai pas d'argent."
+    },
+    "kanji_真": {
+      "meaning": "Verite / Reel",
+      "exampleMeaning": "centre",
+      "sentenceMeaning": "Je me tiens au centre de la piece."
+    },
+    "kanji_有": {
+      "meaning": "Avoir / Exister",
+      "exampleMeaning": "celebre",
+      "sentenceMeaning": "Kyoto est celebre."
+    },
+    "kanji_料": {
+      "meaning": "Frais / Materiau",
+      "exampleMeaning": "cuisine",
+      "sentenceMeaning": "Je cuisine."
+    },
+    "kanji_工": {
+      "meaning": "Travail / Construction",
+      "exampleMeaning": "usine",
+      "sentenceMeaning": "Je travaille dans une usine."
+    },
+    "kanji_建": {
+      "meaning": "Construire",
+      "exampleMeaning": "batiment",
+      "sentenceMeaning": "C'est un grand batiment."
+    },
+    "kanji_空": {
+      "meaning": "Ciel / Vide",
+      "exampleMeaning": "ciel",
+      "sentenceMeaning": "Le ciel est bleu."
+    },
+    "kanji_急": {
+      "meaning": "Urgent / Se depecher",
+      "exampleMeaning": "se depecher",
+      "sentenceMeaning": "Je me depeche vers la gare."
+    },
+    "kanji_切": {
+      "meaning": "Couper",
+      "exampleMeaning": "couper",
+      "sentenceMeaning": "Je coupe du papier."
+    },
+    "kanji_転": {
+      "meaning": "Tourner / Changer",
+      "exampleMeaning": "velo",
+      "sentenceMeaning": "Je vais a l'ecole a velo."
+    },
+    "kanji_研": {
+      "meaning": "Recherche / Polir",
+      "exampleMeaning": "recherche",
+      "sentenceMeaning": "Je fais de la recherche a l'universite."
+    },
+    "kanji_究": {
+      "meaning": "Approfondir / Rechercher",
+      "exampleMeaning": "recherche",
+      "sentenceMeaning": "Le professeur etudie le japonais."
     }
   },
   "exampleTerms": {

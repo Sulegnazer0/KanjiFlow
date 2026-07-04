@@ -10,6 +10,22 @@ El número de versión visible de la app debe mantenerse alineado en:
 - `CHANGELOG.md`;
 - `service-worker.js` y query strings `?v=...` cuando cambien archivos cacheados.
 
+## [0.8.10] - 2026-07-04
+
+### Agregado
+
+- Quinta tanda N4 con 40 kanji nuevos: 理, 体, 田, 主, 題, 意, 不, 用, 度, 強, 公, 野, 以, 世, 心, 界, 元, 重, 画, 海, 売, 別, 計, 死, 特, 朝, 台, 広, 無, 真, 有, 料, 工, 建, 空, 急, 切, 転, 研 y 究.
+- Lección “Kanji N4: ideas y entorno”.
+- Ejemplos contextualizados para los 40 kanji nuevos.
+- Traducciones ES/EN/DE/FR/PT para las nuevas tarjetas.
+- Documento `docs/jlpt-n4-5.md`.
+- Fuente `KanjiStrokeOrders.woff` regenerada para cubrir 200 kanji publicados.
+
+### Cambiado
+
+- La app muestra `v0.8.10`, 413 tarjetas y 200 kanji con ejemplos.
+- Las pruebas de integración ahora revisan los 5 idiomas activos.
+
 ## [0.8.9] - 2026-07-03
 
 ### Agregado
