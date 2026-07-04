@@ -7,7 +7,7 @@
     <meta name="description" content="Aprende hiragana, katakana y kanji con escritura, audio y repetición espaciada.">
     <title>KanjiFlow — Aprende japonés</title>
     <link rel="manifest" href="manifest.webmanifest">
-    <link rel="stylesheet" href="style.css?v=811">
+    <link rel="stylesheet" href="style.css?v=812">
 </head>
 <body>
     <div id="pantalla-carga" class="splash-screen" aria-live="polite">
@@ -15,7 +15,7 @@
             <img src="assets/s0labsHorizontal.png" alt="S0 Labs" class="splash-logo">
             <p data-i18n="ui.splashTagline">Preparando tu flujo de práctica…</p>
         </div>
-        <span id="splash-version" class="splash-version">v0.8.11</span>
+        <span id="splash-version" class="splash-version">v0.8.12</span>
     </div>
 
     <main class="app-shell">
@@ -147,7 +147,7 @@
                     <div id="fila-palabra"><dt data-i18n="ui.example">Ejemplo</dt><dd id="resp-palabra">—</dd></div>
                     <div id="fila-id"><dt data-i18n="ui.jlptNumber">N.º JLPT</dt><dd id="resp-id">—</dd></div>
                     <div id="fila-onyomi"><dt>Onyomi</dt><dd id="resp-onyomi">—</dd></div>
-                    <div id="fila-kunyomi"><dt>Kunyomi</dt><dd id="resp-kunyomi">—</dd></div>
+                    <div id="fila-kunyomi"><dt>Kunyomi</dt><dd><span id="resp-kunyomi">—</span><p id="resp-kunyomi-nota" class="reading-note hidden" data-i18n="ui.kunyomiOkuriganaNote">El kanji representa la raíz de la lectura. La parte entre paréntesis es okurigana, escrita en hiragana para completar la palabra.</p></dd></div>
                     <div id="fila-ejemplo-kanji"><dt data-i18n="ui.inContext">En contexto</dt><dd id="resp-ejemplo-kanji">—</dd></div>
                 </dl>
                 <fieldset class="rating-fieldset">
@@ -421,7 +421,8 @@
                     <dt>Kunyomi</dt>
                     <dd><span id="modal-kunyomi">—</span>
                         <button id="btn-sonido-kunyomi" class="inline-sound" type="button"
-                                aria-label="Escuchar kunyomi" data-i18n-aria-label="ui.listenKunyomi">🔊</button></dd>
+                                aria-label="Escuchar kunyomi" data-i18n-aria-label="ui.listenKunyomi">🔊</button>
+                        <p id="modal-kunyomi-nota" class="reading-note hidden" data-i18n="ui.kunyomiOkuriganaNote">El kanji representa la raíz de la lectura. La parte entre paréntesis es okurigana, escrita en hiragana para completar la palabra.</p></dd>
                 </div>
             </dl>
 
@@ -468,7 +469,7 @@
                 <ul class="updates-list">
                     <li data-i18n="ui.updateOnboarding">Pantalla de marca, bienvenida y tour inicial.</li>
                     <li data-i18n="ui.updateAchievements">Sistema de logros, niveles y versión visible en la pantalla de carga.</li>
-                    <li data-i18n="ui.updateN4">N4 completo según la referencia JLPT Sensei, con 170 kanji N4, ejemplos y trazos.</li>
+                    <li data-i18n="ui.updateN4">Kunyomi revisado con okurigana visible y N4 completo según la referencia JLPT Sensei.</li>
                     <li data-i18n="ui.updateKanjiAudio">Audio de kanji ajustado a lecturas principales y pausas.</li>
                     <li data-i18n="ui.updateStudyFavorites">Favoritos directos y filtro de dominadas en Estudio.</li>
                     <li data-i18n="ui.updateReminderTime">Hora configurable para recordatorios.</li>
@@ -512,6 +513,6 @@
 
     <div id="aviso-nivel" class="level-notice" role="status" aria-live="polite"></div>
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
-    <script type="module" src="js/app.js?v=811"></script>
+    <script type="module" src="js/app.js?v=812"></script>
 </body>
 </html>

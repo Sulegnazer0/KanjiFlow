@@ -25,6 +25,7 @@ Historial de cambios: consulta [CHANGELOG.md](CHANGELOG.md).
 - Campana de recordatorio: permite elegir hora preferida y avisa en ese horario.
 - Ventana “Acerca de” con versión, últimas actualizaciones, créditos de S0 Labs y envío directo de recomendaciones.
 - Ejemplos completos para cada kanji: palabra, lectura, significado y frase.
+- Lecturas kunyomi con okurigana visible entre paréntesis, por ejemplo `ころ（がる） (korogaru)`.
 - Cobertura N4 cerrada según la referencia de JLPT Sensei, sin duplicar kanji que ya existen en N5.
 - Búsqueda accesible por carácter, lectura, significado o ejemplo.
 - Funcionamiento básico sin conexión después de la primera visita.

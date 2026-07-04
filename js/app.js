@@ -31,7 +31,13 @@ import {
     saveSettings,
 } from "./storage.js";
 import { createDrawingPad } from "./drawing.js";
-import { exampleJapanese, itemPronunciation, japaneseOnly, speakJapanese } from "./audio.js?v=811";
+import {
+    exampleJapanese,
+    hasOkuriganaReading,
+    itemPronunciation,
+    japaneseOnly,
+    speakJapanese,
+} from "./audio.js?v=812";
 import { loadDictionary } from "./data.js";
 import {
     achievementLevel,
@@ -39,14 +45,14 @@ import {
     achievementSummary,
     buildAchievementStats,
     syncAchievements,
-} from "./achievements.js?v=811";
+} from "./achievements.js?v=812";
 import {
     dailyEntry,
     dailySummary,
     practiceStats,
     recentDailySummaries,
     recordDailyPractice,
-} from "./profile.js?v=811";
+} from "./profile.js?v=812";
 import {
     disablePracticeReminder,
     enablePracticeReminder,
@@ -55,7 +61,7 @@ import {
     recordPractice,
     setPracticeReminderTime,
     shouldNotifyPracticeReminder,
-} from "./reminders.js?v=811";
+} from "./reminders.js?v=812";
 import {
     AVAILABLE_LANGUAGES,
     applyDocumentTranslations,
@@ -69,9 +75,9 @@ import {
     localizeDictionary,
     t,
     translateCardState,
-} from "./i18n.js?v=811";
+} from "./i18n.js?v=812";
 
-const APP_VERSION = "0.8.11";
+const APP_VERSION = "0.8.12";
 const FEEDBACK_ENDPOINT = "https://script.google.com/macros/s/AKfycbxiz6058zwMxfPTDTmIBpG8JutOPw8YBxCRJ0BeMHp-py6IXZy4zkZs2IdTqwmSSzC1jw/exec";
 const SPLASH_MIN_MS = 2400;
 const startupStartedAt = performance.now();
@@ -125,6 +131,7 @@ const elements = {
     answerOnyomi: $("#resp-onyomi"),
     rowKunyomi: $("#fila-kunyomi"),
     answerKunyomi: $("#resp-kunyomi"),
+    answerKunyomiNote: $("#resp-kunyomi-nota"),
     rowKanjiExample: $("#fila-ejemplo-kanji"),
     answerKanjiExample: $("#resp-ejemplo-kanji"),
     search: $("#buscador-texto"),
@@ -152,6 +159,7 @@ const elements = {
     modalOnyomi: $("#modal-onyomi"),
     modalRowKunyomi: $("#modal-fila-kunyomi"),
     modalKunyomi: $("#modal-kunyomi"),
+    modalKunyomiNote: $("#modal-kunyomi-nota"),
     modalContext: $("#modal-contexto-kanji"),
     modalExampleWord: $("#modal-ejemplo-palabra"),
     modalExampleReading: $("#modal-ejemplo-lectura"),
@@ -895,11 +903,32 @@ function answerAudioText(item = currentItem) {
     return itemPronunciation(item);
 }
 
+function firstReadingOption(reading = "") {
+    return String(reading || "")
+        .split(/\s+\/\s+/u)
+        .map(value => value.trim())
+        .find(value => value && value !== "-") || "";
+}
+
+function kanjiReadingHeadline(item) {
+    if (!item || item.tipo !== "kanji") return item?.romaji || "—";
+    const onyomi = firstReadingOption(item.onyomi);
+    const kunyomi = firstReadingOption(item.kunyomi);
+    if (onyomi && kunyomi) return `On: ${onyomi} · Kun: ${kunyomi}`;
+    if (onyomi) return `On: ${onyomi}`;
+    if (kunyomi) return `Kun: ${kunyomi}`;
+    return item.romaji || item.caracter || "—";
+}
+
+function cardReadingLabel(item) {
+    return item?.tipo === "kanji" ? kanjiReadingHeadline(item) : item?.romaji || "—";
+}
+
 function revealAnswer() {
     if (!currentItem) return;
     showPracticeGuide(currentItem.caracter);
     elements.answerCharacter.textContent = currentItem.caracter;
-    elements.answerRomaji.textContent = currentItem.romaji || "—";
+    elements.answerRomaji.textContent = cardReadingLabel(currentItem);
     elements.answerCategory.textContent = currentItem.categoriaLabel || "—";
 
     const kanji = currentItem.tipo === "kanji";
@@ -914,10 +943,12 @@ function revealAnswer() {
         elements.answerId.textContent = currentItem.id_jlpt || "—";
         elements.answerOnyomi.textContent = currentItem.onyomi || "—";
         elements.answerKunyomi.textContent = currentItem.kunyomi || "—";
+        setVisibility(elements.answerKunyomiNote, hasOkuriganaReading(currentItem.kunyomi));
         elements.answerKanjiExample.textContent = currentItem.example
             ? `${currentItem.example.word}（${currentItem.example.reading}）— ${currentItem.example.meaning}`
             : "—";
     } else {
+        setVisibility(elements.answerKunyomiNote, false);
         elements.answerCounterpart.textContent = currentItem.contraparte || "—";
         elements.answerWord.textContent = currentItem.palabra_ejemplo || "—";
     }
@@ -1038,7 +1069,7 @@ function makeProfileListItem({ item, meta, badge }) {
     const body = document.createElement("span");
     body.className = "profile-list-body";
     const title = document.createElement("strong");
-    title.textContent = `${item.romaji || "—"} · ${item.significado || "—"}`;
+    title.textContent = `${cardReadingLabel(item)} · ${item.significado || "—"}`;
     const detail = document.createElement("small");
     detail.textContent = meta;
     body.append(title, detail);
@@ -1396,7 +1427,7 @@ function makeDictionaryCard(item, index) {
         "aria-label",
         `${t("ui.openDetails", {
             character: item.caracter,
-            reading: item.romaji,
+            reading: cardReadingLabel(item),
             meaning: item.significado,
         })}${statusLabels.length ? `. ${statusLabels.join(", ")}` : ""}`,
     );
@@ -1416,7 +1447,7 @@ function makeDictionaryCard(item, index) {
     character.textContent = item.caracter;
     const reading = document.createElement("span");
     reading.className = "dictionary-reading";
-    reading.textContent = item.romaji;
+    reading.textContent = cardReadingLabel(item);
     const meaning = document.createElement("span");
     meaning.className = "dictionary-meaning";
     meaning.textContent = item.significado;
@@ -1472,7 +1503,7 @@ function openModal(index, trigger = modalTrigger) {
     modalPad.clear();
 
     elements.modalCharacter.textContent = item.caracter || "?";
-    elements.modalRomaji.textContent = item.romaji || "—";
+    elements.modalRomaji.textContent = cardReadingLabel(item);
     elements.modalMeaning.textContent = item.significado || "—";
     elements.modalCategory.textContent = item.categoriaLabel || "—";
     elements.modalCounter.textContent = `${index + 1} / ${filteredStudyItems.length}`;
@@ -1498,6 +1529,7 @@ function openModal(index, trigger = modalTrigger) {
         elements.modalId.textContent = item.id_jlpt || "—";
         elements.modalOnyomi.textContent = item.onyomi || "—";
         elements.modalKunyomi.textContent = item.kunyomi || "—";
+        setVisibility(elements.modalKunyomiNote, hasOkuriganaReading(item.kunyomi));
         if (item.example) {
             elements.modalExampleWord.textContent = item.example.word;
             elements.modalExampleReading.textContent = item.example.reading;
@@ -1507,6 +1539,7 @@ function openModal(index, trigger = modalTrigger) {
             elements.modalExampleSentenceMeaning.textContent = item.example.sentenceMeaning;
         }
     } else {
+        setVisibility(elements.modalKunyomiNote, false);
         elements.modalCounterpart.textContent = item.contraparte || "—";
         elements.modalWord.textContent = item.palabra_ejemplo || "—";
     }

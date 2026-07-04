@@ -11,6 +11,8 @@ import {
 } from "../js/core.js";
 import { KANJI_EXAMPLES } from "../js/kanji-examples.js";
 import {
+    expandOkurigana,
+    hasOkuriganaReading,
     itemPronunciation,
     japaneseOnly,
 } from "../js/audio.js";
@@ -147,7 +149,12 @@ assert.equal(itemId(dictionary.find(item => item.caracter === "水")), "kanji_�
 assert.equal(itemPronunciation(dictionary.find(item => item.caracter === "小")), "ショウ");
 assert.equal(itemPronunciation(dictionary.find(item => item.caracter === "会")), "カイ");
 assert.equal(japaneseOnly(dictionary.find(item => item.caracter === "会").onyomi), "カイ、エ");
-assert.equal(japaneseOnly(dictionary.find(item => item.caracter === "行").kunyomi), "い、ゆ");
+assert.equal(japaneseOnly(dictionary.find(item => item.caracter === "行").kunyomi), "いく、ゆく");
+const turnKanji = dictionary.find(item => item.caracter === "転");
+assert.equal(turnKanji.kunyomi, "ころ（がる） (korogaru) / ころ（げる） (korogeru) / ころ（ぶ） (korobu)");
+assert.equal(japaneseOnly(turnKanji.kunyomi), "ころがる、ころげる、ころぶ");
+assert.equal(expandOkurigana("ころ（がる）"), "ころがる");
+assert.equal(hasOkuriganaReading(turnKanji.kunyomi), true);
 
 for (const item of dictionary.filter(item => item.tipo === "kanji")) {
     assert.ok(KANJI_EXAMPLES[item.caracter], `Falta ejemplo para ${item.caracter}`);
@@ -185,6 +192,7 @@ for (const code of localeCodes) {
         "onboardingStartTour",
         "tourFavoritesTitle",
         "tourReminderTimeTitle",
+        "kunyomiOkuriganaNote",
         "dailyGoalSummary",
         "dailyGoalReachedSummary",
         "reminderTimeLabel",

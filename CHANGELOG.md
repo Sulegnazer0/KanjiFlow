@@ -10,6 +10,20 @@ El número de versión visible de la app debe mantenerse alineado en:
 - `CHANGELOG.md`;
 - `service-worker.js` y query strings `?v=...` cuando cambien archivos cacheados.
 
+## [0.8.12] - 2026-07-04
+
+### Corregido
+
+- Kunyomi revisado en la base N5/N4 para mostrar okurigana entre paréntesis japoneses cuando la lectura completa necesita hiragana adicional.
+- Caso `転` corregido como `ころ（がる）`, `ころ（げる）` y `ころ（ぶ）`, evitando presentar `korogaru` como “nombre” único del kanji.
+- La UI de kanji ya no usa el campo `romaji` como lectura principal visible; ahora muestra un resumen `On`/`Kun` para evitar confusiones.
+- El audio de kunyomi expande okurigana antes de leer, por ejemplo `ころ（がる）` se pronuncia como `ころがる`.
+
+### Agregado
+
+- Nota explicativa de okurigana en el detalle de kanji, traducida en ES/EN/DE/FR/PT.
+- Pruebas para proteger la lectura con okurigana y el audio de kunyomi.
+
 ## [0.8.11] - 2026-07-04
 
 ### Agregado
