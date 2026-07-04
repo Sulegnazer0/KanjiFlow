@@ -136,7 +136,7 @@
     "latestUpdates": "Latest updates",
     "updateOnboarding": "Brand splash screen, welcome prompt, and first-run tour.",
     "updateAchievements": "Achievement levels and visible version on the splash screen.",
-    "updateN4": "Three N4 blocks with 60 kanji, examples, and stroke guides.",
+    "updateN4": "Four N4 blocks with 80 kanji, examples, and stroke guides.",
     "updateKanjiAudio": "Kanji audio now uses main readings with pauses.",
     "updateStudyFavorites": "Direct favorites and a mastered filter in Study.",
     "updateReminderTime": "Configurable reminder time.",
@@ -370,6 +370,10 @@
       "title": "18. Kanji N4: movement and practical actions",
       "description": "Distances, transport, lending, sending, gathering, and starting or finishing activities."
     },
+    "kanji-n4-4": {
+      "title": "19. Kanji N4: city and services",
+      "description": "Places, shops, stations, health, travel, and everyday objects."
+    },
     "all": {
       "title": "All content",
       "description": "A free mix of all available characters."
@@ -520,7 +524,27 @@
     "kanji_終": { "meaning": "Finish", "exampleMeaning": "to finish", "sentenceMeaning": "Work finishes." },
     "kanji_着": { "meaning": "Arrive / Wear", "exampleMeaning": "to arrive", "sentenceMeaning": "I arrive at the station." },
     "kanji_服": { "meaning": "Clothes", "exampleMeaning": "clothes", "sentenceMeaning": "I buy new clothes." },
-    "kanji_洋": { "meaning": "Western / Ocean", "exampleMeaning": "Western food", "sentenceMeaning": "I eat Western food for lunch." }
+    "kanji_洋": { "meaning": "Western / Ocean", "exampleMeaning": "Western food", "sentenceMeaning": "I eat Western food for lunch." },
+    "kanji_町": { "meaning": "Town / City", "exampleMeaning": "town; city", "sentenceMeaning": "This town is quiet." },
+    "kanji_市": { "meaning": "City / Market", "exampleMeaning": "market", "sentenceMeaning": "I buy fish at the market." },
+    "kanji_村": { "meaning": "Village", "exampleMeaning": "village", "sentenceMeaning": "I live in a small village." },
+    "kanji_区": { "meaning": "District / Ward", "exampleMeaning": "district", "sentenceMeaning": "I live in this district." },
+    "kanji_県": { "meaning": "Prefecture", "exampleMeaning": "prefecture", "sentenceMeaning": "There are many prefectures in Japan." },
+    "kanji_都": { "meaning": "Capital / Metropolis", "exampleMeaning": "city", "sentenceMeaning": "Tokyo is a big city." },
+    "kanji_京": { "meaning": "Capital", "exampleMeaning": "Kyoto", "sentenceMeaning": "I travel to Kyoto." },
+    "kanji_店": { "meaning": "Shop", "exampleMeaning": "shop", "sentenceMeaning": "I buy clothes at the shop." },
+    "kanji_駅": { "meaning": "Station", "exampleMeaning": "station", "sentenceMeaning": "I wait for my friend at the station." },
+    "kanji_銀": { "meaning": "Silver", "exampleMeaning": "bank", "sentenceMeaning": "I withdraw money at the bank." },
+    "kanji_病": { "meaning": "Illness", "exampleMeaning": "illness", "sentenceMeaning": "I miss school because of illness." },
+    "kanji_院": { "meaning": "Institution / Hospital", "exampleMeaning": "hospital", "sentenceMeaning": "I go to the hospital." },
+    "kanji_医": { "meaning": "Medicine / Doctor", "exampleMeaning": "doctor", "sentenceMeaning": "I receive medicine from the doctor." },
+    "kanji_薬": { "meaning": "Medicine", "exampleMeaning": "medicine", "sentenceMeaning": "I take medicine." },
+    "kanji_室": { "meaning": "Room", "exampleMeaning": "classroom", "sentenceMeaning": "I study in the classroom." },
+    "kanji_屋": { "meaning": "Shop / Roof", "exampleMeaning": "room", "sentenceMeaning": "I clean the room." },
+    "kanji_堂": { "meaning": "Hall / Temple", "exampleMeaning": "dining hall", "sentenceMeaning": "I eat lunch in the dining hall." },
+    "kanji_旅": { "meaning": "Travel", "exampleMeaning": "trip", "sentenceMeaning": "I go on a trip in summer." },
+    "kanji_物": { "meaning": "Thing / Object", "exampleMeaning": "food", "sentenceMeaning": "What is your favorite food?" },
+    "kanji_品": { "meaning": "Product / Article", "exampleMeaning": "product", "sentenceMeaning": "This product is cheap." }
   },
   "exampleTerms": {
     "Abreviación": "Abbreviation",

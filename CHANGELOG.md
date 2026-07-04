@@ -10,6 +10,21 @@ El número de versión visible de la app debe mantenerse alineado en:
 - `CHANGELOG.md`;
 - `service-worker.js` y query strings `?v=...` cuando cambien archivos cacheados.
 
+## [0.8.9] - 2026-07-03
+
+### Agregado
+
+- Cuarta tanda N4 con 20 kanji nuevos: 町, 市, 村, 区, 県, 都, 京, 店, 駅, 銀, 病, 院, 医, 薬, 室, 屋, 堂, 旅, 物 y 品.
+- Lección “Kanji N4: ciudad y servicios”.
+- Ejemplos contextualizados para los 20 kanji nuevos.
+- Traducciones ES/EN/DE/FR/PT para las nuevas tarjetas.
+- Documento `docs/jlpt-n4-4.md`.
+- Fuente `KanjiStrokeOrders.woff` regenerada para cubrir 160 kanji publicados.
+
+### Cambiado
+
+- La app muestra `v0.8.9`, 373 tarjetas y 160 kanji con ejemplos.
+
 ## [0.8.8] - 2026-07-03
 
 ### Agregado

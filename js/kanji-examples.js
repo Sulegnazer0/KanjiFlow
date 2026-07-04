@@ -699,4 +699,104 @@ export const KANJI_EXAMPLES = {
         sentence: "昼ごはんに洋食を食べます。", sentenceReading: "ひるごはんに ようしょくを たべます。",
         sentenceMeaning: "Como comida occidental en el almuerzo.",
     },
+    "町": {
+        word: "町", reading: "まち", meaning: "pueblo; ciudad",
+        sentence: "この町は静かです。", sentenceReading: "この まちは しずかです。",
+        sentenceMeaning: "Este pueblo es tranquilo.",
+    },
+    "市": {
+        word: "市場", reading: "いちば", meaning: "mercado",
+        sentence: "市場で魚を買います。", sentenceReading: "いちばで さかなを かいます。",
+        sentenceMeaning: "Compro pescado en el mercado.",
+    },
+    "村": {
+        word: "村", reading: "むら", meaning: "aldea",
+        sentence: "小さい村に住んでいます。", sentenceReading: "ちいさい むらに すんでいます。",
+        sentenceMeaning: "Vivo en una aldea pequeña.",
+    },
+    "区": {
+        word: "区", reading: "く", meaning: "distrito",
+        sentence: "この区に住んでいます。", sentenceReading: "この くに すんでいます。",
+        sentenceMeaning: "Vivo en este distrito.",
+    },
+    "県": {
+        word: "県", reading: "けん", meaning: "prefectura",
+        sentence: "日本には多くの県があります。", sentenceReading: "にほんには おおくの けんが あります。",
+        sentenceMeaning: "En Japón hay muchas prefecturas.",
+    },
+    "都": {
+        word: "都市", reading: "とし", meaning: "ciudad",
+        sentence: "東京は大きな都市です。", sentenceReading: "とうきょうは おおきな としです。",
+        sentenceMeaning: "Tokio es una gran ciudad.",
+    },
+    "京": {
+        word: "京都", reading: "きょうと", meaning: "Kioto",
+        sentence: "京都へ旅行します。", sentenceReading: "きょうとへ りょこうします。",
+        sentenceMeaning: "Viajo a Kioto.",
+    },
+    "店": {
+        word: "店", reading: "みせ", meaning: "tienda",
+        sentence: "店で服を買います。", sentenceReading: "みせで ふくを かいます。",
+        sentenceMeaning: "Compro ropa en la tienda.",
+    },
+    "駅": {
+        word: "駅", reading: "えき", meaning: "estación",
+        sentence: "駅で友だちを待ちます。", sentenceReading: "えきで ともだちを まちます。",
+        sentenceMeaning: "Espero a mi amigo en la estación.",
+    },
+    "銀": {
+        word: "銀行", reading: "ぎんこう", meaning: "banco",
+        sentence: "銀行でお金を出します。", sentenceReading: "ぎんこうで おかねを だします。",
+        sentenceMeaning: "Saco dinero en el banco.",
+    },
+    "病": {
+        word: "病気", reading: "びょうき", meaning: "enfermedad",
+        sentence: "病気で学校を休みます。", sentenceReading: "びょうきで がっこうを やすみます。",
+        sentenceMeaning: "Falto a la escuela por enfermedad.",
+    },
+    "院": {
+        word: "病院", reading: "びょういん", meaning: "hospital",
+        sentence: "病院へ行きます。", sentenceReading: "びょういんへ いきます。",
+        sentenceMeaning: "Voy al hospital.",
+    },
+    "医": {
+        word: "医者", reading: "いしゃ", meaning: "médico",
+        sentence: "医者に薬をもらいます。", sentenceReading: "いしゃに くすりを もらいます。",
+        sentenceMeaning: "Recibo medicina del médico.",
+    },
+    "薬": {
+        word: "薬", reading: "くすり", meaning: "medicina",
+        sentence: "薬を飲みます。", sentenceReading: "くすりを のみます。",
+        sentenceMeaning: "Tomo medicina.",
+    },
+    "室": {
+        word: "教室", reading: "きょうしつ", meaning: "salón de clase",
+        sentence: "教室で勉強します。", sentenceReading: "きょうしつで べんきょうします。",
+        sentenceMeaning: "Estudio en el salón de clase.",
+    },
+    "屋": {
+        word: "部屋", reading: "へや", meaning: "habitación",
+        sentence: "部屋をきれいにします。", sentenceReading: "へやを きれいにします。",
+        sentenceMeaning: "Limpio la habitación.",
+    },
+    "堂": {
+        word: "食堂", reading: "しょくどう", meaning: "comedor",
+        sentence: "食堂で昼ごはんを食べます。", sentenceReading: "しょくどうで ひるごはんを たべます。",
+        sentenceMeaning: "Como el almuerzo en el comedor.",
+    },
+    "旅": {
+        word: "旅行", reading: "りょこう", meaning: "viaje",
+        sentence: "夏に旅行へ行きます。", sentenceReading: "なつに りょこうへ いきます。",
+        sentenceMeaning: "Voy de viaje en verano.",
+    },
+    "物": {
+        word: "食べ物", reading: "たべもの", meaning: "comida",
+        sentence: "好きな食べ物は何ですか。", sentenceReading: "すきな たべものは なんですか。",
+        sentenceMeaning: "¿Cuál es tu comida favorita?",
+    },
+    "品": {
+        word: "商品", reading: "しょうひん", meaning: "producto",
+        sentence: "この商品は安いです。", sentenceReading: "この しょうひんは やすいです。",
+        sentenceMeaning: "Este producto es barato.",
+    },
 };

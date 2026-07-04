@@ -117,6 +117,12 @@ export const LESSONS = [
         test: item => item.tipo === "kanji" && item.categoria === "N4" && Number(item.id_jlpt) >= 121 && Number(item.id_jlpt) <= 140,
     },
     {
+        id: "kanji-n4-4",
+        title: "19. Kanji N4: ciudad y servicios",
+        description: "Lugares, tiendas, estaciones, salud, viajes y objetos cotidianos.",
+        test: item => item.tipo === "kanji" && item.categoria === "N4" && Number(item.id_jlpt) >= 141 && Number(item.id_jlpt) <= 160,
+    },
+    {
         id: "all",
         title: "Todo el contenido",
         description: "Mezcla libre de todos los caracteres disponibles.",

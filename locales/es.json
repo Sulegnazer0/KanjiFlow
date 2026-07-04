@@ -136,7 +136,7 @@
     "latestUpdates": "Últimas actualizaciones",
     "updateOnboarding": "Pantalla de marca, bienvenida y tour inicial.",
     "updateAchievements": "Sistema de logros, niveles y versión visible en la pantalla de carga.",
-    "updateN4": "Tres bloques N4 con 60 kanji, ejemplos y trazos.",
+    "updateN4": "Cuatro bloques N4 con 80 kanji, ejemplos y trazos.",
     "updateKanjiAudio": "Audio de kanji ajustado a lecturas principales y pausas.",
     "updateStudyFavorites": "Favoritos directos y filtro de dominadas en Estudio.",
     "updateReminderTime": "Hora configurable para recordatorios.",
@@ -370,6 +370,10 @@
       "title": "18. Kanji N4: movimiento y acciones prácticas",
       "description": "Distancias, transporte, préstamos, envíos, reuniones e inicio o cierre de actividades."
     },
+    "kanji-n4-4": {
+      "title": "19. Kanji N4: ciudad y servicios",
+      "description": "Lugares, tiendas, estaciones, salud, viajes y objetos cotidianos."
+    },
     "all": {
       "title": "Todo el contenido",
       "description": "Mezcla libre de todos los caracteres disponibles."
@@ -520,7 +524,27 @@
     "kanji_終": { "meaning": "Terminar", "exampleMeaning": "terminar", "sentenceMeaning": "El trabajo termina." },
     "kanji_着": { "meaning": "Llegar / Vestir", "exampleMeaning": "llegar", "sentenceMeaning": "Llego a la estación." },
     "kanji_服": { "meaning": "Ropa", "exampleMeaning": "ropa", "sentenceMeaning": "Compro ropa nueva." },
-    "kanji_洋": { "meaning": "Occidente / Océano", "exampleMeaning": "comida occidental", "sentenceMeaning": "Como comida occidental en el almuerzo." }
+    "kanji_洋": { "meaning": "Occidente / Océano", "exampleMeaning": "comida occidental", "sentenceMeaning": "Como comida occidental en el almuerzo." },
+    "kanji_町": { "meaning": "Pueblo / Ciudad", "exampleMeaning": "pueblo; ciudad", "sentenceMeaning": "Este pueblo es tranquilo." },
+    "kanji_市": { "meaning": "Ciudad / Mercado", "exampleMeaning": "mercado", "sentenceMeaning": "Compro pescado en el mercado." },
+    "kanji_村": { "meaning": "Aldea", "exampleMeaning": "aldea", "sentenceMeaning": "Vivo en una aldea pequeña." },
+    "kanji_区": { "meaning": "Distrito", "exampleMeaning": "distrito", "sentenceMeaning": "Vivo en este distrito." },
+    "kanji_県": { "meaning": "Prefectura", "exampleMeaning": "prefectura", "sentenceMeaning": "En Japón hay muchas prefecturas." },
+    "kanji_都": { "meaning": "Capital / Metrópolis", "exampleMeaning": "ciudad", "sentenceMeaning": "Tokio es una gran ciudad." },
+    "kanji_京": { "meaning": "Capital", "exampleMeaning": "Kioto", "sentenceMeaning": "Viajo a Kioto." },
+    "kanji_店": { "meaning": "Tienda", "exampleMeaning": "tienda", "sentenceMeaning": "Compro ropa en la tienda." },
+    "kanji_駅": { "meaning": "Estación", "exampleMeaning": "estación", "sentenceMeaning": "Espero a mi amigo en la estación." },
+    "kanji_銀": { "meaning": "Plata", "exampleMeaning": "banco", "sentenceMeaning": "Saco dinero en el banco." },
+    "kanji_病": { "meaning": "Enfermedad", "exampleMeaning": "enfermedad", "sentenceMeaning": "Falto a la escuela por enfermedad." },
+    "kanji_院": { "meaning": "Institución / Hospital", "exampleMeaning": "hospital", "sentenceMeaning": "Voy al hospital." },
+    "kanji_医": { "meaning": "Medicina / Médico", "exampleMeaning": "médico", "sentenceMeaning": "Recibo medicina del médico." },
+    "kanji_薬": { "meaning": "Medicina", "exampleMeaning": "medicina", "sentenceMeaning": "Tomo medicina." },
+    "kanji_室": { "meaning": "Habitación / Sala", "exampleMeaning": "salón de clase", "sentenceMeaning": "Estudio en el salón de clase." },
+    "kanji_屋": { "meaning": "Tienda / Techo", "exampleMeaning": "habitación", "sentenceMeaning": "Limpio la habitación." },
+    "kanji_堂": { "meaning": "Salón / Templo", "exampleMeaning": "comedor", "sentenceMeaning": "Como el almuerzo en el comedor." },
+    "kanji_旅": { "meaning": "Viaje", "exampleMeaning": "viaje", "sentenceMeaning": "Voy de viaje en verano." },
+    "kanji_物": { "meaning": "Cosa / Objeto", "exampleMeaning": "comida", "sentenceMeaning": "¿Cuál es tu comida favorita?" },
+    "kanji_品": { "meaning": "Producto / Artículo", "exampleMeaning": "producto", "sentenceMeaning": "Este producto es barato." }
   },
   "exampleTerms": {}
 }

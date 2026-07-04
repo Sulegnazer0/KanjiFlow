@@ -136,7 +136,7 @@
     "latestUpdates": "Letzte Aktualisierungen",
     "updateOnboarding": "Marken-Startbildschirm, Willkommen und erste Tour.",
     "updateAchievements": "Erfolgslevel und sichtbare Version auf dem Startbildschirm.",
-    "updateN4": "Drei N4-Blöcke mit 60 Kanji, Beispielen und Strichführungen.",
+    "updateN4": "Vier N4-Blöcke mit 80 Kanji, Beispielen und Strichführungen.",
     "updateKanjiAudio": "Kanji-Audio nutzt jetzt Hauptlesungen mit Pausen.",
     "updateStudyFavorites": "Direkte Favoriten und ein Filter für gemeisterte Zeichen im Lernbereich.",
     "updateReminderTime": "Konfigurierbare Erinnerungszeit.",
@@ -370,6 +370,10 @@
       "title": "18. Kanji N4: Bewegung und praktische Handlungen",
       "description": "Entfernungen, Transport, Leihen, Senden, Treffen sowie Beginn und Ende von Aktivitäten."
     },
+    "kanji-n4-4": {
+      "title": "19. Kanji N4: Stadt und Dienste",
+      "description": "Orte, Geschäfte, Bahnhöfe, Gesundheit, Reisen und Alltagsgegenstände."
+    },
     "all": {
       "title": "Alle Inhalte",
       "description": "Eine freie Mischung aller verfügbaren Zeichen."
@@ -520,7 +524,27 @@
     "kanji_終": { "meaning": "Beenden", "exampleMeaning": "enden; beenden", "sentenceMeaning": "Die Arbeit endet." },
     "kanji_着": { "meaning": "Ankommen / Tragen", "exampleMeaning": "ankommen", "sentenceMeaning": "Ich komme am Bahnhof an." },
     "kanji_服": { "meaning": "Kleidung", "exampleMeaning": "Kleidung", "sentenceMeaning": "Ich kaufe neue Kleidung." },
-    "kanji_洋": { "meaning": "Westlich / Ozean", "exampleMeaning": "westliches Essen", "sentenceMeaning": "Ich esse westliches Essen zum Mittagessen." }
+    "kanji_洋": { "meaning": "Westlich / Ozean", "exampleMeaning": "westliches Essen", "sentenceMeaning": "Ich esse westliches Essen zum Mittagessen." },
+    "kanji_町": { "meaning": "Stadt / Ort", "exampleMeaning": "Stadt; Ort", "sentenceMeaning": "Diese Stadt ist ruhig." },
+    "kanji_市": { "meaning": "Stadt / Markt", "exampleMeaning": "Markt", "sentenceMeaning": "Ich kaufe Fisch auf dem Markt." },
+    "kanji_村": { "meaning": "Dorf", "exampleMeaning": "Dorf", "sentenceMeaning": "Ich lebe in einem kleinen Dorf." },
+    "kanji_区": { "meaning": "Bezirk", "exampleMeaning": "Bezirk", "sentenceMeaning": "Ich wohne in diesem Bezirk." },
+    "kanji_県": { "meaning": "Präfektur", "exampleMeaning": "Präfektur", "sentenceMeaning": "In Japan gibt es viele Präfekturen." },
+    "kanji_都": { "meaning": "Hauptstadt / Metropole", "exampleMeaning": "Stadt", "sentenceMeaning": "Tokio ist eine große Stadt." },
+    "kanji_京": { "meaning": "Hauptstadt", "exampleMeaning": "Kyoto", "sentenceMeaning": "Ich reise nach Kyoto." },
+    "kanji_店": { "meaning": "Geschäft", "exampleMeaning": "Geschäft", "sentenceMeaning": "Ich kaufe Kleidung im Geschäft." },
+    "kanji_駅": { "meaning": "Bahnhof", "exampleMeaning": "Bahnhof", "sentenceMeaning": "Ich warte am Bahnhof auf meinen Freund." },
+    "kanji_銀": { "meaning": "Silber", "exampleMeaning": "Bank", "sentenceMeaning": "Ich hebe Geld bei der Bank ab." },
+    "kanji_病": { "meaning": "Krankheit", "exampleMeaning": "Krankheit", "sentenceMeaning": "Ich fehle wegen Krankheit in der Schule." },
+    "kanji_院": { "meaning": "Einrichtung / Krankenhaus", "exampleMeaning": "Krankenhaus", "sentenceMeaning": "Ich gehe ins Krankenhaus." },
+    "kanji_医": { "meaning": "Medizin / Arzt", "exampleMeaning": "Arzt", "sentenceMeaning": "Ich bekomme Medizin vom Arzt." },
+    "kanji_薬": { "meaning": "Medizin", "exampleMeaning": "Medizin", "sentenceMeaning": "Ich nehme Medizin." },
+    "kanji_室": { "meaning": "Zimmer / Raum", "exampleMeaning": "Klassenzimmer", "sentenceMeaning": "Ich lerne im Klassenzimmer." },
+    "kanji_屋": { "meaning": "Geschäft / Dach", "exampleMeaning": "Zimmer", "sentenceMeaning": "Ich räume das Zimmer auf." },
+    "kanji_堂": { "meaning": "Halle / Tempel", "exampleMeaning": "Speisesaal", "sentenceMeaning": "Ich esse im Speisesaal zu Mittag." },
+    "kanji_旅": { "meaning": "Reise", "exampleMeaning": "Reise", "sentenceMeaning": "Ich mache im Sommer eine Reise." },
+    "kanji_物": { "meaning": "Ding / Gegenstand", "exampleMeaning": "Essen", "sentenceMeaning": "Was ist dein Lieblingsessen?" },
+    "kanji_品": { "meaning": "Produkt / Artikel", "exampleMeaning": "Produkt", "sentenceMeaning": "Dieses Produkt ist billig." }
   },
   "exampleTerms": {
     "Abreviación": "Abkürzung",

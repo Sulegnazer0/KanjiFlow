@@ -136,7 +136,7 @@
     "latestUpdates": "Dernieres nouveautes",
     "updateOnboarding": "Ecran de marque, bienvenue et visite initiale.",
     "updateAchievements": "Niveaux de succes et version visible au demarrage.",
-    "updateN4": "Trois blocs N4 avec 60 kanji, exemples et traits.",
+    "updateN4": "Quatre blocs N4 avec 80 kanji, exemples et traits.",
     "updateKanjiAudio": "Audio des kanji ajuste aux lectures principales avec pauses.",
     "updateStudyFavorites": "Favoris directs et filtre des caracteres maitrises dans Etude.",
     "updateReminderTime": "Heure de rappel configurable.",
@@ -418,6 +418,10 @@
     "kanji-n4-3": {
       "title": "18. Kanji N4 : mouvement et actions pratiques",
       "description": "Distances, transport, prets, envois, rassemblements et debut ou fin d'activites."
+    },
+    "kanji-n4-4": {
+      "title": "19. Kanji N4 : ville et services",
+      "description": "Lieux, magasins, gares, sante, voyages et objets quotidiens."
     },
     "all": {
       "title": "Tout le contenu",
@@ -1139,6 +1143,106 @@
       "meaning": "Occidental / Ocean",
       "exampleMeaning": "cuisine occidentale",
       "sentenceMeaning": "Je mange de la cuisine occidentale au dejeuner."
+    },
+    "kanji_町": {
+      "meaning": "Ville / Bourg",
+      "exampleMeaning": "ville; bourg",
+      "sentenceMeaning": "Cette ville est calme."
+    },
+    "kanji_市": {
+      "meaning": "Ville / Marche",
+      "exampleMeaning": "marche",
+      "sentenceMeaning": "J'achete du poisson au marche."
+    },
+    "kanji_村": {
+      "meaning": "Village",
+      "exampleMeaning": "village",
+      "sentenceMeaning": "J'habite dans un petit village."
+    },
+    "kanji_区": {
+      "meaning": "District",
+      "exampleMeaning": "district",
+      "sentenceMeaning": "J'habite dans ce district."
+    },
+    "kanji_県": {
+      "meaning": "Prefecture",
+      "exampleMeaning": "prefecture",
+      "sentenceMeaning": "Il y a beaucoup de prefectures au Japon."
+    },
+    "kanji_都": {
+      "meaning": "Capitale / Metropole",
+      "exampleMeaning": "ville",
+      "sentenceMeaning": "Tokyo est une grande ville."
+    },
+    "kanji_京": {
+      "meaning": "Capitale",
+      "exampleMeaning": "Kyoto",
+      "sentenceMeaning": "Je voyage a Kyoto."
+    },
+    "kanji_店": {
+      "meaning": "Magasin",
+      "exampleMeaning": "magasin",
+      "sentenceMeaning": "J'achete des vetements au magasin."
+    },
+    "kanji_駅": {
+      "meaning": "Gare",
+      "exampleMeaning": "gare",
+      "sentenceMeaning": "J'attends mon ami a la gare."
+    },
+    "kanji_銀": {
+      "meaning": "Argent",
+      "exampleMeaning": "banque",
+      "sentenceMeaning": "Je retire de l'argent a la banque."
+    },
+    "kanji_病": {
+      "meaning": "Maladie",
+      "exampleMeaning": "maladie",
+      "sentenceMeaning": "Je manque l'ecole a cause d'une maladie."
+    },
+    "kanji_院": {
+      "meaning": "Institution / Hopital",
+      "exampleMeaning": "hopital",
+      "sentenceMeaning": "Je vais a l'hopital."
+    },
+    "kanji_医": {
+      "meaning": "Medecine / Medecin",
+      "exampleMeaning": "medecin",
+      "sentenceMeaning": "Je recois des medicaments du medecin."
+    },
+    "kanji_薬": {
+      "meaning": "Medicament",
+      "exampleMeaning": "medicament",
+      "sentenceMeaning": "Je prends un medicament."
+    },
+    "kanji_室": {
+      "meaning": "Piece / Salle",
+      "exampleMeaning": "salle de classe",
+      "sentenceMeaning": "J'etudie dans la salle de classe."
+    },
+    "kanji_屋": {
+      "meaning": "Magasin / Toit",
+      "exampleMeaning": "piece",
+      "sentenceMeaning": "Je nettoie la piece."
+    },
+    "kanji_堂": {
+      "meaning": "Salle / Temple",
+      "exampleMeaning": "cantine",
+      "sentenceMeaning": "Je mange le dejeuner a la cantine."
+    },
+    "kanji_旅": {
+      "meaning": "Voyage",
+      "exampleMeaning": "voyage",
+      "sentenceMeaning": "Je pars en voyage en ete."
+    },
+    "kanji_物": {
+      "meaning": "Chose / Objet",
+      "exampleMeaning": "nourriture",
+      "sentenceMeaning": "Quelle est ta nourriture preferee ?"
+    },
+    "kanji_品": {
+      "meaning": "Produit / Article",
+      "exampleMeaning": "produit",
+      "sentenceMeaning": "Ce produit est bon marche."
     }
   },
   "exampleTerms": {

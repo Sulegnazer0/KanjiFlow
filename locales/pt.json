@@ -136,7 +136,7 @@
     "latestUpdates": "Ultimas atualizacoes",
     "updateOnboarding": "Tela de marca, boas-vindas e tour inicial.",
     "updateAchievements": "Niveis de conquistas e versao visivel na tela de carregamento.",
-    "updateN4": "Tres blocos N4 com 60 kanji, exemplos e tracos.",
+    "updateN4": "Quatro blocos N4 com 80 kanji, exemplos e tracos.",
     "updateKanjiAudio": "Audio de kanji ajustado para leituras principais com pausas.",
     "updateStudyFavorites": "Favoritos diretos e filtro de dominadas em Estudo.",
     "updateReminderTime": "Horario configuravel para lembretes.",
@@ -418,6 +418,10 @@
     "kanji-n4-3": {
       "title": "18. Kanji N4: movimento e acoes praticas",
       "description": "Distancias, transporte, emprestimos, envios, reunioes e inicio ou fim de atividades."
+    },
+    "kanji-n4-4": {
+      "title": "19. Kanji N4: cidade e servicos",
+      "description": "Lugares, lojas, estacoes, saude, viagens e objetos cotidianos."
     },
     "all": {
       "title": "Todo o conteudo",
@@ -1139,6 +1143,106 @@
       "meaning": "Ocidental / Oceano",
       "exampleMeaning": "comida ocidental",
       "sentenceMeaning": "Como comida ocidental no almoco."
+    },
+    "kanji_町": {
+      "meaning": "Cidade / Vila",
+      "exampleMeaning": "cidade; vila",
+      "sentenceMeaning": "Esta cidade e tranquila."
+    },
+    "kanji_市": {
+      "meaning": "Cidade / Mercado",
+      "exampleMeaning": "mercado",
+      "sentenceMeaning": "Compro peixe no mercado."
+    },
+    "kanji_村": {
+      "meaning": "Aldeia",
+      "exampleMeaning": "aldeia",
+      "sentenceMeaning": "Moro em uma aldeia pequena."
+    },
+    "kanji_区": {
+      "meaning": "Distrito",
+      "exampleMeaning": "distrito",
+      "sentenceMeaning": "Moro neste distrito."
+    },
+    "kanji_県": {
+      "meaning": "Prefeitura",
+      "exampleMeaning": "prefeitura",
+      "sentenceMeaning": "No Japao ha muitas prefeituras."
+    },
+    "kanji_都": {
+      "meaning": "Capital / Metropole",
+      "exampleMeaning": "cidade",
+      "sentenceMeaning": "Toquio e uma grande cidade."
+    },
+    "kanji_京": {
+      "meaning": "Capital",
+      "exampleMeaning": "Quioto",
+      "sentenceMeaning": "Viajo para Quioto."
+    },
+    "kanji_店": {
+      "meaning": "Loja",
+      "exampleMeaning": "loja",
+      "sentenceMeaning": "Compro roupas na loja."
+    },
+    "kanji_駅": {
+      "meaning": "Estacao",
+      "exampleMeaning": "estacao",
+      "sentenceMeaning": "Espero meu amigo na estacao."
+    },
+    "kanji_銀": {
+      "meaning": "Prata",
+      "exampleMeaning": "banco",
+      "sentenceMeaning": "Saco dinheiro no banco."
+    },
+    "kanji_病": {
+      "meaning": "Doenca",
+      "exampleMeaning": "doenca",
+      "sentenceMeaning": "Falto a escola por doenca."
+    },
+    "kanji_院": {
+      "meaning": "Instituicao / Hospital",
+      "exampleMeaning": "hospital",
+      "sentenceMeaning": "Vou ao hospital."
+    },
+    "kanji_医": {
+      "meaning": "Medicina / Medico",
+      "exampleMeaning": "medico",
+      "sentenceMeaning": "Recebo remedio do medico."
+    },
+    "kanji_薬": {
+      "meaning": "Remedio",
+      "exampleMeaning": "remedio",
+      "sentenceMeaning": "Tomo remedio."
+    },
+    "kanji_室": {
+      "meaning": "Quarto / Sala",
+      "exampleMeaning": "sala de aula",
+      "sentenceMeaning": "Estudo na sala de aula."
+    },
+    "kanji_屋": {
+      "meaning": "Loja / Telhado",
+      "exampleMeaning": "quarto",
+      "sentenceMeaning": "Limpo o quarto."
+    },
+    "kanji_堂": {
+      "meaning": "Salao / Templo",
+      "exampleMeaning": "refeitorio",
+      "sentenceMeaning": "Almoco no refeitorio."
+    },
+    "kanji_旅": {
+      "meaning": "Viagem",
+      "exampleMeaning": "viagem",
+      "sentenceMeaning": "Viajo no verao."
+    },
+    "kanji_物": {
+      "meaning": "Coisa / Objeto",
+      "exampleMeaning": "comida",
+      "sentenceMeaning": "Qual e sua comida favorita?"
+    },
+    "kanji_品": {
+      "meaning": "Produto / Artigo",
+      "exampleMeaning": "produto",
+      "sentenceMeaning": "Este produto e barato."
     }
   },
   "exampleTerms": {
