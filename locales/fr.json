@@ -136,7 +136,7 @@
     "latestUpdates": "Dernieres nouveautes",
     "updateOnboarding": "Ecran de marque, bienvenue et visite initiale.",
     "updateAchievements": "Niveaux de succes et version visible au demarrage.",
-    "updateN4": "Cinq blocs N4 avec 120 kanji, exemples et traits.",
+    "updateN4": "N4 complet selon la reference JLPT Sensei, avec 170 kanji N4, exemples et traits.",
     "updateKanjiAudio": "Audio des kanji ajuste aux lectures principales avec pauses.",
     "updateStudyFavorites": "Favoris directs et filtre des caracteres maitrises dans Etude.",
     "updateReminderTime": "Heure de rappel configurable.",
@@ -426,6 +426,10 @@
     "kanji-n4-5": {
       "title": "20. Kanji N4 : idees et environnement",
       "description": "Concepts, corps, monde, nature, temps, actions et lieux frequents."
+    },
+    "kanji-n4-final": {
+      "title": "21. Kanji N4 : fin du niveau",
+      "description": "Derniers kanji N4 de la reference : famille, meteo, saisons, nourriture, animaux, couleurs et etude."
     },
     "all": {
       "title": "Tout le contenu",
@@ -1447,6 +1451,256 @@
       "meaning": "Approfondir / Rechercher",
       "exampleMeaning": "recherche",
       "sentenceMeaning": "Le professeur etudie le japonais."
+    },
+    "kanji_楽": {
+      "meaning": "Amusant / Musique",
+      "exampleMeaning": "musique",
+      "sentenceMeaning": "J'ecoute de la musique."
+    },
+    "kanji_質": {
+      "meaning": "Qualite / Question",
+      "exampleMeaning": "question",
+      "sentenceMeaning": "Je pose une question au professeur."
+    },
+    "kanji_試": {
+      "meaning": "Essayer / Examen",
+      "exampleMeaning": "examen",
+      "sentenceMeaning": "J'ai un examen demain."
+    },
+    "kanji_族": {
+      "meaning": "Famille / Tribu",
+      "exampleMeaning": "famille",
+      "sentenceMeaning": "Je mange avec ma famille."
+    },
+    "kanji_早": {
+      "meaning": "Tot / Rapide",
+      "exampleMeaning": "tot; rapide",
+      "sentenceMeaning": "Je me leve tot le matin."
+    },
+    "kanji_映": {
+      "meaning": "Refleter / Projeter",
+      "exampleMeaning": "film",
+      "sentenceMeaning": "Je regarde un film avec un ami."
+    },
+    "kanji_親": {
+      "meaning": "Parent / Proche",
+      "exampleMeaning": "parent",
+      "sentenceMeaning": "J'appelle mes parents."
+    },
+    "kanji_験": {
+      "meaning": "Test / Effet",
+      "exampleMeaning": "examen",
+      "sentenceMeaning": "Je passe un examen."
+    },
+    "kanji_英": {
+      "meaning": "Anglais / Excellent",
+      "exampleMeaning": "anglais",
+      "sentenceMeaning": "J'etudie l'anglais."
+    },
+    "kanji_仕": {
+      "meaning": "Servir / Faire",
+      "exampleMeaning": "travail",
+      "sentenceMeaning": "Je vais au travail."
+    },
+    "kanji_去": {
+      "meaning": "Partir / Passe",
+      "exampleMeaning": "l'annee derniere",
+      "sentenceMeaning": "L'annee derniere, je suis alle au Japon."
+    },
+    "kanji_味": {
+      "meaning": "Gout / Sens",
+      "exampleMeaning": "gout",
+      "sentenceMeaning": "Ce plat a bon gout."
+    },
+    "kanji_写": {
+      "meaning": "Copier / Photographier",
+      "exampleMeaning": "photo",
+      "sentenceMeaning": "Je prends une photo."
+    },
+    "kanji_字": {
+      "meaning": "Caractere / Lettre",
+      "exampleMeaning": "kanji",
+      "sentenceMeaning": "J'ecris des kanji."
+    },
+    "kanji_答": {
+      "meaning": "Reponse",
+      "exampleMeaning": "reponse",
+      "sentenceMeaning": "Je donne la reponse."
+    },
+    "kanji_夜": {
+      "meaning": "Nuit",
+      "exampleMeaning": "nuit",
+      "sentenceMeaning": "Je lis un livre le soir."
+    },
+    "kanji_音": {
+      "meaning": "Son",
+      "exampleMeaning": "son",
+      "sentenceMeaning": "On entend un son fort."
+    },
+    "kanji_注": {
+      "meaning": "Verser / Attention",
+      "exampleMeaning": "prudence; attention",
+      "sentenceMeaning": "Je fais attention aux voitures."
+    },
+    "kanji_帰": {
+      "meaning": "Rentrer",
+      "exampleMeaning": "rentrer",
+      "sentenceMeaning": "Je rentre a la maison."
+    },
+    "kanji_歌": {
+      "meaning": "Chanson",
+      "exampleMeaning": "chanson",
+      "sentenceMeaning": "Je chante une chanson."
+    },
+    "kanji_悪": {
+      "meaning": "Mauvais",
+      "exampleMeaning": "mauvais",
+      "sentenceMeaning": "Il fait mauvais."
+    },
+    "kanji_図": {
+      "meaning": "Carte / Dessin",
+      "exampleMeaning": "carte",
+      "sentenceMeaning": "Je regarde la carte."
+    },
+    "kanji_風": {
+      "meaning": "Vent / Style",
+      "exampleMeaning": "vent",
+      "sentenceMeaning": "Le vent est fort."
+    },
+    "kanji_紙": {
+      "meaning": "Papier",
+      "exampleMeaning": "papier",
+      "sentenceMeaning": "J'ecris mon nom sur le papier."
+    },
+    "kanji_黒": {
+      "meaning": "Noir",
+      "exampleMeaning": "noir",
+      "sentenceMeaning": "Il y a un chat noir."
+    },
+    "kanji_花": {
+      "meaning": "Fleur",
+      "exampleMeaning": "fleur",
+      "sentenceMeaning": "J'achete des fleurs."
+    },
+    "kanji_春": {
+      "meaning": "Printemps",
+      "exampleMeaning": "printemps",
+      "sentenceMeaning": "Je regarde les cerisiers au printemps."
+    },
+    "kanji_赤": {
+      "meaning": "Rouge",
+      "exampleMeaning": "rouge",
+      "sentenceMeaning": "Il y a une voiture rouge."
+    },
+    "kanji_青": {
+      "meaning": "Bleu / Vert",
+      "exampleMeaning": "bleu",
+      "sentenceMeaning": "Je regarde le ciel bleu."
+    },
+    "kanji_館": {
+      "meaning": "Batiment / Salle",
+      "exampleMeaning": "bibliotheque",
+      "sentenceMeaning": "J'emprunte un livre a la bibliotheque."
+    },
+    "kanji_色": {
+      "meaning": "Couleur",
+      "exampleMeaning": "couleur",
+      "sentenceMeaning": "Ma couleur preferee est le bleu."
+    },
+    "kanji_秋": {
+      "meaning": "Automne",
+      "exampleMeaning": "automne",
+      "sentenceMeaning": "Je voyage en automne."
+    },
+    "kanji_夏": {
+      "meaning": "Ete",
+      "exampleMeaning": "ete",
+      "sentenceMeaning": "L'ete est chaud."
+    },
+    "kanji_習": {
+      "meaning": "Apprendre",
+      "exampleMeaning": "apprendre",
+      "sentenceMeaning": "J'apprends le japonais."
+    },
+    "kanji_夕": {
+      "meaning": "Soir / Crepuscule",
+      "exampleMeaning": "soir",
+      "sentenceMeaning": "Je me promene le soir."
+    },
+    "kanji_肉": {
+      "meaning": "Viande",
+      "exampleMeaning": "viande",
+      "sentenceMeaning": "Je mange de la viande."
+    },
+    "kanji_鳥": {
+      "meaning": "Oiseau",
+      "exampleMeaning": "oiseau",
+      "sentenceMeaning": "Un oiseau vole dans le ciel."
+    },
+    "kanji_飯": {
+      "meaning": "Repas / Riz",
+      "exampleMeaning": "riz; repas",
+      "sentenceMeaning": "Je prends le petit-dejeuner."
+    },
+    "kanji_勉": {
+      "meaning": "Effort",
+      "exampleMeaning": "etude",
+      "sentenceMeaning": "J'etudie tous les jours."
+    },
+    "kanji_冬": {
+      "meaning": "Hiver",
+      "exampleMeaning": "hiver",
+      "sentenceMeaning": "L'hiver est froid."
+    },
+    "kanji_昼": {
+      "meaning": "Midi / Jour",
+      "exampleMeaning": "midi",
+      "sentenceMeaning": "Je dejeune."
+    },
+    "kanji_茶": {
+      "meaning": "The",
+      "exampleMeaning": "the",
+      "sentenceMeaning": "Je bois du the."
+    },
+    "kanji_弟": {
+      "meaning": "Frere cadet",
+      "exampleMeaning": "frere cadet",
+      "sentenceMeaning": "Mon frere cadet est etudiant."
+    },
+    "kanji_牛": {
+      "meaning": "Vache",
+      "exampleMeaning": "vache",
+      "sentenceMeaning": "Il y a une vache."
+    },
+    "kanji_魚": {
+      "meaning": "Poisson",
+      "exampleMeaning": "poisson",
+      "sentenceMeaning": "J'achete du poisson."
+    },
+    "kanji_兄": {
+      "meaning": "Frere aine",
+      "exampleMeaning": "frere aine",
+      "sentenceMeaning": "Mon frere aine habite a Tokyo."
+    },
+    "kanji_犬": {
+      "meaning": "Chien",
+      "exampleMeaning": "chien",
+      "sentenceMeaning": "Je me promene avec le chien."
+    },
+    "kanji_妹": {
+      "meaning": "Soeur cadette",
+      "exampleMeaning": "soeur cadette",
+      "sentenceMeaning": "Je parle avec ma soeur cadette."
+    },
+    "kanji_姉": {
+      "meaning": "Soeur ainee",
+      "exampleMeaning": "soeur ainee",
+      "sentenceMeaning": "Ma soeur ainee est professeure."
+    },
+    "kanji_漢": {
+      "meaning": "Chinois / Kanji",
+      "exampleMeaning": "kanji",
+      "sentenceMeaning": "Je pratique les kanji."
     }
   },
   "exampleTerms": {

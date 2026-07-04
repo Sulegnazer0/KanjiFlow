@@ -6,8 +6,8 @@ Historial de cambios: consulta [CHANGELOG.md](CHANGELOG.md).
 
 ## Funciones
 
-- Ruta progresiva de 20 lecciones.
-- 413 tarjetas: hiragana, katakana, reglas especiales y 200 kanji.
+- Ruta progresiva de 21 lecciones.
+- 463 tarjetas: hiragana, katakana, reglas especiales y 250 kanji.
 - Repetición espaciada con cuatro niveles de respuesta.
 - Perfil local con nombre, meta diaria, historial de 7 días y rachas de meta.
 - Sistema de logros por hitos de práctica, metas, favoritos y caracteres dominados.
@@ -25,6 +25,7 @@ Historial de cambios: consulta [CHANGELOG.md](CHANGELOG.md).
 - Campana de recordatorio: permite elegir hora preferida y avisa en ese horario.
 - Ventana “Acerca de” con versión, últimas actualizaciones, créditos de S0 Labs y envío directo de recomendaciones.
 - Ejemplos completos para cada kanji: palabra, lectura, significado y frase.
+- Cobertura N4 cerrada según la referencia de JLPT Sensei, sin duplicar kanji que ya existen en N5.
 - Búsqueda accesible por carácter, lectura, significado o ejemplo.
 - Funcionamiento básico sin conexión después de la primera visita.
 
@@ -94,6 +95,7 @@ npm run build:stroke-font
 - `docs/jlpt-n4-3.md`: tercera tanda N4 con movimiento, transporte y acciones prácticas.
 - `docs/jlpt-n4-4.md`: cuarta tanda N4 con ciudad, servicios, tiendas, salud y viajes.
 - `docs/jlpt-n4-5.md`: quinta tanda N4 con ideas, cuerpo, mundo, naturaleza, tiempo y acciones.
+- `docs/jlpt-n4-final.md`: cierre de N4 con los 50 kanji faltantes según la referencia JLPT Sensei.
 - `tools/build-stroke-font.mjs`: generador del WOFF reducido de orden de trazos.
 - `tools/stroke-font-extra.txt`: caracteres planeados que deben entrar al WOFF antes de publicarse.
 - `tools/validate-content.mjs`: validador de contenido, ejemplos, lecciones y locales.

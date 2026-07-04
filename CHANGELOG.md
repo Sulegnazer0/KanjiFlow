@@ -10,6 +10,23 @@ El número de versión visible de la app debe mantenerse alineado en:
 - `CHANGELOG.md`;
 - `service-worker.js` y query strings `?v=...` cuando cambien archivos cacheados.
 
+## [0.8.11] - 2026-07-04
+
+### Agregado
+
+- Cierre de cobertura N4 usando la referencia de JLPT Sensei como lista canónica del proyecto.
+- 50 kanji N4 finales: 楽, 質, 試, 族, 早, 映, 親, 験, 英, 仕, 去, 味, 写, 字, 答, 夜, 音, 注, 帰, 歌, 悪, 図, 風, 紙, 黒, 花, 春, 赤, 青, 館, 色, 秋, 夏, 習, 夕, 肉, 鳥, 飯, 勉, 冬, 昼, 茶, 弟, 牛, 魚, 兄, 犬, 妹, 姉 y 漢.
+- Lección “Kanji N4: cierre de nivel”.
+- Ejemplos contextualizados para los 50 kanji nuevos.
+- Traducciones ES/EN/DE/FR/PT para las nuevas tarjetas.
+- Documento `docs/jlpt-n4-final.md`.
+- Fuente `KanjiStrokeOrders.woff` regenerada para cubrir 250 kanji publicados.
+
+### Cambiado
+
+- La app muestra `v0.8.11`, 463 tarjetas y 250 kanji con ejemplos.
+- La ventana “Acerca de” comunica que N4 queda completo según la referencia JLPT Sensei.
+
 ## [0.8.10] - 2026-07-04
 
 ### Agregado

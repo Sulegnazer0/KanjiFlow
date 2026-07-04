@@ -31,7 +31,7 @@ import {
     saveSettings,
 } from "./storage.js";
 import { createDrawingPad } from "./drawing.js";
-import { exampleJapanese, itemPronunciation, japaneseOnly, speakJapanese } from "./audio.js?v=810";
+import { exampleJapanese, itemPronunciation, japaneseOnly, speakJapanese } from "./audio.js?v=811";
 import { loadDictionary } from "./data.js";
 import {
     achievementLevel,
@@ -39,14 +39,14 @@ import {
     achievementSummary,
     buildAchievementStats,
     syncAchievements,
-} from "./achievements.js?v=810";
+} from "./achievements.js?v=811";
 import {
     dailyEntry,
     dailySummary,
     practiceStats,
     recentDailySummaries,
     recordDailyPractice,
-} from "./profile.js?v=810";
+} from "./profile.js?v=811";
 import {
     disablePracticeReminder,
     enablePracticeReminder,
@@ -55,7 +55,7 @@ import {
     recordPractice,
     setPracticeReminderTime,
     shouldNotifyPracticeReminder,
-} from "./reminders.js?v=810";
+} from "./reminders.js?v=811";
 import {
     AVAILABLE_LANGUAGES,
     applyDocumentTranslations,
@@ -69,9 +69,9 @@ import {
     localizeDictionary,
     t,
     translateCardState,
-} from "./i18n.js?v=810";
+} from "./i18n.js?v=811";
 
-const APP_VERSION = "0.8.10";
+const APP_VERSION = "0.8.11";
 const FEEDBACK_ENDPOINT = "https://script.google.com/macros/s/AKfycbxiz6058zwMxfPTDTmIBpG8JutOPw8YBxCRJ0BeMHp-py6IXZy4zkZs2IdTqwmSSzC1jw/exec";
 const SPLASH_MIN_MS = 2400;
 const startupStartedAt = performance.now();

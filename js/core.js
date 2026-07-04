@@ -129,6 +129,12 @@ export const LESSONS = [
         test: item => item.tipo === "kanji" && item.categoria === "N4" && Number(item.id_jlpt) >= 161 && Number(item.id_jlpt) <= 200,
     },
     {
+        id: "kanji-n4-final",
+        title: "21. Kanji N4: cierre de nivel",
+        description: "Últimos kanji N4 de la referencia: familia, clima, estaciones, comida, animales, colores y estudio.",
+        test: item => item.tipo === "kanji" && item.categoria === "N4" && Number(item.id_jlpt) >= 201 && Number(item.id_jlpt) <= 250,
+    },
+    {
         id: "all",
         title: "Todo el contenido",
         description: "Mezcla libre de todos los caracteres disponibles.",

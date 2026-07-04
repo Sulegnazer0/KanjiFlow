@@ -999,4 +999,254 @@ export const KANJI_EXAMPLES = {
         sentence: "先生は日本語を研究します。", sentenceReading: "せんせいは にほんごを けんきゅうします。",
         sentenceMeaning: "El profesor investiga el japonés.",
     },
+    "楽": {
+        word: "音楽", reading: "おんがく", meaning: "música",
+        sentence: "音楽を聞きます。", sentenceReading: "おんがくを ききます。",
+        sentenceMeaning: "Escucho música.",
+    },
+    "質": {
+        word: "質問", reading: "しつもん", meaning: "pregunta",
+        sentence: "先生に質問します。", sentenceReading: "せんせいに しつもんします。",
+        sentenceMeaning: "Le hago una pregunta al profesor.",
+    },
+    "試": {
+        word: "試験", reading: "しけん", meaning: "examen",
+        sentence: "明日試験があります。", sentenceReading: "あした しけんが あります。",
+        sentenceMeaning: "Mañana tengo un examen.",
+    },
+    "族": {
+        word: "家族", reading: "かぞく", meaning: "familia",
+        sentence: "家族と食事します。", sentenceReading: "かぞくと しょくじします。",
+        sentenceMeaning: "Como con mi familia.",
+    },
+    "早": {
+        word: "早い", reading: "はやい", meaning: "temprano; rápido",
+        sentence: "朝早く起きます。", sentenceReading: "あさ はやく おきます。",
+        sentenceMeaning: "Me levanto temprano por la mañana.",
+    },
+    "映": {
+        word: "映画", reading: "えいが", meaning: "película",
+        sentence: "友だちと映画を見ます。", sentenceReading: "ともだちと えいがを みます。",
+        sentenceMeaning: "Veo una película con un amigo.",
+    },
+    "親": {
+        word: "親", reading: "おや", meaning: "padre o madre",
+        sentence: "親に電話します。", sentenceReading: "おやに でんわします。",
+        sentenceMeaning: "Llamo a mis padres.",
+    },
+    "験": {
+        word: "試験", reading: "しけん", meaning: "examen",
+        sentence: "試験を受けます。", sentenceReading: "しけんを うけます。",
+        sentenceMeaning: "Tomo un examen.",
+    },
+    "英": {
+        word: "英語", reading: "えいご", meaning: "inglés",
+        sentence: "英語を勉強します。", sentenceReading: "えいごを べんきょうします。",
+        sentenceMeaning: "Estudio inglés.",
+    },
+    "仕": {
+        word: "仕事", reading: "しごと", meaning: "trabajo",
+        sentence: "仕事へ行きます。", sentenceReading: "しごとへ いきます。",
+        sentenceMeaning: "Voy al trabajo.",
+    },
+    "去": {
+        word: "去年", reading: "きょねん", meaning: "año pasado",
+        sentence: "去年日本へ行きました。", sentenceReading: "きょねん にほんへ いきました。",
+        sentenceMeaning: "El año pasado fui a Japón.",
+    },
+    "味": {
+        word: "味", reading: "あじ", meaning: "sabor",
+        sentence: "この料理は味がいいです。", sentenceReading: "この りょうりは あじが いいです。",
+        sentenceMeaning: "Esta comida tiene buen sabor.",
+    },
+    "写": {
+        word: "写真", reading: "しゃしん", meaning: "foto",
+        sentence: "写真を撮ります。", sentenceReading: "しゃしんを とります。",
+        sentenceMeaning: "Tomo una foto.",
+    },
+    "字": {
+        word: "漢字", reading: "かんじ", meaning: "kanji",
+        sentence: "漢字を書きます。", sentenceReading: "かんじを かきます。",
+        sentenceMeaning: "Escribo kanji.",
+    },
+    "答": {
+        word: "答え", reading: "こたえ", meaning: "respuesta",
+        sentence: "答えを言います。", sentenceReading: "こたえを いいます。",
+        sentenceMeaning: "Digo la respuesta.",
+    },
+    "夜": {
+        word: "夜", reading: "よる", meaning: "noche",
+        sentence: "夜に本を読みます。", sentenceReading: "よるに ほんを よみます。",
+        sentenceMeaning: "Leo un libro por la noche.",
+    },
+    "音": {
+        word: "音", reading: "おと", meaning: "sonido",
+        sentence: "大きな音が聞こえます。", sentenceReading: "おおきな おとが きこえます。",
+        sentenceMeaning: "Se escucha un sonido fuerte.",
+    },
+    "注": {
+        word: "注意", reading: "ちゅうい", meaning: "cuidado; atención",
+        sentence: "車に注意します。", sentenceReading: "くるまに ちゅういします。",
+        sentenceMeaning: "Tengo cuidado con los coches.",
+    },
+    "帰": {
+        word: "帰る", reading: "かえる", meaning: "regresar",
+        sentence: "家へ帰ります。", sentenceReading: "いえへ かえります。",
+        sentenceMeaning: "Regreso a casa.",
+    },
+    "歌": {
+        word: "歌", reading: "うた", meaning: "canción",
+        sentence: "歌を歌います。", sentenceReading: "うたを うたいます。",
+        sentenceMeaning: "Canto una canción.",
+    },
+    "悪": {
+        word: "悪い", reading: "わるい", meaning: "malo",
+        sentence: "天気が悪いです。", sentenceReading: "てんきが わるいです。",
+        sentenceMeaning: "El clima está malo.",
+    },
+    "図": {
+        word: "地図", reading: "ちず", meaning: "mapa",
+        sentence: "地図を見ます。", sentenceReading: "ちずを みます。",
+        sentenceMeaning: "Miro el mapa.",
+    },
+    "風": {
+        word: "風", reading: "かぜ", meaning: "viento",
+        sentence: "風が強いです。", sentenceReading: "かぜが つよいです。",
+        sentenceMeaning: "El viento es fuerte.",
+    },
+    "紙": {
+        word: "紙", reading: "かみ", meaning: "papel",
+        sentence: "紙に名前を書きます。", sentenceReading: "かみに なまえを かきます。",
+        sentenceMeaning: "Escribo mi nombre en el papel.",
+    },
+    "黒": {
+        word: "黒い", reading: "くろい", meaning: "negro",
+        sentence: "黒い猫がいます。", sentenceReading: "くろい ねこが います。",
+        sentenceMeaning: "Hay un gato negro.",
+    },
+    "花": {
+        word: "花", reading: "はな", meaning: "flor",
+        sentence: "花を買います。", sentenceReading: "はなを かいます。",
+        sentenceMeaning: "Compro flores.",
+    },
+    "春": {
+        word: "春", reading: "はる", meaning: "primavera",
+        sentence: "春に桜を見ます。", sentenceReading: "はるに さくらを みます。",
+        sentenceMeaning: "Veo los cerezos en primavera.",
+    },
+    "赤": {
+        word: "赤い", reading: "あかい", meaning: "rojo",
+        sentence: "赤い車があります。", sentenceReading: "あかい くるまが あります。",
+        sentenceMeaning: "Hay un coche rojo.",
+    },
+    "青": {
+        word: "青い", reading: "あおい", meaning: "azul",
+        sentence: "青い空を見ます。", sentenceReading: "あおい そらを みます。",
+        sentenceMeaning: "Veo el cielo azul.",
+    },
+    "館": {
+        word: "図書館", reading: "としょかん", meaning: "biblioteca",
+        sentence: "図書館で本を借ります。", sentenceReading: "としょかんで ほんを かります。",
+        sentenceMeaning: "Pido prestado un libro en la biblioteca.",
+    },
+    "色": {
+        word: "色", reading: "いろ", meaning: "color",
+        sentence: "好きな色は青です。", sentenceReading: "すきな いろは あおです。",
+        sentenceMeaning: "Mi color favorito es el azul.",
+    },
+    "秋": {
+        word: "秋", reading: "あき", meaning: "otoño",
+        sentence: "秋に旅行します。", sentenceReading: "あきに りょこうします。",
+        sentenceMeaning: "Viajo en otoño.",
+    },
+    "夏": {
+        word: "夏", reading: "なつ", meaning: "verano",
+        sentence: "夏は暑いです。", sentenceReading: "なつは あついです。",
+        sentenceMeaning: "El verano es caluroso.",
+    },
+    "習": {
+        word: "習う", reading: "ならう", meaning: "aprender",
+        sentence: "日本語を習います。", sentenceReading: "にほんごを ならいます。",
+        sentenceMeaning: "Aprendo japonés.",
+    },
+    "夕": {
+        word: "夕方", reading: "ゆうがた", meaning: "atardecer",
+        sentence: "夕方に散歩します。", sentenceReading: "ゆうがたに さんぽします。",
+        sentenceMeaning: "Paseo al atardecer.",
+    },
+    "肉": {
+        word: "肉", reading: "にく", meaning: "carne",
+        sentence: "肉を食べます。", sentenceReading: "にくを たべます。",
+        sentenceMeaning: "Como carne.",
+    },
+    "鳥": {
+        word: "鳥", reading: "とり", meaning: "pájaro",
+        sentence: "鳥が空を飛びます。", sentenceReading: "とりが そらを とびます。",
+        sentenceMeaning: "Un pájaro vuela en el cielo.",
+    },
+    "飯": {
+        word: "ご飯", reading: "ごはん", meaning: "arroz; comida",
+        sentence: "朝ご飯を食べます。", sentenceReading: "あさごはんを たべます。",
+        sentenceMeaning: "Desayuno.",
+    },
+    "勉": {
+        word: "勉強", reading: "べんきょう", meaning: "estudio",
+        sentence: "毎日勉強します。", sentenceReading: "まいにち べんきょうします。",
+        sentenceMeaning: "Estudio todos los días.",
+    },
+    "冬": {
+        word: "冬", reading: "ふゆ", meaning: "invierno",
+        sentence: "冬は寒いです。", sentenceReading: "ふゆは さむいです。",
+        sentenceMeaning: "El invierno es frío.",
+    },
+    "昼": {
+        word: "昼", reading: "ひる", meaning: "mediodía",
+        sentence: "昼ごはんを食べます。", sentenceReading: "ひるごはんを たべます。",
+        sentenceMeaning: "Almuerzo.",
+    },
+    "茶": {
+        word: "お茶", reading: "おちゃ", meaning: "té",
+        sentence: "お茶を飲みます。", sentenceReading: "おちゃを のみます。",
+        sentenceMeaning: "Bebo té.",
+    },
+    "弟": {
+        word: "弟", reading: "おとうと", meaning: "hermano menor",
+        sentence: "弟は学生です。", sentenceReading: "おとうとは がくせいです。",
+        sentenceMeaning: "Mi hermano menor es estudiante.",
+    },
+    "牛": {
+        word: "牛", reading: "うし", meaning: "vaca",
+        sentence: "牛がいます。", sentenceReading: "うしが います。",
+        sentenceMeaning: "Hay una vaca.",
+    },
+    "魚": {
+        word: "魚", reading: "さかな", meaning: "pez; pescado",
+        sentence: "魚を買います。", sentenceReading: "さかなを かいます。",
+        sentenceMeaning: "Compro pescado.",
+    },
+    "兄": {
+        word: "兄", reading: "あに", meaning: "hermano mayor",
+        sentence: "兄は東京に住んでいます。", sentenceReading: "あには とうきょうに すんでいます。",
+        sentenceMeaning: "Mi hermano mayor vive en Tokio.",
+    },
+    "犬": {
+        word: "犬", reading: "いぬ", meaning: "perro",
+        sentence: "犬と散歩します。", sentenceReading: "いぬと さんぽします。",
+        sentenceMeaning: "Paseo con el perro.",
+    },
+    "妹": {
+        word: "妹", reading: "いもうと", meaning: "hermana menor",
+        sentence: "妹と話します。", sentenceReading: "いもうとと はなします。",
+        sentenceMeaning: "Hablo con mi hermana menor.",
+    },
+    "姉": {
+        word: "姉", reading: "あね", meaning: "hermana mayor",
+        sentence: "姉は先生です。", sentenceReading: "あねは せんせいです。",
+        sentenceMeaning: "Mi hermana mayor es profesora.",
+    },
+    "漢": {
+        word: "漢字", reading: "かんじ", meaning: "kanji",
+        sentence: "漢字を練習します。", sentenceReading: "かんじを れんしゅうします。",
+        sentenceMeaning: "Practico kanji.",
+    },
 };
