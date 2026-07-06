@@ -35,6 +35,10 @@ const APP_ASSETS = [
     "./js/reminders.js",
     "./js/reminders.js?v=811",
     "./js/storage.js",
+    "./js/stroke-geometry.js",
+    "./js/stroke-scoring.js",
+    "./js/stroke-animation.js",
+    "./data/kanjivg/index.json",
 ];
 
 self.addEventListener("install", event => {

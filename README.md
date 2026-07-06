@@ -69,6 +69,13 @@ python -m pip install fonttools brotli
 npm run build:stroke-font
 ```
 
+Para regenerar los datos de trazos KanjiVG (evaluador y animación) cuando se agreguen kanji N5:
+
+```powershell
+npm run fetch:kanjivg
+npm run build:kanjivg
+```
+
 ## Estructura
 
 - `index.html`: estructura semántica y accesible.
@@ -78,7 +85,10 @@ npm run build:stroke-font
 - `datos.csv`: contenido de kana y kanji.
 - `js/core.js`: currículo, filtros y repetición espaciada.
 - `js/storage.js`: persistencia, migración y copias de seguridad.
-- `js/drawing.js`: pizarras y escalado de coordenadas.
+- `js/drawing.js`: pizarras, escalado de coordenadas y capa de feedback por trazo.
+- `js/stroke-geometry.js`: remuestreo y normalización de trazos compartidos entre el build y el runtime.
+- `js/stroke-scoring.js`: algoritmo de comparación de trazos contra los datos KanjiVG.
+- `js/stroke-animation.js`: animador de orden de trazos sobre canvas.
 - `js/audio.js`: pronunciación japonesa.
 - `js/i18n.js`: carga de idiomas, traducción de UI y localización de tarjetas.
 - `js/kanji-examples.js`: ejemplos contextualizados.
@@ -90,6 +100,7 @@ npm run build:stroke-font
 - `service-worker.js`: caché para uso sin conexión.
 - `docs/apps-script-users.md`: contrato temporal para registrar altas en la pestaña `Usuarios`.
 - `docs/content-pipeline.md`: flujo para agregar JLPT N4/N3 e idiomas nuevos con validaciones.
+- `docs/registro-ia.md`: historial de features implementadas con IA (qué, cuándo, quién) y plantillas de prompts para extenderlas sin depender de una IA específica.
 - `docs/jlpt-n4-starter.md`: primera tanda propuesta para crecer hacia JLPT N4 sin romper trazos ni traducciones.
 - `docs/jlpt-n4-2.md`: segunda tanda N4 con vida diaria, hábitos, pensamiento y acciones.
 - `docs/jlpt-n4-3.md`: tercera tanda N4 con movimiento, transporte y acciones prácticas.
@@ -99,12 +110,21 @@ npm run build:stroke-font
 - `tools/build-stroke-font.mjs`: generador del WOFF reducido de orden de trazos.
 - `tools/stroke-font-extra.txt`: caracteres planeados que deben entrar al WOFF antes de publicarse.
 - `tools/validate-content.mjs`: validador de contenido, ejemplos, lecciones y locales.
+- `tools/fetch-kanjivg.mjs`: descarga los SVG de KanjiVG para los kanji N5 en `vendor/kanjivg-svg/`.
+- `tools/build-kanjivg-data.mjs`: genera `data/kanjivg/*.json` a partir de los SVG vendoreados.
+- `tools/lib/svg-path.mjs`: intérprete mínimo de paths SVG (M/C/S) usado por el build de KanjiVG.
+- `data/kanjivg/`: trazos normalizados por kanji N5, usados por el evaluador y la animación.
 
 La fuente original de trazos se conserva como referencia, pero la aplicación carga
 `KanjiStrokeOrders.woff`, una versión reducida a los caracteres utilizados (aprox.
 112 KB frente a 18 MB).
 El validador de contenido revisa que todos los kanji publicados existan en ese
-WOFF antes de permitir una entrega nueva.
+WOFF antes de permitir una entrega nueva, y que todo kanji N5 tenga sus datos de
+trazos KanjiVG en `data/kanjivg/`.
+
+Los datos de `vendor/kanjivg-svg/` y `data/kanjivg/` provienen del proyecto
+[KanjiVG](https://kanjivg.tagaini.net/) (Ulrich Apel) y se distribuyen bajo
+Creative Commons Attribution-Share Alike 3.0 — ver `vendor/kanjivg-svg/LICENSE`.
 
 ## Agregar idiomas
 

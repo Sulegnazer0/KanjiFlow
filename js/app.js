@@ -30,7 +30,9 @@ import {
     saveProgress,
     saveSettings,
 } from "./storage.js";
-import { createDrawingPad } from "./drawing.js";
+import { createDrawingPad, createFeedbackLayer } from "./drawing.js";
+import { scoreAttempt, similarityColor } from "./stroke-scoring.js";
+import { createStrokeAnimator } from "./stroke-animation.js";
 import { exampleJapanese, itemPronunciation, japaneseOnly, speakJapanese } from "./audio.js?v=811";
 import { loadDictionary } from "./data.js";
 import {
@@ -107,10 +109,13 @@ const elements = {
     hint: $("#pista-romaji"),
     practiceSound: $("#btn-sonido-practica"),
     board: $("#pizarra"),
+    feedbackBoard: $("#pizarra-feedback"),
     practiceGuide: $("#guia-practica"),
     clearBoard: $("#btn-limpiar"),
     reveal: $("#btn-revelar"),
     answerPanel: $("#panel-respuesta"),
+    ratingFieldset: document.querySelector(".rating-fieldset"),
+    strokeGateNotice: $("#aviso-umbral-trazos"),
     answerCharacter: $("#resp-caracter"),
     answerSound: $("#btn-sonido-respuesta"),
     answerRomaji: $("#resp-romaji"),
@@ -137,6 +142,7 @@ const elements = {
     closeModal: $("#cerrar-modal"),
     modalCharacter: $("#modal-caracter"),
     modalBoard: $("#pizarra-modal"),
+    strokeAnimationCanvas: $("#animacion-trazos"),
     toggleStrokes: $("#btn-toggle-trazos"),
     clearModalBoard: $("#btn-limpiar-modal"),
     modalRomaji: $("#modal-romaji"),
@@ -180,6 +186,9 @@ const elements = {
     reminderTime: $("#hora-recordatorio"),
     saveProfile: $("#btn-guardar-perfil"),
     goalChips: document.querySelectorAll("[data-goal]"),
+    similarityThreshold: $("#perfil-umbral-similitud"),
+    thresholdChips: document.querySelectorAll("[data-threshold]"),
+    strokeEvaluatorToggle: $("#btn-evaluador-trazos"),
     profileTodayUnique: $("#perfil-hoy-unicas"),
     profileTodayReviews: $("#perfil-hoy-repasos"),
     profileActiveDays: $("#perfil-dias-activos"),
@@ -243,9 +252,94 @@ let reminderTimer = null;
 let touchStartX = 0;
 let tourIndex = 0;
 let tourHighlightedElement = null;
+let expectedKanjiData = null;
 
-const practicePad = createDrawingPad(elements.board, { lineWidth: 12 });
+const kanjivgDataCache = new Map();
+let kanjivgIndexPromise = null;
+
+function loadKanjivgIndex() {
+    if (!kanjivgIndexPromise) {
+        kanjivgIndexPromise = fetch("data/kanjivg/index.json")
+            .then(response => (response.ok ? response.json() : {}))
+            .catch(() => ({}));
+    }
+    return kanjivgIndexPromise;
+}
+
+async function loadKanjivgData(character) {
+    if (kanjivgDataCache.has(character)) return kanjivgDataCache.get(character);
+    const index = await loadKanjivgIndex();
+    const codepoint = index[character];
+    if (!codepoint) {
+        kanjivgDataCache.set(character, null);
+        return null;
+    }
+    try {
+        const response = await fetch(`data/kanjivg/${codepoint}.json`);
+        const data = response.ok ? await response.json() : null;
+        kanjivgDataCache.set(character, data);
+        return data;
+    } catch {
+        kanjivgDataCache.set(character, null);
+        return null;
+    }
+}
+
+async function loadExpectedStrokes(item) {
+    expectedKanjiData = item?.tipo === "kanji" && item.categoria === "N5"
+        ? await loadKanjivgData(item.caracter)
+        : null;
+}
+
+let modalExpectedKanjiData = null;
+let modalKanjivgRequestId = 0;
+
+async function loadModalExpectedStrokes(item) {
+    const requestId = (modalKanjivgRequestId += 1);
+    modalExpectedKanjiData = null;
+    if (item?.tipo === "kanji" && item.categoria === "N5") {
+        const data = await loadKanjivgData(item.caracter);
+        if (requestId !== modalKanjivgRequestId) return;
+        modalExpectedKanjiData = data;
+    }
+    updateStrokeOrderDisplay();
+}
+
+function updateStrokeOrderDisplay() {
+    elements.toggleStrokes.setAttribute("aria-pressed", String(strokeOrderVisible));
+    elements.toggleStrokes.textContent = strokeOrderVisible
+        ? t("ui.hideStrokeOrder")
+        : t("ui.showStrokeOrder");
+
+    if (!strokeOrderVisible) {
+        elements.modalCharacter.classList.remove("stroke-order");
+        elements.strokeAnimationCanvas.classList.add("hidden");
+        strokeAnimator.stop();
+        return;
+    }
+
+    if (modalExpectedKanjiData) {
+        elements.modalCharacter.classList.remove("stroke-order");
+        elements.strokeAnimationCanvas.classList.remove("hidden");
+        strokeAnimator.playCharacter(modalExpectedKanjiData);
+    } else {
+        elements.strokeAnimationCanvas.classList.add("hidden");
+        strokeAnimator.stop();
+        elements.modalCharacter.classList.add("stroke-order");
+    }
+}
+
+function handleStrokeEnd(index, points) {
+    if (!profile.strokeEvaluatorEnabled || !expectedKanjiData) return;
+    const result = scoreAttempt(practicePad.getStrokes(), expectedKanjiData.strokes);
+    const strokeScore = result.strokeScores[index];
+    feedbackLayer.paintStroke(points, strokeScore === undefined ? "red" : similarityColor(strokeScore));
+}
+
+const practicePad = createDrawingPad(elements.board, { lineWidth: 12, onStrokeEnd: handleStrokeEnd });
 const modalPad = createDrawingPad(elements.modalBoard, { lineWidth: 7 });
+const feedbackLayer = createFeedbackLayer(elements.feedbackBoard);
+const strokeAnimator = createStrokeAnimator(elements.strokeAnimationCanvas);
 
 const wait = ms => new Promise(resolve => setTimeout(resolve, Math.max(0, ms)));
 
@@ -261,6 +355,7 @@ function showPracticeGuide(character) {
 
 function clearPracticeBoard() {
     practicePad.clear();
+    feedbackLayer.clear();
     hidePracticeGuide();
 }
 
@@ -863,6 +958,7 @@ function presentChallenge() {
     const poolData = getPracticePool();
     elements.lessonDescription.textContent = lessonDescription(poolData.lesson);
     currentItem = chooseNext(poolData.items, previousItemId, progress);
+    loadExpectedStrokes(currentItem);
 
     if (!currentItem) {
         elements.typeInfo.textContent = t("ui.noCardsTag");
@@ -921,8 +1017,25 @@ function revealAnswer() {
         elements.answerCounterpart.textContent = currentItem.contraparte || "—";
         elements.answerWord.textContent = currentItem.palabra_ejemplo || "—";
     }
+
+    const gate = evaluateStrokeGate();
+    setVisibility(elements.ratingFieldset, !gate.gated);
+    setVisibility(elements.strokeGateNotice, gate.gated);
+    if (gate.gated) {
+        elements.strokeGateNotice.textContent = t("ui.strokeGateMessage", {
+            score: gate.score,
+            threshold: profile.similarityThreshold,
+        });
+    }
+
     elements.answerPanel.classList.remove("hidden");
     elements.answerPanel.scrollIntoView?.({ behavior: "smooth", block: "nearest" });
+}
+
+function evaluateStrokeGate() {
+    if (!profile.strokeEvaluatorEnabled || !expectedKanjiData) return { gated: false, score: 100 };
+    const result = scoreAttempt(practicePad.getStrokes(), expectedKanjiData.strokes);
+    return { gated: result.score < profile.similarityThreshold, score: result.score };
 }
 
 function rateCurrent(rating) {
@@ -1243,6 +1356,17 @@ function renderProfile() {
         chip.classList.toggle("active", Number(chip.dataset.goal) === Number(profile.dailyGoal));
     });
 
+    if (document.activeElement !== elements.similarityThreshold) {
+        elements.similarityThreshold.value = profile.similarityThreshold;
+    }
+    elements.thresholdChips.forEach(chip => {
+        chip.classList.toggle("active", Number(chip.dataset.threshold) === Number(profile.similarityThreshold));
+    });
+    elements.strokeEvaluatorToggle.setAttribute("aria-pressed", String(profile.strokeEvaluatorEnabled));
+    elements.strokeEvaluatorToggle.textContent = profile.strokeEvaluatorEnabled
+        ? t("ui.strokeEvaluatorDisable")
+        : t("ui.strokeEvaluatorEnable");
+
     elements.profileTodayUnique.textContent = today.uniqueCount;
     elements.profileTodayReviews.textContent = today.reviews;
     elements.profileActiveDays.textContent = stats.activeDays;
@@ -1259,12 +1383,20 @@ function saveProfileFromForm() {
         ...profile,
         name: elements.profileName.value,
         dailyGoal: elements.dailyGoal.value,
+        similarityThreshold: elements.similarityThreshold.value,
     };
     saveProfile(profile);
     profile = loadProfile();
     saveReminderTime(elements.reminderTime.value);
     updateProgressUI();
     showToast(t("ui.profileSaved"));
+}
+
+function toggleStrokeEvaluator() {
+    profile = { ...profile, strokeEvaluatorEnabled: !profile.strokeEvaluatorEnabled };
+    saveProfile(profile);
+    profile = loadProfile();
+    renderProfile();
 }
 
 function openAboutModal() {
@@ -1466,10 +1598,9 @@ function openModal(index, trigger = modalTrigger) {
     modalIndex = index;
     modalTrigger = trigger;
     strokeOrderVisible = true;
-    elements.modalCharacter.classList.add("stroke-order");
-    elements.toggleStrokes.setAttribute("aria-pressed", "true");
-    elements.toggleStrokes.textContent = t("ui.hideStrokeOrder");
     modalPad.clear();
+    loadModalExpectedStrokes(item);
+    updateStrokeOrderDisplay();
 
     elements.modalCharacter.textContent = item.caracter || "?";
     elements.modalRomaji.textContent = item.romaji || "—";
@@ -1522,6 +1653,7 @@ function closeModal() {
     if (elements.modal.classList.contains("hidden")) return;
     elements.modal.classList.add("hidden");
     document.body.style.overflow = "";
+    strokeAnimator.stop();
     modalTrigger?.focus?.();
 }
 
@@ -1668,6 +1800,16 @@ function bindEvents() {
             saveProfileFromForm();
         });
     });
+    elements.similarityThreshold.addEventListener("keydown", event => {
+        if (event.key === "Enter") saveProfileFromForm();
+    });
+    elements.thresholdChips.forEach(chip => {
+        chip.addEventListener("click", () => {
+            elements.similarityThreshold.value = chip.dataset.threshold;
+            saveProfileFromForm();
+        });
+    });
+    elements.strokeEvaluatorToggle.addEventListener("click", toggleStrokeEvaluator);
     elements.aboutButton.addEventListener("click", openAboutModal);
     elements.closeAbout.addEventListener("click", closeAboutModal);
     elements.aboutModal.addEventListener("click", event => {
@@ -1706,11 +1848,7 @@ function bindEvents() {
     elements.clearModalBoard.addEventListener("click", modalPad.clear);
     elements.toggleStrokes.addEventListener("click", () => {
         strokeOrderVisible = !strokeOrderVisible;
-        elements.modalCharacter.classList.toggle("stroke-order", strokeOrderVisible);
-        elements.toggleStrokes.setAttribute("aria-pressed", String(strokeOrderVisible));
-        elements.toggleStrokes.textContent = strokeOrderVisible
-            ? t("ui.hideStrokeOrder")
-            : t("ui.showStrokeOrder");
+        updateStrokeOrderDisplay();
     });
     elements.modalPrevious.addEventListener("click", () => openModal(modalIndex - 1, modalTrigger));
     elements.modalNext.addEventListener("click", () => openModal(modalIndex + 1, modalTrigger));

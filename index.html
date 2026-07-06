@@ -127,6 +127,8 @@
                 <canvas id="pizarra" width="320" height="320"
                         aria-label="Pizarra para escribir el carácter japonés"
                         data-i18n-aria-label="ui.practiceCanvasLabel"></canvas>
+                <canvas id="pizarra-feedback" class="stroke-feedback-layer" width="320" height="320"
+                        aria-hidden="true"></canvas>
             </div>
 
             <div class="board-controls">
@@ -150,6 +152,7 @@
                     <div id="fila-kunyomi"><dt>Kunyomi</dt><dd id="resp-kunyomi">—</dd></div>
                     <div id="fila-ejemplo-kanji"><dt data-i18n="ui.inContext">En contexto</dt><dd id="resp-ejemplo-kanji">—</dd></div>
                 </dl>
+                <p id="aviso-umbral-trazos" class="hint hidden" role="status"></p>
                 <fieldset class="rating-fieldset">
                     <legend data-i18n="ui.ratingLegend">¿Qué tan fácil fue recordarlo?</legend>
                     <div class="rating-grid">
@@ -233,6 +236,21 @@
                     <button type="button" class="goal-chip recommended" data-goal="10" data-i18n="ui.goalRecommended">Constante · 10</button>
                     <button type="button" class="goal-chip" data-goal="20" data-i18n="ui.goalIntense">Intenso · 20</button>
                     <button type="button" class="goal-chip" data-goal="30" data-i18n="ui.goalChallenge">Reto · 30</button>
+                </div>
+
+                <div class="profile-form">
+                    <div class="field">
+                        <label for="perfil-umbral-similitud" data-i18n="ui.strokeThresholdLabel">Umbral de similitud de trazos</label>
+                        <input id="perfil-umbral-similitud" type="number" min="30" max="100" step="1">
+                    </div>
+                    <button id="btn-evaluador-trazos" class="button secondary" type="button"
+                            aria-pressed="false" data-i18n="ui.strokeEvaluatorEnable">Activar evaluador de trazos</button>
+                </div>
+
+                <div class="profile-recommendations">
+                    <button type="button" class="goal-chip" data-threshold="50" data-i18n="ui.thresholdEasy">Fácil · 50%</button>
+                    <button type="button" class="goal-chip recommended" data-threshold="75" data-i18n="ui.thresholdNormal">Normal · 75%</button>
+                    <button type="button" class="goal-chip" data-threshold="90" data-i18n="ui.thresholdExpert">Experto · 90%</button>
                 </div>
 
                 <div class="profile-stats-grid">
@@ -383,6 +401,8 @@
 
             <div class="modal-practice-zone">
                 <div id="modal-caracter" class="character-guide">?</div>
+                <canvas id="animacion-trazos" class="stroke-animation-layer hidden" width="300" height="300"
+                        aria-hidden="true"></canvas>
                 <canvas id="pizarra-modal" width="300" height="300"
                         aria-label="Pizarra para calcar el carácter"
                         data-i18n-aria-label="ui.traceCanvasLabel"></canvas>
@@ -477,6 +497,17 @@
                     <li data-i18n="ui.updateReminders">Campana de recordatorio de práctica de 24 horas.</li>
                     <li data-i18n="ui.updateI18n">Interfaz multiidioma en español, inglés, alemán, francés y portugués.</li>
                 </ul>
+            </section>
+
+            <section class="context-card">
+                <h3 data-i18n="ui.kanjivgAttributionTitle">Datos de trazos</h3>
+                <p data-i18n="ui.kanjivgAttributionText">
+                    El orden y la forma de los trazos de kanji N5 usan datos del proyecto KanjiVG (Ulrich Apel), licenciados bajo Creative Commons BY-SA 3.0.
+                </p>
+                <p class="kanjivg-links">
+                    <a href="https://kanjivg.tagaini.net/" target="_blank" rel="noopener noreferrer">kanjivg.tagaini.net</a>
+                    · <a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="noopener noreferrer">CC BY-SA 3.0</a>
+                </p>
             </section>
 
             <section class="feedback-card">

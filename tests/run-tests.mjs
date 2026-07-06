@@ -37,9 +37,16 @@ import {
 import {
     dailyEntry,
     dailySummary,
+    DEFAULT_SIMILARITY_THRESHOLD,
+    emptyProfile,
+    MAX_SIMILARITY_THRESHOLD,
+    MIN_SIMILARITY_THRESHOLD,
+    normalizeProfile,
     practiceStats,
     recordDailyPractice,
 } from "../js/profile.js";
+import { computeBoundingBox, normalizeStrokes, resampleStroke } from "../js/stroke-geometry.js";
+import { compareStroke, scoreAttempt, similarityColor, YELLOW_THRESHOLD } from "../js/stroke-scoring.js";
 
 const csvSample = 'name,meaning,note\n"水","agua, líquido","dice ""mizu"""\n';
 assert.deepEqual(parseCSV(csvSample), [{
@@ -354,6 +361,72 @@ assert.equal(achievementLevel({ unlocked: 1, total: ACHIEVEMENT_DEFINITIONS.leng
 assert.equal(achievementLevel({ unlocked: 6, total: ACHIEVEMENT_DEFINITIONS.length }).level, 3);
 assert.equal(achievementLevel({ unlocked: 12, total: ACHIEVEMENT_DEFINITIONS.length }).level, 5);
 
+const straightLine = resampleStroke([{ x: 0, y: 0 }, { x: 10, y: 0 }], 5);
+assert.equal(straightLine.length, 5);
+assert.deepEqual(straightLine.map(point => point.x), [0, 2.5, 5, 7.5, 10]);
+assert.ok(straightLine.every(point => point.y === 0));
+
+const singlePointResample = resampleStroke([{ x: 3, y: 4 }], 4);
+assert.equal(singlePointResample.length, 4);
+assert.ok(singlePointResample.every(point => point.x === 3 && point.y === 4));
+
+const bbox = computeBoundingBox([[{ x: 0, y: 100 }, { x: 200, y: 100 }], [{ x: 100, y: 0 }, { x: 100, y: 200 }]]);
+assert.deepEqual(bbox, { minX: 0, minY: 0, maxX: 200, maxY: 200 });
+const normalized = normalizeStrokes([[{ x: 0, y: 100 }, { x: 200, y: 100 }]], bbox);
+assert.deepEqual(normalized[0], [{ x: 0, y: 0.5 }, { x: 1, y: 0.5 }]);
+
+function horizontalStroke(count) {
+    return resampleStroke([{ x: 0, y: 0.5 }, { x: 1, y: 0.5 }], count);
+}
+const expectedHorizontal = horizontalStroke(32);
+
+const identicalScore = compareStroke(horizontalStroke(32), expectedHorizontal);
+assert.ok(identicalScore > 0.99, `Trazo idéntico debería puntuar casi 1, dio ${identicalScore}`);
+assert.equal(similarityColor(identicalScore), "green");
+
+const reversedStroke = resampleStroke([{ x: 1, y: 0.5 }, { x: 0, y: 0.5 }], 32);
+const reversedScore = compareStroke(reversedStroke, expectedHorizontal);
+assert.ok(reversedScore < identicalScore, "Un trazo invertido no debería puntuar igual que uno correcto");
+
+const perpendicularStroke = resampleStroke([{ x: 0.5, y: 0 }, { x: 0.5, y: 1 }], 32);
+const perpendicularScore = compareStroke(perpendicularStroke, expectedHorizontal);
+assert.ok(perpendicularScore < YELLOW_THRESHOLD, "Un trazo perpendicular debería puntuar bajo");
+assert.equal(similarityColor(perpendicularScore), "red");
+
+function capturedLine(x0, y0, x1, y1, points = 16) {
+    return Array.from({ length: points }, (_, index) => ({
+        x: x0 + ((x1 - x0) * index) / (points - 1),
+        y: y0 + ((y1 - y0) * index) / (points - 1),
+    }));
+}
+
+const singleStrokeExpected = [{ index: 0, points: expectedHorizontal }];
+const perfectAttempt = scoreAttempt([capturedLine(0, 160, 320, 160)], singleStrokeExpected);
+assert.equal(perfectAttempt.score, 100);
+
+const twoStrokeExpected = [
+    { index: 0, points: expectedHorizontal },
+    { index: 1, points: expectedHorizontal },
+];
+const missingStrokeAttempt = scoreAttempt([capturedLine(0, 160, 320, 160)], twoStrokeExpected);
+assert.equal(missingStrokeAttempt.score, 50, "Dibujar la mitad de los trazos esperados debe penalizar a la mitad");
+
+const tapAttempt = scoreAttempt([[{ x: 10, y: 10 }, { x: 10, y: 10 }]], singleStrokeExpected);
+assert.equal(tapAttempt.score, 0, "Un trazo degenerado (tap) debe puntuar 0");
+
+const emptyAttempt = scoreAttempt([], singleStrokeExpected);
+assert.equal(emptyAttempt.score, 0);
+
+assert.equal(emptyProfile(now).strokeEvaluatorEnabled, false);
+assert.equal(emptyProfile(now).similarityThreshold, DEFAULT_SIMILARITY_THRESHOLD);
+assert.equal(normalizeProfile({ similarityThreshold: 75 }, now).similarityThreshold, 75);
+assert.equal(normalizeProfile({ similarityThreshold: 5 }, now).similarityThreshold, MIN_SIMILARITY_THRESHOLD);
+assert.equal(normalizeProfile({ similarityThreshold: 500 }, now).similarityThreshold, MAX_SIMILARITY_THRESHOLD);
+assert.equal(normalizeProfile({ similarityThreshold: "not-a-number" }, now).similarityThreshold, DEFAULT_SIMILARITY_THRESHOLD);
+assert.equal(normalizeProfile({ strokeEvaluatorEnabled: true }, now).strokeEvaluatorEnabled, true);
+assert.equal(normalizeProfile({ strokeEvaluatorEnabled: "yes" }, now).strokeEvaluatorEnabled, true);
+assert.equal(normalizeProfile({}, now).strokeEvaluatorEnabled, false);
+
 console.log("✓ Parser CSV con campos entrecomillados");
 console.log("✓ Programación de repetición espaciada");
 console.log("✓ Recordatorio de práctica con hora configurable");
@@ -362,3 +435,4 @@ console.log("✓ Sistema de logros, progreso y traducciones");
 console.log("✓ Datos únicos y 250 ejemplos de kanji");
 console.log("✓ Currículo y estadísticas de progreso");
 console.log("✓ Locales activos completos para kanji y kana especial");
+console.log("✓ Geometría de trazos y algoritmo de comparación KanjiVG");
