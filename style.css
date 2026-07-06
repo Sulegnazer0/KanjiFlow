@@ -816,10 +816,6 @@ select:focus-visible,
     color: var(--ink);
 }
 
-.animation-speed-field {
-    margin-bottom: 18px;
-}
-
 .field-hint {
     display: block;
     margin: 6px 2px 0;
@@ -1109,8 +1105,10 @@ canvas {
 }
 
 #aviso-umbral-trazos.stroke-gate-passed {
-    color: #15803d;
-    font-weight: 700;
+    color: var(--muted);
+    font-size: 0.72rem;
+    font-weight: 400;
+    font-style: italic;
 }
 
 .results-count {
@@ -1518,6 +1516,32 @@ canvas {
 .stroke-animation-layer {
     z-index: 3;
     pointer-events: none;
+}
+
+.animation-speed-button {
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    z-index: 6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    min-width: 34px;
+    height: 28px;
+    padding: 0 8px;
+    border: 0;
+    border-radius: 14px;
+    background: rgba(15, 23, 42, 0.78);
+    color: white;
+    font-size: 0.68rem;
+    font-weight: 800;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.animation-speed-icon {
+    font-size: 0.8rem;
 }
 
 .modal-board-controls {

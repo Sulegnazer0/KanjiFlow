@@ -7,7 +7,7 @@
     <meta name="description" content="Aprende hiragana, katakana y kanji con escritura, audio y repetición espaciada.">
     <title>KanjiFlow — Aprende japonés</title>
     <link rel="manifest" href="manifest.webmanifest">
-    <link rel="stylesheet" href="style.css?v=811">
+    <link rel="stylesheet" href="style.css?v=815">
 </head>
 <body>
     <div id="pantalla-carga" class="splash-screen" aria-live="polite">
@@ -15,7 +15,7 @@
             <img src="assets/s0labsHorizontal.png" alt="S0 Labs" class="splash-logo">
             <p data-i18n="ui.splashTagline">Preparando tu flujo de práctica…</p>
         </div>
-        <span id="splash-version" class="splash-version">v0.8.11</span>
+        <span id="splash-version" class="splash-version">v0.8.15</span>
     </div>
 
     <main class="app-shell">
@@ -406,21 +406,16 @@
                 <canvas id="pizarra-modal" width="300" height="300"
                         aria-label="Pizarra para calcar el carácter"
                         data-i18n-aria-label="ui.traceCanvasLabel"></canvas>
+                <button id="btn-velocidad-animacion" class="animation-speed-button" type="button"
+                        aria-label="Cambiar velocidad de la animación" data-i18n-aria-label="ui.animationSpeedButtonLabel">
+                    <span class="animation-speed-icon" aria-hidden="true">▶</span><span id="etiqueta-velocidad-animacion" aria-hidden="true"></span>
+                </button>
             </div>
 
             <div class="modal-board-controls">
                 <button id="btn-toggle-trazos" class="button secondary" type="button"
                         aria-pressed="true" data-i18n="ui.hideStrokeOrder">Ocultar orden de trazos</button>
                 <button id="btn-limpiar-modal" class="button secondary" type="button" data-i18n="ui.clear">Limpiar</button>
-            </div>
-
-            <div class="field animation-speed-field">
-                <label for="velocidad-animacion" data-i18n="ui.animationSpeedLabel">Velocidad de la animación</label>
-                <select id="velocidad-animacion">
-                    <option value="slow" data-i18n="ui.animationSpeedSlow">Lenta</option>
-                    <option value="normal" selected data-i18n="ui.animationSpeedNormal">Normal</option>
-                    <option value="fast" data-i18n="ui.animationSpeedFast">Rápida</option>
-                </select>
             </div>
 
             <div class="modal-reading">
@@ -552,6 +547,6 @@
 
     <div id="aviso-nivel" class="level-notice" role="status" aria-live="polite"></div>
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
-    <script type="module" src="js/app.js?v=811"></script>
+    <script type="module" src="js/app.js?v=815"></script>
 </body>
 </html>

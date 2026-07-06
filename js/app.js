@@ -41,7 +41,7 @@ import {
 } from "./stroke-scoring.js";
 import { resampleStroke } from "./stroke-geometry.js";
 import { createStrokeAnimator } from "./stroke-animation.js";
-import { exampleJapanese, itemPronunciation, japaneseOnly, speakJapanese } from "./audio.js?v=811";
+import { exampleJapanese, itemPronunciation, japaneseOnly, speakJapanese } from "./audio.js?v=815";
 import { loadDictionary } from "./data.js";
 import {
     achievementLevel,
@@ -49,14 +49,14 @@ import {
     achievementSummary,
     buildAchievementStats,
     syncAchievements,
-} from "./achievements.js?v=811";
+} from "./achievements.js?v=815";
 import {
     dailyEntry,
     dailySummary,
     practiceStats,
     recentDailySummaries,
     recordDailyPractice,
-} from "./profile.js?v=811";
+} from "./profile.js?v=815";
 import {
     disablePracticeReminder,
     enablePracticeReminder,
@@ -65,7 +65,7 @@ import {
     recordPractice,
     setPracticeReminderTime,
     shouldNotifyPracticeReminder,
-} from "./reminders.js?v=811";
+} from "./reminders.js?v=815";
 import {
     AVAILABLE_LANGUAGES,
     applyDocumentTranslations,
@@ -79,9 +79,9 @@ import {
     localizeDictionary,
     t,
     translateCardState,
-} from "./i18n.js?v=811";
+} from "./i18n.js?v=815";
 
-const APP_VERSION = "0.8.11";
+const APP_VERSION = "0.8.15";
 const FEEDBACK_ENDPOINT = "https://script.google.com/macros/s/AKfycbxiz6058zwMxfPTDTmIBpG8JutOPw8YBxCRJ0BeMHp-py6IXZy4zkZs2IdTqwmSSzC1jw/exec";
 const SPLASH_MIN_MS = 2400;
 const startupStartedAt = performance.now();
@@ -151,7 +151,8 @@ const elements = {
     modalCharacter: $("#modal-caracter"),
     modalBoard: $("#pizarra-modal"),
     strokeAnimationCanvas: $("#animacion-trazos"),
-    animationSpeed: $("#velocidad-animacion"),
+    animationSpeedButton: $("#btn-velocidad-animacion"),
+    animationSpeedLabel: $("#etiqueta-velocidad-animacion"),
     toggleStrokes: $("#btn-toggle-trazos"),
     clearModalBoard: $("#btn-limpiar-modal"),
     modalRomaji: $("#modal-romaji"),
@@ -314,11 +315,26 @@ async function loadModalExpectedStrokes(item) {
     updateStrokeOrderDisplay();
 }
 
-const ANIMATION_SPEEDS = {
-    slow: { strokeDurationMs: 750, pauseMs: 300 },
-    normal: { strokeDurationMs: 450, pauseMs: 200 },
-    fast: { strokeDurationMs: 250, pauseMs: 120 },
-};
+const BASE_STROKE_DURATION_MS = 450;
+const BASE_PAUSE_MS = 200;
+const ANIMATION_SPEED_MULTIPLIERS = [1, 2, 4];
+let animationSpeedMultiplierIndex = 0;
+
+function currentAnimationSpeed() {
+    const multiplier = ANIMATION_SPEED_MULTIPLIERS[animationSpeedMultiplierIndex];
+    return { strokeDurationMs: BASE_STROKE_DURATION_MS / multiplier, pauseMs: BASE_PAUSE_MS / multiplier };
+}
+
+function updateAnimationSpeedButton() {
+    const multiplier = ANIMATION_SPEED_MULTIPLIERS[animationSpeedMultiplierIndex];
+    elements.animationSpeedLabel.textContent = multiplier > 1 ? `${multiplier}X` : "";
+}
+
+function cycleAnimationSpeed() {
+    animationSpeedMultiplierIndex = (animationSpeedMultiplierIndex + 1) % ANIMATION_SPEED_MULTIPLIERS.length;
+    updateAnimationSpeedButton();
+    updateStrokeOrderDisplay();
+}
 
 function updateStrokeOrderDisplay() {
     elements.toggleStrokes.setAttribute("aria-pressed", String(strokeOrderVisible));
@@ -336,8 +352,7 @@ function updateStrokeOrderDisplay() {
     if (modalExpectedKanjiData) {
         elements.modalCharacter.classList.remove("stroke-order");
         elements.strokeAnimationCanvas.classList.remove("hidden");
-        const speed = ANIMATION_SPEEDS[elements.animationSpeed.value] || ANIMATION_SPEEDS.normal;
-        strokeAnimator.playCharacter(modalExpectedKanjiData, speed);
+        strokeAnimator.playCharacter(modalExpectedKanjiData, currentAnimationSpeed());
     } else {
         elements.strokeAnimationCanvas.classList.add("hidden");
         strokeAnimator.stop();
@@ -1906,9 +1921,7 @@ function bindEvents() {
         strokeOrderVisible = !strokeOrderVisible;
         updateStrokeOrderDisplay();
     });
-    elements.animationSpeed.addEventListener("change", () => {
-        if (strokeOrderVisible && modalExpectedKanjiData) updateStrokeOrderDisplay();
-    });
+    elements.animationSpeedButton.addEventListener("click", cycleAnimationSpeed);
     elements.modalPrevious.addEventListener("click", () => openModal(modalIndex - 1, modalTrigger));
     elements.modalNext.addEventListener("click", () => openModal(modalIndex + 1, modalTrigger));
 

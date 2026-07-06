@@ -10,6 +10,29 @@ El número de versión visible de la app debe mantenerse alineado en:
 - `CHANGELOG.md`;
 - `service-worker.js` y query strings `?v=...` cuando cambien archivos cacheados.
 
+## [0.8.15] - 2026-07-06 (en desarrollo en `feature/stroke-evaluation`, aún no fusionado a `main`)
+
+Bump de versión solicitado explícitamente para poder distinguir visualmente builds nuevas en la pantalla de carga mientras se prueba esta rama. Consolida el trabajo de los commits `6d593e5`, `a156bbd`, `2cf6d87` y el actual en una sola entrada, ya que ninguno tuvo bump de versión al momento de commitear.
+
+### Agregado
+
+- Evaluador automático de trazos para kanji N5 usando datos vectoriales de KanjiVG (CC BY-SA 3.0): compara cada trazo dibujado contra el trazo esperado y lo colorea verde/amarillo/rojo en vivo.
+- Umbral de aprobación configurable en Perfil (presets Fácil/Normal/Experto + valor personalizado) que bloquea el panel de autoevaluación SRS si el intento no lo supera, con opción de limpiar/reintentar o desactivar el evaluador.
+- Cuando el intento sí supera el umbral, se muestra el % de similitud y una calificación SRS recomendada ("Fácil/Bien/Difícil"), resaltando ese botón — el usuario decide igual.
+- Animación progresiva de orden de trazos en el modal de Estudio (reemplaza la fuente estática cuando hay datos KanjiVG), con numeración de trazo y un botón de velocidad (▶ · 2X · 4X) en la esquina inferior derecha del lienzo.
+- `docs/registro-ia.md`: bitácora de features hechas con IA (qué, cuándo, quién) con plantillas de prompt para extender esta feature a N4.
+- Pipeline de datos: `tools/fetch-kanjivg.mjs`, `tools/build-kanjivg-data.mjs`, `data/kanjivg/` (80 kanji N5).
+
+### Corregido
+
+- El tinte de color por trazo era casi invisible sobre la tinta negra (`mix-blend-mode: multiply` con negro da negro); ahora es una línea delgada y opaca pintada encima del trazo.
+- Trazos cortos coloreaban incorrectamente en rojo por una normalización inestable con pocos trazos capturados; ahora el color en vivo usa el tamaño fijo del lienzo.
+- Escala de la animación y tamaño de la fuente de respaldo (`OrdenTrazos`) ajustados y medidos con precisión (`canvas.measureText`) para verse consistentes entre sí, en 70%.
+
+### Cambiado
+
+- `CACHE_NAME` del service worker y las query strings `?v=...` avanzan a `815`/`v31` para forzar la actualización de caché en dispositivos que ya tenían la app instalada/visitada antes de estos cambios.
+
 ## [0.8.11] - 2026-07-04
 
 ### Agregado
