@@ -124,11 +124,11 @@ export function createDrawingPad(canvas, { lineWidth = 12, onStrokeEnd } = {}) {
 }
 
 const FEEDBACK_COLORS = {
-    green: "rgba(22, 163, 74, 0.88)",
-    yellow: "rgba(202, 138, 4, 0.88)",
-    red: "rgba(220, 38, 38, 0.88)",
+    green: "rgba(22, 163, 74, 0.97)",
+    yellow: "rgba(217, 119, 6, 0.97)",
+    red: "rgba(220, 38, 38, 0.97)",
 };
-const FEEDBACK_LINE_WIDTH = 9;
+const FEEDBACK_LINE_WIDTH = 5;
 
 export function createFeedbackLayer(canvas) {
     const context = canvas.getContext("2d");

@@ -816,6 +816,10 @@ select:focus-visible,
     color: var(--ink);
 }
 
+.animation-speed-field {
+    margin-bottom: 18px;
+}
+
 .field-hint {
     display: block;
     margin: 6px 2px 0;
@@ -929,7 +933,7 @@ canvas {
     align-items: center;
     color: rgba(239, 68, 68, 0.24);
     font-family: "OrdenTrazos", sans-serif;
-    font-size: clamp(11.2rem, 67.2vw, 16rem);
+    font-size: clamp(9.8rem, 58.8vw, 14rem);
     line-height: 1;
     pointer-events: none;
     user-select: none;
@@ -1094,6 +1098,20 @@ canvas {
 .rating.hard { background: var(--orange); }
 .rating.good { background: var(--blue); }
 .rating.easy { background: var(--green); }
+
+.rating.recommended {
+    box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.85);
+}
+
+#aviso-umbral-trazos.stroke-gate-blocked {
+    color: #b91c1c;
+    font-weight: 700;
+}
+
+#aviso-umbral-trazos.stroke-gate-passed {
+    color: #15803d;
+    font-weight: 700;
+}
 
 .results-count {
     margin: 0 0 10px;
@@ -1481,7 +1499,7 @@ canvas {
     justify-content: center;
     align-items: center;
     color: rgba(100, 116, 139, 0.16);
-    font-size: clamp(11.2rem, 67.2vw, 16rem);
+    font-size: clamp(9.8rem, 58.8vw, 14rem);
     line-height: 1;
     pointer-events: none;
     user-select: none;

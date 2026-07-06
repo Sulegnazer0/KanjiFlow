@@ -46,7 +46,7 @@ import {
     recordDailyPractice,
 } from "../js/profile.js";
 import { computeBoundingBox, normalizeStrokes, resampleStroke } from "../js/stroke-geometry.js";
-import { compareStroke, scoreAttempt, similarityColor, YELLOW_THRESHOLD } from "../js/stroke-scoring.js";
+import { compareStroke, recommendRating, scoreAttempt, similarityColor, YELLOW_THRESHOLD } from "../js/stroke-scoring.js";
 
 const csvSample = 'name,meaning,note\n"水","agua, líquido","dice ""mizu"""\n';
 assert.deepEqual(parseCSV(csvSample), [{
@@ -416,6 +416,13 @@ assert.equal(tapAttempt.score, 0, "Un trazo degenerado (tap) debe puntuar 0");
 
 const emptyAttempt = scoreAttempt([], singleStrokeExpected);
 assert.equal(emptyAttempt.score, 0);
+
+assert.equal(recommendRating(95), "easy");
+assert.equal(recommendRating(90), "easy");
+assert.equal(recommendRating(89), "good");
+assert.equal(recommendRating(75), "good");
+assert.equal(recommendRating(74), "hard");
+assert.equal(recommendRating(50), "hard");
 
 assert.equal(emptyProfile(now).strokeEvaluatorEnabled, false);
 assert.equal(emptyProfile(now).similarityThreshold, DEFAULT_SIMILARITY_THRESHOLD);

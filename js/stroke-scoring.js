@@ -31,6 +31,20 @@ export function similarityColor(score) {
     return "red";
 }
 
+export const RECOMMEND_EASY_SCORE = 90;
+export const RECOMMEND_GOOD_SCORE = 75;
+
+/**
+ * Suggests an SRS rating from a 0-100 attempt score. Only meaningful once
+ * the attempt has already cleared the profile's similarity threshold —
+ * it never recommends "again" because a blocked attempt never reaches here.
+ */
+export function recommendRating(score) {
+    if (score >= RECOMMEND_EASY_SCORE) return "easy";
+    if (score >= RECOMMEND_GOOD_SCORE) return "good";
+    return "hard";
+}
+
 /**
  * Scores a full attempt: user strokes are normalized together (so scale/
  * position on the canvas don't matter, only relative shape) and compared

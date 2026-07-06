@@ -31,7 +31,14 @@ import {
     saveSettings,
 } from "./storage.js";
 import { createDrawingPad, createFeedbackLayer } from "./drawing.js";
-import { compareStroke, MIN_STROKE_POINTS, RESAMPLE_POINTS, scoreAttempt, similarityColor } from "./stroke-scoring.js";
+import {
+    compareStroke,
+    MIN_STROKE_POINTS,
+    recommendRating,
+    RESAMPLE_POINTS,
+    scoreAttempt,
+    similarityColor,
+} from "./stroke-scoring.js";
 import { resampleStroke } from "./stroke-geometry.js";
 import { createStrokeAnimator } from "./stroke-animation.js";
 import { exampleJapanese, itemPronunciation, japaneseOnly, speakJapanese } from "./audio.js?v=811";
@@ -144,6 +151,7 @@ const elements = {
     modalCharacter: $("#modal-caracter"),
     modalBoard: $("#pizarra-modal"),
     strokeAnimationCanvas: $("#animacion-trazos"),
+    animationSpeed: $("#velocidad-animacion"),
     toggleStrokes: $("#btn-toggle-trazos"),
     clearModalBoard: $("#btn-limpiar-modal"),
     modalRomaji: $("#modal-romaji"),
@@ -306,6 +314,12 @@ async function loadModalExpectedStrokes(item) {
     updateStrokeOrderDisplay();
 }
 
+const ANIMATION_SPEEDS = {
+    slow: { strokeDurationMs: 750, pauseMs: 300 },
+    normal: { strokeDurationMs: 450, pauseMs: 200 },
+    fast: { strokeDurationMs: 250, pauseMs: 120 },
+};
+
 function updateStrokeOrderDisplay() {
     elements.toggleStrokes.setAttribute("aria-pressed", String(strokeOrderVisible));
     elements.toggleStrokes.textContent = strokeOrderVisible
@@ -322,7 +336,8 @@ function updateStrokeOrderDisplay() {
     if (modalExpectedKanjiData) {
         elements.modalCharacter.classList.remove("stroke-order");
         elements.strokeAnimationCanvas.classList.remove("hidden");
-        strokeAnimator.playCharacter(modalExpectedKanjiData);
+        const speed = ANIMATION_SPEEDS[elements.animationSpeed.value] || ANIMATION_SPEEDS.normal;
+        strokeAnimator.playCharacter(modalExpectedKanjiData, speed);
     } else {
         elements.strokeAnimationCanvas.classList.add("hidden");
         strokeAnimator.stop();
@@ -1036,12 +1051,22 @@ function revealAnswer() {
 
     const gate = evaluateStrokeGate();
     setVisibility(elements.ratingFieldset, !gate.gated);
-    setVisibility(elements.strokeGateNotice, gate.gated);
-    if (gate.gated) {
+    setVisibility(elements.strokeGateNotice, gate.active);
+    elements.strokeGateNotice.classList.toggle("stroke-gate-blocked", gate.active && gate.gated);
+    elements.strokeGateNotice.classList.toggle("stroke-gate-passed", gate.active && !gate.gated);
+    clearRatingRecommendation();
+    if (gate.active && gate.gated) {
         elements.strokeGateNotice.textContent = t("ui.strokeGateMessage", {
             score: gate.score,
             threshold: profile.similarityThreshold,
         });
+    } else if (gate.active) {
+        const recommended = recommendRating(gate.score);
+        elements.strokeGateNotice.textContent = t("ui.strokeRecommendMessage", {
+            score: gate.score,
+            rating: t(RATING_LABEL_KEYS[recommended]),
+        });
+        highlightRecommendedRating(recommended);
     }
 
     elements.answerPanel.classList.remove("hidden");
@@ -1049,9 +1074,24 @@ function revealAnswer() {
 }
 
 function evaluateStrokeGate() {
-    if (!profile.strokeEvaluatorEnabled || !expectedKanjiData) return { gated: false, score: 100 };
+    const active = Boolean(profile.strokeEvaluatorEnabled && expectedKanjiData);
+    if (!active) return { active, gated: false, score: 100 };
     const result = scoreAttempt(practicePad.getStrokes(), expectedKanjiData.strokes);
-    return { gated: result.score < profile.similarityThreshold, score: result.score };
+    return { active, gated: result.score < profile.similarityThreshold, score: result.score };
+}
+
+const RATING_LABEL_KEYS = { hard: "ui.ratingHard", good: "ui.ratingGood", easy: "ui.ratingEasy" };
+
+function clearRatingRecommendation() {
+    elements.ratingFieldset.querySelectorAll("[data-rating]").forEach(button => {
+        button.classList.remove("recommended");
+    });
+}
+
+function highlightRecommendedRating(rating) {
+    elements.ratingFieldset.querySelectorAll("[data-rating]").forEach(button => {
+        button.classList.toggle("recommended", button.dataset.rating === rating);
+    });
 }
 
 function rateCurrent(rating) {
@@ -1865,6 +1905,9 @@ function bindEvents() {
     elements.toggleStrokes.addEventListener("click", () => {
         strokeOrderVisible = !strokeOrderVisible;
         updateStrokeOrderDisplay();
+    });
+    elements.animationSpeed.addEventListener("change", () => {
+        if (strokeOrderVisible && modalExpectedKanjiData) updateStrokeOrderDisplay();
     });
     elements.modalPrevious.addEventListener("click", () => openModal(modalIndex - 1, modalTrigger));
     elements.modalNext.addEventListener("click", () => openModal(modalIndex + 1, modalTrigger));
