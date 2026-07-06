@@ -243,7 +243,9 @@ function validateStrokeOrderFont(dictionary, glyphs) {
 }
 
 async function validateKanjivgCoverage(dictionary) {
-    const n5Kanji = dictionary.filter(item => item.tipo === "kanji" && item.categoria === "N5");
+    const supportedKanji = dictionary.filter(
+        item => item.tipo === "kanji" && SUPPORTED_KANJI_LEVELS.has(item.categoria),
+    );
     let index;
     try {
         index = await readJSON("../data/kanjivg/index.json");
@@ -252,10 +254,10 @@ async function validateKanjivgCoverage(dictionary) {
         return;
     }
 
-    for (const item of n5Kanji) {
+    for (const item of supportedKanji) {
         const hex = index[item.caracter];
         if (!hex) {
-            fail(`data/kanjivg/index.json no tiene entrada para el kanji N5 ${item.caracter}`);
+            fail(`data/kanjivg/index.json no tiene entrada para el kanji ${item.categoria} ${item.caracter}`);
             continue;
         }
         let kanjiData;
@@ -344,7 +346,7 @@ await validateKanjivgCoverage(dictionary);
 note(`${dictionary.length} tarjetas validadas`);
 note(`${dictionary.filter(item => item.tipo === "kanji").length} kanji con ejemplos completos`);
 note("Fuente de orden de trazos validada para todos los kanji publicados");
-note("Datos KanjiVG validados para todos los kanji N5");
+note("Datos KanjiVG validados para todos los kanji N5 y N4");
 note(`${AVAILABLE_LANGUAGES.length} idiomas activos validados: ${AVAILABLE_LANGUAGES.map(language => language.code).join(", ")}`);
 
 if (failures.length) {

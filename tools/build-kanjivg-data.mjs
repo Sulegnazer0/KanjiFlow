@@ -11,6 +11,7 @@ const OUTPUT_DIR = new URL("data/kanjivg/", ROOT);
 const RESAMPLE_POINTS = 32;
 const DENSE_SAMPLES_PER_CURVE = 24;
 const LICENSE = "CC BY-SA 3.0 (KanjiVG, Ulrich Apel — https://kanjivg.tagaini.net/)";
+const SUPPORTED_LEVELS = new Set(["N5", "N4"]);
 
 const PATH_RE = /<path\b[^>]*\bid="kvg:[0-9a-f]+-s(\d+)"[^>]*\bd="([^"]+)"/g;
 
@@ -69,13 +70,13 @@ async function buildKanji(item) {
 async function main() {
     const csv = await readFile(DATA_PATH, "utf8");
     const dictionary = parseCSV(csv);
-    const n5Kanji = dictionary.filter(entry => entry.tipo === "kanji" && entry.categoria === "N5");
+    const supportedKanji = dictionary.filter(entry => entry.tipo === "kanji" && SUPPORTED_LEVELS.has(entry.categoria));
 
     if (!existsSync(OUTPUT_DIR)) await mkdir(OUTPUT_DIR, { recursive: true });
 
     const index = {};
     let built = 0;
-    for (const item of n5Kanji) {
+    for (const item of supportedKanji) {
         const result = await buildKanji(item);
         index[result.character] = result.hex;
         built += 1;

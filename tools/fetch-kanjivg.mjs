@@ -6,6 +6,7 @@ const ROOT = new URL("../", import.meta.url);
 const DATA_PATH = new URL("datos.csv", ROOT);
 const OUTPUT_DIR = new URL("vendor/kanjivg-svg/", ROOT);
 const BASE_URL = "https://raw.githubusercontent.com/KanjiVG/kanjivg/master/kanji/";
+const SUPPORTED_LEVELS = new Set(["N5", "N4"]);
 
 const LICENSE_TEXT = `Datos de trazos: KanjiVG (https://kanjivg.tagaini.net/)
 Copyright (C) Ulrich Apel.
@@ -14,7 +15,7 @@ Attribution-Share Alike 3.0 (https://creativecommons.org/licenses/by-sa/3.0/).
 
 Estos archivos SVG son una copia sin modificar de los ficheros "kanji/0XXXX.svg"
 del repositorio https://github.com/KanjiVG/kanjivg, filtrados a los caracteres
-kanji de nivel N5 usados en este proyecto. Cualquier dato derivado de estos
+kanji de nivel N5/N4 usados en este proyecto. Cualquier dato derivado de estos
 archivos (por ejemplo data/kanjivg/*.json) conserva la misma licencia.
 `;
 
@@ -25,22 +26,22 @@ function codepointHex(character) {
 async function main() {
     const csv = await readFile(DATA_PATH, "utf8");
     const dictionary = parseCSV(csv);
-    const n5Kanji = dictionary.filter(item => item.tipo === "kanji" && item.categoria === "N5");
+    const supportedKanji = dictionary.filter(item => item.tipo === "kanji" && SUPPORTED_LEVELS.has(item.categoria));
 
-    if (n5Kanji.length === 0) {
-        console.error("No se encontraron kanji N5 en datos.csv");
+    if (supportedKanji.length === 0) {
+        console.error("No se encontraron kanji N5/N4 en datos.csv");
         process.exit(1);
     }
 
     if (!existsSync(OUTPUT_DIR)) await mkdir(OUTPUT_DIR, { recursive: true });
 
-    console.log(`Descargando ${n5Kanji.length} SVG de KanjiVG (kanji N5)...`);
+    console.log(`Descargando ${supportedKanji.length} SVG de KanjiVG (kanji N5/N4)...`);
 
     let downloaded = 0;
     let skipped = 0;
     const failures = [];
 
-    for (const item of n5Kanji) {
+    for (const item of supportedKanji) {
         const hex = codepointHex(item.caracter);
         const fileName = `${hex}.svg`;
         const outputPath = new URL(fileName, OUTPUT_DIR);

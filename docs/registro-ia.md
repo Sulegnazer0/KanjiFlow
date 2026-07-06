@@ -22,6 +22,7 @@ Cada vez que una IA haga un commit de una feature nueva o un cambio de arquitect
 | 2026-07-06 | Claude (Sonnet 5) | `feature/stroke-evaluation` | Ajustes de feedback visual tras probar en navegador: arregla el color en vivo (estaba invisible sobre la tinta por `mix-blend-mode: multiply`, y la normalización por trazo parcial daba falsos rojos en trazos cortos), escala la animación al 80% con numeración de trazos, y sube el tamaño de la fuente estática para que coincida en escala | `js/app.js`, `js/drawing.js`, `js/stroke-animation.js`, `style.css` |
 | 2026-07-06 | Claude (Sonnet 5) | `feature/stroke-evaluation` | Segunda ronda de ajustes: línea de color más delgada y opaca (encima de la tinta, no un halo), animación reducida a 70% con control de velocidad (Lenta/Normal/Rápida) en el modal, y recomendación automática de calificación SRS ("Fácil/Bien/Difícil") según el % de similitud, resaltando el botón sugerido | `js/app.js`, `js/drawing.js`, `js/stroke-animation.js`, `js/stroke-scoring.js`, `index.html`, `style.css` |
 | 2026-07-06 | Claude (Sonnet 5) | `feature/stroke-evaluation` | v0.8.15. Reemplaza el selector de velocidad por un botón ▶ pequeño (esquina inferior derecha del lienzo del modal) que cicla 1x/2x/4x y reinicia la animación; mensaje de recomendación de calificación ahora entre paréntesis y más tenue que el legend; bump de versión (0.8.11→0.8.15) en `APP_VERSION`, `package.json`, splash, `CACHE_NAME` y query strings `?v=` para que el usuario distinga builds nuevas y para invalidar caché stale en móviles | `index.html`, `js/app.js`, `style.css`, `service-worker.js`, `package.json`, `CHANGELOG.md` |
+| 2026-07-06 | Claude (Sonnet 5) | `feature/stroke-evaluation-n4` | v0.8.16. Extiende el evaluador de trazos + animación a los 170 kanji N4 (antes solo N5) siguiendo al pie de la letra la plantilla de prompt documentada más abajo — funcionó sin sorpresas, ver "Verificación hecha". También reduce a la mitad la velocidad base de la animación (450ms→900ms por trazo) a pedido del usuario | `tools/fetch-kanjivg.mjs`, `tools/build-kanjivg-data.mjs`, `tools/validate-content.mjs`, `js/app.js`, `vendor/kanjivg-svg/`, `data/kanjivg/` |
 
 ---
 
@@ -33,10 +34,10 @@ El usuario quería que, en el lienzo de práctica, se detecten los trazos dibuja
 
 ### Decisiones de alcance
 
-- **Solo kanji N5** por ahora (80 caracteres). N4 (170 caracteres) queda como extensión futura — ver plantilla de prompt más abajo.
+- **N5 (80 caracteres) al lanzar la feature; N4 (170 caracteres) se agregó el mismo día** siguiendo la plantilla de prompt de este documento — ver fila del 2026-07-06 en el Historial y la nota al final de "Plantilla de prompt para extender esto a N4". Kana sigue sin datos KanjiVG (no aplica: KanjiVG es solo para kanji).
 - El evaluador es **opt-in** (`profile.strokeEvaluatorEnabled`, default `false`) y el umbral (`profile.similarityThreshold`, default 75) se configura en el Perfil con presets Fácil/Normal/Experto + valor personalizado.
 - Si el evaluador está activo y el intento no supera el umbral, se bloquea el panel de autoevaluación SRS (no el botón "Ver respuesta") y se invita a limpiar/reintentar o desactivar el evaluador.
-- Kana y kanji N4 (sin datos KanjiVG todavía) siguen funcionando exactamente igual que antes de este cambio — es un fallback seguro, no una ruta especial que haya que mantener aparte.
+- Kana (hiragana/katakana, que KanjiVG no cubre) sigue funcionando exactamente igual que antes de este cambio — es un fallback seguro (`hasKanjivgData()` en `js/app.js` devuelve `false` para cualquier item que no sea kanji N5/N4), no una ruta especial que haya que mantener aparte.
 
 ### Arquitectura (para retomarlo sin memoria del chat original)
 
@@ -45,7 +46,7 @@ El usuario quería que, en el lienzo de práctica, se detecten los trazos dibuja
 - `tools/fetch-kanjivg.mjs`: lee `datos.csv`, filtra kanji por `categoria`, calcula el codepoint Unicode hex de cada carácter (nombre de archivo estándar de KanjiVG `0XXXX.svg`) y descarga desde `raw.githubusercontent.com/KanjiVG/kanjivg` a `vendor/kanjivg-svg/`. Se corre manualmente, no en CI; el resultado se comitea (igual que `KanjiStrokeOrders.ttf`).
 - `tools/lib/svg-path.mjs`: intérprete mínimo de paths SVG — KanjiVG solo usa `M`, `C`, `S` (y sus variantes relativas), confirmado inspeccionando los 80 SVG reales.
 - `tools/build-kanjivg-data.mjs`: parsea cada SVG (`<path id="kvg:0XXXX-sN" d="...">` da el orden de trazo), muestrea cada curva a alta densidad, normaliza el kanji completo a `[0,1]×[0,1]` (bounding box conjunto, no por trazo) y remuestrea cada trazo a 32 puntos equiespaciados por longitud de arco. Emite `data/kanjivg/<codepoint>.json` + `data/kanjivg/index.json` (carácter → codepoint).
-- `npm run fetch:kanjivg` y `npm run build:kanjivg` ejecutan ambos pasos. `tools/validate-content.mjs` verifica que todo kanji de las categorías soportadas tenga su JSON — hoy solo filtra N5.
+- `npm run fetch:kanjivg` y `npm run build:kanjivg` ejecutan ambos pasos. Ambos scripts filtran por `SUPPORTED_LEVELS = new Set(["N5", "N4"])` (const local en cada archivo). `tools/validate-content.mjs` verifica que todo kanji de esas categorías tenga su JSON, usando el `SUPPORTED_KANJI_LEVELS` que ya existía en ese archivo. Total actual: 250 archivos (80 N5 + 170 N4).
 
 **2. Geometría compartida** — `js/stroke-geometry.js` (usado tanto por el build en Node como en el navegador): `resampleStroke(points, n)` (remuestreo equiespaciado por longitud de arco), `computeBoundingBox`, `normalizeStrokes`. Una sola implementación para que el trazo del usuario y los datos KanjiVG se procesen igual.
 
@@ -55,9 +56,9 @@ El usuario quería que, en el lienzo de práctica, se detecten los trazos dibuja
 
 **5. UI** — `js/profile.js` (`strokeEvaluatorEnabled`, `similarityThreshold` con clamp), `index.html`/`js/app.js` (chips de umbral igual patrón que la meta diaria, canvas overlay `#pizarra-feedback` para el tinte de color, gating en `revealAnswer()` que oculta `.rating-fieldset` y muestra `#aviso-umbral-trazos`). Cuando el intento SÍ supera el umbral, `revealAnswer()` también llama a `recommendRating(score)` (en `stroke-scoring.js`, umbrales fijos: ≥90 "easy", ≥75 "good", si no "hard") y resalta ese botón de rating con la clase `.recommended`, mostrando el mensaje `ui.strokeRecommendMessage` con el % y la calificación sugerida — es una sugerencia, no obliga a elegirla.
 
-**6. Animación** — `js/stroke-animation.js` (`createStrokeAnimator`): reutiliza los mismos puntos KanjiVG (no genera un `d` de SVG aparte) y los dibuja progresivamente en un `<canvas>` con `requestAnimationFrame`, montado en el modal de estudio junto al `#btn-toggle-trazos` existente, escalado al 70% (`DEFAULT_SCALE`, margen visible) con numeración de trazo en el punto de inicio. Un `<select id="velocidad-animacion">` (Lenta/Normal/Rápida, mapeado a `ANIMATION_SPEEDS` en `js/app.js`) reinicia la animación con la duración elegida — es estado de sesión, no se persiste en el perfil. Si el carácter no tiene datos KanjiVG, cae al comportamiento original (fuente `OrdenTrazos`, cuyo `font-size` en `style.css` se ajustó para ocupar ~70% del cuadro y coincidir en escala con la animación).
+**6. Animación** — `js/stroke-animation.js` (`createStrokeAnimator`): reutiliza los mismos puntos KanjiVG (no genera un `d` de SVG aparte) y los dibuja progresivamente en un `<canvas>` con `requestAnimationFrame`, montado en el modal de estudio junto al `#btn-toggle-trazos` existente, escalado al 70% (`DEFAULT_SCALE`, margen visible) con numeración de trazo en el punto de inicio. Un botón `#btn-velocidad-animacion` (▶, esquina inferior derecha del lienzo) cicla `ANIMATION_SPEED_MULTIPLIERS = [1, 2, 4]` en `js/app.js` y reinicia la animación en cada click — es estado de sesión, no se persiste en el perfil. La base (`BASE_STROKE_DURATION_MS`/`BASE_PAUSE_MS` en `js/app.js`, y sus equivalentes `DEFAULT_*` en `stroke-animation.js` como fallback) es 900ms/400ms por trazo — se redujo a la mitad de velocidad (450/200 original) a pedido del usuario el 2026-07-06. Si el carácter no tiene datos KanjiVG, cae al comportamiento original (fuente `OrdenTrazos`, cuyo `font-size` en `style.css` se ajustó para ocupar ~70% del cuadro y coincidir en escala con la animación).
 
-**7. Licencia** — KanjiVG es CC BY-SA 3.0: atribución visible en el modal "Acerca de" + `vendor/kanjivg-svg/LICENSE`. Cualquier extensión (N4, etc.) hereda esa misma obligación.
+**7. Licencia** — KanjiVG es CC BY-SA 3.0: atribución visible en el modal "Acerca de" + `vendor/kanjivg-svg/LICENSE`. La extensión a N4 (mismo día) heredó la misma obligación sin cambios adicionales.
 
 ### Bugs reales encontrados al probar en navegador (no reintroducirlos)
 
@@ -94,11 +95,14 @@ tests/run-tests.mjs              # tests de stroke-geometry.js, stroke-scoring.j
 ### Verificación hecha
 
 - `npm test` (incluye ~12 casos nuevos: trazo idéntico, invertido, perpendicular, conteo distinto, tap degenerado, clamp de umbral).
-- Playwright headless de punta a punta: dibujar el kanji real (usando los propios puntos KanjiVG) → desbloquea; garabato incorrecto → bloquea con score correcto; kana/N4 sin evaluador afectado; animación de un kanji de 1 trazo y de 8 trazos termina completa (se encontró y arregló un bug real: el frame final quedaba en blanco).
+- Playwright headless de punta a punta: dibujar el kanji real (usando los propios puntos KanjiVG) → desbloquea; garabato incorrecto → bloquea con score correcto; kana sin evaluador afectado; animación de un kanji de 1 trazo y de 8 trazos termina completa (se encontró y arregló un bug real: el frame final quedaba en blanco).
+- Tras extender a N4 (2026-07-06): mismo flujo verificado con un kanji N4 real (地, lección `kanji-n4-1`) → desbloquea con 100% de similitud; animación de otro kanji N4 (会) en el modal de Estudio confirmada en movimiento.
 
-### Plantilla de prompt para extender esto a N4
+### Plantilla de prompt para extender esto a N4 — ✅ HECHO el 2026-07-06 en `feature/stroke-evaluation-n4`
 
-Esta es la extensión más probable a corto plazo. La arquitectura ya es genérica por `categoria` (no hay nada hardcodeado a "solo N5" salvo 3 puntos), así que el trabajo real es angosto:
+La extensión funcionó exactamente como se predijo abajo, sin sorpresas: los 170 SVG de N4 descargaron sin fallos, el parser de paths (`tools/lib/svg-path.mjs`, solo M/C/S) los procesó todos sin necesitar comandos nuevos, y los conteos de trazos de una muestra (楽=13, 質=15,試=13, 族=11, 早=6) coincidieron con la referencia. Dejo la plantilla intacta abajo porque sigue siendo el patrón correcto para una futura extensión a N3 — solo cambiaría el nivel en el filtro.
+
+Esta fue la extensión más probable a corto plazo. La arquitectura ya era genérica por `categoria` (no había nada hardcodeado a "solo N5" salvo 3 puntos), así que el trabajo real fue angosto:
 
 1. `tools/fetch-kanjivg.mjs` y `tools/build-kanjivg-data.mjs`: cambiar el filtro `categoria === "N5"` por `["N5", "N4"].includes(categoria)` (o pasar el nivel como argumento de CLI).
 2. Re-correr `npm run fetch:kanjivg && npm run build:kanjivg` (descarga ~170 SVG nuevos).
@@ -137,4 +141,4 @@ Codex normalmente arranca sin haber leído nada de este repo, así que el prompt
 
 ### Nota sobre versión y CHANGELOG
 
-Esta feature vive en la rama `feature/stroke-evaluation` y todavía no tiene entrada en `CHANGELOG.md` ni bump de versión — eso corresponde a cuando se decida fusionar a `main`, siguiendo la regla ya existente al inicio de `CHANGELOG.md`.
+Esta feature vive en `feature/stroke-evaluation` y su extensión a N4 en `feature/stroke-evaluation-n4`, ninguna fusionada a `main` todavía. A diferencia de lo que decía esta nota originalmente: **sí** tienen entradas en `CHANGELOG.md` (0.8.15, 0.8.16) porque la convención cambió el 2026-07-06 — ver punto 4 de "Convención" al inicio de este archivo.

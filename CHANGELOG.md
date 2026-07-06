@@ -10,6 +10,19 @@ El número de versión visible de la app debe mantenerse alineado en:
 - `CHANGELOG.md`;
 - `service-worker.js` y query strings `?v=...` cuando cambien archivos cacheados.
 
+## [0.8.16] - 2026-07-06 (en desarrollo en `feature/stroke-evaluation-n4`, aún no fusionado a `main`)
+
+### Agregado
+
+- Datos de trazos KanjiVG extendidos a los 170 kanji N4 (antes solo N5): el evaluador de trazos, el coloreado en vivo y la animación de orden de trazos ahora funcionan igual para N4 que para N5.
+- `vendor/kanjivg-svg/` y `data/kanjivg/` pasan de 80 a 250 archivos (N5+N4). `tools/fetch-kanjivg.mjs`, `tools/build-kanjivg-data.mjs` y la validación de cobertura en `tools/validate-content.mjs` ahora filtran por `["N5", "N4"]` en vez de solo `"N5"`.
+- `js/app.js`: `loadExpectedStrokes`/`loadModalExpectedStrokes` usan un chequeo compartido (`hasKanjivgData`) que ya no está atado a un nivel JLPT específico.
+
+### Cambiado
+
+- Velocidad base de la animación de orden de trazos reducida a la mitad (más lenta): 450ms→900ms por trazo, 200ms→400ms de pausa. El botón ▶ sigue multiplicando por 1x/2x/4x sobre esta nueva base.
+- Bump de versión 0.8.15 → 0.8.16 (`APP_VERSION`, `package.json`, splash, `CACHE_NAME` v31→v32, query strings `?v=815`→`?v=816`).
+
 ## [0.8.15] - 2026-07-06 (en desarrollo en `feature/stroke-evaluation`, aún no fusionado a `main`)
 
 Bump de versión solicitado explícitamente para poder distinguir visualmente builds nuevas en la pantalla de carga mientras se prueba esta rama. Consolida el trabajo de los commits `6d593e5`, `a156bbd`, `2cf6d87` y el actual en una sola entrada, ya que ninguno tuvo bump de versión al momento de commitear.

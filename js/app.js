@@ -41,7 +41,7 @@ import {
 } from "./stroke-scoring.js";
 import { resampleStroke } from "./stroke-geometry.js";
 import { createStrokeAnimator } from "./stroke-animation.js";
-import { exampleJapanese, itemPronunciation, japaneseOnly, speakJapanese } from "./audio.js?v=815";
+import { exampleJapanese, itemPronunciation, japaneseOnly, speakJapanese } from "./audio.js?v=816";
 import { loadDictionary } from "./data.js";
 import {
     achievementLevel,
@@ -49,14 +49,14 @@ import {
     achievementSummary,
     buildAchievementStats,
     syncAchievements,
-} from "./achievements.js?v=815";
+} from "./achievements.js?v=816";
 import {
     dailyEntry,
     dailySummary,
     practiceStats,
     recentDailySummaries,
     recordDailyPractice,
-} from "./profile.js?v=815";
+} from "./profile.js?v=816";
 import {
     disablePracticeReminder,
     enablePracticeReminder,
@@ -65,7 +65,7 @@ import {
     recordPractice,
     setPracticeReminderTime,
     shouldNotifyPracticeReminder,
-} from "./reminders.js?v=815";
+} from "./reminders.js?v=816";
 import {
     AVAILABLE_LANGUAGES,
     applyDocumentTranslations,
@@ -79,9 +79,9 @@ import {
     localizeDictionary,
     t,
     translateCardState,
-} from "./i18n.js?v=815";
+} from "./i18n.js?v=816";
 
-const APP_VERSION = "0.8.15";
+const APP_VERSION = "0.8.16";
 const FEEDBACK_ENDPOINT = "https://script.google.com/macros/s/AKfycbxiz6058zwMxfPTDTmIBpG8JutOPw8YBxCRJ0BeMHp-py6IXZy4zkZs2IdTqwmSSzC1jw/exec";
 const SPLASH_MIN_MS = 2400;
 const startupStartedAt = performance.now();
@@ -264,8 +264,13 @@ let tourIndex = 0;
 let tourHighlightedElement = null;
 let expectedKanjiData = null;
 
+const KANJIVG_SUPPORTED_LEVELS = new Set(["N5", "N4"]);
 const kanjivgDataCache = new Map();
 let kanjivgIndexPromise = null;
+
+function hasKanjivgData(item) {
+    return Boolean(item?.tipo === "kanji" && KANJIVG_SUPPORTED_LEVELS.has(item.categoria));
+}
 
 function loadKanjivgIndex() {
     if (!kanjivgIndexPromise) {
@@ -296,9 +301,7 @@ async function loadKanjivgData(character) {
 }
 
 async function loadExpectedStrokes(item) {
-    expectedKanjiData = item?.tipo === "kanji" && item.categoria === "N5"
-        ? await loadKanjivgData(item.caracter)
-        : null;
+    expectedKanjiData = hasKanjivgData(item) ? await loadKanjivgData(item.caracter) : null;
 }
 
 let modalExpectedKanjiData = null;
@@ -307,7 +310,7 @@ let modalKanjivgRequestId = 0;
 async function loadModalExpectedStrokes(item) {
     const requestId = (modalKanjivgRequestId += 1);
     modalExpectedKanjiData = null;
-    if (item?.tipo === "kanji" && item.categoria === "N5") {
+    if (hasKanjivgData(item)) {
         const data = await loadKanjivgData(item.caracter);
         if (requestId !== modalKanjivgRequestId) return;
         modalExpectedKanjiData = data;
@@ -315,8 +318,8 @@ async function loadModalExpectedStrokes(item) {
     updateStrokeOrderDisplay();
 }
 
-const BASE_STROKE_DURATION_MS = 450;
-const BASE_PAUSE_MS = 200;
+const BASE_STROKE_DURATION_MS = 900;
+const BASE_PAUSE_MS = 400;
 const ANIMATION_SPEED_MULTIPLIERS = [1, 2, 4];
 let animationSpeedMultiplierIndex = 0;
 
