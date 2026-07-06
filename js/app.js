@@ -31,7 +31,8 @@ import {
     saveSettings,
 } from "./storage.js";
 import { createDrawingPad, createFeedbackLayer } from "./drawing.js";
-import { scoreAttempt, similarityColor } from "./stroke-scoring.js";
+import { compareStroke, MIN_STROKE_POINTS, RESAMPLE_POINTS, scoreAttempt, similarityColor } from "./stroke-scoring.js";
+import { resampleStroke } from "./stroke-geometry.js";
 import { createStrokeAnimator } from "./stroke-animation.js";
 import { exampleJapanese, itemPronunciation, japaneseOnly, speakJapanese } from "./audio.js?v=811";
 import { loadDictionary } from "./data.js";
@@ -331,9 +332,24 @@ function updateStrokeOrderDisplay() {
 
 function handleStrokeEnd(index, points) {
     if (!profile.strokeEvaluatorEnabled || !expectedKanjiData) return;
-    const result = scoreAttempt(practicePad.getStrokes(), expectedKanjiData.strokes);
-    const strokeScore = result.strokeScores[index];
-    feedbackLayer.paintStroke(points, strokeScore === undefined ? "red" : similarityColor(strokeScore));
+    const expectedStroke = expectedKanjiData.strokes[index];
+    if (!expectedStroke) {
+        feedbackLayer.paintStroke(points, "red");
+        return;
+    }
+    if (points.length < MIN_STROKE_POINTS) {
+        feedbackLayer.paintStroke(points, "red");
+        return;
+    }
+    // Normaliza contra el lienzo fijo (no el bounding box de los trazos dibujados hasta
+    // ahora): con solo 1-2 trazos ese bbox es inestable y distorsiona trazos cortos.
+    const normalized = points.map(point => ({
+        x: point.x / elements.board.width,
+        y: point.y / elements.board.height,
+    }));
+    const resampled = resampleStroke(normalized, RESAMPLE_POINTS);
+    const strokeScore = compareStroke(resampled, expectedStroke.points);
+    feedbackLayer.paintStroke(points, similarityColor(strokeScore));
 }
 
 const practicePad = createDrawingPad(elements.board, { lineWidth: 12, onStrokeEnd: handleStrokeEnd });

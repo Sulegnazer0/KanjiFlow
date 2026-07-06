@@ -929,7 +929,7 @@ canvas {
     align-items: center;
     color: rgba(239, 68, 68, 0.24);
     font-family: "OrdenTrazos", sans-serif;
-    font-size: clamp(7rem, 42vw, 10rem);
+    font-size: clamp(11.2rem, 67.2vw, 16rem);
     line-height: 1;
     pointer-events: none;
     user-select: none;
@@ -952,7 +952,6 @@ canvas {
     height: 100%;
     z-index: 4;
     pointer-events: none;
-    mix-blend-mode: multiply;
 }
 
 .board-controls,
@@ -1482,7 +1481,7 @@ canvas {
     justify-content: center;
     align-items: center;
     color: rgba(100, 116, 139, 0.16);
-    font-size: clamp(7rem, 42vw, 10rem);
+    font-size: clamp(11.2rem, 67.2vw, 16rem);
     line-height: 1;
     pointer-events: none;
     user-select: none;

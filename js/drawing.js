@@ -124,10 +124,11 @@ export function createDrawingPad(canvas, { lineWidth = 12, onStrokeEnd } = {}) {
 }
 
 const FEEDBACK_COLORS = {
-    green: "rgba(34, 197, 94, 0.4)",
-    yellow: "rgba(234, 179, 8, 0.4)",
-    red: "rgba(239, 68, 68, 0.4)",
+    green: "rgba(22, 163, 74, 0.88)",
+    yellow: "rgba(202, 138, 4, 0.88)",
+    red: "rgba(220, 38, 38, 0.88)",
 };
+const FEEDBACK_LINE_WIDTH = 9;
 
 export function createFeedbackLayer(canvas) {
     const context = canvas.getContext("2d");
@@ -141,7 +142,7 @@ export function createFeedbackLayer(canvas) {
         context.save();
         context.globalCompositeOperation = "source-over";
         context.strokeStyle = FEEDBACK_COLORS[color] || FEEDBACK_COLORS.red;
-        context.lineWidth = 16;
+        context.lineWidth = FEEDBACK_LINE_WIDTH;
         context.lineCap = "round";
         context.lineJoin = "round";
         context.beginPath();

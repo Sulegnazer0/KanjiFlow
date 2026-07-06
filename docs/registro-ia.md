@@ -19,6 +19,7 @@ Cada vez que una IA haga un commit de una feature nueva o un cambio de arquitect
 | Fecha | IA | Rama | Resumen | Archivos clave |
 |---|---|---|---|---|
 | 2026-07-06 | Claude (Sonnet 5) | `feature/stroke-evaluation` | Evaluador automático de trazos (KanjiVG) + animación progresiva de orden de trazos, para kanji N5 | `js/stroke-scoring.js`, `js/stroke-geometry.js`, `js/stroke-animation.js`, `js/drawing.js`, `data/kanjivg/`, `tools/fetch-kanjivg.mjs`, `tools/build-kanjivg-data.mjs` |
+| 2026-07-06 | Claude (Sonnet 5) | `feature/stroke-evaluation` | Ajustes de feedback visual tras probar en navegador: arregla el color en vivo (estaba invisible sobre la tinta por `mix-blend-mode: multiply`, y la normalización por trazo parcial daba falsos rojos en trazos cortos), escala la animación al 80% con numeración de trazos, y sube el tamaño de la fuente estática para que coincida en escala | `js/app.js`, `js/drawing.js`, `js/stroke-animation.js`, `style.css` |
 
 ---
 
@@ -50,11 +51,16 @@ El usuario quería que, en el lienzo de práctica, se detecten los trazos dibuja
 
 **4. Comparación** — `js/stroke-scoring.js` (módulo puro, sin DOM, 100% testeable): compara trazo N del usuario contra trazo N esperado (respeta orden, no hace point-cloud matching), penaliza conteo de trazos distinto multiplicativamente, y trazos degenerados (menos de 3 puntos capturados) puntúan 0. `scoreAttempt()` da el score global 0-100 usado para el gating; `compareStroke()` + `similarityColor()` dan el color por trazo en vivo.
 
-**5. UI** — `js/profile.js` (`strokeEvaluatorEnabled`, `similarityThreshold` con clamp), `index.html`/`js/app.js` (chips de umbral igual patrón que la meta diaria, canvas overlay `#pizarra-feedback` para el tinte de color con `mix-blend-mode: multiply`, gating en `revealAnswer()` que oculta `.rating-fieldset` y muestra `#aviso-umbral-trazos`).
+**5. UI** — `js/profile.js` (`strokeEvaluatorEnabled`, `similarityThreshold` con clamp), `index.html`/`js/app.js` (chips de umbral igual patrón que la meta diaria, canvas overlay `#pizarra-feedback` para el tinte de color, gating en `revealAnswer()` que oculta `.rating-fieldset` y muestra `#aviso-umbral-trazos`).
 
-**6. Animación** — `js/stroke-animation.js` (`createStrokeAnimator`): reutiliza los mismos puntos KanjiVG (no genera un `d` de SVG aparte) y los dibuja progresivamente en un `<canvas>` con `requestAnimationFrame`, montado en el modal de estudio junto al `#btn-toggle-trazos` existente. Si el carácter no tiene datos KanjiVG, cae al comportamiento original (fuente `OrdenTrazos`).
+**6. Animación** — `js/stroke-animation.js` (`createStrokeAnimator`): reutiliza los mismos puntos KanjiVG (no genera un `d` de SVG aparte) y los dibuja progresivamente en un `<canvas>` con `requestAnimationFrame`, montado en el modal de estudio junto al `#btn-toggle-trazos` existente, escalado al 80% (margen visible) con numeración de trazo en el punto de inicio. Si el carácter no tiene datos KanjiVG, cae al comportamiento original (fuente `OrdenTrazos`, cuyo `font-size` en `style.css` se ajustó para ocupar ~80% del cuadro y coincidir en escala con la animación).
 
 **7. Licencia** — KanjiVG es CC BY-SA 3.0: atribución visible en el modal "Acerca de" + `vendor/kanjivg-svg/LICENSE`. Cualquier extensión (N4, etc.) hereda esa misma obligación.
+
+### Dos bugs reales encontrados al probar en navegador (no reintroducirlos)
+
+1. **El color en vivo no se veía sobre la tinta.** La capa `#pizarra-feedback` tenía `mix-blend-mode: multiply` en CSS. Multiplicar cualquier color por negro (la tinta del trazo) da negro, así que el tinte solo se notaba en el papel alrededor del trazo, nunca encima. Se quitó el `mix-blend-mode` y se subió la opacidad/ajustó el ancho en `js/drawing.js` (`createFeedbackLayer`) para que el color se pinte con `source-over` normal, bien visible sobre la tinta.
+2. **Trazos cortos (p. ej. las marcas de 火) coloreaban mal (rojo) aunque fueran correctos.** `handleStrokeEnd()` normalizaba usando el bounding box de "los trazos dibujados hasta el momento" — con 1-2 trazos ese cuadro es inestable/distorsionado para trazos pequeños. La corrección: el color EN VIVO normaliza contra el tamaño fijo del lienzo (`elements.board.width/height`), no contra un bbox acumulado; la normalización dinámica por bbox se mantiene solo para el score final en `evaluateStrokeGate()` (que ya tiene todos los trazos capturados, así que es estable).
 
 ### Archivos clave
 
