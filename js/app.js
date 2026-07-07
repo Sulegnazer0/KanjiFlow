@@ -30,8 +30,18 @@ import {
     saveProgress,
     saveSettings,
 } from "./storage.js";
-import { createDrawingPad } from "./drawing.js";
-import { exampleJapanese, itemPronunciation, japaneseOnly, speakJapanese } from "./audio.js?v=819";
+import { createDrawingPad, createFeedbackLayer } from "./drawing.js";
+import {
+    compareStroke,
+    MIN_STROKE_POINTS,
+    recommendRating,
+    RESAMPLE_POINTS,
+    scoreAttempt,
+    similarityColor,
+} from "./stroke-scoring.js";
+import { resampleStroke } from "./stroke-geometry.js";
+import { createStrokeAnimator } from "./stroke-animation.js";
+import { exampleJapanese, itemPronunciation, japaneseOnly, speakJapanese } from "./audio.js?v=820";
 import { loadDictionary } from "./data.js";
 import {
     achievementLevel,
@@ -39,14 +49,14 @@ import {
     achievementSummary,
     buildAchievementStats,
     syncAchievements,
-} from "./achievements.js?v=819";
+} from "./achievements.js?v=820";
 import {
     dailyEntry,
     dailySummary,
     practiceStats,
     recentDailySummaries,
     recordDailyPractice,
-} from "./profile.js?v=819";
+} from "./profile.js?v=820";
 import {
     disablePracticeReminder,
     enablePracticeReminder,
@@ -55,7 +65,7 @@ import {
     recordPractice,
     setPracticeReminderTime,
     shouldNotifyPracticeReminder,
-} from "./reminders.js?v=819";
+} from "./reminders.js?v=820";
 import {
     AVAILABLE_LANGUAGES,
     applyDocumentTranslations,
@@ -69,9 +79,9 @@ import {
     localizeDictionary,
     t,
     translateCardState,
-} from "./i18n.js?v=819";
+} from "./i18n.js?v=820";
 
-const APP_VERSION = "0.8.19";
+const APP_VERSION = "0.8.20";
 const FEEDBACK_ENDPOINT = "https://script.google.com/macros/s/AKfycbxiz6058zwMxfPTDTmIBpG8JutOPw8YBxCRJ0BeMHp-py6IXZy4zkZs2IdTqwmSSzC1jw/exec";
 const SPLASH_MIN_MS = 2400;
 const startupStartedAt = performance.now();
@@ -108,10 +118,13 @@ const elements = {
     hint: $("#pista-romaji"),
     practiceSound: $("#btn-sonido-practica"),
     board: $("#pizarra"),
+    feedbackBoard: $("#pizarra-feedback"),
     practiceGuide: $("#guia-practica"),
     clearBoard: $("#btn-limpiar"),
     reveal: $("#btn-revelar"),
     answerPanel: $("#panel-respuesta"),
+    ratingFieldset: document.querySelector(".rating-fieldset"),
+    strokeGateNotice: $("#aviso-umbral-trazos"),
     answerCharacter: $("#resp-caracter"),
     answerSound: $("#btn-sonido-respuesta"),
     answerRomaji: $("#resp-romaji"),
@@ -138,6 +151,9 @@ const elements = {
     closeModal: $("#cerrar-modal"),
     modalCharacter: $("#modal-caracter"),
     modalBoard: $("#pizarra-modal"),
+    strokeAnimationCanvas: $("#animacion-trazos"),
+    animationSpeedButton: $("#btn-velocidad-animacion"),
+    animationSpeedLabel: $("#etiqueta-velocidad-animacion"),
     toggleStrokes: $("#btn-toggle-trazos"),
     clearModalBoard: $("#btn-limpiar-modal"),
     modalRomaji: $("#modal-romaji"),
@@ -181,6 +197,9 @@ const elements = {
     reminderTime: $("#hora-recordatorio"),
     saveProfile: $("#btn-guardar-perfil"),
     goalChips: document.querySelectorAll("[data-goal]"),
+    similarityThreshold: $("#perfil-umbral-similitud"),
+    thresholdChips: document.querySelectorAll("[data-threshold]"),
+    strokeEvaluatorToggle: $("#btn-evaluador-trazos"),
     profileTodayUnique: $("#perfil-hoy-unicas"),
     profileTodayReviews: $("#perfil-hoy-repasos"),
     profileActiveDays: $("#perfil-dias-activos"),
@@ -244,9 +263,133 @@ let reminderTimer = null;
 let touchStartX = 0;
 let tourIndex = 0;
 let tourHighlightedElement = null;
+let expectedKanjiData = null;
 
-const practicePad = createDrawingPad(elements.board, { lineWidth: 12 });
+const KANJIVG_SUPPORTED_LEVELS = new Set(["N5", "N4"]);
+const kanjivgDataCache = new Map();
+let kanjivgIndexPromise = null;
+
+function hasKanjivgData(item) {
+    return Boolean(item?.tipo === "kanji" && KANJIVG_SUPPORTED_LEVELS.has(item.categoria));
+}
+
+function loadKanjivgIndex() {
+    if (!kanjivgIndexPromise) {
+        kanjivgIndexPromise = fetch("data/kanjivg/index.json")
+            .then(response => (response.ok ? response.json() : {}))
+            .catch(() => ({}));
+    }
+    return kanjivgIndexPromise;
+}
+
+async function loadKanjivgData(character) {
+    if (kanjivgDataCache.has(character)) return kanjivgDataCache.get(character);
+    const index = await loadKanjivgIndex();
+    const codepoint = index[character];
+    if (!codepoint) {
+        kanjivgDataCache.set(character, null);
+        return null;
+    }
+    try {
+        const response = await fetch(`data/kanjivg/${codepoint}.json`);
+        const data = response.ok ? await response.json() : null;
+        kanjivgDataCache.set(character, data);
+        return data;
+    } catch {
+        kanjivgDataCache.set(character, null);
+        return null;
+    }
+}
+
+async function loadExpectedStrokes(item) {
+    expectedKanjiData = hasKanjivgData(item) ? await loadKanjivgData(item.caracter) : null;
+}
+
+let modalExpectedKanjiData = null;
+let modalKanjivgRequestId = 0;
+
+async function loadModalExpectedStrokes(item) {
+    const requestId = (modalKanjivgRequestId += 1);
+    modalExpectedKanjiData = null;
+    if (hasKanjivgData(item)) {
+        const data = await loadKanjivgData(item.caracter);
+        if (requestId !== modalKanjivgRequestId) return;
+        modalExpectedKanjiData = data;
+    }
+    updateStrokeOrderDisplay();
+}
+
+const BASE_STROKE_DURATION_MS = 900;
+const BASE_PAUSE_MS = 400;
+const ANIMATION_SPEED_MULTIPLIERS = [1, 2, 4];
+let animationSpeedMultiplierIndex = 0;
+
+function currentAnimationSpeed() {
+    const multiplier = ANIMATION_SPEED_MULTIPLIERS[animationSpeedMultiplierIndex];
+    return { strokeDurationMs: BASE_STROKE_DURATION_MS / multiplier, pauseMs: BASE_PAUSE_MS / multiplier };
+}
+
+function updateAnimationSpeedButton() {
+    const multiplier = ANIMATION_SPEED_MULTIPLIERS[animationSpeedMultiplierIndex];
+    elements.animationSpeedLabel.textContent = multiplier > 1 ? `${multiplier}X` : "";
+}
+
+function cycleAnimationSpeed() {
+    animationSpeedMultiplierIndex = (animationSpeedMultiplierIndex + 1) % ANIMATION_SPEED_MULTIPLIERS.length;
+    updateAnimationSpeedButton();
+    updateStrokeOrderDisplay();
+}
+
+function updateStrokeOrderDisplay() {
+    elements.toggleStrokes.setAttribute("aria-pressed", String(strokeOrderVisible));
+    elements.toggleStrokes.textContent = strokeOrderVisible
+        ? t("ui.hideStrokeOrder")
+        : t("ui.showStrokeOrder");
+
+    if (!strokeOrderVisible) {
+        elements.modalCharacter.classList.remove("stroke-order");
+        elements.strokeAnimationCanvas.classList.add("hidden");
+        strokeAnimator.stop();
+        return;
+    }
+
+    if (modalExpectedKanjiData) {
+        elements.modalCharacter.classList.remove("stroke-order");
+        elements.strokeAnimationCanvas.classList.remove("hidden");
+        strokeAnimator.playCharacter(modalExpectedKanjiData, currentAnimationSpeed());
+    } else {
+        elements.strokeAnimationCanvas.classList.add("hidden");
+        strokeAnimator.stop();
+        elements.modalCharacter.classList.add("stroke-order");
+    }
+}
+
+function handleStrokeEnd(index, points) {
+    if (!profile.strokeEvaluatorEnabled || !expectedKanjiData) return;
+    const expectedStroke = expectedKanjiData.strokes[index];
+    if (!expectedStroke) {
+        feedbackLayer.paintStroke(points, "red");
+        return;
+    }
+    if (points.length < MIN_STROKE_POINTS) {
+        feedbackLayer.paintStroke(points, "red");
+        return;
+    }
+    // Normaliza contra el lienzo fijo (no el bounding box de los trazos dibujados hasta
+    // ahora): con solo 1-2 trazos ese bbox es inestable y distorsiona trazos cortos.
+    const normalized = points.map(point => ({
+        x: point.x / elements.board.width,
+        y: point.y / elements.board.height,
+    }));
+    const resampled = resampleStroke(normalized, RESAMPLE_POINTS);
+    const strokeScore = compareStroke(resampled, expectedStroke.points);
+    feedbackLayer.paintStroke(points, similarityColor(strokeScore));
+}
+
+const practicePad = createDrawingPad(elements.board, { lineWidth: 12, onStrokeEnd: handleStrokeEnd });
 const modalPad = createDrawingPad(elements.modalBoard, { lineWidth: 7 });
+const feedbackLayer = createFeedbackLayer(elements.feedbackBoard);
+const strokeAnimator = createStrokeAnimator(elements.strokeAnimationCanvas);
 
 const wait = ms => new Promise(resolve => setTimeout(resolve, Math.max(0, ms)));
 
@@ -262,6 +405,7 @@ function showPracticeGuide(character) {
 
 function clearPracticeBoard() {
     practicePad.clear();
+    feedbackLayer.clear();
     hidePracticeGuide();
 }
 
@@ -902,6 +1046,7 @@ function presentChallenge() {
     const poolData = getPracticePool();
     elements.lessonDescription.textContent = lessonDescription(poolData.lesson);
     currentItem = chooseNext(poolData.items, previousItemId, progress);
+    loadExpectedStrokes(currentItem);
 
     if (!currentItem) {
         elements.typeInfo.textContent = t("ui.noCardsTag");
@@ -960,8 +1105,50 @@ function revealAnswer() {
         elements.answerCounterpart.textContent = currentItem.contraparte || "—";
         elements.answerWord.textContent = currentItem.palabra_ejemplo || "—";
     }
+
+    const gate = evaluateStrokeGate();
+    setVisibility(elements.ratingFieldset, !gate.gated);
+    setVisibility(elements.strokeGateNotice, gate.active);
+    elements.strokeGateNotice.classList.toggle("stroke-gate-blocked", gate.active && gate.gated);
+    elements.strokeGateNotice.classList.toggle("stroke-gate-passed", gate.active && !gate.gated);
+    clearRatingRecommendation();
+    if (gate.active && gate.gated) {
+        elements.strokeGateNotice.textContent = t("ui.strokeGateMessage", {
+            score: gate.score,
+            threshold: profile.similarityThreshold,
+        });
+    } else if (gate.active) {
+        const recommended = recommendRating(gate.score);
+        elements.strokeGateNotice.textContent = t("ui.strokeRecommendMessage", {
+            score: gate.score,
+            rating: t(RATING_LABEL_KEYS[recommended]),
+        });
+        highlightRecommendedRating(recommended);
+    }
+
     elements.answerPanel.classList.remove("hidden");
     elements.answerPanel.scrollIntoView?.({ behavior: "smooth", block: "nearest" });
+}
+
+function evaluateStrokeGate() {
+    const active = Boolean(profile.strokeEvaluatorEnabled && expectedKanjiData);
+    if (!active) return { active, gated: false, score: 100 };
+    const result = scoreAttempt(practicePad.getStrokes(), expectedKanjiData.strokes);
+    return { active, gated: result.score < profile.similarityThreshold, score: result.score };
+}
+
+const RATING_LABEL_KEYS = { hard: "ui.ratingHard", good: "ui.ratingGood", easy: "ui.ratingEasy" };
+
+function clearRatingRecommendation() {
+    elements.ratingFieldset.querySelectorAll("[data-rating]").forEach(button => {
+        button.classList.remove("recommended");
+    });
+}
+
+function highlightRecommendedRating(rating) {
+    elements.ratingFieldset.querySelectorAll("[data-rating]").forEach(button => {
+        button.classList.toggle("recommended", button.dataset.rating === rating);
+    });
 }
 
 function rateCurrent(rating) {
@@ -1282,6 +1469,17 @@ function renderProfile() {
         chip.classList.toggle("active", Number(chip.dataset.goal) === Number(profile.dailyGoal));
     });
 
+    if (document.activeElement !== elements.similarityThreshold) {
+        elements.similarityThreshold.value = profile.similarityThreshold;
+    }
+    elements.thresholdChips.forEach(chip => {
+        chip.classList.toggle("active", Number(chip.dataset.threshold) === Number(profile.similarityThreshold));
+    });
+    elements.strokeEvaluatorToggle.setAttribute("aria-pressed", String(profile.strokeEvaluatorEnabled));
+    elements.strokeEvaluatorToggle.textContent = profile.strokeEvaluatorEnabled
+        ? t("ui.strokeEvaluatorDisable")
+        : t("ui.strokeEvaluatorEnable");
+
     elements.profileTodayUnique.textContent = today.uniqueCount;
     elements.profileTodayReviews.textContent = today.reviews;
     elements.profileActiveDays.textContent = stats.activeDays;
@@ -1298,12 +1496,20 @@ function saveProfileFromForm() {
         ...profile,
         name: elements.profileName.value,
         dailyGoal: elements.dailyGoal.value,
+        similarityThreshold: elements.similarityThreshold.value,
     };
     saveProfile(profile);
     profile = loadProfile();
     saveReminderTime(elements.reminderTime.value);
     updateProgressUI();
     showToast(t("ui.profileSaved"));
+}
+
+function toggleStrokeEvaluator() {
+    profile = { ...profile, strokeEvaluatorEnabled: !profile.strokeEvaluatorEnabled };
+    saveProfile(profile);
+    profile = loadProfile();
+    renderProfile();
 }
 
 function openAboutModal() {
@@ -1505,10 +1711,9 @@ function openModal(index, trigger = modalTrigger) {
     modalIndex = index;
     modalTrigger = trigger;
     strokeOrderVisible = true;
-    elements.modalCharacter.classList.add("stroke-order");
-    elements.toggleStrokes.setAttribute("aria-pressed", "true");
-    elements.toggleStrokes.textContent = t("ui.hideStrokeOrder");
     modalPad.clear();
+    loadModalExpectedStrokes(item);
+    updateStrokeOrderDisplay();
 
     elements.modalCharacter.textContent = item.caracter || "?";
     elements.modalRomaji.textContent = item.romaji || "—";
@@ -1561,6 +1766,7 @@ function closeModal() {
     if (elements.modal.classList.contains("hidden")) return;
     elements.modal.classList.add("hidden");
     document.body.style.overflow = "";
+    strokeAnimator.stop();
     modalTrigger?.focus?.();
 }
 
@@ -1713,6 +1919,16 @@ function bindEvents() {
             saveProfileFromForm();
         });
     });
+    elements.similarityThreshold.addEventListener("keydown", event => {
+        if (event.key === "Enter") saveProfileFromForm();
+    });
+    elements.thresholdChips.forEach(chip => {
+        chip.addEventListener("click", () => {
+            elements.similarityThreshold.value = chip.dataset.threshold;
+            saveProfileFromForm();
+        });
+    });
+    elements.strokeEvaluatorToggle.addEventListener("click", toggleStrokeEvaluator);
     elements.aboutButton.addEventListener("click", openAboutModal);
     elements.closeAbout.addEventListener("click", closeAboutModal);
     elements.aboutModal.addEventListener("click", event => {
@@ -1751,12 +1967,9 @@ function bindEvents() {
     elements.clearModalBoard.addEventListener("click", modalPad.clear);
     elements.toggleStrokes.addEventListener("click", () => {
         strokeOrderVisible = !strokeOrderVisible;
-        elements.modalCharacter.classList.toggle("stroke-order", strokeOrderVisible);
-        elements.toggleStrokes.setAttribute("aria-pressed", String(strokeOrderVisible));
-        elements.toggleStrokes.textContent = strokeOrderVisible
-            ? t("ui.hideStrokeOrder")
-            : t("ui.showStrokeOrder");
+        updateStrokeOrderDisplay();
     });
+    elements.animationSpeedButton.addEventListener("click", cycleAnimationSpeed);
     elements.modalPrevious.addEventListener("click", () => openModal(modalIndex - 1, modalTrigger));
     elements.modalNext.addEventListener("click", () => openModal(modalIndex + 1, modalTrigger));
 

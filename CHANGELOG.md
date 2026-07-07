@@ -10,6 +10,21 @@ El número de versión visible de la app debe mantenerse alineado en:
 - `CHANGELOG.md`;
 - `service-worker.js` y query strings `?v=...` cuando cambien archivos cacheados.
 
+## [0.8.20] - 2026-07-06
+
+Fusiona en `feature/jlpt-n3` el trabajo independiente de `feature/stroke-evaluation-n4` (evaluador de trazos + animación KanjiVG para N5/N4), que había avanzado en paralelo desde `main`@0.8.11. Ambas líneas de historial quedan documentadas íntegramente en este archivo, tal como circularon en sus respectivas ramas.
+
+### Agregado
+
+- El evaluador de trazos, el coloreado en vivo (verde/amarillo/rojo) y la animación progresiva de orden de trazos (KanjiVG) quedan disponibles junto con el contenido N3, el selector de Categoría y el agrupamiento por `<optgroup>` de Lección.
+- Sección "Acerca de" con atribución a KanjiVG (CC BY-SA 3.0).
+
+### Cambiado
+
+- La app muestra `v0.8.20` (contador global de versión: continúa después de `0.8.19`, la más alta usada en cualquier rama hasta este punto).
+- `tools/validate-content.mjs`: la cobertura de KanjiVG sigue exigida solo para N5/N4 (no para N3, cuya generación de trazos queda pendiente para una iteración posterior).
+- `tests/run-tests.mjs`: combina las aserciones de contenido (483 tarjetas, 270 kanji) con las pruebas de `stroke-geometry.js`/`stroke-scoring.js`/perfil del evaluador.
+
 ## [0.8.19] - 2026-07-06
 
 ### Cambiado
@@ -44,6 +59,42 @@ El número de versión visible de la app debe mantenerse alineado en:
 
 - La app muestra `v0.8.17`, 483 tarjetas y 270 kanji con ejemplos.
 - Fuente `KanjiStrokeOrders.woff` regenerada para cubrir los 270 kanji publicados.
+
+## [0.8.16] - 2026-07-06 (desarrollado en paralelo en `feature/stroke-evaluation-n4`, incorporado a esta rama en la fusión de `0.8.20`)
+
+### Agregado
+
+- Datos de trazos KanjiVG extendidos a los 170 kanji N4 (antes solo N5): el evaluador de trazos, el coloreado en vivo y la animación de orden de trazos ahora funcionan igual para N4 que para N5.
+- `vendor/kanjivg-svg/` y `data/kanjivg/` pasan de 80 a 250 archivos (N5+N4). `tools/fetch-kanjivg.mjs`, `tools/build-kanjivg-data.mjs` y la validación de cobertura en `tools/validate-content.mjs` ahora filtran por `["N5", "N4"]` en vez de solo `"N5"`.
+- `js/app.js`: `loadExpectedStrokes`/`loadModalExpectedStrokes` usan un chequeo compartido (`hasKanjivgData`) que ya no está atado a un nivel JLPT específico.
+
+### Cambiado
+
+- Velocidad base de la animación de orden de trazos reducida a la mitad (más lenta): 450ms→900ms por trazo, 200ms→400ms de pausa. El botón ▶ sigue multiplicando por 1x/2x/4x sobre esta nueva base.
+- Bump de versión 0.8.15 → 0.8.16 (`APP_VERSION`, `package.json`, splash, `CACHE_NAME` v31→v32, query strings `?v=815`→`?v=816`).
+
+## [0.8.15] - 2026-07-06 (desarrollado en paralelo en `feature/stroke-evaluation`, incorporado a esta rama en la fusión de `0.8.20`)
+
+Bump de versión solicitado explícitamente para poder distinguir visualmente builds nuevas en la pantalla de carga mientras se prueba esta rama. Consolida el trabajo de los commits `6d593e5`, `a156bbd`, `2cf6d87` y el actual en una sola entrada, ya que ninguno tuvo bump de versión al momento de commitear.
+
+### Agregado
+
+- Evaluador automático de trazos para kanji N5 usando datos vectoriales de KanjiVG (CC BY-SA 3.0): compara cada trazo dibujado contra el trazo esperado y lo colorea verde/amarillo/rojo en vivo.
+- Umbral de aprobación configurable en Perfil (presets Fácil/Normal/Experto + valor personalizado) que bloquea el panel de autoevaluación SRS si el intento no lo supera, con opción de limpiar/reintentar o desactivar el evaluador.
+- Cuando el intento sí supera el umbral, se muestra el % de similitud y una calificación SRS recomendada ("Fácil/Bien/Difícil"), resaltando ese botón — el usuario decide igual.
+- Animación progresiva de orden de trazos en el modal de Estudio (reemplaza la fuente estática cuando hay datos KanjiVG), con numeración de trazo y un botón de velocidad (▶ · 2X · 4X) en la esquina inferior derecha del lienzo.
+- `docs/registro-ia.md`: bitácora de features hechas con IA (qué, cuándo, quién) con plantillas de prompt para extender esta feature a N4.
+- Pipeline de datos: `tools/fetch-kanjivg.mjs`, `tools/build-kanjivg-data.mjs`, `data/kanjivg/` (80 kanji N5).
+
+### Corregido
+
+- El tinte de color por trazo era casi invisible sobre la tinta negra (`mix-blend-mode: multiply` con negro da negro); ahora es una línea delgada y opaca pintada encima del trazo.
+- Trazos cortos coloreaban incorrectamente en rojo por una normalización inestable con pocos trazos capturados; ahora el color en vivo usa el tamaño fijo del lienzo.
+- Escala de la animación y tamaño de la fuente de respaldo (`OrdenTrazos`) ajustados y medidos con precisión (`canvas.measureText`) para verse consistentes entre sí, en 70%.
+
+### Cambiado
+
+- `CACHE_NAME` del service worker y las query strings `?v=...` avanzan a `815`/`v31` para forzar la actualización de caché en dispositivos que ya tenían la app instalada/visitada antes de estos cambios.
 
 ## [0.8.11] - 2026-07-04
 

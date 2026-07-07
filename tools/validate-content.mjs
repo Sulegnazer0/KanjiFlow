@@ -20,6 +20,7 @@ const REQUIRED_HEADERS = [
 ];
 const SUPPORTED_TYPES = new Set(["hiragana", "katakana", "kanji"]);
 const SUPPORTED_KANJI_LEVELS = new Set(["N5", "N4", "N3"]);
+const KANJIVG_SUPPORTED_LEVELS = new Set(["N5", "N4"]);
 const KANA_CATEGORIES = new Set(["basico", "dakuten", "combinacion", "especial"]);
 const REQUIRED_EXAMPLE_FIELDS = [
     "word",
@@ -242,6 +243,37 @@ function validateStrokeOrderFont(dictionary, glyphs) {
     }
 }
 
+async function validateKanjivgCoverage(dictionary) {
+    const supportedKanji = dictionary.filter(
+        item => item.tipo === "kanji" && KANJIVG_SUPPORTED_LEVELS.has(item.categoria),
+    );
+    let index;
+    try {
+        index = await readJSON("../data/kanjivg/index.json");
+    } catch {
+        fail("Falta data/kanjivg/index.json — corre npm run fetch:kanjivg && npm run build:kanjivg");
+        return;
+    }
+
+    for (const item of supportedKanji) {
+        const hex = index[item.caracter];
+        if (!hex) {
+            fail(`data/kanjivg/index.json no tiene entrada para el kanji ${item.categoria} ${item.caracter}`);
+            continue;
+        }
+        let kanjiData;
+        try {
+            kanjiData = await readJSON(`../data/kanjivg/${hex}.json`);
+        } catch {
+            fail(`Falta data/kanjivg/${hex}.json para ${item.caracter}`);
+            continue;
+        }
+        if (kanjiData.strokeCount !== kanjiData.strokes.length) {
+            fail(`data/kanjivg/${hex}.json tiene strokeCount inconsistente con sus trazos para ${item.caracter}`);
+        }
+    }
+}
+
 function validateLessonCoverage(dictionary) {
     const contentLessons = LESSONS.filter(lesson => !["recommended", "all"].includes(lesson.id));
     for (const item of dictionary) {
@@ -310,10 +342,12 @@ validateKanjiExamples(dictionary);
 validateLessonCoverage(dictionary);
 validateStrokeOrderFont(dictionary, await readStrokeOrderGlyphs());
 await validateLocales(dictionary);
+await validateKanjivgCoverage(dictionary);
 
 note(`${dictionary.length} tarjetas validadas`);
 note(`${dictionary.filter(item => item.tipo === "kanji").length} kanji con ejemplos completos`);
 note("Fuente de orden de trazos validada para todos los kanji publicados");
+note("Datos KanjiVG validados para todos los kanji N5 y N4");
 note(`${AVAILABLE_LANGUAGES.length} idiomas activos validados: ${AVAILABLE_LANGUAGES.map(language => language.code).join(", ")}`);
 
 if (failures.length) {

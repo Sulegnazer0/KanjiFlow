@@ -29,6 +29,9 @@ Cada vez que una IA haga un commit de una feature nueva o un cambio de arquitect
 | 2026-07-06 | ~~0.8.12~~ → **0.8.17** (corregido, ver nota) | Claude (Sonnet 5) | `feature/jlpt-n3` | Publica la primera tanda de N3 (20 kanji, id_jlpt 251-270: 政,議,民,連,対,部,合,内,相,定,回,選,米,実,関,決,全,表,戦,経) tomados de `docs/jlpt-n3-list.md`: filas en `datos.csv`, ejemplos en `js/kanji-examples.js`, lección "22. Kanji N3: sociedad y decisiones" en `js/core.js`, traducciones ES/EN/DE/FR/PT, filtro N3 en Estudio, `N3` agregado a `SUPPORTED_KANJI_LEVELS`, fuente `KanjiStrokeOrders.woff` regenerada. Rama creada desde `main` (no desde las ramas del evaluador de trazos) porque es contenido independiente. **Nota**: el commit original bump-eó a 0.8.12 contando solo desde el `main` de esta rama (0.8.11), sin saber que `feature/stroke-evaluation-n4` ya iba en 0.8.16 — corregido a 0.8.17 en un commit posterior tras pregunta del usuario, ver punto 6 de "Convención" arriba | `datos.csv`, `js/kanji-examples.js`, `js/core.js`, `locales/*.json`, `tools/validate-content.mjs`, `tests/run-tests.mjs`, `KanjiStrokeOrders.woff` |
 | 2026-07-06 | 0.8.18 (bump 0.8.17→0.8.18) | Claude (Sonnet 5) | `feature/jlpt-n3` | Agrega selector "Categoría" (Todas/Kana/N5/N4/N3) en Práctica, antes del selector de "Lección" — el usuario pidió esto porque la lista de 22 lecciones ya era muy larga. El selector de Lección ahora se filtra según la categoría elegida (cada lección declara `category` en `js/core.js`); con "Todas" el comportamiento es igual que antes. Preferencia persistida junto con lección/escritura/sesión | `js/core.js`, `js/app.js`, `js/storage.js`, `index.html`, `locales/*.json` |
 | 2026-07-06 | 0.8.19 (bump 0.8.18→0.8.19) | Claude (Sonnet 5) | `feature/jlpt-n3` | El usuario probó el selector de categoría y confirmó que funcionaba (screenshot en mano: sí selecciona y carga la lección), pero esperaba que "Kana" mostrara Hiragana/Katakana como agrupación visual, no una lista plana de 11 lecciones — igual que ya describía para N5 ("números y calendario, personas y escuela, etc.", que ya funcionaba tal cual). Se agregó `subcategory` ("hiragana"/"katakana"/"especial") a las 11 lecciones kana en `js/core.js`, y `populateLessons()` en `js/app.js` ahora arma `<optgroup>` por subcategoría cuando existe — N5/N4/N3 siguen planos porque no tienen `subcategory` | `js/core.js`, `js/app.js`, `locales/*.json` |
+| 2026-07-06 | 0.8.20 (bump 0.8.19→0.8.20) | Claude (Sonnet 5) | `feature/jlpt-n3` | Fusiona `feature/stroke-evaluation-n4` (evaluador de trazos + animación KanjiVG para N5/N4, que había avanzado en paralelo desde `main`@0.8.11) dentro de esta rama, a pedido del usuario ("dentro de jlpt-n3 fusionalas"). Se resolvieron conflictos manuales en `CHANGELOG.md` (se interleavan ambas líneas de historial en vez de descartar una), `docs/registro-ia.md` (se combinan ambas tablas de Historial y ambas secciones de deep-dive), `index.html`/`js/app.js` (ambos feature sets coexisten, sin solape real de líneas), `package.json`/`service-worker.js` (versión al siguiente número global) y `tools/validate-content.mjs`/`tests/run-tests.mjs` (se combinan ambos conjuntos de validaciones/aserciones) | `CHANGELOG.md`, `docs/registro-ia.md`, `index.html`, `js/app.js`, `package.json`, `service-worker.js`, `tools/validate-content.mjs`, `tests/run-tests.mjs` |
+
+---
 
 ## Feature: Evaluador de trazos con KanjiVG (2026-07-06, Claude Sonnet 5)
 
@@ -232,3 +235,32 @@ Publicar la primera tanda de N3 en `datos.csv` con ejemplos y traducciones, sigu
 
 - 341 kanji restantes de `docs/jlpt-n3-list.md` (`id_jlpt` 271-611), en tandas de ~20 como esta.
 - Extender el evaluador de trazos a N3 cuando corresponda (mismo patrón ya documentado en la plantilla de prompt de N4 más arriba, cambiando el nivel) — es un trabajo aparte, en las ramas del evaluador, no en `feature/jlpt-n3-*`.
+
+---
+
+## Tarea: Fusión de `feature/stroke-evaluation-n4` dentro de `feature/jlpt-n3` (2026-07-06, Claude Sonnet 5)
+
+### Qué se pidió
+
+El usuario notó que esta rama (`feature/jlpt-n3`) no tenía el evaluador de trazos ni la animación KanjiVG — confirmado que era porque partió de `main`@0.8.11, antes de que esa feature existiera en su propia línea de ramas (`feature/stroke-evaluation` → `feature/stroke-evaluation-n4`), no porque se hubiera quitado nada. El usuario pidió explícitamente: "dentro de jlpt-n3 fusionalas y subela a origin" — fusionar esas ramas aquí y subir el resultado.
+
+### Cómo se hizo
+
+`git merge feature/stroke-evaluation-n4` desde `feature/jlpt-n3` (esa rama ya incluye todo el historial de `feature/stroke-evaluation`). Conflictos reales, todos resueltos a mano preservando ambos conjuntos de trabajo:
+
+- **`package.json`, `service-worker.js`**: conflicto de número de versión (`0.8.19` vs `0.8.16`) — resuelto a `0.8.20` según la regla del contador global (punto 6 de "Convención"), `CACHE_NAME` a `v36`, query strings a `?v=820`.
+- **`CHANGELOG.md`**: ambas ramas habían insertado entradas en el mismo punto de anclaje (`[0.8.11]`) — resuelto intercalando ambas líneas de historial en orden descendente (`0.8.20` nueva → `0.8.19` → `0.8.18` → `0.8.17` → `0.8.16` → `0.8.15` → `0.8.11` común), sin descartar ninguna, con una nota aclarando que `0.8.16`/`0.8.15` se desarrollaron en paralelo en la otra rama.
+- **`docs/registro-ia.md`**: conflicto add/add porque ambas ramas partieron de la misma copia inicial y la editaron por separado. La tabla de Historial de `feature/jlpt-n3` ya era superset de la de `feature/stroke-evaluation-n4` (tenía las mismas filas más la columna "Versión" y las filas propias de N3/categoría/optgroup) — se mantuvo esa versión y se agregó esta fila documentando la fusión. Ambas secciones de deep-dive ("Feature: Evaluador de trazos con KanjiVG" y "Tarea: Primera tanda de contenido N3 publicada") se conservan íntegras.
+- **`index.html`, `js/app.js`**: conflicto de líneas por proximidad (ambas ramas tocaron áreas cercanas del archivo — splash/versión, e imports/inicialización), pero sin solape real de funcionalidad: se conservó el selector de Categoría + agrupamiento `<optgroup>` de Lección (`feature/jlpt-n3`) junto con el evaluador de trazos, el overlay de feedback en vivo, la animación progresiva y el botón de velocidad (`feature/stroke-evaluation-n4`).
+- **`tools/validate-content.mjs`**: `SUPPORTED_KANJI_LEVELS` (validación general de filas) incluye `N3` (de `feature/jlpt-n3`); la validación de cobertura KanjiVG (`validateKanjivgCoverage`, de `feature/stroke-evaluation-n4`) se mantuvo acotada a `["N5", "N4"]` — **a propósito no se extendió a N3**, porque generar los datos KanjiVG para N3 quedó explícitamente diferido por el usuario ("la generación de trazos se hará después").
+- **`tests/run-tests.mjs`**: se combinaron los conteos actualizados de `feature/jlpt-n3` (483 tarjetas, 270 kanji) con las aserciones de `stroke-geometry.js`/`stroke-scoring.js`/perfil del evaluador de `feature/stroke-evaluation-n4`.
+- Locales (`es/en/de/fr/pt.json`) y `tests/run-tests.mjs`/`tools/validate-content.mjs` en su mayoría fusionaron automáticamente sin conflicto (cambios en regiones distintas del archivo).
+
+### Verificación hecha
+
+- `npm test` (`validate:content` + `run-tests.mjs`) en verde tras la fusión.
+- Verificación manual en navegador confirmando que ambos conjuntos de funcionalidad conviven: selector de Categoría/optgroup de Lección + contenido N3, y evaluador de trazos/animación KanjiVG para N5 y N4.
+
+### Qué falta
+
+- Publicar más tandas de contenido N3 (341 kanji restantes) y, eventualmente, extender el evaluador de trazos a N3 (trabajo aparte, ya documentado en la plantilla de prompt de la sección del evaluador).

@@ -2,6 +2,10 @@ export const DEFAULT_DAILY_GOAL = 10;
 export const MIN_DAILY_GOAL = 1;
 export const MAX_DAILY_GOAL = 200;
 
+export const DEFAULT_SIMILARITY_THRESHOLD = 75;
+export const MIN_SIMILARITY_THRESHOLD = 30;
+export const MAX_SIMILARITY_THRESHOLD = 100;
+
 const DAY_MS = 24 * 60 * 60 * 1000;
 
 export function localDateKey(value = Date.now()) {
@@ -19,6 +23,13 @@ function clampDailyGoal(value) {
     );
 }
 
+function clampSimilarityThreshold(value) {
+    return Math.min(
+        MAX_SIMILARITY_THRESHOLD,
+        Math.max(MIN_SIMILARITY_THRESHOLD, Math.round(Number(value) || DEFAULT_SIMILARITY_THRESHOLD)),
+    );
+}
+
 export function emptyProfile(now = Date.now()) {
     return {
         userId: "",
@@ -28,6 +39,8 @@ export function emptyProfile(now = Date.now()) {
         onboardedAt: 0,
         tourCompletedAt: 0,
         tourSkippedAt: 0,
+        strokeEvaluatorEnabled: false,
+        similarityThreshold: DEFAULT_SIMILARITY_THRESHOLD,
     };
 }
 
@@ -40,6 +53,8 @@ export function normalizeProfile(profile = {}, now = Date.now()) {
     normalized.onboardedAt = Number(normalized.onboardedAt) || 0;
     normalized.tourCompletedAt = Number(normalized.tourCompletedAt) || 0;
     normalized.tourSkippedAt = Number(normalized.tourSkippedAt) || 0;
+    normalized.strokeEvaluatorEnabled = Boolean(normalized.strokeEvaluatorEnabled);
+    normalized.similarityThreshold = clampSimilarityThreshold(normalized.similarityThreshold);
     return normalized;
 }
 

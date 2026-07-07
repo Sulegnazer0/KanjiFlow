@@ -20,10 +20,12 @@ function drawPaper(context, canvas, lineWidth) {
     context.restore();
 }
 
-export function createDrawingPad(canvas, { lineWidth = 12 } = {}) {
+export function createDrawingPad(canvas, { lineWidth = 12, onStrokeEnd } = {}) {
     const context = canvas.getContext("2d", { willReadFrequently: true });
     let drawing = false;
     let dirty = false;
+    let strokes = [];
+    let currentStroke = null;
 
     function position(event) {
         const rect = canvas.getBoundingClientRect();
@@ -37,6 +39,7 @@ export function createDrawingPad(canvas, { lineWidth = 12 } = {}) {
         drawing = true;
         dirty = true;
         const point = position(event);
+        currentStroke = [point];
         context.globalCompositeOperation = "source-over";
         context.strokeStyle = "#172033";
         context.lineWidth = lineWidth;
@@ -51,6 +54,7 @@ export function createDrawingPad(canvas, { lineWidth = 12 } = {}) {
     function move(event) {
         if (!drawing) return;
         const point = position(event);
+        currentStroke?.push(point);
         context.lineTo(point.x, point.y);
         context.stroke();
         event.preventDefault();
@@ -60,6 +64,11 @@ export function createDrawingPad(canvas, { lineWidth = 12 } = {}) {
         if (!drawing) return;
         drawing = false;
         context.closePath();
+        if (currentStroke && currentStroke.length > 1) {
+            strokes.push(currentStroke);
+            onStrokeEnd?.(strokes.length - 1, currentStroke);
+        }
+        currentStroke = null;
         if (event?.pointerId !== undefined && canvas.hasPointerCapture?.(event.pointerId)) {
             canvas.releasePointerCapture(event.pointerId);
         }
@@ -72,7 +81,13 @@ export function createDrawingPad(canvas, { lineWidth = 12 } = {}) {
 
     function clear() {
         dirty = false;
+        strokes = [];
+        currentStroke = null;
         drawPaper(context, canvas, lineWidth);
+    }
+
+    function getStrokes() {
+        return strokes.map(stroke => stroke.map(point => ({ x: point.x, y: point.y })));
     }
 
     function overlay(character) {
@@ -103,5 +118,40 @@ export function createDrawingPad(canvas, { lineWidth = 12 } = {}) {
         overlay,
         recognitionDataURL,
         hasDrawing: () => dirty,
+        getStrokes,
+        strokeCount: () => strokes.length,
     };
+}
+
+const FEEDBACK_COLORS = {
+    green: "rgba(22, 163, 74, 0.97)",
+    yellow: "rgba(217, 119, 6, 0.97)",
+    red: "rgba(220, 38, 38, 0.97)",
+};
+const FEEDBACK_LINE_WIDTH = 5;
+
+export function createFeedbackLayer(canvas) {
+    const context = canvas.getContext("2d");
+
+    function clear() {
+        context.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
+    function paintStroke(points, color) {
+        if (!points || points.length < 2) return;
+        context.save();
+        context.globalCompositeOperation = "source-over";
+        context.strokeStyle = FEEDBACK_COLORS[color] || FEEDBACK_COLORS.red;
+        context.lineWidth = FEEDBACK_LINE_WIDTH;
+        context.lineCap = "round";
+        context.lineJoin = "round";
+        context.beginPath();
+        context.moveTo(points[0].x, points[0].y);
+        for (const point of points.slice(1)) context.lineTo(point.x, point.y);
+        context.stroke();
+        context.restore();
+    }
+
+    clear();
+    return { clear, paintStroke };
 }
