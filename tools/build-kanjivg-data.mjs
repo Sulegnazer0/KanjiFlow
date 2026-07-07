@@ -11,7 +11,7 @@ const OUTPUT_DIR = new URL("data/kanjivg/", ROOT);
 const RESAMPLE_POINTS = 32;
 const DENSE_SAMPLES_PER_CURVE = 24;
 const LICENSE = "CC BY-SA 3.0 (KanjiVG, Ulrich Apel — https://kanjivg.tagaini.net/)";
-const SUPPORTED_LEVELS = new Set(["N5", "N4"]);
+const SUPPORTED_LEVELS = new Set(["N5", "N4", "N3"]);
 
 const PATH_RE = /<path\b[^>]*\bid="kvg:[0-9a-f]+-s(\d+)"[^>]*\bd="([^"]+)"/g;
 

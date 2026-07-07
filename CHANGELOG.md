@@ -10,6 +10,18 @@ El número de versión visible de la app debe mantenerse alineado en:
 - `CHANGELOG.md`;
 - `service-worker.js` y query strings `?v=...` cuando cambien archivos cacheados.
 
+## [0.8.30] - 2026-07-07
+
+### Agregado
+
+- Datos de trazos KanjiVG extendidos a los 361 kanji N3 (antes solo N5+N4): el evaluador de trazos, el coloreado en vivo y la animación/fantasma de orden de trazos ahora funcionan igual para N3 que para N5/N4.
+- `vendor/kanjivg-svg/` y `data/kanjivg/` pasan de 250 a 611 archivos (N5+N4+N3). `tools/fetch-kanjivg.mjs`, `tools/build-kanjivg-data.mjs`, `tools/validate-content.mjs` y `js/app.js` (`hasKanjivgData`) filtran ahora por `["N5", "N4", "N3"]`.
+
+### Cambiado
+
+- El texto de atribución de KanjiVG en "Acerca de" ahora menciona N5/N4/N3 (antes decía solo "N5" — quedó desactualizado cuando se extendió a N4 y no se corrigió en su momento).
+- La app muestra `v0.8.30`.
+
 ## [0.8.29] - 2026-07-07
 
 ### Cambiado

@@ -41,7 +41,7 @@ import {
 } from "./stroke-scoring.js";
 import { fromCanvasPoint, resampleStroke } from "./stroke-geometry.js";
 import { createStrokeAnimator, GHOST_COLOR } from "./stroke-animation.js";
-import { exampleJapanese, itemPronunciation, japaneseOnly, speakJapanese } from "./audio.js?v=829";
+import { exampleJapanese, itemPronunciation, japaneseOnly, speakJapanese } from "./audio.js?v=830";
 import { loadDictionary } from "./data.js";
 import {
     achievementLevel,
@@ -49,14 +49,14 @@ import {
     achievementSummary,
     buildAchievementStats,
     syncAchievements,
-} from "./achievements.js?v=829";
+} from "./achievements.js?v=830";
 import {
     dailyEntry,
     dailySummary,
     practiceStats,
     recentDailySummaries,
     recordDailyPractice,
-} from "./profile.js?v=829";
+} from "./profile.js?v=830";
 import {
     disablePracticeReminder,
     enablePracticeReminder,
@@ -65,7 +65,7 @@ import {
     recordPractice,
     setPracticeReminderTime,
     shouldNotifyPracticeReminder,
-} from "./reminders.js?v=829";
+} from "./reminders.js?v=830";
 import {
     AVAILABLE_LANGUAGES,
     applyDocumentTranslations,
@@ -79,9 +79,9 @@ import {
     localizeDictionary,
     t,
     translateCardState,
-} from "./i18n.js?v=829";
+} from "./i18n.js?v=830";
 
-const APP_VERSION = "0.8.29";
+const APP_VERSION = "0.8.30";
 const FEEDBACK_ENDPOINT = "https://script.google.com/macros/s/AKfycbxiz6058zwMxfPTDTmIBpG8JutOPw8YBxCRJ0BeMHp-py6IXZy4zkZs2IdTqwmSSzC1jw/exec";
 const SPLASH_MIN_MS = 2400;
 const startupStartedAt = performance.now();
@@ -268,7 +268,7 @@ let tourIndex = 0;
 let tourHighlightedElement = null;
 let expectedKanjiData = null;
 
-const KANJIVG_SUPPORTED_LEVELS = new Set(["N5", "N4"]);
+const KANJIVG_SUPPORTED_LEVELS = new Set(["N5", "N4", "N3"]);
 const kanjivgDataCache = new Map();
 let kanjivgIndexPromise = null;
 

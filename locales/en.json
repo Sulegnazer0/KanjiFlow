@@ -160,7 +160,7 @@
     "updateReminders": "24-hour practice reminder bell.",
     "updateI18n": "Multilingual interface in Spanish, English, German, French, and Portuguese.",
     "kanjivgAttributionTitle": "Stroke data",
-    "kanjivgAttributionText": "Stroke order and shape for N5 kanji use data from the KanjiVG project (Ulrich Apel), licensed under Creative Commons BY-SA 3.0.",
+    "kanjivgAttributionText": "Stroke order and shape for N5, N4, and N3 kanji use data from the KanjiVG project (Ulrich Apel), licensed under Creative Commons BY-SA 3.0.",
     "feedbackTitle": "Send recommendation",
     "feedbackDescription": "Write between 10 and 500 characters. It will be saved directly for review.",
     "feedbackLabel": "Recommendation",
