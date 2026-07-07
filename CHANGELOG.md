@@ -10,6 +10,15 @@ El número de versión visible de la app debe mantenerse alineado en:
 - `CHANGELOG.md`;
 - `service-worker.js` y query strings `?v=...` cuando cambien archivos cacheados.
 
+## [0.8.29] - 2026-07-07
+
+### Cambiado
+
+- El fantasma de fondo en Estudio (cuando el kanji tiene datos KanjiVG) ya no usa la fuente `OrdenTrazos` — se dibuja con los MISMOS puntos que el trazo animado, así coincide exactamente con el dibujo en vez de tener proporciones de una fuente distinta. El trazo animado "rellena" esa misma sombra en vez de superponerse a una silueta distinta.
+- El fantasma se queda visible aunque "Ocultar orden de trazos" esté activo (ya no desaparece por completo); solo se apagan los números y el relleno animado, quedando el carácter completo en gris tenue.
+- Sin datos KanjiVG (kana, kanji no cubierto) el comportamiento no cambia — sigue la fuente estática de siempre.
+- La app muestra `v0.8.29`.
+
 ## [0.8.28] - 2026-07-07
 
 ### Cambiado

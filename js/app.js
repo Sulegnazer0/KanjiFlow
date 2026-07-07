@@ -40,8 +40,8 @@ import {
     similarityColor,
 } from "./stroke-scoring.js";
 import { fromCanvasPoint, resampleStroke } from "./stroke-geometry.js";
-import { createStrokeAnimator } from "./stroke-animation.js";
-import { exampleJapanese, itemPronunciation, japaneseOnly, speakJapanese } from "./audio.js?v=828";
+import { createStrokeAnimator, GHOST_COLOR } from "./stroke-animation.js";
+import { exampleJapanese, itemPronunciation, japaneseOnly, speakJapanese } from "./audio.js?v=829";
 import { loadDictionary } from "./data.js";
 import {
     achievementLevel,
@@ -49,14 +49,14 @@ import {
     achievementSummary,
     buildAchievementStats,
     syncAchievements,
-} from "./achievements.js?v=828";
+} from "./achievements.js?v=829";
 import {
     dailyEntry,
     dailySummary,
     practiceStats,
     recentDailySummaries,
     recordDailyPractice,
-} from "./profile.js?v=828";
+} from "./profile.js?v=829";
 import {
     disablePracticeReminder,
     enablePracticeReminder,
@@ -65,7 +65,7 @@ import {
     recordPractice,
     setPracticeReminderTime,
     shouldNotifyPracticeReminder,
-} from "./reminders.js?v=828";
+} from "./reminders.js?v=829";
 import {
     AVAILABLE_LANGUAGES,
     applyDocumentTranslations,
@@ -79,9 +79,9 @@ import {
     localizeDictionary,
     t,
     translateCardState,
-} from "./i18n.js?v=828";
+} from "./i18n.js?v=829";
 
-const APP_VERSION = "0.8.28";
+const APP_VERSION = "0.8.29";
 const FEEDBACK_ENDPOINT = "https://script.google.com/macros/s/AKfycbxiz6058zwMxfPTDTmIBpG8JutOPw8YBxCRJ0BeMHp-py6IXZy4zkZs2IdTqwmSSzC1jw/exec";
 const SPLASH_MIN_MS = 2400;
 const startupStartedAt = performance.now();
@@ -343,28 +343,33 @@ function cycleAnimationSpeed() {
     updateStrokeOrderDisplay();
 }
 
+// Cuando hay datos KanjiVG, el fantasma de fondo se dibuja en el propio canvas de
+// animación con los MISMOS puntos que se animan (no la fuente "OrdenTrazos", que tiene
+// proporciones distintas y no coincide con el trazo real) — por eso #modal-caracter se
+// oculta por completo en ese caso. El fantasma se queda visible aunque "mostrar orden de
+// trazos" esté apagado; solo cambian los números y el relleno animado.
 function updateStrokeOrderDisplay() {
     elements.toggleStrokes.setAttribute("aria-pressed", String(strokeOrderVisible));
     elements.toggleStrokes.textContent = strokeOrderVisible
         ? t("ui.hideStrokeOrder")
         : t("ui.showStrokeOrder");
 
-    if (!strokeOrderVisible) {
+    if (modalExpectedKanjiData) {
+        elements.modalCharacter.classList.add("hidden");
         elements.modalCharacter.classList.remove("stroke-order");
-        elements.strokeAnimationCanvas.classList.add("hidden");
-        strokeAnimator.stop();
+        elements.strokeAnimationCanvas.classList.remove("hidden");
+        if (strokeOrderVisible) {
+            strokeAnimator.playCharacter(modalExpectedKanjiData, currentAnimationSpeed());
+        } else {
+            strokeAnimator.drawStatic(modalExpectedKanjiData, { color: GHOST_COLOR, showNumbers: false });
+        }
         return;
     }
 
-    if (modalExpectedKanjiData) {
-        elements.modalCharacter.classList.remove("stroke-order");
-        elements.strokeAnimationCanvas.classList.remove("hidden");
-        strokeAnimator.playCharacter(modalExpectedKanjiData, currentAnimationSpeed());
-    } else {
-        elements.strokeAnimationCanvas.classList.add("hidden");
-        strokeAnimator.stop();
-        elements.modalCharacter.classList.add("stroke-order");
-    }
+    elements.modalCharacter.classList.remove("hidden");
+    elements.strokeAnimationCanvas.classList.add("hidden");
+    strokeAnimator.stop();
+    elements.modalCharacter.classList.toggle("stroke-order", strokeOrderVisible);
 }
 
 function handleStrokeEnd(index, points) {

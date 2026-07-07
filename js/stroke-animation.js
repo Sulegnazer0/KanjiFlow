@@ -3,6 +3,10 @@ import { PRACTICE_CANVAS_SCALE, toCanvasPoint as toCanvasPointShared } from "./s
 const DEFAULT_STROKE_DURATION_MS = 900;
 const DEFAULT_PAUSE_MS = 400;
 const DEFAULT_COLOR = "rgba(220, 38, 38, 0.75)";
+// Fantasma de fondo: el carácter completo dibujado con los MISMOS puntos KanjiVG que se
+// animan encima, para que coincida exactamente con el trazo (en vez de una fuente
+// distinta con proporciones distintas).
+export const GHOST_COLOR = "rgba(100, 116, 139, 0.3)";
 const DEFAULT_LINE_WIDTH = 10;
 // Comparte la escala con la normalización usada para calificar en handleStrokeEnd
 // (js/app.js), vía js/stroke-geometry.js — si se cambia solo en un lado, se reintroduce
@@ -72,6 +76,7 @@ export function createStrokeAnimator(canvas) {
         const pauseMs = options.pauseMs ?? DEFAULT_PAUSE_MS;
         const color = options.color ?? DEFAULT_COLOR;
         const scale = options.scale ?? DEFAULT_SCALE;
+        const showGhost = options.showGhost ?? true;
         stop();
 
         const strokes = kanjiData?.strokes ?? [];
@@ -88,6 +93,14 @@ export function createStrokeAnimator(canvas) {
             const elapsed = timestamp - strokeStart;
 
             clear();
+            // El fantasma (carácter completo, en gris tenue) se dibuja primero, con los
+            // mismos puntos que el trazo animado — así el trazo "va rellenando" su propia
+            // sombra en vez de coincidir por casualidad con una fuente distinta.
+            if (showGhost) {
+                context.strokeStyle = GHOST_COLOR;
+                context.lineWidth = DEFAULT_LINE_WIDTH * scale;
+                strokes.forEach(stroke => drawStrokeProgress(stroke.points, 1, scale));
+            }
             drawStrokeNumbers(strokes, scale);
             context.strokeStyle = color;
             context.lineWidth = DEFAULT_LINE_WIDTH * scale;
