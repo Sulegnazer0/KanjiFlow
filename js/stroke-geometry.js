@@ -83,3 +83,27 @@ export function normalizePoint(point, bbox) {
 export function normalizeStrokes(strokes, bbox = computeBoundingBox(strokes)) {
     return strokes.map(stroke => stroke.map(point => normalizePoint(point, bbox)));
 }
+
+// Escala a la que los trazos KanjiVG ocupan el lienzo (0.8 = 80%, con 10% de margen por
+// lado): algunos trazos llegan justo al borde del viewBox de KanjiVG y se veían cortados
+// al dibujarlos a escala 1 (borde a borde). La guía visual (stroke-animation.js) y la
+// normalización usada para calificar en vivo (handleStrokeEnd en app.js) comparten esta
+// MISMA escala — si se cambia solo en un lado, se reintroduce el desalineamiento entre lo
+// que se ve y lo que se evalúa.
+export const PRACTICE_CANVAS_SCALE = 0.8;
+
+export function toCanvasPoint(point, canvasWidth, canvasHeight, scale = PRACTICE_CANVAS_SCALE) {
+    const margin = (1 - scale) / 2;
+    return {
+        x: (margin + point.x * scale) * canvasWidth,
+        y: (margin + point.y * scale) * canvasHeight,
+    };
+}
+
+export function fromCanvasPoint(point, canvasWidth, canvasHeight, scale = PRACTICE_CANVAS_SCALE) {
+    const margin = (1 - scale) / 2;
+    return {
+        x: (point.x / canvasWidth - margin) / scale,
+        y: (point.y / canvasHeight - margin) / scale,
+    };
+}

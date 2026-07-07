@@ -39,9 +39,9 @@ import {
     scoreAttempt,
     similarityColor,
 } from "./stroke-scoring.js";
-import { resampleStroke } from "./stroke-geometry.js";
+import { fromCanvasPoint, resampleStroke } from "./stroke-geometry.js";
 import { createStrokeAnimator } from "./stroke-animation.js";
-import { exampleJapanese, itemPronunciation, japaneseOnly, speakJapanese } from "./audio.js?v=827";
+import { exampleJapanese, itemPronunciation, japaneseOnly, speakJapanese } from "./audio.js?v=828";
 import { loadDictionary } from "./data.js";
 import {
     achievementLevel,
@@ -49,14 +49,14 @@ import {
     achievementSummary,
     buildAchievementStats,
     syncAchievements,
-} from "./achievements.js?v=827";
+} from "./achievements.js?v=828";
 import {
     dailyEntry,
     dailySummary,
     practiceStats,
     recentDailySummaries,
     recordDailyPractice,
-} from "./profile.js?v=827";
+} from "./profile.js?v=828";
 import {
     disablePracticeReminder,
     enablePracticeReminder,
@@ -65,7 +65,7 @@ import {
     recordPractice,
     setPracticeReminderTime,
     shouldNotifyPracticeReminder,
-} from "./reminders.js?v=827";
+} from "./reminders.js?v=828";
 import {
     AVAILABLE_LANGUAGES,
     applyDocumentTranslations,
@@ -79,9 +79,9 @@ import {
     localizeDictionary,
     t,
     translateCardState,
-} from "./i18n.js?v=827";
+} from "./i18n.js?v=828";
 
-const APP_VERSION = "0.8.27";
+const APP_VERSION = "0.8.28";
 const FEEDBACK_ENDPOINT = "https://script.google.com/macros/s/AKfycbxiz6058zwMxfPTDTmIBpG8JutOPw8YBxCRJ0BeMHp-py6IXZy4zkZs2IdTqwmSSzC1jw/exec";
 const SPLASH_MIN_MS = 2400;
 const startupStartedAt = performance.now();
@@ -380,10 +380,9 @@ function handleStrokeEnd(index, points) {
     }
     // Normaliza contra el lienzo fijo (no el bounding box de los trazos dibujados hasta
     // ahora): con solo 1-2 trazos ese bbox es inestable y distorsiona trazos cortos.
-    const normalized = points.map(point => ({
-        x: point.x / elements.board.width,
-        y: point.y / elements.board.height,
-    }));
+    // fromCanvasPoint usa la misma escala/margen (PRACTICE_CANVAS_SCALE) que la guía
+    // visual dibuja — si difieren, un trazo hecho sobre la guía deja de calificar bien.
+    const normalized = points.map(point => fromCanvasPoint(point, elements.board.width, elements.board.height));
     const resampled = resampleStroke(normalized, RESAMPLE_POINTS);
     const strokeScore = compareStroke(resampled, expectedStroke.points);
     feedbackLayer.paintStroke(points, similarityColor(strokeScore));
@@ -409,9 +408,10 @@ function hidePracticeGuide() {
 }
 
 // Cuando hay datos KanjiVG para el item actual, la guía se dibuja con esos MISMOS
-// puntos y la misma normalización (escala 1, lienzo completo) que usa handleStrokeEnd
-// para calificar — así lo que el usuario ve como referencia es literalmente lo que se
-// evalúa. Sin datos KanjiVG (kana u otro kanji no cubierto) cae a la fuente estática.
+// puntos y la misma normalización (PRACTICE_CANVAS_SCALE, vía stroke-geometry.js) que
+// usa handleStrokeEnd para calificar — así lo que el usuario ve como referencia es
+// literalmente lo que se evalúa. Sin datos KanjiVG (kana u otro kanji no cubierto) cae
+// a la fuente estática.
 function showPracticeGuide(character) {
     if (expectedKanjiData) {
         elements.practiceGuide.textContent = "";

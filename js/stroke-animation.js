@@ -1,12 +1,13 @@
+import { PRACTICE_CANVAS_SCALE, toCanvasPoint as toCanvasPointShared } from "./stroke-geometry.js";
+
 const DEFAULT_STROKE_DURATION_MS = 900;
 const DEFAULT_PAUSE_MS = 400;
 const DEFAULT_COLOR = "rgba(220, 38, 38, 0.75)";
 const DEFAULT_LINE_WIDTH = 10;
-// Escala 1 = el trazo esperado ocupa el lienzo completo, igual que la normalización
-// usada para calificar en handleStrokeEnd (js/app.js). Cualquier escala menor desalinea
-// la guía visual del punto real que se está evaluando (o, en Estudio, del área natural
-// de calcado), aunque visualmente parezca "cerca".
-const DEFAULT_SCALE = 1;
+// Comparte la escala con la normalización usada para calificar en handleStrokeEnd
+// (js/app.js), vía js/stroke-geometry.js — si se cambia solo en un lado, se reintroduce
+// el desalineamiento entre la guía visual y el punto real que se está evaluando.
+const DEFAULT_SCALE = PRACTICE_CANVAS_SCALE;
 const NUMBER_COLOR = "rgba(100, 116, 139, 0.75)";
 const NUMBER_FONT = "bold 13px sans-serif";
 const NUMBER_OFFSET = 9;
@@ -26,11 +27,7 @@ export function createStrokeAnimator(canvas) {
     }
 
     function toCanvasPoint(point, scale) {
-        const margin = (1 - scale) / 2;
-        return {
-            x: (margin + point.x * scale) * canvas.width,
-            y: (margin + point.y * scale) * canvas.height,
-        };
+        return toCanvasPointShared(point, canvas.width, canvas.height, scale);
     }
 
     function drawStrokeProgress(points, progress, scale) {

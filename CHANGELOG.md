@@ -10,6 +10,13 @@ El número de versión visible de la app debe mantenerse alineado en:
 - `CHANGELOG.md`;
 - `service-worker.js` y query strings `?v=...` cuando cambien archivos cacheados.
 
+## [0.8.28] - 2026-07-07
+
+### Cambiado
+
+- Los trazos KanjiVG (guía visual y calificación en vivo) ahora ocupan el 80% del lienzo en vez del 100%, con 10% de margen por lado — algunos trazos llegaban justo al borde del lienzo a escala completa y se veían "cortados". Nueva constante compartida `PRACTICE_CANVAS_SCALE` en `js/stroke-geometry.js`, usada tanto por `js/stroke-animation.js` (dibujo de la guía) como por `handleStrokeEnd` en `js/app.js` (normalización para calificar), para que ambos se mantengan sincronizados — cambiar la escala en un solo lado reintroduciría el desalineamiento ya corregido antes.
+- La app muestra `v0.8.28`.
+
 ## [0.8.27] - 2026-07-07
 
 ### Corregido
