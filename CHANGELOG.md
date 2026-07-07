@@ -10,6 +10,14 @@ El número de versión visible de la app debe mantenerse alineado en:
 - `CHANGELOG.md`;
 - `service-worker.js` y query strings `?v=...` cuando cambien archivos cacheados.
 
+## [0.8.25] - 2026-07-07
+
+### Cambiado
+
+- El botón del evaluador de trazos se mueve fuera del lienzo (ya no se superpone al canvas) a una fila propia debajo de él, con estilo de interruptor ON/OFF (etiqueta "Evaluador de trazos" + switch verde/gris con texto ON/OFF visible), en vez del icono ⏻ superpuesto.
+- Se separa la etiqueta corta visible ("Evaluador de trazos") de la descripción larga usada como `aria-label` (`ui.strokeEvaluatorLabel` nuevo vs. `ui.strokeEvaluatorToggleLabel` existente), para que no se corte en dos líneas junto al switch.
+- La app muestra `v0.8.25`.
+
 ## [0.8.24] - 2026-07-07
 
 ### Agregado

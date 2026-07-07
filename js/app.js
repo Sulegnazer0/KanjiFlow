@@ -41,7 +41,7 @@ import {
 } from "./stroke-scoring.js";
 import { resampleStroke } from "./stroke-geometry.js";
 import { createStrokeAnimator } from "./stroke-animation.js";
-import { exampleJapanese, itemPronunciation, japaneseOnly, speakJapanese } from "./audio.js?v=824";
+import { exampleJapanese, itemPronunciation, japaneseOnly, speakJapanese } from "./audio.js?v=825";
 import { loadDictionary } from "./data.js";
 import {
     achievementLevel,
@@ -49,14 +49,14 @@ import {
     achievementSummary,
     buildAchievementStats,
     syncAchievements,
-} from "./achievements.js?v=824";
+} from "./achievements.js?v=825";
 import {
     dailyEntry,
     dailySummary,
     practiceStats,
     recentDailySummaries,
     recordDailyPractice,
-} from "./profile.js?v=824";
+} from "./profile.js?v=825";
 import {
     disablePracticeReminder,
     enablePracticeReminder,
@@ -65,7 +65,7 @@ import {
     recordPractice,
     setPracticeReminderTime,
     shouldNotifyPracticeReminder,
-} from "./reminders.js?v=824";
+} from "./reminders.js?v=825";
 import {
     AVAILABLE_LANGUAGES,
     applyDocumentTranslations,
@@ -79,9 +79,9 @@ import {
     localizeDictionary,
     t,
     translateCardState,
-} from "./i18n.js?v=824";
+} from "./i18n.js?v=825";
 
-const APP_VERSION = "0.8.24";
+const APP_VERSION = "0.8.25";
 const FEEDBACK_ENDPOINT = "https://script.google.com/macros/s/AKfycbxiz6058zwMxfPTDTmIBpG8JutOPw8YBxCRJ0BeMHp-py6IXZy4zkZs2IdTqwmSSzC1jw/exec";
 const SPLASH_MIN_MS = 2400;
 const startupStartedAt = performance.now();
@@ -201,6 +201,7 @@ const elements = {
     thresholdChips: document.querySelectorAll("[data-threshold]"),
     strokeEvaluatorToggle: $("#btn-evaluador-trazos"),
     strokeEvaluatorCanvasToggle: $("#btn-evaluador-lienzo"),
+    strokeEvaluatorCanvasState: $("#etiqueta-evaluador-lienzo"),
     profileTodayUnique: $("#perfil-hoy-unicas"),
     profileTodayReviews: $("#perfil-hoy-repasos"),
     profileActiveDays: $("#perfil-dias-activos"),
@@ -1481,6 +1482,9 @@ function renderProfile() {
         ? t("ui.strokeEvaluatorDisable")
         : t("ui.strokeEvaluatorEnable");
     elements.strokeEvaluatorCanvasToggle.setAttribute("aria-pressed", String(profile.strokeEvaluatorEnabled));
+    elements.strokeEvaluatorCanvasState.textContent = profile.strokeEvaluatorEnabled
+        ? t("ui.toggleOn")
+        : t("ui.toggleOff");
 
     elements.profileTodayUnique.textContent = today.uniqueCount;
     elements.profileTodayReviews.textContent = today.reviews;
