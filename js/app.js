@@ -41,7 +41,7 @@ import {
 } from "./stroke-scoring.js";
 import { resampleStroke } from "./stroke-geometry.js";
 import { createStrokeAnimator } from "./stroke-animation.js";
-import { exampleJapanese, itemPronunciation, japaneseOnly, speakJapanese } from "./audio.js?v=826";
+import { exampleJapanese, itemPronunciation, japaneseOnly, speakJapanese } from "./audio.js?v=827";
 import { loadDictionary } from "./data.js";
 import {
     achievementLevel,
@@ -49,14 +49,14 @@ import {
     achievementSummary,
     buildAchievementStats,
     syncAchievements,
-} from "./achievements.js?v=826";
+} from "./achievements.js?v=827";
 import {
     dailyEntry,
     dailySummary,
     practiceStats,
     recentDailySummaries,
     recordDailyPractice,
-} from "./profile.js?v=826";
+} from "./profile.js?v=827";
 import {
     disablePracticeReminder,
     enablePracticeReminder,
@@ -65,7 +65,7 @@ import {
     recordPractice,
     setPracticeReminderTime,
     shouldNotifyPracticeReminder,
-} from "./reminders.js?v=826";
+} from "./reminders.js?v=827";
 import {
     AVAILABLE_LANGUAGES,
     applyDocumentTranslations,
@@ -79,9 +79,9 @@ import {
     localizeDictionary,
     t,
     translateCardState,
-} from "./i18n.js?v=826";
+} from "./i18n.js?v=827";
 
-const APP_VERSION = "0.8.26";
+const APP_VERSION = "0.8.27";
 const FEEDBACK_ENDPOINT = "https://script.google.com/macros/s/AKfycbxiz6058zwMxfPTDTmIBpG8JutOPw8YBxCRJ0BeMHp-py6IXZy4zkZs2IdTqwmSSzC1jw/exec";
 const SPLASH_MIN_MS = 2400;
 const startupStartedAt = performance.now();
@@ -394,7 +394,10 @@ const modalPad = createDrawingPad(elements.modalBoard, { lineWidth: 7 });
 const feedbackLayer = createFeedbackLayer(elements.feedbackBoard);
 const strokeAnimator = createStrokeAnimator(elements.strokeAnimationCanvas);
 const practiceGuideAnimator = createStrokeAnimator(elements.practiceGuideCanvas);
-const PRACTICE_GUIDE_COLOR = "rgba(239, 68, 68, 0.55)";
+// Pintado directo (source-over), sin mix-blend-mode: ese blend mode ya causó una vez
+// que un color se volviera invisible sobre la tinta (ver feedback en vivo del evaluador,
+// corregido antes) — no repetir el mismo error para la guía.
+const PRACTICE_GUIDE_COLOR = "rgba(239, 68, 68, 0.35)";
 
 const wait = ms => new Promise(resolve => setTimeout(resolve, Math.max(0, ms)));
 

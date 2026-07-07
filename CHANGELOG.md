@@ -10,6 +10,16 @@ El número de versión visible de la app debe mantenerse alineado en:
 - `CHANGELOG.md`;
 - `service-worker.js` y query strings `?v=...` cuando cambien archivos cacheados.
 
+## [0.8.27] - 2026-07-07
+
+### Corregido
+
+- **Bug real**: la nueva guía KanjiVG de Práctica (añadida en 0.8.26) no se veía en absoluto en algunos navegadores/dispositivos, porque su CSS usaba `mix-blend-mode: multiply` sobre un `<canvas>` — el mismo patrón que ya había causado antes que el color de feedback en vivo del evaluador se volviera invisible sobre la tinta (bug ya documentado y corregido previamente en este proyecto). Se quitó el blend mode y se pinta directo (`source-over`) con opacidad ajustada (0.35), igual que se resolvió aquella vez.
+
+### Cambiado
+
+- La app muestra `v0.8.27`.
+
 ## [0.8.26] - 2026-07-07
 
 ### Corregido
