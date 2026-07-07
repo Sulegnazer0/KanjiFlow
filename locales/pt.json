@@ -457,6 +457,10 @@
       "title": "23. Kanji N3: sistemas, processos e relacoes sociais",
       "description": "Segundo grupo N3: sistemas, leis, processos cotidianos, relacoes sociais, emocoes e vida profissional."
     },
+    "kanji-n3-3": {
+      "title": "24. Kanji N3: vida cotidiana, trabalho e ambiente natural",
+      "description": "Terceiro grupo N3: casa, trabalho, transporte, natureza, ciencia e expressoes do dia a dia."
+    },
     "all": {
       "title": "Todo o conteudo",
       "description": "Uma mistura livre de todos os caracteres disponiveis."
@@ -2327,6 +2331,506 @@
       "meaning": "Papel / Dever",
       "exampleMeaning": "papel, funcao",
       "sentenceMeaning": "Qual e o meu papel?"
+    },
+    "kanji_構": {
+      "meaning": "Construir / Postura",
+      "exampleMeaning": "estrutura",
+      "sentenceMeaning": "Investigo a estrutura do predio."
+    },
+    "kanji_割": {
+      "meaning": "Dividir / Proporcao",
+      "exampleMeaning": "desconto",
+      "sentenceMeaning": "Esta loja tem desconto."
+    },
+    "kanji_身": {
+      "meaning": "Corpo / Pessoa",
+      "exampleMeaning": "altura",
+      "sentenceMeaning": "Meco minha altura."
+    },
+    "kanji_費": {
+      "meaning": "Gasto / Consumir",
+      "exampleMeaning": "custo, gasto",
+      "sentenceMeaning": "Calculo o custo da viagem."
+    },
+    "kanji_付": {
+      "meaning": "Anexar / Colar",
+      "exampleMeaning": "arredores, proximidades",
+      "sentenceMeaning": "Ha um hotel perto da estacao."
+    },
+    "kanji_由": {
+      "meaning": "Razao / Motivo",
+      "exampleMeaning": "liberdade",
+      "sentenceMeaning": "Tenho tempo livre."
+    },
+    "kanji_説": {
+      "meaning": "Teoria / Explicacao",
+      "exampleMeaning": "explicacao",
+      "sentenceMeaning": "O professor explica."
+    },
+    "kanji_難": {
+      "meaning": "Dificil / Problema",
+      "exampleMeaning": "dificil",
+      "sentenceMeaning": "Este problema e dificil."
+    },
+    "kanji_優": {
+      "meaning": "Gentileza / Amavel",
+      "exampleMeaning": "gentil",
+      "sentenceMeaning": "Ela e gentil."
+    },
+    "kanji_夫": {
+      "meaning": "Marido / Homem",
+      "exampleMeaning": "marido",
+      "sentenceMeaning": "Meu marido e funcionario de escritorio."
+    },
+    "kanji_収": {
+      "meaning": "Renda / Obter",
+      "exampleMeaning": "renda",
+      "sentenceMeaning": "Minha renda aumentou."
+    },
+    "kanji_断": {
+      "meaning": "Recusar / Cortar",
+      "exampleMeaning": "recusar",
+      "sentenceMeaning": "Recusei o convite."
+    },
+    "kanji_石": {
+      "meaning": "Pedra",
+      "exampleMeaning": "pedra",
+      "sentenceMeaning": "Nao jogue pedras, por favor."
+    },
+    "kanji_違": {
+      "meaning": "Diferenca / Diferir",
+      "exampleMeaning": "ser diferente, estar errado",
+      "sentenceMeaning": "Isso esta errado."
+    },
+    "kanji_消": {
+      "meaning": "Apagar / Extinguir",
+      "exampleMeaning": "apagar",
+      "sentenceMeaning": "Apague a luz, por favor."
+    },
+    "kanji_神": {
+      "meaning": "Deus / Espirito",
+      "exampleMeaning": "deus",
+      "sentenceMeaning": "Rezo para deus."
+    },
+    "kanji_番": {
+      "meaning": "Turno / Numero",
+      "exampleMeaning": "numero",
+      "sentenceMeaning": "Me diga seu numero de telefone, por favor."
+    },
+    "kanji_規": {
+      "meaning": "Norma / Padrao",
+      "exampleMeaning": "regra, regulamento",
+      "sentenceMeaning": "Sigo as regras da escola."
+    },
+    "kanji_術": {
+      "meaning": "Tecnica / Arte",
+      "exampleMeaning": "tecnologia, tecnica",
+      "sentenceMeaning": "Aprendo nova tecnologia."
+    },
+    "kanji_備": {
+      "meaning": "Equipar / Preparar",
+      "exampleMeaning": "preparacao",
+      "sentenceMeaning": "Faco os preparativos da festa."
+    },
+    "kanji_宅": {
+      "meaning": "Casa / Residencia",
+      "exampleMeaning": "casa propria",
+      "sentenceMeaning": "Trabalho em casa."
+    },
+    "kanji_害": {
+      "meaning": "Dano / Prejuizo",
+      "exampleMeaning": "praga, inseto daninho",
+      "sentenceMeaning": "Ha pragas no jardim."
+    },
+    "kanji_配": {
+      "meaning": "Distribuir / Conjuge",
+      "exampleMeaning": "preocupacao",
+      "sentenceMeaning": "Nao se preocupe, por favor."
+    },
+    "kanji_警": {
+      "meaning": "Advertir / Vigiar",
+      "exampleMeaning": "policia (instituicao)",
+      "sentenceMeaning": "Liguei para a policia."
+    },
+    "kanji_育": {
+      "meaning": "Criar / Educar",
+      "exampleMeaning": "educacao",
+      "sentenceMeaning": "A educacao das criancas e importante."
+    },
+    "kanji_席": {
+      "meaning": "Assento",
+      "exampleMeaning": "assento",
+      "sentenceMeaning": "Sente-se no seu lugar, por favor."
+    },
+    "kanji_訪": {
+      "meaning": "Visitar",
+      "exampleMeaning": "visita",
+      "sentenceMeaning": "Amanha visito a casa do meu amigo."
+    },
+    "kanji_乗": {
+      "meaning": "Subir (em um veiculo)",
+      "exampleMeaning": "embarcar, subir",
+      "sentenceMeaning": "Eu embarco no onibus."
+    },
+    "kanji_残": {
+      "meaning": "Restante / Sobrar",
+      "exampleMeaning": "pena, lastima",
+      "sentenceMeaning": "Isso e uma pena."
+    },
+    "kanji_想": {
+      "meaning": "Conceito / Pensar",
+      "exampleMeaning": "impressao, opiniao",
+      "sentenceMeaning": "Falo minhas impressoes sobre o filme."
+    },
+    "kanji_声": {
+      "meaning": "Voz",
+      "exampleMeaning": "voz",
+      "sentenceMeaning": "Fale em voz alta, por favor."
+    },
+    "kanji_助": {
+      "meaning": "Ajudar / Resgatar",
+      "exampleMeaning": "ajudar",
+      "sentenceMeaning": "Ajudei meu amigo."
+    },
+    "kanji_労": {
+      "meaning": "Trabalho / Esforco",
+      "exampleMeaning": "trabalho",
+      "sentenceMeaning": "As horas de trabalho sao longas."
+    },
+    "kanji_例": {
+      "meaning": "Exemplo",
+      "exampleMeaning": "por exemplo",
+      "sentenceMeaning": "Por exemplo, que tal isto?"
+    },
+    "kanji_然": {
+      "meaning": "Assim / Natural",
+      "exampleMeaning": "natureza",
+      "sentenceMeaning": "Esta cidade tem muita natureza."
+    },
+    "kanji_限": {
+      "meaning": "Limite / Restringir",
+      "exampleMeaning": "limite, restricao",
+      "sentenceMeaning": "Ha um limite de tempo."
+    },
+    "kanji_追": {
+      "meaning": "Perseguir / Afastar",
+      "exampleMeaning": "adicao",
+      "sentenceMeaning": "Pedi mais comida."
+    },
+    "kanji_商": {
+      "meaning": "Comercio / Mercador",
+      "exampleMeaning": "produto",
+      "sentenceMeaning": "Comprei um produto novo."
+    },
+    "kanji_葉": {
+      "meaning": "Folha",
+      "exampleMeaning": "palavra, idioma",
+      "sentenceMeaning": "Memorizo uma palavra nova."
+    },
+    "kanji_伝": {
+      "meaning": "Transmitir / Comunicar",
+      "exampleMeaning": "comunicar",
+      "sentenceMeaning": "Comunico meus sentimentos."
+    },
+    "kanji_働": {
+      "meaning": "Trabalhar",
+      "exampleMeaning": "trabalhar",
+      "sentenceMeaning": "Trabalho todos os dias."
+    },
+    "kanji_形": {
+      "meaning": "Forma / Estilo",
+      "exampleMeaning": "forma",
+      "sentenceMeaning": "Tem forma de estrela."
+    },
+    "kanji_景": {
+      "meaning": "Paisagem / Vista",
+      "exampleMeaning": "paisagem",
+      "sentenceMeaning": "Que paisagem bonita."
+    },
+    "kanji_落": {
+      "meaning": "Cair",
+      "exampleMeaning": "cair",
+      "sentenceMeaning": "O livro caiu."
+    },
+    "kanji_好": {
+      "meaning": "Gostar / Agradavel",
+      "exampleMeaning": "gostar",
+      "sentenceMeaning": "Gosto de musica."
+    },
+    "kanji_退": {
+      "meaning": "Retirar-se / Recuar",
+      "exampleMeaning": "aposentadoria",
+      "sentenceMeaning": "Vou me aposentar no proximo ano."
+    },
+    "kanji_頭": {
+      "meaning": "Cabeca",
+      "exampleMeaning": "cabeca",
+      "sentenceMeaning": "Minha cabeca dói."
+    },
+    "kanji_負": {
+      "meaning": "Derrota / Negativo",
+      "exampleMeaning": "perder",
+      "sentenceMeaning": "Perdi a partida."
+    },
+    "kanji_渡": {
+      "meaning": "Cruzar / Atravessar",
+      "exampleMeaning": "atravessar",
+      "sentenceMeaning": "Atravesso a rua."
+    },
+    "kanji_失": {
+      "meaning": "Perder / Falha",
+      "exampleMeaning": "fracasso",
+      "sentenceMeaning": "O experimento foi um fracasso."
+    },
+    "kanji_差": {
+      "meaning": "Diferenca / Variacao",
+      "exampleMeaning": "fuso horario, diferenca de horario",
+      "sentenceMeaning": "Qual e a diferenca de horario com o Japao?"
+    },
+    "kanji_末": {
+      "meaning": "Fim / Extremidade",
+      "exampleMeaning": "fim de semana",
+      "sentenceMeaning": "Assisto a um filme no fim de semana."
+    },
+    "kanji_守": {
+      "meaning": "Proteger / Guardar",
+      "exampleMeaning": "proteger",
+      "sentenceMeaning": "Cumpro minha promessa."
+    },
+    "kanji_若": {
+      "meaning": "Jovem",
+      "exampleMeaning": "jovem",
+      "sentenceMeaning": "Ele e jovem."
+    },
+    "kanji_種": {
+      "meaning": "Semente / Tipo",
+      "exampleMeaning": "tipo",
+      "sentenceMeaning": "Ha varios tipos."
+    },
+    "kanji_美": {
+      "meaning": "Beleza",
+      "exampleMeaning": "belo",
+      "sentenceMeaning": "E uma bela paisagem."
+    },
+    "kanji_命": {
+      "meaning": "Destino / Vida",
+      "exampleMeaning": "vida",
+      "sentenceMeaning": "Valorizo minha vida."
+    },
+    "kanji_福": {
+      "meaning": "Fortuna / Bencao",
+      "exampleMeaning": "felicidade",
+      "sentenceMeaning": "Quero viver uma vida feliz."
+    },
+    "kanji_望": {
+      "meaning": "Esperanca / Desejo",
+      "exampleMeaning": "esperanca",
+      "sentenceMeaning": "Tenho esperanca no futuro."
+    },
+    "kanji_非": {
+      "meaning": "Nao- / Negativo",
+      "exampleMeaning": "extremamente",
+      "sentenceMeaning": "E extremamente dificil."
+    },
+    "kanji_観": {
+      "meaning": "Perspectiva / Vista",
+      "exampleMeaning": "turismo",
+      "sentenceMeaning": "Faco turismo em Quioto."
+    },
+    "kanji_察": {
+      "meaning": "Supor / Observar",
+      "exampleMeaning": "observacao",
+      "sentenceMeaning": "Observo as estrelas."
+    },
+    "kanji_段": {
+      "meaning": "Degrau / Grau",
+      "exampleMeaning": "escada",
+      "sentenceMeaning": "Subo as escadas."
+    },
+    "kanji_横": {
+      "meaning": "Lado / Horizontal",
+      "exampleMeaning": "ao lado",
+      "sentenceMeaning": "Ha um parque ao lado da estacao."
+    },
+    "kanji_深": {
+      "meaning": "Profundo",
+      "exampleMeaning": "profundo",
+      "sentenceMeaning": "Esta piscina e funda."
+    },
+    "kanji_申": {
+      "meaning": "Ter a honra de",
+      "exampleMeaning": "inscricao, solicitacao",
+      "sentenceMeaning": "Me inscrevi no seminario."
+    },
+    "kanji_様": {
+      "meaning": "Maneira / Situacao",
+      "exampleMeaning": "aparencia, situacao",
+      "sentenceMeaning": "A aparencia dele e estranha."
+    },
+    "kanji_財": {
+      "meaning": "Bens / Riqueza",
+      "exampleMeaning": "carteira",
+      "sentenceMeaning": "Esqueci minha carteira."
+    },
+    "kanji_港": {
+      "meaning": "Porto",
+      "exampleMeaning": "aeroporto",
+      "sentenceMeaning": "Te levo ate o aeroporto."
+    },
+    "kanji_識": {
+      "meaning": "Conhecer",
+      "exampleMeaning": "conhecimento",
+      "sentenceMeaning": "Aumento meu conhecimento."
+    },
+    "kanji_呼": {
+      "meaning": "Chamar / Convidar",
+      "exampleMeaning": "chamar",
+      "sentenceMeaning": "Chamo pelo nome."
+    },
+    "kanji_達": {
+      "meaning": "Alcancar / Atingir",
+      "exampleMeaning": "realizacao",
+      "sentenceMeaning": "Atingi minha meta."
+    },
+    "kanji_良": {
+      "meaning": "Bom",
+      "exampleMeaning": "bom",
+      "sentenceMeaning": "O clima esta bom."
+    },
+    "kanji_阪": {
+      "meaning": "Ladeira / Encosta",
+      "exampleMeaning": "Osaka (cidade)",
+      "sentenceMeaning": "Moro em Osaka."
+    },
+    "kanji_候": {
+      "meaning": "Clima / Temporada",
+      "exampleMeaning": "clima",
+      "sentenceMeaning": "O clima deste pais e quente."
+    },
+    "kanji_程": {
+      "meaning": "Grau / Extensao",
+      "exampleMeaning": "grau, nivel",
+      "sentenceMeaning": "Entendo ate certo grau."
+    },
+    "kanji_満": {
+      "meaning": "Cheio / Satisfazer",
+      "exampleMeaning": "satisfacao",
+      "sentenceMeaning": "Estou satisfeito com o resultado."
+    },
+    "kanji_敗": {
+      "meaning": "Derrota / Fracasso",
+      "exampleMeaning": "derrota",
+      "sentenceMeaning": "O time sofreu uma derrota."
+    },
+    "kanji_値": {
+      "meaning": "Preco / Valor",
+      "exampleMeaning": "preco",
+      "sentenceMeaning": "Quanto custam estes sapatos?"
+    },
+    "kanji_突": {
+      "meaning": "Sobressair / Repentino",
+      "exampleMeaning": "de repente",
+      "sentenceMeaning": "De repente choveu."
+    },
+    "kanji_光": {
+      "meaning": "Luz",
+      "exampleMeaning": "luz",
+      "sentenceMeaning": "A luz entra."
+    },
+    "kanji_路": {
+      "meaning": "Caminho / Rota",
+      "exampleMeaning": "estrada",
+      "sentenceMeaning": "Atravesso a estrada."
+    },
+    "kanji_科": {
+      "meaning": "Departamento / Materia",
+      "exampleMeaning": "ciencia",
+      "sentenceMeaning": "Gosto de ciencia."
+    },
+    "kanji_積": {
+      "meaning": "Acumular / Volume",
+      "exampleMeaning": "acumular-se",
+      "sentenceMeaning": "A neve se acumulou."
+    },
+    "kanji_他": {
+      "meaning": "Outro",
+      "exampleMeaning": "os demais, etc.",
+      "sentenceMeaning": "Ha outras perguntas?"
+    },
+    "kanji_処": {
+      "meaning": "Gerir / Dispor",
+      "exampleMeaning": "processamento",
+      "sentenceMeaning": "Processo os dados."
+    },
+    "kanji_太": {
+      "meaning": "Grosso / Gordo",
+      "exampleMeaning": "grosso",
+      "sentenceMeaning": "Esta arvore e grossa."
+    },
+    "kanji_客": {
+      "meaning": "Convidado / Cliente",
+      "exampleMeaning": "cliente, convidado",
+      "sentenceMeaning": "Um cliente veio."
+    },
+    "kanji_否": {
+      "meaning": "Negar / Nao",
+      "exampleMeaning": "negacao",
+      "sentenceMeaning": "Ele negou isso."
+    },
+    "kanji_師": {
+      "meaning": "Mestre / Especialista",
+      "exampleMeaning": "medico",
+      "sentenceMeaning": "Consulto um medico."
+    },
+    "kanji_登": {
+      "meaning": "Ascender / Subir",
+      "exampleMeaning": "subir, escalar",
+      "sentenceMeaning": "Escalo a montanha."
+    },
+    "kanji_易": {
+      "meaning": "Facil / Simples",
+      "exampleMeaning": "facil",
+      "sentenceMeaning": "Isso e algo facil."
+    },
+    "kanji_存": {
+      "meaning": "Existir / Estar ciente",
+      "exampleMeaning": "conservacao, salvar",
+      "sentenceMeaning": "Salvo o arquivo."
+    },
+    "kanji_飛": {
+      "meaning": "Voar",
+      "exampleMeaning": "voar",
+      "sentenceMeaning": "O passaro voa."
+    },
+    "kanji_殺": {
+      "meaning": "Matar",
+      "exampleMeaning": "matar",
+      "sentenceMeaning": "Matei um inseto."
+    },
+    "kanji_号": {
+      "meaning": "Numero / Sinal",
+      "exampleMeaning": "semaforo",
+      "sentenceMeaning": "O semaforo esta vermelho."
+    },
+    "kanji_単": {
+      "meaning": "Simples / Unico",
+      "exampleMeaning": "simples, facil",
+      "sentenceMeaning": "Esta comida e facil de fazer."
+    },
+    "kanji_座": {
+      "meaning": "Agachar / Sentar",
+      "exampleMeaning": "sentar",
+      "sentenceMeaning": "Sento na cadeira."
+    },
+    "kanji_破": {
+      "meaning": "Rasgar / Quebrar",
+      "exampleMeaning": "rasgar",
+      "sentenceMeaning": "Rasguei o papel."
+    },
+    "kanji_除": {
+      "meaning": "Excluir / Remover",
+      "exampleMeaning": "limpeza",
+      "sentenceMeaning": "Limpo o quarto."
     }
   },
   "exampleTerms": {

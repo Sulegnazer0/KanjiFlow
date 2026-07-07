@@ -10,6 +10,20 @@ El número de versión visible de la app debe mantenerse alineado en:
 - `CHANGELOG.md`;
 - `service-worker.js` y query strings `?v=...` cuando cambien archivos cacheados.
 
+## [0.8.22] - 2026-07-07
+
+### Agregado
+
+- Tercera tanda de kanji N3 (100 caracteres, id_jlpt 371-470): 構,割,身,費,付,由,説,難,優,夫,収,断,石,違,消,神,番,規,術,備,宅,害,配,警,育,席,訪,乗,残,想,声,助,労,例,然,限,追,商,葉,伝,働,形,景,落,好,退,頭,負,渡,失,差,末,守,若,種,美,命,福,望,非,観,察,段,横,深,申,様,財,港,識,呼,達,良,阪,候,程,満,敗,値,突,光,路,科,積,他,処,太,客,否,師,登,易,存,飛,殺,号,単,座,破,除.
+- Lección "24. Kanji N3: vida cotidiana, trabajo y entorno natural".
+- Ejemplos contextualizados para los 100 kanji nuevos.
+- Traducciones ES/EN/DE/FR/PT para las nuevas tarjetas.
+
+### Cambiado
+
+- La app muestra `v0.8.22`, 683 tarjetas y 470 kanji con ejemplos.
+- Fuente `KanjiStrokeOrders.woff` regenerada para cubrir los 470 kanji publicados.
+
 ## [0.8.21] - 2026-07-07
 
 ### Agregado

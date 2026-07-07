@@ -457,6 +457,10 @@
       "title": "23. Kanji N3 : systemes, processus et relations sociales",
       "description": "Deuxieme groupe N3 : systemes, lois, processus quotidiens, relations sociales, emotions et vie professionnelle."
     },
+    "kanji-n3-3": {
+      "title": "24. Kanji N3 : vie quotidienne, travail et environnement naturel",
+      "description": "Troisieme groupe N3 : foyer, travail, transport, nature, science et expressions du quotidien."
+    },
     "all": {
       "title": "Tout le contenu",
       "description": "Un melange libre de tous les caracteres disponibles."
@@ -2327,6 +2331,506 @@
       "meaning": "Role / Devoir",
       "exampleMeaning": "role",
       "sentenceMeaning": "Quel est mon role ?"
+    },
+    "kanji_構": {
+      "meaning": "Construire / Posture",
+      "exampleMeaning": "structure",
+      "sentenceMeaning": "J'etudie la structure du batiment."
+    },
+    "kanji_割": {
+      "meaning": "Diviser / Proportion",
+      "exampleMeaning": "reduction",
+      "sentenceMeaning": "Ce magasin a une reduction."
+    },
+    "kanji_身": {
+      "meaning": "Corps / Personne",
+      "exampleMeaning": "taille",
+      "sentenceMeaning": "Je mesure ma taille."
+    },
+    "kanji_費": {
+      "meaning": "Depense / Consommer",
+      "exampleMeaning": "cout, depense",
+      "sentenceMeaning": "Je calcule le cout du voyage."
+    },
+    "kanji_付": {
+      "meaning": "Joindre / Attacher",
+      "exampleMeaning": "environs, alentours",
+      "sentenceMeaning": "Il y a un hotel pres de la gare."
+    },
+    "kanji_由": {
+      "meaning": "Raison / Motif",
+      "exampleMeaning": "liberte",
+      "sentenceMeaning": "J'ai du temps libre."
+    },
+    "kanji_説": {
+      "meaning": "Theorie / Explication",
+      "exampleMeaning": "explication",
+      "sentenceMeaning": "Le professeur explique."
+    },
+    "kanji_難": {
+      "meaning": "Difficile / Probleme",
+      "exampleMeaning": "difficile",
+      "sentenceMeaning": "Ce probleme est difficile."
+    },
+    "kanji_優": {
+      "meaning": "Douceur / Gentil",
+      "exampleMeaning": "gentil",
+      "sentenceMeaning": "Elle est gentille."
+    },
+    "kanji_夫": {
+      "meaning": "Mari / Homme",
+      "exampleMeaning": "mari",
+      "sentenceMeaning": "Mon mari est employe de bureau."
+    },
+    "kanji_収": {
+      "meaning": "Revenu / Obtenir",
+      "exampleMeaning": "revenu",
+      "sentenceMeaning": "Mon revenu a augmente."
+    },
+    "kanji_断": {
+      "meaning": "Refuser / Couper",
+      "exampleMeaning": "refuser",
+      "sentenceMeaning": "J'ai refuse l'invitation."
+    },
+    "kanji_石": {
+      "meaning": "Pierre",
+      "exampleMeaning": "pierre",
+      "sentenceMeaning": "Ne jette pas de pierres, s'il te plait."
+    },
+    "kanji_違": {
+      "meaning": "Difference / Differer",
+      "exampleMeaning": "etre different, avoir tort",
+      "sentenceMeaning": "C'est faux."
+    },
+    "kanji_消": {
+      "meaning": "Eteindre / Effacer",
+      "exampleMeaning": "eteindre, effacer",
+      "sentenceMeaning": "Eteins la lumiere, s'il te plait."
+    },
+    "kanji_神": {
+      "meaning": "Dieu / Esprit",
+      "exampleMeaning": "dieu",
+      "sentenceMeaning": "Je prie dieu."
+    },
+    "kanji_番": {
+      "meaning": "Tour / Numero",
+      "exampleMeaning": "numero",
+      "sentenceMeaning": "Donne-moi ton numero de telephone, s'il te plait."
+    },
+    "kanji_規": {
+      "meaning": "Norme / Standard",
+      "exampleMeaning": "regle, reglement",
+      "sentenceMeaning": "Je respecte les regles de l'ecole."
+    },
+    "kanji_術": {
+      "meaning": "Art / Technique",
+      "exampleMeaning": "technologie, technique",
+      "sentenceMeaning": "J'apprends une nouvelle technologie."
+    },
+    "kanji_備": {
+      "meaning": "Equiper / Preparer",
+      "exampleMeaning": "preparation",
+      "sentenceMeaning": "Je prepare la fete."
+    },
+    "kanji_宅": {
+      "meaning": "Maison / Residence",
+      "exampleMeaning": "propre domicile",
+      "sentenceMeaning": "Je travaille depuis chez moi."
+    },
+    "kanji_害": {
+      "meaning": "Dommage / Prejudice",
+      "exampleMeaning": "insecte nuisible",
+      "sentenceMeaning": "Il y a des insectes nuisibles dans le jardin."
+    },
+    "kanji_配": {
+      "meaning": "Distribuer / Conjoint",
+      "exampleMeaning": "inquietude",
+      "sentenceMeaning": "Ne t'inquiete pas, s'il te plait."
+    },
+    "kanji_警": {
+      "meaning": "Avertir / Surveiller",
+      "exampleMeaning": "police",
+      "sentenceMeaning": "J'ai appele la police."
+    },
+    "kanji_育": {
+      "meaning": "Elever / Eduquer",
+      "exampleMeaning": "education",
+      "sentenceMeaning": "L'education des enfants est importante."
+    },
+    "kanji_席": {
+      "meaning": "Siege",
+      "exampleMeaning": "siege",
+      "sentenceMeaning": "Assieds-toi a ta place, s'il te plait."
+    },
+    "kanji_訪": {
+      "meaning": "Visiter",
+      "exampleMeaning": "visite",
+      "sentenceMeaning": "Demain, je vais visiter la maison de mon ami."
+    },
+    "kanji_乗": {
+      "meaning": "Monter (dans un vehicule)",
+      "exampleMeaning": "monter (dans un vehicule)",
+      "sentenceMeaning": "Je monte dans le bus."
+    },
+    "kanji_残": {
+      "meaning": "Reste / Rester",
+      "exampleMeaning": "dommage",
+      "sentenceMeaning": "C'est dommage."
+    },
+    "kanji_想": {
+      "meaning": "Concept / Penser",
+      "exampleMeaning": "impression",
+      "sentenceMeaning": "Je parle de mes impressions sur le film."
+    },
+    "kanji_声": {
+      "meaning": "Voix",
+      "exampleMeaning": "voix",
+      "sentenceMeaning": "Parle a voix haute, s'il te plait."
+    },
+    "kanji_助": {
+      "meaning": "Aider / Secourir",
+      "exampleMeaning": "aider",
+      "sentenceMeaning": "J'ai aide mon ami."
+    },
+    "kanji_労": {
+      "meaning": "Travail / Remercier",
+      "exampleMeaning": "travail",
+      "sentenceMeaning": "Les heures de travail sont longues."
+    },
+    "kanji_例": {
+      "meaning": "Exemple",
+      "exampleMeaning": "par exemple",
+      "sentenceMeaning": "Par exemple, que penses-tu de ceci ?"
+    },
+    "kanji_然": {
+      "meaning": "Ainsi / Naturel",
+      "exampleMeaning": "nature",
+      "sentenceMeaning": "Cette ville a beaucoup de nature."
+    },
+    "kanji_限": {
+      "meaning": "Limite / Restreindre",
+      "exampleMeaning": "restriction, limite",
+      "sentenceMeaning": "Il y a une limite de temps."
+    },
+    "kanji_追": {
+      "meaning": "Poursuivre / Chasser",
+      "exampleMeaning": "ajout",
+      "sentenceMeaning": "J'ai commande plus de nourriture."
+    },
+    "kanji_商": {
+      "meaning": "Commerce / Marchand",
+      "exampleMeaning": "produit",
+      "sentenceMeaning": "J'ai achete un nouveau produit."
+    },
+    "kanji_葉": {
+      "meaning": "Feuille",
+      "exampleMeaning": "mot, langue",
+      "sentenceMeaning": "J'apprends un nouveau mot."
+    },
+    "kanji_伝": {
+      "meaning": "Transmettre / Communiquer",
+      "exampleMeaning": "transmettre",
+      "sentenceMeaning": "Je communique mes sentiments."
+    },
+    "kanji_働": {
+      "meaning": "Travailler",
+      "exampleMeaning": "travailler",
+      "sentenceMeaning": "Je travaille tous les jours."
+    },
+    "kanji_形": {
+      "meaning": "Forme / Style",
+      "exampleMeaning": "forme",
+      "sentenceMeaning": "Il a la forme d'une etoile."
+    },
+    "kanji_景": {
+      "meaning": "Paysage / Vue",
+      "exampleMeaning": "paysage",
+      "sentenceMeaning": "Quel beau paysage."
+    },
+    "kanji_落": {
+      "meaning": "Tomber",
+      "exampleMeaning": "tomber",
+      "sentenceMeaning": "Le livre est tombe."
+    },
+    "kanji_好": {
+      "meaning": "Aimer / Agreable",
+      "exampleMeaning": "aimer",
+      "sentenceMeaning": "J'aime la musique."
+    },
+    "kanji_退": {
+      "meaning": "Se retirer / Reculer",
+      "exampleMeaning": "retraite",
+      "sentenceMeaning": "Je prends ma retraite l'annee prochaine."
+    },
+    "kanji_頭": {
+      "meaning": "Tete",
+      "exampleMeaning": "tete",
+      "sentenceMeaning": "J'ai mal a la tete."
+    },
+    "kanji_負": {
+      "meaning": "Defaite / Negatif",
+      "exampleMeaning": "perdre",
+      "sentenceMeaning": "J'ai perdu le match."
+    },
+    "kanji_渡": {
+      "meaning": "Traverser",
+      "exampleMeaning": "traverser",
+      "sentenceMeaning": "Je traverse la rue."
+    },
+    "kanji_失": {
+      "meaning": "Perdre / Erreur",
+      "exampleMeaning": "echec",
+      "sentenceMeaning": "L'experience a ete un echec."
+    },
+    "kanji_差": {
+      "meaning": "Distinction / Variation",
+      "exampleMeaning": "decalage horaire",
+      "sentenceMeaning": "Quel est le decalage horaire avec le Japon ?"
+    },
+    "kanji_末": {
+      "meaning": "Fin / Extremite",
+      "exampleMeaning": "week-end",
+      "sentenceMeaning": "Je regarde un film le week-end."
+    },
+    "kanji_守": {
+      "meaning": "Proteger / Garder",
+      "exampleMeaning": "proteger",
+      "sentenceMeaning": "Je tiens ma promesse."
+    },
+    "kanji_若": {
+      "meaning": "Jeune",
+      "exampleMeaning": "jeune",
+      "sentenceMeaning": "Il est jeune."
+    },
+    "kanji_種": {
+      "meaning": "Graine / Type",
+      "exampleMeaning": "type, sorte",
+      "sentenceMeaning": "Il y a plusieurs types."
+    },
+    "kanji_美": {
+      "meaning": "Beaute",
+      "exampleMeaning": "beau, belle",
+      "sentenceMeaning": "C'est un beau paysage."
+    },
+    "kanji_命": {
+      "meaning": "Destin / Vie",
+      "exampleMeaning": "vie",
+      "sentenceMeaning": "Je cheris ma vie."
+    },
+    "kanji_福": {
+      "meaning": "Benediction / Fortune",
+      "exampleMeaning": "bonheur",
+      "sentenceMeaning": "Je veux vivre une vie heureuse."
+    },
+    "kanji_望": {
+      "meaning": "Espoir / Desir",
+      "exampleMeaning": "espoir",
+      "sentenceMeaning": "J'ai de l'espoir pour l'avenir."
+    },
+    "kanji_非": {
+      "meaning": "Non- / Negatif",
+      "exampleMeaning": "extremement",
+      "sentenceMeaning": "C'est extremement difficile."
+    },
+    "kanji_観": {
+      "meaning": "Perspective / Vue",
+      "exampleMeaning": "tourisme",
+      "sentenceMeaning": "Je fais du tourisme a Kyoto."
+    },
+    "kanji_察": {
+      "meaning": "Deviner / Presumer",
+      "exampleMeaning": "observation",
+      "sentenceMeaning": "J'observe les etoiles."
+    },
+    "kanji_段": {
+      "meaning": "Marche / Grade",
+      "exampleMeaning": "escalier",
+      "sentenceMeaning": "Je monte les escaliers."
+    },
+    "kanji_横": {
+      "meaning": "De cote / Cote",
+      "exampleMeaning": "cote, a cote de",
+      "sentenceMeaning": "Il y a un parc a cote de la gare."
+    },
+    "kanji_深": {
+      "meaning": "Profond",
+      "exampleMeaning": "profond",
+      "sentenceMeaning": "Cette piscine est profonde."
+    },
+    "kanji_申": {
+      "meaning": "Avoir l'honneur de",
+      "exampleMeaning": "inscription, candidature",
+      "sentenceMeaning": "Je me suis inscrit au seminaire."
+    },
+    "kanji_様": {
+      "meaning": "Maniere / Situation",
+      "exampleMeaning": "apparence, situation",
+      "sentenceMeaning": "Son apparence est bizarre."
+    },
+    "kanji_財": {
+      "meaning": "Biens / Richesse",
+      "exampleMeaning": "portefeuille",
+      "sentenceMeaning": "J'ai oublie mon portefeuille."
+    },
+    "kanji_港": {
+      "meaning": "Port",
+      "exampleMeaning": "aeroport",
+      "sentenceMeaning": "Je t'emmene a l'aeroport."
+    },
+    "kanji_識": {
+      "meaning": "Connaitre",
+      "exampleMeaning": "connaissance",
+      "sentenceMeaning": "J'augmente mes connaissances."
+    },
+    "kanji_呼": {
+      "meaning": "Appeler / Inviter",
+      "exampleMeaning": "appeler",
+      "sentenceMeaning": "J'appelle par le nom."
+    },
+    "kanji_達": {
+      "meaning": "Atteindre / Accomplir",
+      "exampleMeaning": "accomplissement",
+      "sentenceMeaning": "J'ai atteint mon objectif."
+    },
+    "kanji_良": {
+      "meaning": "Bon",
+      "exampleMeaning": "bon",
+      "sentenceMeaning": "Le temps est bon."
+    },
+    "kanji_阪": {
+      "meaning": "Pente / Colline",
+      "exampleMeaning": "Osaka (ville)",
+      "sentenceMeaning": "J'habite a Osaka."
+    },
+    "kanji_候": {
+      "meaning": "Climat / Saison",
+      "exampleMeaning": "climat",
+      "sentenceMeaning": "Le climat de ce pays est chaud."
+    },
+    "kanji_程": {
+      "meaning": "Etendue / Degre",
+      "exampleMeaning": "degre, niveau",
+      "sentenceMeaning": "Je comprends dans une certaine mesure."
+    },
+    "kanji_満": {
+      "meaning": "Plein / Satisfaire",
+      "exampleMeaning": "satisfaction",
+      "sentenceMeaning": "Je suis satisfait du resultat."
+    },
+    "kanji_敗": {
+      "meaning": "Echec / Defaite",
+      "exampleMeaning": "defaite",
+      "sentenceMeaning": "L'equipe a subi une defaite."
+    },
+    "kanji_値": {
+      "meaning": "Prix / Valeur",
+      "exampleMeaning": "prix",
+      "sentenceMeaning": "Combien coutent ces chaussures ?"
+    },
+    "kanji_突": {
+      "meaning": "Depasser / Soudain",
+      "exampleMeaning": "soudainement",
+      "sentenceMeaning": "Il a soudainement plu."
+    },
+    "kanji_光": {
+      "meaning": "Lumiere",
+      "exampleMeaning": "lumiere",
+      "sentenceMeaning": "La lumiere entre."
+    },
+    "kanji_路": {
+      "meaning": "Chemin / Route",
+      "exampleMeaning": "route",
+      "sentenceMeaning": "Je traverse la route."
+    },
+    "kanji_科": {
+      "meaning": "Departement / Matiere",
+      "exampleMeaning": "science",
+      "sentenceMeaning": "J'aime la science."
+    },
+    "kanji_積": {
+      "meaning": "Accumuler / Volume",
+      "exampleMeaning": "s'accumuler",
+      "sentenceMeaning": "La neige s'est accumulee."
+    },
+    "kanji_他": {
+      "meaning": "Autre",
+      "exampleMeaning": "les autres, etc.",
+      "sentenceMeaning": "Y a-t-il d'autres questions ?"
+    },
+    "kanji_処": {
+      "meaning": "Gerer / Disposer",
+      "exampleMeaning": "traitement",
+      "sentenceMeaning": "Je traite les donnees."
+    },
+    "kanji_太": {
+      "meaning": "Epais / Gros",
+      "exampleMeaning": "epais",
+      "sentenceMeaning": "Cet arbre est epais."
+    },
+    "kanji_客": {
+      "meaning": "Invite / Client",
+      "exampleMeaning": "client, invite",
+      "sentenceMeaning": "Un client est venu."
+    },
+    "kanji_否": {
+      "meaning": "Nier / Non",
+      "exampleMeaning": "negation",
+      "sentenceMeaning": "Il l'a nie."
+    },
+    "kanji_師": {
+      "meaning": "Maitre / Enseignant",
+      "exampleMeaning": "medecin",
+      "sentenceMeaning": "Je consulte un medecin."
+    },
+    "kanji_登": {
+      "meaning": "Monter / Grimper",
+      "exampleMeaning": "grimper",
+      "sentenceMeaning": "Je grimpe la montagne."
+    },
+    "kanji_易": {
+      "meaning": "Facile / Simple",
+      "exampleMeaning": "facile",
+      "sentenceMeaning": "C'est une chose facile."
+    },
+    "kanji_存": {
+      "meaning": "Exister / Etre conscient de",
+      "exampleMeaning": "conservation, sauvegarde",
+      "sentenceMeaning": "J'enregistre le fichier."
+    },
+    "kanji_飛": {
+      "meaning": "Voler",
+      "exampleMeaning": "voler",
+      "sentenceMeaning": "L'oiseau vole."
+    },
+    "kanji_殺": {
+      "meaning": "Tuer",
+      "exampleMeaning": "tuer",
+      "sentenceMeaning": "J'ai tue un insecte."
+    },
+    "kanji_号": {
+      "meaning": "Numero / Signal",
+      "exampleMeaning": "feu de circulation",
+      "sentenceMeaning": "Le feu est rouge."
+    },
+    "kanji_単": {
+      "meaning": "Simple / Unique",
+      "exampleMeaning": "simple, facile",
+      "sentenceMeaning": "Ce plat est facile a faire."
+    },
+    "kanji_座": {
+      "meaning": "S'accroupir / S'asseoir",
+      "exampleMeaning": "s'asseoir",
+      "sentenceMeaning": "Je m'assieds sur la chaise."
+    },
+    "kanji_破": {
+      "meaning": "Dechirer / Casser",
+      "exampleMeaning": "dechirer",
+      "sentenceMeaning": "J'ai dechire le papier."
+    },
+    "kanji_除": {
+      "meaning": "Exclure / Retirer",
+      "exampleMeaning": "nettoyage",
+      "sentenceMeaning": "Je nettoie la piece."
     }
   },
   "exampleTerms": {

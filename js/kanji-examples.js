@@ -1849,4 +1849,504 @@ export const KANJI_EXAMPLES = {
         sentence: "私の役割は何ですか。", sentenceReading: "わたしの やくわりは なんですか。",
         sentenceMeaning: "¿Cuál es mi rol?",
     },
+    "構": {
+        word: "構造", reading: "こうぞう", meaning: "estructura",
+        sentence: "建物の構造を調べます。", sentenceReading: "たてものの こうぞうを しらべます。",
+        sentenceMeaning: "Investigo la estructura del edificio.",
+    },
+    "割": {
+        word: "割引", reading: "わりびき", meaning: "descuento",
+        sentence: "この店は割引があります。", sentenceReading: "この みせは わりびきが あります。",
+        sentenceMeaning: "Esta tienda tiene descuento.",
+    },
+    "身": {
+        word: "身長", reading: "しんちょう", meaning: "estatura",
+        sentence: "身長を測ります。", sentenceReading: "しんちょうを はかります。",
+        sentenceMeaning: "Mido mi estatura.",
+    },
+    "費": {
+        word: "費用", reading: "ひよう", meaning: "costo, gasto",
+        sentence: "旅行の費用を計算します。", sentenceReading: "りょこうの ひようを けいさんします。",
+        sentenceMeaning: "Calculo el costo del viaje.",
+    },
+    "付": {
+        word: "付近", reading: "ふきん", meaning: "cercanías, alrededores",
+        sentence: "駅の付近にホテルがあります。", sentenceReading: "えきの ふきんに ほてるが あります。",
+        sentenceMeaning: "Hay un hotel cerca de la estación.",
+    },
+    "由": {
+        word: "自由", reading: "じゆう", meaning: "libertad",
+        sentence: "自由な時間があります。", sentenceReading: "じゆうな じかんが あります。",
+        sentenceMeaning: "Tengo tiempo libre.",
+    },
+    "説": {
+        word: "説明", reading: "せつめい", meaning: "explicación",
+        sentence: "先生が説明します。", sentenceReading: "せんせいが せつめいします。",
+        sentenceMeaning: "El profesor explica.",
+    },
+    "難": {
+        word: "難しい", reading: "むずかしい", meaning: "difícil",
+        sentence: "この問題は難しいです。", sentenceReading: "この もんだいは むずかしいです。",
+        sentenceMeaning: "Este problema es difícil.",
+    },
+    "優": {
+        word: "優しい", reading: "やさしい", meaning: "amable",
+        sentence: "彼女は優しいです。", sentenceReading: "かのじょは やさしいです。",
+        sentenceMeaning: "Ella es amable.",
+    },
+    "夫": {
+        word: "夫", reading: "おっと", meaning: "esposo",
+        sentence: "夫は会社員です。", sentenceReading: "おっとは かいしゃいんです。",
+        sentenceMeaning: "Mi esposo es empleado de oficina.",
+    },
+    "収": {
+        word: "収入", reading: "しゅうにゅう", meaning: "ingresos",
+        sentence: "収入が増えました。", sentenceReading: "しゅうにゅうが ふえました。",
+        sentenceMeaning: "Mis ingresos aumentaron.",
+    },
+    "断": {
+        word: "断る", reading: "ことわる", meaning: "rechazar, negarse",
+        sentence: "誘いを断りました。", sentenceReading: "さそいを ことわりました。",
+        sentenceMeaning: "Rechacé la invitación.",
+    },
+    "石": {
+        word: "石", reading: "いし", meaning: "piedra",
+        sentence: "石を投げないでください。", sentenceReading: "いしを なげないでください。",
+        sentenceMeaning: "No lances piedras, por favor.",
+    },
+    "違": {
+        word: "違う", reading: "ちがう", meaning: "ser diferente, estar equivocado",
+        sentence: "それは違います。", sentenceReading: "それは ちがいます。",
+        sentenceMeaning: "Eso es diferente (incorrecto).",
+    },
+    "消": {
+        word: "消す", reading: "けす", meaning: "apagar, borrar",
+        sentence: "電気を消してください。", sentenceReading: "でんきを けしてください。",
+        sentenceMeaning: "Apaga la luz, por favor.",
+    },
+    "神": {
+        word: "神様", reading: "かみさま", meaning: "dios",
+        sentence: "神様にお祈りします。", sentenceReading: "かみさまに おいのりします。",
+        sentenceMeaning: "Rezo a dios.",
+    },
+    "番": {
+        word: "番号", reading: "ばんごう", meaning: "número",
+        sentence: "電話番号を教えてください。", sentenceReading: "でんわ ばんごうを おしえてください。",
+        sentenceMeaning: "Dime tu número de teléfono, por favor.",
+    },
+    "規": {
+        word: "規則", reading: "きそく", meaning: "regla, reglamento",
+        sentence: "学校の規則を守ります。", sentenceReading: "がっこうの きそくを まもります。",
+        sentenceMeaning: "Cumplo las reglas de la escuela.",
+    },
+    "術": {
+        word: "技術", reading: "ぎじゅつ", meaning: "tecnología, técnica",
+        sentence: "新しい技術を学びます。", sentenceReading: "あたらしい ぎじゅつを まなびます。",
+        sentenceMeaning: "Aprendo nueva tecnología.",
+    },
+    "備": {
+        word: "準備", reading: "じゅんび", meaning: "preparación",
+        sentence: "パーティーの準備をします。", sentenceReading: "ぱーてぃーの じゅんびを します。",
+        sentenceMeaning: "Hago los preparativos de la fiesta.",
+    },
+    "宅": {
+        word: "自宅", reading: "じたく", meaning: "casa propia, hogar",
+        sentence: "自宅で働いています。", sentenceReading: "じたくで はたらいています。",
+        sentenceMeaning: "Trabajo desde casa.",
+    },
+    "害": {
+        word: "害虫", reading: "がいちゅう", meaning: "insecto dañino, plaga",
+        sentence: "庭に害虫がいます。", sentenceReading: "にわに がいちゅうが います。",
+        sentenceMeaning: "Hay plagas en el jardín.",
+    },
+    "配": {
+        word: "心配", reading: "しんぱい", meaning: "preocupación",
+        sentence: "心配しないでください。", sentenceReading: "しんぱいしないでください。",
+        sentenceMeaning: "No te preocupes, por favor.",
+    },
+    "警": {
+        word: "警察", reading: "けいさつ", meaning: "policía (institución)",
+        sentence: "警察に電話しました。", sentenceReading: "けいさつに でんわしました。",
+        sentenceMeaning: "Llamé a la policía.",
+    },
+    "育": {
+        word: "教育", reading: "きょういく", meaning: "educación",
+        sentence: "子供の教育は大切です。", sentenceReading: "こどもの きょういくは たいせつです。",
+        sentenceMeaning: "La educación de los niños es importante.",
+    },
+    "席": {
+        word: "席", reading: "せき", meaning: "asiento",
+        sentence: "席に座ってください。", sentenceReading: "せきに すわってください。",
+        sentenceMeaning: "Siéntate en tu asiento, por favor.",
+    },
+    "訪": {
+        word: "訪問", reading: "ほうもん", meaning: "visita",
+        sentence: "明日、友達の家を訪問します。", sentenceReading: "あした、ともだちの いえを ほうもんします。",
+        sentenceMeaning: "Mañana visito la casa de mi amigo.",
+    },
+    "乗": {
+        word: "乗る", reading: "のる", meaning: "subir (a un vehículo)",
+        sentence: "バスに乗ります。", sentenceReading: "ばすに のります。",
+        sentenceMeaning: "Subo al autobús.",
+    },
+    "残": {
+        word: "残念", reading: "ざんねん", meaning: "lástima, pena",
+        sentence: "それは残念です。", sentenceReading: "それは ざんねんです。",
+        sentenceMeaning: "Eso es una lástima.",
+    },
+    "想": {
+        word: "感想", reading: "かんそう", meaning: "impresión, opinión",
+        sentence: "映画の感想を話します。", sentenceReading: "えいがの かんそうを はなします。",
+        sentenceMeaning: "Hablo mis impresiones sobre la película.",
+    },
+    "声": {
+        word: "声", reading: "こえ", meaning: "voz",
+        sentence: "大きい声で話してください。", sentenceReading: "おおきい こえで はなしてください。",
+        sentenceMeaning: "Habla con voz alta, por favor.",
+    },
+    "助": {
+        word: "助ける", reading: "たすける", meaning: "ayudar",
+        sentence: "友達を助けました。", sentenceReading: "ともだちを たすけました。",
+        sentenceMeaning: "Ayudé a mi amigo.",
+    },
+    "労": {
+        word: "労働", reading: "ろうどう", meaning: "trabajo, labor",
+        sentence: "労働時間が長いです。", sentenceReading: "ろうどう じかんが ながいです。",
+        sentenceMeaning: "Las horas de trabajo son largas.",
+    },
+    "例": {
+        word: "例えば", reading: "たとえば", meaning: "por ejemplo",
+        sentence: "例えば、これはどうですか。", sentenceReading: "たとえば、これは どうですか。",
+        sentenceMeaning: "Por ejemplo, ¿qué tal esto?",
+    },
+    "然": {
+        word: "自然", reading: "しぜん", meaning: "naturaleza",
+        sentence: "この町は自然が多いです。", sentenceReading: "この まちは しぜんが おおいです。",
+        sentenceMeaning: "Esta ciudad tiene mucha naturaleza.",
+    },
+    "限": {
+        word: "制限", reading: "せいげん", meaning: "límite, restricción",
+        sentence: "時間の制限があります。", sentenceReading: "じかんの せいげんが あります。",
+        sentenceMeaning: "Hay un límite de tiempo.",
+    },
+    "追": {
+        word: "追加", reading: "ついか", meaning: "adición",
+        sentence: "料理を追加しました。", sentenceReading: "りょうりを ついかしました。",
+        sentenceMeaning: "Agregué (pedí) más comida.",
+    },
+    "商": {
+        word: "商品", reading: "しょうひん", meaning: "producto",
+        sentence: "新しい商品を買いました。", sentenceReading: "あたらしい しょうひんを かいました。",
+        sentenceMeaning: "Compré un producto nuevo.",
+    },
+    "葉": {
+        word: "言葉", reading: "ことば", meaning: "palabra, idioma",
+        sentence: "新しい言葉を覚えます。", sentenceReading: "あたらしい ことばを おぼえます。",
+        sentenceMeaning: "Memorizo una palabra nueva.",
+    },
+    "伝": {
+        word: "伝える", reading: "つたえる", meaning: "comunicar, transmitir",
+        sentence: "気持ちを伝えます。", sentenceReading: "きもちを つたえます。",
+        sentenceMeaning: "Comunico mis sentimientos.",
+    },
+    "働": {
+        word: "働く", reading: "はたらく", meaning: "trabajar",
+        sentence: "毎日働きます。", sentenceReading: "まいにち はたらきます。",
+        sentenceMeaning: "Trabajo todos los días.",
+    },
+    "形": {
+        word: "形", reading: "かたち", meaning: "forma",
+        sentence: "星の形をしています。", sentenceReading: "ほしの かたちを しています。",
+        sentenceMeaning: "Tiene forma de estrella.",
+    },
+    "景": {
+        word: "景色", reading: "けしき", meaning: "paisaje",
+        sentence: "きれいな景色ですね。", sentenceReading: "きれいな けしきですね。",
+        sentenceMeaning: "Qué paisaje tan bonito.",
+    },
+    "落": {
+        word: "落ちる", reading: "おちる", meaning: "caer",
+        sentence: "本が落ちました。", sentenceReading: "ほんが おちました。",
+        sentenceMeaning: "El libro se cayó.",
+    },
+    "好": {
+        word: "好き", reading: "すき", meaning: "gustar",
+        sentence: "音楽が好きです。", sentenceReading: "おんがくが すきです。",
+        sentenceMeaning: "Me gusta la música.",
+    },
+    "退": {
+        word: "引退", reading: "いんたい", meaning: "retiro, jubilación",
+        sentence: "来年引退します。", sentenceReading: "らいねん いんたいします。",
+        sentenceMeaning: "Me retiro el próximo año.",
+    },
+    "頭": {
+        word: "頭", reading: "あたま", meaning: "cabeza",
+        sentence: "頭が痛いです。", sentenceReading: "あたまが いたいです。",
+        sentenceMeaning: "Me duele la cabeza.",
+    },
+    "負": {
+        word: "負ける", reading: "まける", meaning: "perder",
+        sentence: "試合に負けました。", sentenceReading: "しあいに まけました。",
+        sentenceMeaning: "Perdí el partido.",
+    },
+    "渡": {
+        word: "渡る", reading: "わたる", meaning: "cruzar",
+        sentence: "道を渡ります。", sentenceReading: "みちを わたります。",
+        sentenceMeaning: "Cruzo la calle.",
+    },
+    "失": {
+        word: "失敗", reading: "しっぱい", meaning: "fracaso",
+        sentence: "実験は失敗でした。", sentenceReading: "じっけんは しっぱいでした。",
+        sentenceMeaning: "El experimento fue un fracaso.",
+    },
+    "差": {
+        word: "時差", reading: "じさ", meaning: "diferencia horaria",
+        sentence: "日本との時差は何時間ですか。", sentenceReading: "にほんとの じさは なんじかんですか。",
+        sentenceMeaning: "¿Cuántas horas de diferencia hay con Japón?",
+    },
+    "末": {
+        word: "週末", reading: "しゅうまつ", meaning: "fin de semana",
+        sentence: "週末に映画を見ます。", sentenceReading: "しゅうまつに えいがを みます。",
+        sentenceMeaning: "Veo una película el fin de semana.",
+    },
+    "守": {
+        word: "守る", reading: "まもる", meaning: "proteger",
+        sentence: "約束を守ります。", sentenceReading: "やくそくを まもります。",
+        sentenceMeaning: "Cumplo mi promesa.",
+    },
+    "若": {
+        word: "若い", reading: "わかい", meaning: "joven",
+        sentence: "彼は若いです。", sentenceReading: "かれは わかいです。",
+        sentenceMeaning: "Él es joven.",
+    },
+    "種": {
+        word: "種類", reading: "しゅるい", meaning: "tipo, clase",
+        sentence: "いろいろな種類があります。", sentenceReading: "いろいろな しゅるいが あります。",
+        sentenceMeaning: "Hay varios tipos.",
+    },
+    "美": {
+        word: "美しい", reading: "うつくしい", meaning: "hermoso",
+        sentence: "美しい景色です。", sentenceReading: "うつくしい けしきです。",
+        sentenceMeaning: "Es un paisaje hermoso.",
+    },
+    "命": {
+        word: "命", reading: "いのち", meaning: "vida",
+        sentence: "命を大切にします。", sentenceReading: "いのちを たいせつに します。",
+        sentenceMeaning: "Cuido mi vida (la valoro).",
+    },
+    "福": {
+        word: "幸福", reading: "こうふく", meaning: "felicidad",
+        sentence: "幸福な人生を送りたいです。", sentenceReading: "こうふくな じんせいを おくりたいです。",
+        sentenceMeaning: "Quiero vivir una vida feliz.",
+    },
+    "望": {
+        word: "希望", reading: "きぼう", meaning: "esperanza",
+        sentence: "将来に希望を持っています。", sentenceReading: "しょうらいに きぼうを もっています。",
+        sentenceMeaning: "Tengo esperanza en el futuro.",
+    },
+    "非": {
+        word: "非常に", reading: "ひじょうに", meaning: "extremadamente",
+        sentence: "非常に難しいです。", sentenceReading: "ひじょうに むずかしいです。",
+        sentenceMeaning: "Es extremadamente difícil.",
+    },
+    "観": {
+        word: "観光", reading: "かんこう", meaning: "turismo",
+        sentence: "京都を観光します。", sentenceReading: "きょうとを かんこうします。",
+        sentenceMeaning: "Hago turismo en Kioto.",
+    },
+    "察": {
+        word: "観察", reading: "かんさつ", meaning: "observación",
+        sentence: "星を観察します。", sentenceReading: "ほしを かんさつします。",
+        sentenceMeaning: "Observo las estrellas.",
+    },
+    "段": {
+        word: "階段", reading: "かいだん", meaning: "escaleras",
+        sentence: "階段を上ります。", sentenceReading: "かいだんを のぼります。",
+        sentenceMeaning: "Subo las escaleras.",
+    },
+    "横": {
+        word: "横", reading: "よこ", meaning: "al lado, costado",
+        sentence: "駅の横に公園があります。", sentenceReading: "えきの よこに こうえんが あります。",
+        sentenceMeaning: "Hay un parque al lado de la estación.",
+    },
+    "深": {
+        word: "深い", reading: "ふかい", meaning: "profundo",
+        sentence: "このプールは深いです。", sentenceReading: "この ぷーるは ふかいです。",
+        sentenceMeaning: "Esta piscina es profunda.",
+    },
+    "申": {
+        word: "申し込み", reading: "もうしこみ", meaning: "solicitud, inscripción",
+        sentence: "セミナーに申し込みをしました。", sentenceReading: "せみなーに もうしこみを しました。",
+        sentenceMeaning: "Me inscribí al seminario.",
+    },
+    "様": {
+        word: "様子", reading: "ようす", meaning: "apariencia, situación",
+        sentence: "彼の様子がおかしいです。", sentenceReading: "かれの ようすが おかしいです。",
+        sentenceMeaning: "Su apariencia es rara.",
+    },
+    "財": {
+        word: "財布", reading: "さいふ", meaning: "billetera",
+        sentence: "財布を忘れました。", sentenceReading: "さいふを わすれました。",
+        sentenceMeaning: "Olvidé mi billetera.",
+    },
+    "港": {
+        word: "空港", reading: "くうこう", meaning: "aeropuerto",
+        sentence: "空港まで送ります。", sentenceReading: "くうこうまで おくります。",
+        sentenceMeaning: "Te llevo hasta el aeropuerto.",
+    },
+    "識": {
+        word: "知識", reading: "ちしき", meaning: "conocimiento",
+        sentence: "知識を増やします。", sentenceReading: "ちしきを ふやします。",
+        sentenceMeaning: "Aumento mi conocimiento.",
+    },
+    "呼": {
+        word: "呼ぶ", reading: "よぶ", meaning: "llamar",
+        sentence: "名前を呼びます。", sentenceReading: "なまえを よびます。",
+        sentenceMeaning: "Llamo por el nombre.",
+    },
+    "達": {
+        word: "達成", reading: "たっせい", meaning: "logro",
+        sentence: "目標を達成しました。", sentenceReading: "もくひょうを たっせいしました。",
+        sentenceMeaning: "Logré mi objetivo.",
+    },
+    "良": {
+        word: "良い", reading: "いい", meaning: "bueno",
+        sentence: "天気が良いです。", sentenceReading: "てんきが いいです。",
+        sentenceMeaning: "El clima es bueno.",
+    },
+    "阪": {
+        word: "大阪", reading: "おおさか", meaning: "Osaka (ciudad)",
+        sentence: "大阪に住んでいます。", sentenceReading: "おおさかに すんでいます。",
+        sentenceMeaning: "Vivo en Osaka.",
+    },
+    "候": {
+        word: "気候", reading: "きこう", meaning: "clima",
+        sentence: "この国の気候は暖かいです。", sentenceReading: "この くにの きこうは あたたかいです。",
+        sentenceMeaning: "El clima de este país es cálido.",
+    },
+    "程": {
+        word: "程度", reading: "ていど", meaning: "grado, nivel",
+        sentence: "ある程度わかります。", sentenceReading: "ある ていど わかります。",
+        sentenceMeaning: "Entiendo hasta cierto grado.",
+    },
+    "満": {
+        word: "満足", reading: "まんぞく", meaning: "satisfacción",
+        sentence: "結果に満足しています。", sentenceReading: "けっかに まんぞくしています。",
+        sentenceMeaning: "Estoy satisfecho con el resultado.",
+    },
+    "敗": {
+        word: "敗北", reading: "はいぼく", meaning: "derrota",
+        sentence: "チームは敗北しました。", sentenceReading: "ちーむは はいぼくしました。",
+        sentenceMeaning: "El equipo sufrió una derrota.",
+    },
+    "値": {
+        word: "値段", reading: "ねだん", meaning: "precio",
+        sentence: "この靴の値段はいくらですか。", sentenceReading: "この くつの ねだんは いくらですか。",
+        sentenceMeaning: "¿Cuánto cuestan estos zapatos?",
+    },
+    "突": {
+        word: "突然", reading: "とつぜん", meaning: "de repente",
+        sentence: "突然雨が降りました。", sentenceReading: "とつぜん あめが ふりました。",
+        sentenceMeaning: "De repente llovió.",
+    },
+    "光": {
+        word: "光", reading: "ひかり", meaning: "luz",
+        sentence: "光が差し込みます。", sentenceReading: "ひかりが さしこみます。",
+        sentenceMeaning: "La luz entra.",
+    },
+    "路": {
+        word: "道路", reading: "どうろ", meaning: "carretera, camino",
+        sentence: "道路を渡ります。", sentenceReading: "どうろを わたります。",
+        sentenceMeaning: "Cruzo la carretera.",
+    },
+    "科": {
+        word: "科学", reading: "かがく", meaning: "ciencia",
+        sentence: "科学が好きです。", sentenceReading: "かがくが すきです。",
+        sentenceMeaning: "Me gusta la ciencia.",
+    },
+    "積": {
+        word: "積もる", reading: "つもる", meaning: "acumularse",
+        sentence: "雪が積もりました。", sentenceReading: "ゆきが つもりました。",
+        sentenceMeaning: "La nieve se acumuló.",
+    },
+    "他": {
+        word: "その他", reading: "そのた", meaning: "los demás, etcétera",
+        sentence: "その他の質問はありますか。", sentenceReading: "そのたの しつもんは ありますか。",
+        sentenceMeaning: "¿Hay otras preguntas?",
+    },
+    "処": {
+        word: "処理", reading: "しょり", meaning: "procesamiento, gestión",
+        sentence: "データを処理します。", sentenceReading: "でーたを しょりします。",
+        sentenceMeaning: "Proceso los datos.",
+    },
+    "太": {
+        word: "太い", reading: "ふとい", meaning: "grueso",
+        sentence: "この木は太いです。", sentenceReading: "この きは ふといです。",
+        sentenceMeaning: "Este árbol es grueso.",
+    },
+    "客": {
+        word: "お客さん", reading: "おきゃくさん", meaning: "cliente, invitado",
+        sentence: "お客さんが来ました。", sentenceReading: "おきゃくさんが きました。",
+        sentenceMeaning: "Vino un cliente.",
+    },
+    "否": {
+        word: "否定", reading: "ひてい", meaning: "negación",
+        sentence: "彼はそれを否定しました。", sentenceReading: "かれは それを ひていしました。",
+        sentenceMeaning: "Él lo negó.",
+    },
+    "師": {
+        word: "医師", reading: "いし", meaning: "médico",
+        sentence: "医師に相談します。", sentenceReading: "いしに そうだんします。",
+        sentenceMeaning: "Consulto con un médico.",
+    },
+    "登": {
+        word: "登る", reading: "のぼる", meaning: "subir, escalar",
+        sentence: "山に登ります。", sentenceReading: "やまに のぼります。",
+        sentenceMeaning: "Escalo la montaña.",
+    },
+    "易": {
+        word: "容易", reading: "ようい", meaning: "fácil, sencillo",
+        sentence: "それは容易なことです。", sentenceReading: "それは よういな ことです。",
+        sentenceMeaning: "Eso es algo fácil.",
+    },
+    "存": {
+        word: "保存", reading: "ほぞん", meaning: "conservación, guardar",
+        sentence: "ファイルを保存します。", sentenceReading: "ふぁいるを ほぞんします。",
+        sentenceMeaning: "Guardo el archivo.",
+    },
+    "飛": {
+        word: "飛ぶ", reading: "とぶ", meaning: "volar",
+        sentence: "鳥が飛びます。", sentenceReading: "とりが とびます。",
+        sentenceMeaning: "El pájaro vuela.",
+    },
+    "殺": {
+        word: "殺す", reading: "ころす", meaning: "matar",
+        sentence: "虫を殺しました。", sentenceReading: "むしを ころしました。",
+        sentenceMeaning: "Maté un insecto.",
+    },
+    "号": {
+        word: "信号", reading: "しんごう", meaning: "semáforo",
+        sentence: "信号が赤です。", sentenceReading: "しんごうが あかです。",
+        sentenceMeaning: "El semáforo está en rojo.",
+    },
+    "単": {
+        word: "簡単", reading: "かんたん", meaning: "sencillo, fácil",
+        sentence: "この料理は簡単です。", sentenceReading: "この りょうりは かんたんです。",
+        sentenceMeaning: "Esta comida es fácil (de hacer).",
+    },
+    "座": {
+        word: "座る", reading: "すわる", meaning: "sentarse",
+        sentence: "いすに座ります。", sentenceReading: "いすに すわります。",
+        sentenceMeaning: "Me siento en la silla.",
+    },
+    "破": {
+        word: "破る", reading: "やぶる", meaning: "romper, rasgar",
+        sentence: "紙を破りました。", sentenceReading: "かみを やぶりました。",
+        sentenceMeaning: "Rasgué el papel.",
+    },
+    "除": {
+        word: "掃除", reading: "そうじ", meaning: "limpieza",
+        sentence: "部屋を掃除します。", sentenceReading: "へやを そうじします。",
+        sentenceMeaning: "Limpio la habitación.",
+    },
 };

@@ -181,6 +181,13 @@ export const LESSONS = [
         test: item => item.tipo === "kanji" && item.categoria === "N3" && Number(item.id_jlpt) >= 271 && Number(item.id_jlpt) <= 370,
     },
     {
+        id: "kanji-n3-3",
+        title: "24. Kanji N3: vida cotidiana, trabajo y entorno natural",
+        description: "Tercera tanda N3: hogar, trabajo, transporte, naturaleza, ciencia y expresiones cotidianas.",
+        category: "N3",
+        test: item => item.tipo === "kanji" && item.categoria === "N3" && Number(item.id_jlpt) >= 371 && Number(item.id_jlpt) <= 470,
+    },
+    {
         id: "all",
         title: "Todo el contenido",
         description: "Mezcla libre de todos los caracteres disponibles.",
