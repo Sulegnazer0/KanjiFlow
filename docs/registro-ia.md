@@ -32,6 +32,7 @@ Cada vez que una IA haga un commit de una feature nueva o un cambio de arquitect
 | 2026-07-06 | 0.8.20 (bump 0.8.19→0.8.20) | Claude (Sonnet 5) | `feature/jlpt-n3` | Fusiona `feature/stroke-evaluation-n4` (evaluador de trazos + animación KanjiVG para N5/N4, que había avanzado en paralelo desde `main`@0.8.11) dentro de esta rama, a pedido del usuario ("dentro de jlpt-n3 fusionalas"). Se resolvieron conflictos manuales en `CHANGELOG.md` (se interleavan ambas líneas de historial en vez de descartar una), `docs/registro-ia.md` (se combinan ambas tablas de Historial y ambas secciones de deep-dive), `index.html`/`js/app.js` (ambos feature sets coexisten, sin solape real de líneas), `package.json`/`service-worker.js` (versión al siguiente número global) y `tools/validate-content.mjs`/`tests/run-tests.mjs` (se combinan ambos conjuntos de validaciones/aserciones) | `CHANGELOG.md`, `docs/registro-ia.md`, `index.html`, `js/app.js`, `package.json`, `service-worker.js`, `tools/validate-content.mjs`, `tests/run-tests.mjs` |
 | 2026-07-07 | 0.8.21 (bump 0.8.20→0.8.21) | Claude (Sonnet 5) | `feature/jlpt-n3-2` | Publica la segunda tanda de N3 (100 kanji, id_jlpt 271-370) tomados de `docs/jlpt-n3-list.md`, a pedido explícito del usuario de acelerar el ritmo ("ejecuta en tandas de 100 kanjis... tal como esos primeros 20 que hiciste"). A diferencia de la tanda 1 (20 kanji = 1 lección), esta tanda de 100 sigue siendo UNA sola lección (`kanji-n3-2`) — mismo patrón que `kanji-n4-5` (40 kanji) y `kanji-n4-final` (50 kanji), que tampoco se subdividieron en varias lecciones solo por tener más kanji que las tandas iniciales. Rama creada desde la punta de `feature/jlpt-n3` (que ya incluye la fusión del evaluador de trazos), no desde `main`, porque es continuación directa de la misma línea de contenido N3 | `datos.csv`, `js/kanji-examples.js`, `js/core.js`, `locales/*.json`, `tests/run-tests.mjs`, `KanjiStrokeOrders.woff` |
 | 2026-07-07 | 0.8.22 (bump 0.8.21→0.8.22) | Claude (Sonnet 5) | `feature/jlpt-n3-3` | Publica la tercera tanda de N3 (100 kanji, id_jlpt 371-470) tomados de `docs/jlpt-n3-list.md`, a pedido del usuario ("siguiente tanda de 100 kanjis por favor") continuando el mismo ritmo de la tanda 2. Misma mecánica de generación (script de inyección reutilizado con nuevo anclaje de inserción), una sola lección (`kanji-n3-3`) para los 100 kanji, rama creada desde la punta de `feature/jlpt-n3-2` | `datos.csv`, `js/kanji-examples.js`, `js/core.js`, `locales/*.json`, `tests/run-tests.mjs`, `KanjiStrokeOrders.woff` |
+| 2026-07-07 | 0.8.23 (bump 0.8.22→0.8.23) | Claude (Sonnet 5) | `feature/jlpt-n3-4` | Publica la cuarta y ÚLTIMA tanda de N3 (141 kanji, id_jlpt 471-611), completando toda la lista de `docs/jlpt-n3-list.md`, a pedido del usuario ("siguiente tanda, haz todos los restantes de N3"). Lección única `kanji-n3-final` (mismo patrón de nombre que `kanji-n4-final`). Se encontró y corrigió un bug real en `tools/validate-content.mjs`: el chequeo de `onyomi` exigía japonés SIEMPRE, sin la excepción `"-"` que sí tenía `kunyomi` — pero 込 y 払 son kanji reales sin onyomi (kun'yomi-only), así que se igualó la regla y se agregó una validación de que no falten ambas lecturas a la vez. Con esta tanda, N3 queda completo: 361 kanji (251-611), igual que N5 (80) y N4 (170) ya lo estaban | `datos.csv`, `js/kanji-examples.js`, `js/core.js`, `locales/*.json`, `tests/run-tests.mjs`, `tools/validate-content.mjs`, `KanjiStrokeOrders.woff` |
 
 ---
 
@@ -309,3 +310,29 @@ El usuario pidió acelerar el ritmo de publicación de N3: "ejecuta en tandas de
 ## Tarea: Tercera tanda de contenido N3, 100 kanji (2026-07-07, Claude Sonnet 5)
 
 Repetición exacta del proceso de la tanda 2 (ver sección anterior) para `id_jlpt` 371-470, a pedido de "siguiente tanda de 100 kanjis por favor". Se reutilizó el mismo script de inyección (`inject-n3-tanda3.mjs`, parametrizado con el kanji ancla de la tanda anterior, 役, para ubicar el punto de inserción en `datos.csv`/`kanji-examples.js`/locales) con un nuevo archivo de datos (`n3-tanda3-data.mjs`). Rama `feature/jlpt-n3-3` creada desde la punta de `feature/jlpt-n3-2`. Lección única `kanji-n3-3` ("24. Kanji N3: vida cotidiana, trabajo y entorno natural"). Versión 0.8.22, 683 tarjetas, 470 kanji con ejemplos. Quedan 141 kanji de `docs/jlpt-n3-list.md` (`id_jlpt` 471-611) para una cuarta tanda.
+
+---
+
+## Tarea: Cuarta y última tanda de contenido N3, 141 kanji — N3 completo (2026-07-07, Claude Sonnet 5)
+
+### Qué se pidió
+
+El usuario pidió terminar todo lo que quedaba de N3 de una vez: "siguiente tanda, haz todos los restantes de N3" — a diferencia de las tandas 2 y 3 (tamaño fijo de 100), esta cubre los 141 kanji restantes completos (`id_jlpt` 471-611) en una sola tanda/rama/commit.
+
+### Cómo se hizo
+
+Mismo proceso que las tandas 2 y 3 (rama `feature/jlpt-n3-4` desde la punta de `feature/jlpt-n3-3`, script de inyección `inject-n3-tanda4.mjs` reutilizado con ancla en el último kanji de la tanda anterior, 除). Única diferencia relevante: el archivo de datos (`n3-tanda4-data.mjs`, 141 entradas) se escribió en varios bloques (lotes de ~30-40 kanji) en vez de uno solo, por el volumen — se verificó al final con un script que confirma 141 entradas, ids 471-611 sin huecos ni duplicados antes de inyectar.
+
+### Bug real encontrado y corregido
+
+`tools/validate-content.mjs` exigía que el campo `onyomi` SIEMPRE contuviera japonés, sin la excepción `"-"` que sí existía para `kunyomi`. Dos kanji de esta tanda son genuinamente kun'yomi-only (no tienen onyomi en uso moderno): 込 (こむ, "estar lleno") y 払 (はらう, "pagar") — ambos confirmados contra la fuente JLPT Sensei, que lista su columna onyomi como "-". La corrección NO fue inventar una lectura on'yomi falsa para pasar la validación, sino igualar la regla de `onyomi` a la de `kunyomi` (aceptar `"-"` literal) y agregar en su lugar una validación de que no falten AMBAS lecturas a la vez (`onyomi === "-" && kunyomi === "-"` → fail), que es la invariante real que importa.
+
+### Resultado: N3 completo
+
+Con esta tanda, el nivel N3 queda 100% cubierto según la referencia de JLPT Sensei: 361 kanji (`id_jlpt` 251-611), igual que ya lo estaban N5 (80) y N4 (170). Total del proyecto: 611 kanji con ejemplos, 824 tarjetas, versión `v0.8.23`.
+
+### Qué falta
+
+- El evaluador de trazos (datos KanjiVG) sigue acotado a N5+N4 — extenderlo a los 361 kanji N3 es trabajo aparte, en las ramas del evaluador (`feature/stroke-evaluation-*`), no en `feature/jlpt-n3-*`. La plantilla de prompt para esa extensión ya está documentada en la sección "Feature: Evaluador de trazos con KanjiVG" de este archivo.
+- N2 queda como posible próximo nivel de contenido (lista candidata ya generada en `docs/jlpt-n2-list.md`, 370 kanji, sin auditar/publicar todavía).
+- Ninguna de las 4 ramas `feature/jlpt-n3-*` se ha fusionado a `main` — sigue pendiente de autorización explícita del usuario.

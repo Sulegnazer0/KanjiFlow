@@ -10,6 +10,21 @@ El número de versión visible de la app debe mantenerse alineado en:
 - `CHANGELOG.md`;
 - `service-worker.js` y query strings `?v=...` cuando cambien archivos cacheados.
 
+## [0.8.23] - 2026-07-07
+
+### Agregado
+
+- Cuarta y última tanda de kanji N3 (141 caracteres, id_jlpt 471-611), completando la cobertura N3 según la referencia de JLPT Sensei: 完,降,責,捕,危,給,苦,迎,園,具,辞,因,馬,愛,富,彼,未,舞,亡,冷,適,婦,寄,込,顔,類,余,王,妻,背,熱,宿,険,頼,覚,船,途,許,抜,便,留,罪,努,精,散,静,婚,喜,浮,絶,幸,押,倒,等,老,曲,払,庭,徒,勤,居,雑,招,困,欠,更,刻,賛,抱,犯,恐,息,戻,願,絵,越,欲,痛,笑,互,束,似,列,探,逃,遊,迷,夢,君,閉,緒,折,草,暮,酒,悲,晴,掛,到,暗,盗,吸,陽,御,歯,忘,雪,吹,娘,誤,洗,慣,礼,窓,昔,貧,怒,泳,祖,杯,疲,皆,鳴,腹,煙,眠,怖,頂,箱,晩,寒,髪,忙,才,靴,恥,偶,偉,猫,幾,誰.
+- Lección "25. Kanji N3: cierre de nivel".
+- Ejemplos contextualizados para los 141 kanji nuevos.
+- Traducciones ES/EN/DE/FR/PT para las nuevas tarjetas.
+
+### Cambiado
+
+- La app muestra `v0.8.23`, 824 tarjetas y 611 kanji con ejemplos.
+- Fuente `KanjiStrokeOrders.woff` regenerada para cubrir los 611 kanji publicados.
+- `tools/validate-content.mjs`: el chequeo de `onyomi` ahora acepta `"-"` (igual que `kunyomi`) para los kanji sin lectura on'yomi real, como 込 y 払 — se agregó en cambio una validación de que no falten AMBAS lecturas a la vez.
+
 ## [0.8.22] - 2026-07-07
 
 ### Agregado

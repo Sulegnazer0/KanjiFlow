@@ -206,8 +206,9 @@ function validateKanjiRow(item, id) {
     }
     requireText(item.onyomi, `onyomi en ${id}`);
     requireText(item.kunyomi, `kunyomi en ${id}`);
-    if (!JAPANESE_RE.test(item.onyomi)) fail(`onyomi sin japonés en ${id}`);
+    if (item.onyomi !== "-" && !JAPANESE_RE.test(item.onyomi)) fail(`onyomi sin japonés en ${id}`);
     if (item.kunyomi !== "-" && !JAPANESE_RE.test(item.kunyomi)) fail(`kunyomi sin japonés en ${id}`);
+    if (item.onyomi === "-" && item.kunyomi === "-") fail(`Fila sin onyomi ni kunyomi en ${id}`);
 }
 
 function validateKanjiExamples(dictionary) {

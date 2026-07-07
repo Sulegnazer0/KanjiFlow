@@ -188,6 +188,13 @@ export const LESSONS = [
         test: item => item.tipo === "kanji" && item.categoria === "N3" && Number(item.id_jlpt) >= 371 && Number(item.id_jlpt) <= 470,
     },
     {
+        id: "kanji-n3-final",
+        title: "25. Kanji N3: cierre de nivel",
+        description: "Últimos kanji N3 de la referencia: emociones, cuerpo, familia, animales, clima y expresiones cotidianas.",
+        category: "N3",
+        test: item => item.tipo === "kanji" && item.categoria === "N3" && Number(item.id_jlpt) >= 471 && Number(item.id_jlpt) <= 611,
+    },
+    {
         id: "all",
         title: "Todo el contenido",
         description: "Mezcla libre de todos los caracteres disponibles.",
