@@ -41,7 +41,7 @@ import {
 } from "./stroke-scoring.js";
 import { resampleStroke } from "./stroke-geometry.js";
 import { createStrokeAnimator } from "./stroke-animation.js";
-import { exampleJapanese, itemPronunciation, japaneseOnly, speakJapanese } from "./audio.js?v=825";
+import { exampleJapanese, itemPronunciation, japaneseOnly, speakJapanese } from "./audio.js?v=826";
 import { loadDictionary } from "./data.js";
 import {
     achievementLevel,
@@ -49,14 +49,14 @@ import {
     achievementSummary,
     buildAchievementStats,
     syncAchievements,
-} from "./achievements.js?v=825";
+} from "./achievements.js?v=826";
 import {
     dailyEntry,
     dailySummary,
     practiceStats,
     recentDailySummaries,
     recordDailyPractice,
-} from "./profile.js?v=825";
+} from "./profile.js?v=826";
 import {
     disablePracticeReminder,
     enablePracticeReminder,
@@ -65,7 +65,7 @@ import {
     recordPractice,
     setPracticeReminderTime,
     shouldNotifyPracticeReminder,
-} from "./reminders.js?v=825";
+} from "./reminders.js?v=826";
 import {
     AVAILABLE_LANGUAGES,
     applyDocumentTranslations,
@@ -79,9 +79,9 @@ import {
     localizeDictionary,
     t,
     translateCardState,
-} from "./i18n.js?v=825";
+} from "./i18n.js?v=826";
 
-const APP_VERSION = "0.8.25";
+const APP_VERSION = "0.8.26";
 const FEEDBACK_ENDPOINT = "https://script.google.com/macros/s/AKfycbxiz6058zwMxfPTDTmIBpG8JutOPw8YBxCRJ0BeMHp-py6IXZy4zkZs2IdTqwmSSzC1jw/exec";
 const SPLASH_MIN_MS = 2400;
 const startupStartedAt = performance.now();
@@ -120,6 +120,7 @@ const elements = {
     board: $("#pizarra"),
     feedbackBoard: $("#pizarra-feedback"),
     practiceGuide: $("#guia-practica"),
+    practiceGuideCanvas: $("#guia-practica-trazos"),
     clearBoard: $("#btn-limpiar"),
     reveal: $("#btn-revelar"),
     answerPanel: $("#panel-respuesta"),
@@ -392,15 +393,32 @@ const practicePad = createDrawingPad(elements.board, { lineWidth: 12, onStrokeEn
 const modalPad = createDrawingPad(elements.modalBoard, { lineWidth: 7 });
 const feedbackLayer = createFeedbackLayer(elements.feedbackBoard);
 const strokeAnimator = createStrokeAnimator(elements.strokeAnimationCanvas);
+const practiceGuideAnimator = createStrokeAnimator(elements.practiceGuideCanvas);
+const PRACTICE_GUIDE_COLOR = "rgba(239, 68, 68, 0.55)";
 
 const wait = ms => new Promise(resolve => setTimeout(resolve, Math.max(0, ms)));
 
 function hidePracticeGuide() {
     elements.practiceGuide.textContent = "";
     elements.practiceGuide.classList.add("hidden");
+    practiceGuideAnimator.stop();
+    elements.practiceGuideCanvas.classList.add("hidden");
 }
 
+// Cuando hay datos KanjiVG para el item actual, la guía se dibuja con esos MISMOS
+// puntos y la misma normalización (escala 1, lienzo completo) que usa handleStrokeEnd
+// para calificar — así lo que el usuario ve como referencia es literalmente lo que se
+// evalúa. Sin datos KanjiVG (kana u otro kanji no cubierto) cae a la fuente estática.
 function showPracticeGuide(character) {
+    if (expectedKanjiData) {
+        elements.practiceGuide.textContent = "";
+        elements.practiceGuide.classList.add("hidden");
+        elements.practiceGuideCanvas.classList.toggle("hidden", !character);
+        if (character) practiceGuideAnimator.drawStatic(expectedKanjiData, { color: PRACTICE_GUIDE_COLOR });
+        return;
+    }
+    elements.practiceGuideCanvas.classList.add("hidden");
+    practiceGuideAnimator.stop();
     elements.practiceGuide.textContent = character || "";
     elements.practiceGuide.classList.toggle("hidden", !character);
 }

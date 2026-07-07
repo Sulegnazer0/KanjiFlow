@@ -10,6 +10,18 @@ El número de versión visible de la app debe mantenerse alineado en:
 - `CHANGELOG.md`;
 - `service-worker.js` y query strings `?v=...` cuando cambien archivos cacheados.
 
+## [0.8.26] - 2026-07-07
+
+### Corregido
+
+- **Bug real de alineación**: la guía visual mostrada tras "Ver respuesta" en Práctica (y la animación en Estudio) usaba la fuente estática `OrdenTrazos`/una escala de 70%, mientras que la calificación en vivo (`handleStrokeEnd`) normaliza el trazo dibujado contra el lienzo completo (escala 100%, sin margen) usando los puntos KanjiVG. Como resultado, un trazo dibujado exactamente sobre la guía visible podía no coincidir con lo que realmente se evaluaba. Ahora, cuando el kanji tiene datos KanjiVG, la guía de Práctica se dibuja con esos MISMOS puntos y la MISMA normalización que la calificación (nuevo `<canvas id="guia-practica-trazos">` + `drawStatic()` en `js/stroke-animation.js`); sin KanjiVG (kana u otro kanji no cubierto) sigue usando la fuente estática sin cambios.
+- La animación de orden de trazos en Estudio (`js/stroke-animation.js`) pasa de escala 70% a 100% (`DEFAULT_SCALE`), para que el trazo esperado ocupe el lienzo completo — igual que el área natural donde el usuario calca.
+- Verificado con Playwright: calcar los puntos KanjiVG reales de un kanji punto por punto ahora da 100% de similitud (antes de este fix, la guía visual y la referencia de calificación podían estar desalineadas aunque visualmente parecieran coincidir).
+
+### Cambiado
+
+- La app muestra `v0.8.26`.
+
 ## [0.8.25] - 2026-07-07
 
 ### Cambiado

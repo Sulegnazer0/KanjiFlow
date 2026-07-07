@@ -2,7 +2,11 @@ const DEFAULT_STROKE_DURATION_MS = 900;
 const DEFAULT_PAUSE_MS = 400;
 const DEFAULT_COLOR = "rgba(220, 38, 38, 0.75)";
 const DEFAULT_LINE_WIDTH = 10;
-const DEFAULT_SCALE = 0.7;
+// Escala 1 = el trazo esperado ocupa el lienzo completo, igual que la normalización
+// usada para calificar en handleStrokeEnd (js/app.js). Cualquier escala menor desalinea
+// la guía visual del punto real que se está evaluando (o, en Estudio, del área natural
+// de calcado), aunque visualmente parezca "cerca".
+const DEFAULT_SCALE = 1;
 const NUMBER_COLOR = "rgba(100, 116, 139, 0.75)";
 const NUMBER_FONT = "bold 13px sans-serif";
 const NUMBER_OFFSET = 9;
@@ -105,5 +109,24 @@ export function createStrokeAnimator(canvas) {
         rafId = requestAnimationFrame(step);
     }
 
-    return { playCharacter, stop };
+    function drawStatic(kanjiData, options = {}) {
+        stop();
+        const strokes = kanjiData?.strokes ?? [];
+        if (strokes.length === 0) return;
+
+        const color = options.color ?? DEFAULT_COLOR;
+        const scale = options.scale ?? DEFAULT_SCALE;
+        const showNumbers = options.showNumbers ?? true;
+
+        context.lineCap = "round";
+        context.lineJoin = "round";
+        context.globalCompositeOperation = options.compositeOperation ?? "source-over";
+        if (showNumbers) drawStrokeNumbers(strokes, scale);
+        context.strokeStyle = color;
+        context.lineWidth = (options.lineWidth ?? DEFAULT_LINE_WIDTH) * scale;
+        strokes.forEach(stroke => drawStrokeProgress(stroke.points, 1, scale));
+        context.globalCompositeOperation = "source-over";
+    }
+
+    return { playCharacter, drawStatic, stop };
 }

@@ -7,7 +7,7 @@
     <meta name="description" content="Aprende hiragana, katakana y kanji con escritura, audio y repetición espaciada.">
     <title>KanjiFlow — Aprende japonés</title>
     <link rel="manifest" href="manifest.webmanifest">
-    <link rel="stylesheet" href="style.css?v=825">
+    <link rel="stylesheet" href="style.css?v=826">
 </head>
 <body>
     <div id="pantalla-carga" class="splash-screen" aria-live="polite">
@@ -15,7 +15,7 @@
             <img src="assets/s0labsHorizontal.png" alt="S0 Labs" class="splash-logo">
             <p data-i18n="ui.splashTagline">Preparando tu flujo de práctica…</p>
         </div>
-        <span id="splash-version" class="splash-version">v0.8.25</span>
+        <span id="splash-version" class="splash-version">v0.8.26</span>
     </div>
 
     <main class="app-shell">
@@ -134,6 +134,8 @@
 
             <div class="canvas-frame">
                 <div id="guia-practica" class="practice-character-guide hidden" aria-hidden="true"></div>
+                <canvas id="guia-practica-trazos" class="practice-character-guide-canvas hidden" width="320" height="320"
+                        aria-hidden="true"></canvas>
                 <canvas id="pizarra" width="320" height="320"
                         aria-label="Pizarra para escribir el carácter japonés"
                         data-i18n-aria-label="ui.practiceCanvasLabel"></canvas>
@@ -569,6 +571,6 @@
 
     <div id="aviso-nivel" class="level-notice" role="status" aria-live="polite"></div>
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
-    <script type="module" src="js/app.js?v=825"></script>
+    <script type="module" src="js/app.js?v=826"></script>
 </body>
 </html>
