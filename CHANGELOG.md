@@ -10,6 +10,20 @@ El número de versión visible de la app debe mantenerse alineado en:
 - `CHANGELOG.md`;
 - `service-worker.js` y query strings `?v=...` cuando cambien archivos cacheados.
 
+## [0.8.21] - 2026-07-07
+
+### Agregado
+
+- Segunda tanda de kanji N3 (100 caracteres, id_jlpt 271-370): 最,現,調,化,当,約,首,法,性,的,要,制,治,務,成,期,取,和,機,平,加,受,続,進,数,記,初,指,権,支,産,点,報,済,活,原,共,得,解,交,資,予,向,際,勝,面,告,反,判,認,参,利,組,信,在,件,側,任,引,求,所,次,昨,論,官,増,係,感,情,投,示,変,打,直,両,式,確,果,容,必,演,歳,争,談,能,位,置,流,格,疑,過,局,放,常,状,球,職,与,供,役.
+- Lección "23. Kanji N3: sistemas, procesos y relaciones sociales".
+- Ejemplos contextualizados para los 100 kanji nuevos.
+- Traducciones ES/EN/DE/FR/PT para las nuevas tarjetas.
+
+### Cambiado
+
+- La app muestra `v0.8.21`, 583 tarjetas y 370 kanji con ejemplos.
+- Fuente `KanjiStrokeOrders.woff` regenerada para cubrir los 370 kanji publicados.
+
 ## [0.8.20] - 2026-07-06
 
 Fusiona en `feature/jlpt-n3` el trabajo independiente de `feature/stroke-evaluation-n4` (evaluador de trazos + animación KanjiVG para N5/N4), que había avanzado en paralelo desde `main`@0.8.11. Ambas líneas de historial quedan documentadas íntegramente en este archivo, tal como circularon en sus respectivas ramas.

@@ -146,10 +146,10 @@ function readPath(object, path) {
 
 const rawData = await readFile(new URL("../datos.csv", import.meta.url), "utf8");
 const dictionary = parseCSV(rawData);
-assert.equal(dictionary.length, 483);
+assert.equal(dictionary.length, 583);
 assert.equal(new Set(dictionary.map(itemId)).size, dictionary.length);
-assert.equal(dictionary.filter(item => item.tipo === "kanji").length, 270);
-assert.equal(Object.keys(KANJI_EXAMPLES).length, 270);
+assert.equal(dictionary.filter(item => item.tipo === "kanji").length, 370);
+assert.equal(Object.keys(KANJI_EXAMPLES).length, 370);
 assert.equal(itemId(dictionary.find(item => item.caracter === "水")), "kanji_水");
 assert.equal(itemPronunciation(dictionary.find(item => item.caracter === "小")), "ショウ");
 assert.equal(itemPronunciation(dictionary.find(item => item.caracter === "会")), "カイ");
@@ -269,8 +269,8 @@ assert.ok(lesson.items.length > 0);
 assert.ok(lesson.items.every(item => item.tipo === "hiragana"));
 
 const stats = progressStats(dictionary, progress, now);
-assert.equal(stats.total, 483);
-assert.equal(stats.newCount, 483);
+assert.equal(stats.total, 583);
+assert.equal(stats.newCount, 583);
 assert.equal(stats.masteredCount, 0);
 
 const DAY_MS = 24 * 60 * 60 * 1000;
@@ -439,7 +439,7 @@ console.log("✓ Programación de repetición espaciada");
 console.log("✓ Recordatorio de práctica con hora configurable");
 console.log("✓ Meta diaria y estadísticas de perfil");
 console.log("✓ Sistema de logros, progreso y traducciones");
-console.log("✓ Datos únicos y 270 ejemplos de kanji");
+console.log("✓ Datos únicos y 370 ejemplos de kanji");
 console.log("✓ Currículo y estadísticas de progreso");
 console.log("✓ Locales activos completos para kanji y kana especial");
 console.log("✓ Geometría de trazos y algoritmo de comparación KanjiVG");

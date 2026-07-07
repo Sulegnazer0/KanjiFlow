@@ -174,6 +174,13 @@ export const LESSONS = [
         test: item => item.tipo === "kanji" && item.categoria === "N3" && Number(item.id_jlpt) >= 251 && Number(item.id_jlpt) <= 270,
     },
     {
+        id: "kanji-n3-2",
+        title: "23. Kanji N3: sistemas, procesos y relaciones sociales",
+        description: "Segunda tanda N3: sistemas, leyes, procesos cotidianos, relaciones sociales, emociones y vida laboral.",
+        category: "N3",
+        test: item => item.tipo === "kanji" && item.categoria === "N3" && Number(item.id_jlpt) >= 271 && Number(item.id_jlpt) <= 370,
+    },
+    {
         id: "all",
         title: "Todo el contenido",
         description: "Mezcla libre de todos los caracteres disponibles.",

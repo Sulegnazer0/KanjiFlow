@@ -453,6 +453,10 @@
       "title": "22. Kanji N3 : societe et decisions",
       "description": "Politique, societe, relations, decisions et concepts abstraits de niveau N3."
     },
+    "kanji-n3-2": {
+      "title": "23. Kanji N3 : systemes, processus et relations sociales",
+      "description": "Deuxieme groupe N3 : systemes, lois, processus quotidiens, relations sociales, emotions et vie professionnelle."
+    },
     "all": {
       "title": "Tout le contenu",
       "description": "Un melange libre de tous les caracteres disponibles."
@@ -1823,6 +1827,506 @@
       "meaning": "Passer / Experimenter",
       "exampleMeaning": "experience",
       "sentenceMeaning": "C'est devenu une bonne experience."
+    },
+    "kanji_最": {
+      "meaning": "Le plus / Extreme",
+      "exampleMeaning": "recemment",
+      "sentenceMeaning": "Je suis occupe ces derniers temps."
+    },
+    "kanji_現": {
+      "meaning": "Present / Actuel",
+      "exampleMeaning": "present, actualite",
+      "sentenceMeaning": "J'habite actuellement a Tokyo."
+    },
+    "kanji_調": {
+      "meaning": "Enqueter / Regler",
+      "exampleMeaning": "enquete",
+      "sentenceMeaning": "L'entreprise mene une enquete."
+    },
+    "kanji_化": {
+      "meaning": "Changer / Transformer",
+      "exampleMeaning": "culture",
+      "sentenceMeaning": "J'aime la culture japonaise."
+    },
+    "kanji_当": {
+      "meaning": "Toucher / Approprie",
+      "exampleMeaning": "verite, vraiment",
+      "sentenceMeaning": "Est-ce que c'est vrai ?"
+    },
+    "kanji_約": {
+      "meaning": "Promesse / Environ",
+      "exampleMeaning": "promesse",
+      "sentenceMeaning": "J'ai fait une promesse a mon ami."
+    },
+    "kanji_首": {
+      "meaning": "Cou",
+      "exampleMeaning": "capitale",
+      "sentenceMeaning": "Tokyo est la capitale du Japon."
+    },
+    "kanji_法": {
+      "meaning": "Methode / Loi",
+      "exampleMeaning": "methode",
+      "sentenceMeaning": "Je pense a une bonne methode."
+    },
+    "kanji_性": {
+      "meaning": "Nature / Genre",
+      "exampleMeaning": "personnalite",
+      "sentenceMeaning": "Il a une bonne personnalite."
+    },
+    "kanji_的": {
+      "meaning": "Cible / Objectif",
+      "exampleMeaning": "but, objectif",
+      "sentenceMeaning": "Quel est le but du voyage ?"
+    },
+    "kanji_要": {
+      "meaning": "Necessaire / Essentiel",
+      "exampleMeaning": "important",
+      "sentenceMeaning": "C'est une histoire importante."
+    },
+    "kanji_制": {
+      "meaning": "Systeme / Reglement",
+      "exampleMeaning": "systeme, regime",
+      "sentenceMeaning": "Un nouveau systeme a ete cree."
+    },
+    "kanji_治": {
+      "meaning": "Gouverner / Guerir",
+      "exampleMeaning": "traitement medical",
+      "sentenceMeaning": "Je recois un traitement a l'hopital."
+    },
+    "kanji_務": {
+      "meaning": "Tache / Devoir",
+      "exampleMeaning": "travail de bureau",
+      "sentenceMeaning": "Je fais un travail de bureau."
+    },
+    "kanji_成": {
+      "meaning": "Devenir / Reussir",
+      "exampleMeaning": "succes",
+      "sentenceMeaning": "Il a reussi dans son travail."
+    },
+    "kanji_期": {
+      "meaning": "Periode / Delai",
+      "exampleMeaning": "periode, duree",
+      "sentenceMeaning": "Combien de temps dure la periode de vacances ?"
+    },
+    "kanji_取": {
+      "meaning": "Prendre / Saisir",
+      "exampleMeaning": "prendre",
+      "sentenceMeaning": "Prends les bagages, s'il te plait."
+    },
+    "kanji_和": {
+      "meaning": "Harmonie / Paix",
+      "exampleMeaning": "paix",
+      "sentenceMeaning": "Je souhaite la paix dans le monde."
+    },
+    "kanji_機": {
+      "meaning": "Machine / Opportunite",
+      "exampleMeaning": "opportunite",
+      "sentenceMeaning": "Je pense que c'est une bonne opportunite."
+    },
+    "kanji_平": {
+      "meaning": "Plat / Paix",
+      "exampleMeaning": "jour de semaine",
+      "sentenceMeaning": "Je suis occupe en semaine."
+    },
+    "kanji_加": {
+      "meaning": "Ajouter / Additionner",
+      "exampleMeaning": "participation",
+      "sentenceMeaning": "Je participe a la fete."
+    },
+    "kanji_受": {
+      "meaning": "Recevoir / Accepter",
+      "exampleMeaning": "reception",
+      "sentenceMeaning": "Je donne mon nom a la reception."
+    },
+    "kanji_続": {
+      "meaning": "Continuer / Serie",
+      "exampleMeaning": "continuer",
+      "sentenceMeaning": "Je continue a etudier."
+    },
+    "kanji_進": {
+      "meaning": "Avancer / Progresser",
+      "exampleMeaning": "progres",
+      "sentenceMeaning": "Mon japonais a progresse."
+    },
+    "kanji_数": {
+      "meaning": "Nombre / Chiffre",
+      "exampleMeaning": "nombre, chiffre",
+      "sentenceMeaning": "Ecris le nombre, s'il te plait."
+    },
+    "kanji_記": {
+      "meaning": "Enregistrer / Noter",
+      "exampleMeaning": "journal intime",
+      "sentenceMeaning": "J'ecris un journal tous les jours."
+    },
+    "kanji_初": {
+      "meaning": "Premier / Debut",
+      "exampleMeaning": "au debut, premier",
+      "sentenceMeaning": "D'abord, ecris ton nom."
+    },
+    "kanji_指": {
+      "meaning": "Doigt / Indiquer",
+      "exampleMeaning": "doigt",
+      "sentenceMeaning": "Je pointe du doigt."
+    },
+    "kanji_権": {
+      "meaning": "Autorite / Droits",
+      "exampleMeaning": "droit (legal)",
+      "sentenceMeaning": "J'ai le droit de vote."
+    },
+    "kanji_支": {
+      "meaning": "Soutenir / Supporter",
+      "exampleMeaning": "succursale",
+      "sentenceMeaning": "Une nouvelle succursale a ouvert."
+    },
+    "kanji_産": {
+      "meaning": "Produire / Accoucher",
+      "exampleMeaning": "souvenir",
+      "sentenceMeaning": "J'ai achete un souvenir du voyage."
+    },
+    "kanji_点": {
+      "meaning": "Point / Marque",
+      "exampleMeaning": "score",
+      "sentenceMeaning": "Le score du test etait bon."
+    },
+    "kanji_報": {
+      "meaning": "Rapport / Nouvelle",
+      "exampleMeaning": "information",
+      "sentenceMeaning": "Je cherche des informations sur internet."
+    },
+    "kanji_済": {
+      "meaning": "Regler / Terminer",
+      "exampleMeaning": "economie",
+      "sentenceMeaning": "Je lis les nouvelles economiques."
+    },
+    "kanji_活": {
+      "meaning": "Vivre / Activite",
+      "exampleMeaning": "vie quotidienne",
+      "sentenceMeaning": "La vie a Tokyo est amusante."
+    },
+    "kanji_原": {
+      "meaning": "Origine / Plaine",
+      "exampleMeaning": "cause",
+      "sentenceMeaning": "J'enquete sur la cause de l'accident."
+    },
+    "kanji_共": {
+      "meaning": "Ensemble / En commun",
+      "exampleMeaning": "commun, partage",
+      "sentenceMeaning": "Nous avons un loisir en commun."
+    },
+    "kanji_得": {
+      "meaning": "Obtenir / Gagner",
+      "exampleMeaning": "doue, fort (dans un domaine)",
+      "sentenceMeaning": "Je suis doue en mathematiques."
+    },
+    "kanji_解": {
+      "meaning": "Resoudre / Comprendre",
+      "exampleMeaning": "comprehension",
+      "sentenceMeaning": "J'ai compris l'explication."
+    },
+    "kanji_交": {
+      "meaning": "Melanger / Echanger",
+      "exampleMeaning": "circulation, transport",
+      "sentenceMeaning": "Les transports sont pratiques."
+    },
+    "kanji_資": {
+      "meaning": "Ressources / Capital",
+      "exampleMeaning": "documents, materiel",
+      "sentenceMeaning": "Je prepare les documents pour la reunion."
+    },
+    "kanji_予": {
+      "meaning": "Prealable / A l'avance",
+      "exampleMeaning": "reservation",
+      "sentenceMeaning": "J'ai reserve un restaurant."
+    },
+    "kanji_向": {
+      "meaning": "Se diriger / S'orienter",
+      "exampleMeaning": "direction",
+      "sentenceMeaning": "Je ne connais pas la direction de la gare."
+    },
+    "kanji_際": {
+      "meaning": "Occasion / Moment",
+      "exampleMeaning": "international",
+      "sentenceMeaning": "Je participe a une conference internationale."
+    },
+    "kanji_勝": {
+      "meaning": "Victoire / Gagner",
+      "exampleMeaning": "gagner",
+      "sentenceMeaning": "J'ai gagne le match."
+    },
+    "kanji_面": {
+      "meaning": "Visage / Surface",
+      "exampleMeaning": "interessant, amusant",
+      "sentenceMeaning": "Ce film est interessant."
+    },
+    "kanji_告": {
+      "meaning": "Informer / Annoncer",
+      "exampleMeaning": "publicite",
+      "sentenceMeaning": "J'ai vu une publicite a la television."
+    },
+    "kanji_反": {
+      "meaning": "Anti- / Contraire",
+      "exampleMeaning": "reaction",
+      "sentenceMeaning": "Il y a eu une bonne reaction."
+    },
+    "kanji_判": {
+      "meaning": "Jugement / Sceau",
+      "exampleMeaning": "jugement, decision",
+      "sentenceMeaning": "Je decide par moi-meme."
+    },
+    "kanji_認": {
+      "meaning": "Reconnaitre / Admettre",
+      "exampleMeaning": "confirmation",
+      "sentenceMeaning": "Je confirme le plan."
+    },
+    "kanji_参": {
+      "meaning": "Participer / Aller",
+      "exampleMeaning": "reference",
+      "sentenceMeaning": "J'ai utilise ce livre comme reference."
+    },
+    "kanji_利": {
+      "meaning": "Profit / Avantage",
+      "exampleMeaning": "pratique, commode",
+      "sentenceMeaning": "Cette application est pratique."
+    },
+    "kanji_組": {
+      "meaning": "Assembler / Groupe",
+      "exampleMeaning": "programme (television)",
+      "sentenceMeaning": "Je regarde mon programme prefere."
+    },
+    "kanji_信": {
+      "meaning": "Foi / Confiance",
+      "exampleMeaning": "confiance en soi",
+      "sentenceMeaning": "Aie confiance en toi, s'il te plait."
+    },
+    "kanji_在": {
+      "meaning": "Exister / Etre",
+      "exampleMeaning": "existence",
+      "sentenceMeaning": "Crois-tu en l'existence de Dieu ?"
+    },
+    "kanji_件": {
+      "meaning": "Affaire / Cas",
+      "exampleMeaning": "incident, affaire",
+      "sentenceMeaning": "Il y a eu un grand incident."
+    },
+    "kanji_側": {
+      "meaning": "Cote / Pencher",
+      "exampleMeaning": "cote droit",
+      "sentenceMeaning": "Tiens-toi du cote droit, s'il te plait."
+    },
+    "kanji_任": {
+      "meaning": "Responsabilite / Devoir",
+      "exampleMeaning": "responsabilite",
+      "sentenceMeaning": "J'assume des responsabilites au travail."
+    },
+    "kanji_引": {
+      "meaning": "Tirer / Trainer",
+      "exampleMeaning": "demenagement",
+      "sentenceMeaning": "Je demenage le mois prochain."
+    },
+    "kanji_求": {
+      "meaning": "Demander / Exiger",
+      "exampleMeaning": "exigence, demande",
+      "sentenceMeaning": "J'ai fait une demande a l'entreprise."
+    },
+    "kanji_所": {
+      "meaning": "Lieu / Endroit",
+      "exampleMeaning": "lieu, endroit",
+      "sentenceMeaning": "J'ai trouve un bon endroit."
+    },
+    "kanji_次": {
+      "meaning": "Suivant / Prochain",
+      "exampleMeaning": "suivant, prochain",
+      "sentenceMeaning": "Je prends le prochain bus."
+    },
+    "kanji_昨": {
+      "meaning": "Hier / Precedent",
+      "exampleMeaning": "l'annee derniere",
+      "sentenceMeaning": "L'annee derniere, je suis alle au Japon."
+    },
+    "kanji_論": {
+      "meaning": "Argument / Discours",
+      "exampleMeaning": "these, memoire",
+      "sentenceMeaning": "J'ecris une these."
+    },
+    "kanji_官": {
+      "meaning": "Fonctionnaire / Organe",
+      "exampleMeaning": "policier",
+      "sentenceMeaning": "J'ai demande mon chemin a un policier."
+    },
+    "kanji_増": {
+      "meaning": "Augmenter / Accroitre",
+      "exampleMeaning": "augmenter",
+      "sentenceMeaning": "La population a augmente."
+    },
+    "kanji_係": {
+      "meaning": "Responsable / Lien",
+      "exampleMeaning": "employe responsable",
+      "sentenceMeaning": "Demande a l'employe responsable."
+    },
+    "kanji_感": {
+      "meaning": "Sentiment / Sensation",
+      "exampleMeaning": "emotion, etre emu",
+      "sentenceMeaning": "Le film m'a emu."
+    },
+    "kanji_情": {
+      "meaning": "Sentiment / Passion",
+      "exampleMeaning": "expression (faciale)",
+      "sentenceMeaning": "Son expression est joyeuse."
+    },
+    "kanji_投": {
+      "meaning": "Lancer / Jeter",
+      "exampleMeaning": "lancer",
+      "sentenceMeaning": "Je lance la balle."
+    },
+    "kanji_示": {
+      "meaning": "Montrer / Indiquer",
+      "exampleMeaning": "instruction",
+      "sentenceMeaning": "Je suis les instructions du professeur."
+    },
+    "kanji_変": {
+      "meaning": "Changer / Etrange",
+      "exampleMeaning": "difficile, tres",
+      "sentenceMeaning": "Aujourd'hui a ete difficile."
+    },
+    "kanji_打": {
+      "meaning": "Frapper / Batter",
+      "exampleMeaning": "frapper",
+      "sentenceMeaning": "Je frappe la balle."
+    },
+    "kanji_直": {
+      "meaning": "Direct / Reparer",
+      "exampleMeaning": "reparer, corriger",
+      "sentenceMeaning": "Je repare l'ordinateur."
+    },
+    "kanji_両": {
+      "meaning": "Les deux",
+      "exampleMeaning": "les deux",
+      "sentenceMeaning": "J'aime les deux."
+    },
+    "kanji_式": {
+      "meaning": "Ceremonie / Style",
+      "exampleMeaning": "ceremonie de rentree",
+      "sentenceMeaning": "Demain, c'est la ceremonie de rentree."
+    },
+    "kanji_確": {
+      "meaning": "Confirmer / Sur",
+      "exampleMeaning": "sur, certain",
+      "sentenceMeaning": "C'est une information sure."
+    },
+    "kanji_果": {
+      "meaning": "Fruit / Resultat",
+      "exampleMeaning": "resultat",
+      "sentenceMeaning": "Le resultat du test etait bon."
+    },
+    "kanji_容": {
+      "meaning": "Contenir / Forme",
+      "exampleMeaning": "recipient",
+      "sentenceMeaning": "Mets-le dans le recipient, s'il te plait."
+    },
+    "kanji_必": {
+      "meaning": "Necessaire / Inevitable",
+      "exampleMeaning": "necessaire",
+      "sentenceMeaning": "J'ai besoin d'argent."
+    },
+    "kanji_演": {
+      "meaning": "Jouer / Interpreter",
+      "exampleMeaning": "interpretation musicale",
+      "sentenceMeaning": "Je joue du piano."
+    },
+    "kanji_歳": {
+      "meaning": "Age / Fin d'annee",
+      "exampleMeaning": "quel age",
+      "sentenceMeaning": "Quel age as-tu ?"
+    },
+    "kanji_争": {
+      "meaning": "Disputer / Rivaliser",
+      "exampleMeaning": "competition",
+      "sentenceMeaning": "Il y a une forte competition dans l'entreprise."
+    },
+    "kanji_談": {
+      "meaning": "Discuter / Parler",
+      "exampleMeaning": "blague",
+      "sentenceMeaning": "C'est une blague."
+    },
+    "kanji_能": {
+      "meaning": "Capacite / Talent",
+      "exampleMeaning": "possible",
+      "sentenceMeaning": "C'est possible."
+    },
+    "kanji_位": {
+      "meaning": "Rang / Grade",
+      "exampleMeaning": "premiere place",
+      "sentenceMeaning": "J'ai obtenu la premiere place au tournoi."
+    },
+    "kanji_置": {
+      "meaning": "Placer / Emplacement",
+      "exampleMeaning": "position, emplacement",
+      "sentenceMeaning": "Je verifie l'emplacement de la gare."
+    },
+    "kanji_流": {
+      "meaning": "Courant / Couler",
+      "exampleMeaning": "echange",
+      "sentenceMeaning": "Nous faisons un echange culturel."
+    },
+    "kanji_格": {
+      "meaning": "Statut / Categorie",
+      "exampleMeaning": "prix",
+      "sentenceMeaning": "Le prix de ce produit est eleve."
+    },
+    "kanji_疑": {
+      "meaning": "Douter / Soupconner",
+      "exampleMeaning": "doute, question",
+      "sentenceMeaning": "J'ai une question."
+    },
+    "kanji_過": {
+      "meaning": "Depasser / Exceder",
+      "exampleMeaning": "passe",
+      "sentenceMeaning": "Je parle du passe."
+    },
+    "kanji_局": {
+      "meaning": "Bureau / Departement",
+      "exampleMeaning": "bureau de poste",
+      "sentenceMeaning": "Je vais au bureau de poste."
+    },
+    "kanji_放": {
+      "meaning": "Liberer / Lacher",
+      "exampleMeaning": "diffusion, emission",
+      "sentenceMeaning": "C'est diffuse a la television."
+    },
+    "kanji_常": {
+      "meaning": "Habituel / Normal",
+      "exampleMeaning": "quotidien",
+      "sentenceMeaning": "Je profite de la vie quotidienne."
+    },
+    "kanji_状": {
+      "meaning": "Etat / Forme",
+      "exampleMeaning": "etat, condition",
+      "sentenceMeaning": "Mon etat physique est bon."
+    },
+    "kanji_球": {
+      "meaning": "Balle / Sphere",
+      "exampleMeaning": "baseball",
+      "sentenceMeaning": "J'aime le baseball."
+    },
+    "kanji_職": {
+      "meaning": "Poste / Emploi",
+      "exampleMeaning": "trouver un emploi",
+      "sentenceMeaning": "L'annee prochaine, je trouverai un emploi."
+    },
+    "kanji_与": {
+      "meaning": "Donner / Accorder",
+      "exampleMeaning": "donner",
+      "sentenceMeaning": "J'exerce une influence."
+    },
+    "kanji_供": {
+      "meaning": "Offrir / Accompagner",
+      "exampleMeaning": "enfant",
+      "sentenceMeaning": "L'enfant joue dans le parc."
+    },
+    "kanji_役": {
+      "meaning": "Role / Devoir",
+      "exampleMeaning": "role",
+      "sentenceMeaning": "Quel est mon role ?"
     }
   },
   "exampleTerms": {
