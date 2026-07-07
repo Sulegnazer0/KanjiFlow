@@ -1,0 +1,233 @@
+# Registro de colaboración con IA — KanjiFlow
+
+Este archivo tiene dos objetivos:
+
+1. **Historial**: dejar constancia de qué se construyó, cuándo, quién lo pidió y qué IA lo implementó — para que cualquier ingeniero (o cualquiera de las otras IAs del proyecto) pueda llegar en frío y entender el porqué de una feature sin tener que arqueologizar el código o el chat original.
+2. **Traspaso de conocimiento**: para cada feature grande, dejar una guía técnica de "cómo se hizo" y una plantilla de prompt lista para pedirle una extensión a Claude, Codex o Gemini — por si en el futuro no está disponible la IA que la construyó originalmente.
+
+## Convención (a partir de ahora)
+
+Cada vez que una IA haga un commit de una feature nueva o un cambio de arquitectura relevante:
+
+1. Agregar una fila a la tabla de **Historial** de este archivo, en el mismo commit.
+2. Si la feature es lo bastante grande como para que alguien quiera extenderla después (como este evaluador de trazos), agregar una sección `## Feature: <nombre>` con arquitectura + prompt de extensión, siguiendo el formato de la sección de ejemplo más abajo.
+3. El mensaje de commit sigue el estilo ya usado en este repo (verbo en imperativo, español, conciso) y termina con `Co-Authored-By: <IA> <noreply>`.
+4. **Actualización de `CHANGELOG.md` y versión — cada tanda/commit relevante bump-ea versión.** Revisando el historial real de `CHANGELOG.md`, las tandas N4 (0.8.7 → 0.8.11) ya venían haciendo esto desde antes de este archivo existir: cada tanda de contenido bump-ea `APP_VERSION`/`package.json`/splash/`CACHE_NAME`/`?v=...` y agrega su propia entrada en `CHANGELOG.md`, en la misma rama de feature, antes de fusionar a `main`. El 2026-07-06 el usuario pidió explícitamente lo mismo para las ramas del evaluador de trazos (motivo: usa el número de versión en la pantalla de carga para confirmar a simple vista que está probando una build nueva) — es la misma convención aplicada de forma consistente a ambos tipos de rama, no una regla nueva que contradiga lo anterior.
+5. **Ramas separadas por tipo de trabajo, no por orden cronológico.** El evaluador de trazos (`feature/stroke-evaluation`, `feature/stroke-evaluation-n4`) y el contenido JLPT (`feature/jlpt-n3`, futuras `feature/jlpt-n3-2`, etc.) son líneas de trabajo independientes — cada una parte de `main`, no una de la otra, aunque ambas estén "en progreso" al mismo tiempo. Esto es intencional: mantiene cada PR/revisión enfocada en un solo tipo de cambio, igual que ya se hacía históricamente con `feature/jlpt-n4`, `feature/jlpt-n4-2`, etc.
+
+## Historial
+
+| Fecha | IA | Rama | Resumen | Archivos clave |
+|---|---|---|---|---|
+| 2026-07-06 | Claude (Sonnet 5) | `feature/stroke-evaluation` | Evaluador automático de trazos (KanjiVG) + animación progresiva de orden de trazos, para kanji N5 | `js/stroke-scoring.js`, `js/stroke-geometry.js`, `js/stroke-animation.js`, `js/drawing.js`, `data/kanjivg/`, `tools/fetch-kanjivg.mjs`, `tools/build-kanjivg-data.mjs` |
+| 2026-07-06 | Claude (Sonnet 5) | `feature/stroke-evaluation` | Ajustes de feedback visual tras probar en navegador: arregla el color en vivo (estaba invisible sobre la tinta por `mix-blend-mode: multiply`, y la normalización por trazo parcial daba falsos rojos en trazos cortos), escala la animación al 80% con numeración de trazos, y sube el tamaño de la fuente estática para que coincida en escala | `js/app.js`, `js/drawing.js`, `js/stroke-animation.js`, `style.css` |
+| 2026-07-06 | Claude (Sonnet 5) | `feature/stroke-evaluation` | Segunda ronda de ajustes: línea de color más delgada y opaca (encima de la tinta, no un halo), animación reducida a 70% con control de velocidad (Lenta/Normal/Rápida) en el modal, y recomendación automática de calificación SRS ("Fácil/Bien/Difícil") según el % de similitud, resaltando el botón sugerido | `js/app.js`, `js/drawing.js`, `js/stroke-animation.js`, `js/stroke-scoring.js`, `index.html`, `style.css` |
+| 2026-07-06 | Claude (Sonnet 5) | `feature/stroke-evaluation` | v0.8.15. Reemplaza el selector de velocidad por un botón ▶ pequeño (esquina inferior derecha del lienzo del modal) que cicla 1x/2x/4x y reinicia la animación; mensaje de recomendación de calificación ahora entre paréntesis y más tenue que el legend; bump de versión (0.8.11→0.8.15) en `APP_VERSION`, `package.json`, splash, `CACHE_NAME` y query strings `?v=` para que el usuario distinga builds nuevas y para invalidar caché stale en móviles | `index.html`, `js/app.js`, `style.css`, `service-worker.js`, `package.json`, `CHANGELOG.md` |
+| 2026-07-06 | Claude (Sonnet 5) | `feature/stroke-evaluation-n4` | v0.8.16. Extiende el evaluador de trazos + animación a los 170 kanji N4 (antes solo N5) siguiendo al pie de la letra la plantilla de prompt documentada más abajo — funcionó sin sorpresas, ver "Verificación hecha". También reduce a la mitad la velocidad base de la animación (450ms→900ms por trazo) a pedido del usuario | `tools/fetch-kanjivg.mjs`, `tools/build-kanjivg-data.mjs`, `tools/validate-content.mjs`, `js/app.js`, `vendor/kanjivg-svg/`, `data/kanjivg/` |
+| 2026-07-06 | Claude (Sonnet 5) | `feature/stroke-evaluation-n4` | Genera listas candidatas de kanji JLPT N3 (361) y N2 (370) desde JLPT Sensei (scraping con Playwright porque la tabla pagina por JS) y audita duplicados/inconsistencias contra los 250 kanji N5+N4 ya publicados — ver sección "Auditoría" más abajo. Sin código de la app tocado, solo documentos de planificación | `docs/jlpt-n3-list.md`, `docs/jlpt-n2-list.md` |
+| 2026-07-06 | Claude (Sonnet 5) | `feature/jlpt-n3` | v0.8.12. Publica la primera tanda de N3 (20 kanji, id_jlpt 251-270: 政,議,民,連,対,部,合,内,相,定,回,選,米,実,関,決,全,表,戦,経) tomados de `docs/jlpt-n3-list.md`: filas en `datos.csv`, ejemplos en `js/kanji-examples.js`, lección "22. Kanji N3: sociedad y decisiones" en `js/core.js`, traducciones ES/EN/DE/FR/PT, filtro N3 en Estudio, `N3` agregado a `SUPPORTED_KANJI_LEVELS`, fuente `KanjiStrokeOrders.woff` regenerada. Rama creada desde `main` (no desde las ramas del evaluador de trazos) porque es contenido independiente — ver nota de branching más abajo | `datos.csv`, `js/kanji-examples.js`, `js/core.js`, `locales/*.json`, `tools/validate-content.mjs`, `tests/run-tests.mjs`, `KanjiStrokeOrders.woff` |
+
+---
+
+## Feature: Evaluador de trazos con KanjiVG (2026-07-06, Claude Sonnet 5)
+
+### Qué se pidió
+
+El usuario quería que, en el lienzo de práctica, se detecten los trazos dibujados y se comparen contra el kanji real, calificando el parecido y coloreando cada trazo (verde = bien, amarillo = regular, rojo = mal), con un umbral de aprobación configurable. También que el botón de "ver orden de trazos" (que hoy usa una fuente TTF estática) anime el trazo progresivamente. Todo con botones para activar/desactivar el evaluador y la animación por separado. Gemini recomendó KanjiVG como fuente de datos.
+
+### Decisiones de alcance
+
+- **N5 (80 caracteres) al lanzar la feature; N4 (170 caracteres) se agregó el mismo día** siguiendo la plantilla de prompt de este documento — ver fila del 2026-07-06 en el Historial y la nota al final de "Plantilla de prompt para extender esto a N4". Kana sigue sin datos KanjiVG (no aplica: KanjiVG es solo para kanji).
+- El evaluador es **opt-in** (`profile.strokeEvaluatorEnabled`, default `false`) y el umbral (`profile.similarityThreshold`, default 75) se configura en el Perfil con presets Fácil/Normal/Experto + valor personalizado.
+- Si el evaluador está activo y el intento no supera el umbral, se bloquea el panel de autoevaluación SRS (no el botón "Ver respuesta") y se invita a limpiar/reintentar o desactivar el evaluador.
+- Kana (hiragana/katakana, que KanjiVG no cubre) sigue funcionando exactamente igual que antes de este cambio — es un fallback seguro (`hasKanjivgData()` en `js/app.js` devuelve `false` para cualquier item que no sea kanji N5/N4), no una ruta especial que haya que mantener aparte.
+
+### Arquitectura (para retomarlo sin memoria del chat original)
+
+**1. Datos** — KanjiVG (proyecto de Ulrich Apel, CC BY-SA 3.0) no estaba en el repo; se vendorean solo los SVG necesarios:
+
+- `tools/fetch-kanjivg.mjs`: lee `datos.csv`, filtra kanji por `categoria`, calcula el codepoint Unicode hex de cada carácter (nombre de archivo estándar de KanjiVG `0XXXX.svg`) y descarga desde `raw.githubusercontent.com/KanjiVG/kanjivg` a `vendor/kanjivg-svg/`. Se corre manualmente, no en CI; el resultado se comitea (igual que `KanjiStrokeOrders.ttf`).
+- `tools/lib/svg-path.mjs`: intérprete mínimo de paths SVG — KanjiVG solo usa `M`, `C`, `S` (y sus variantes relativas), confirmado inspeccionando los 80 SVG reales.
+- `tools/build-kanjivg-data.mjs`: parsea cada SVG (`<path id="kvg:0XXXX-sN" d="...">` da el orden de trazo), muestrea cada curva a alta densidad, normaliza el kanji completo a `[0,1]×[0,1]` (bounding box conjunto, no por trazo) y remuestrea cada trazo a 32 puntos equiespaciados por longitud de arco. Emite `data/kanjivg/<codepoint>.json` + `data/kanjivg/index.json` (carácter → codepoint).
+- `npm run fetch:kanjivg` y `npm run build:kanjivg` ejecutan ambos pasos. Ambos scripts filtran por `SUPPORTED_LEVELS = new Set(["N5", "N4"])` (const local en cada archivo). `tools/validate-content.mjs` verifica que todo kanji de esas categorías tenga su JSON, usando el `SUPPORTED_KANJI_LEVELS` que ya existía en ese archivo. Total actual: 250 archivos (80 N5 + 170 N4).
+
+**2. Geometría compartida** — `js/stroke-geometry.js` (usado tanto por el build en Node como en el navegador): `resampleStroke(points, n)` (remuestreo equiespaciado por longitud de arco), `computeBoundingBox`, `normalizeStrokes`. Una sola implementación para que el trazo del usuario y los datos KanjiVG se procesen igual.
+
+**3. Captura de trazos** — `js/drawing.js` (`createDrawingPad`) gana `getStrokes()`, `strokeCount()` y una opción `onStrokeEnd(index, points)`, sin tocar el pintado visual existente (sigue siendo `lineTo`+`stroke()` directo). Antes de este cambio, los trazos no se guardaban en ningún lado.
+
+**4. Comparación** — `js/stroke-scoring.js` (módulo puro, sin DOM, 100% testeable): compara trazo N del usuario contra trazo N esperado (respeta orden, no hace point-cloud matching), penaliza conteo de trazos distinto multiplicativamente, y trazos degenerados (menos de 3 puntos capturados) puntúan 0. `scoreAttempt()` da el score global 0-100 usado para el gating; `compareStroke()` + `similarityColor()` dan el color por trazo en vivo.
+
+**5. UI** — `js/profile.js` (`strokeEvaluatorEnabled`, `similarityThreshold` con clamp), `index.html`/`js/app.js` (chips de umbral igual patrón que la meta diaria, canvas overlay `#pizarra-feedback` para el tinte de color, gating en `revealAnswer()` que oculta `.rating-fieldset` y muestra `#aviso-umbral-trazos`). Cuando el intento SÍ supera el umbral, `revealAnswer()` también llama a `recommendRating(score)` (en `stroke-scoring.js`, umbrales fijos: ≥90 "easy", ≥75 "good", si no "hard") y resalta ese botón de rating con la clase `.recommended`, mostrando el mensaje `ui.strokeRecommendMessage` con el % y la calificación sugerida — es una sugerencia, no obliga a elegirla.
+
+**6. Animación** — `js/stroke-animation.js` (`createStrokeAnimator`): reutiliza los mismos puntos KanjiVG (no genera un `d` de SVG aparte) y los dibuja progresivamente en un `<canvas>` con `requestAnimationFrame`, montado en el modal de estudio junto al `#btn-toggle-trazos` existente, escalado al 70% (`DEFAULT_SCALE`, margen visible) con numeración de trazo en el punto de inicio. Un botón `#btn-velocidad-animacion` (▶, esquina inferior derecha del lienzo) cicla `ANIMATION_SPEED_MULTIPLIERS = [1, 2, 4]` en `js/app.js` y reinicia la animación en cada click — es estado de sesión, no se persiste en el perfil. La base (`BASE_STROKE_DURATION_MS`/`BASE_PAUSE_MS` en `js/app.js`, y sus equivalentes `DEFAULT_*` en `stroke-animation.js` como fallback) es 900ms/400ms por trazo — se redujo a la mitad de velocidad (450/200 original) a pedido del usuario el 2026-07-06. Si el carácter no tiene datos KanjiVG, cae al comportamiento original (fuente `OrdenTrazos`, cuyo `font-size` en `style.css` se ajustó para ocupar ~70% del cuadro y coincidir en escala con la animación).
+
+**7. Licencia** — KanjiVG es CC BY-SA 3.0: atribución visible en el modal "Acerca de" + `vendor/kanjivg-svg/LICENSE`. La extensión a N4 (mismo día) heredó la misma obligación sin cambios adicionales.
+
+### Bugs reales encontrados al probar en navegador (no reintroducirlos)
+
+1. **El color en vivo no se veía sobre la tinta.** La capa `#pizarra-feedback` tenía `mix-blend-mode: multiply` en CSS. Multiplicar cualquier color por negro (la tinta del trazo) da negro, así que el tinte solo se notaba en el papel alrededor del trazo, nunca encima. Se quitó el `mix-blend-mode`; además, tras una primera corrección (línea gruesa translúcida) el usuario pidió que se notara más — se dejó como línea delgada (`FEEDBACK_LINE_WIDTH = 5`) y casi opaca (`0.97`) pintada con `source-over` directo sobre la tinta, como un resaltador.
+2. **Trazos cortos (p. ej. las marcas de 火) coloreaban mal (rojo) aunque fueran correctos.** `handleStrokeEnd()` normalizaba usando el bounding box de "los trazos dibujados hasta el momento" — con 1-2 trazos ese cuadro es inestable/distorsionado para trazos pequeños. La corrección: el color EN VIVO normaliza contra el tamaño fijo del lienzo (`elements.board.width/height`), no contra un bbox acumulado; la normalización dinámica por bbox se mantiene solo para el score final en `evaluateStrokeGate()` (que ya tiene todos los trazos capturados, así que es estable).
+3. **Tamaño de la fuente de respaldo desalineado con la animación.** Cada vez que se ajusta `DEFAULT_SCALE` en `js/stroke-animation.js`, el `font-size` de `.character-guide`/`.practice-character-guide` en `style.css` debe reajustarse en la misma proporción para que ambos rendering (canvas animado vs. fuente estática de respaldo) se vean del mismo tamaño. Se midió con precisión usando `canvas.measureText(...).actualBoundingBoxAscent/Descent` en vez de adivinar — el ratio tinta/caja del glifo escala linealmente con el `font-size`, así que ese método sirve para recalcular el `clamp(...)` exacto cada vez que cambie el porcentaje de escala.
+
+### Pendiente de confirmar: colores no visibles en móvil (reportado en Samsung S25 Ultra)
+
+No se pudo reproducir en este entorno (sin dispositivo físico). Revisé CSS (`@media` queries, `touch-action`, `pointer-events`, `mix-blend-mode`) y no encontré nada que oculte `#pizarra-feedback` específicamente en viewports chicos. Las dos causas más probables, de mayor a menor probabilidad:
+
+1. **`profile.strokeEvaluatorEnabled` vive en `localStorage`, que es por dispositivo/navegador.** Si el usuario activó el evaluador en Perfil desde la PC, esa preferencia NO viaja al celular — hay que activarlo también ahí. `handleStrokeEnd()` retorna temprano si está apagado, así que "no se ven los colores" es el síntoma exacto de este caso.
+2. **Caché del Service Worker desactualizada** en un dispositivo que ya había visitado la app antes de los arreglos de esta sesión. El bump de `CACHE_NAME`/`?v=` de esta ronda debería forzar la invalidación, pero conviene confirmar con un refresco forzado / borrado de datos del sitio en el celular.
+
+Si tras verificar ambas cosas el problema persiste, hace falta depurar con DevTools remoto (`chrome://inspect` desde una PC conectada por USB) para ver si `pointerup` realmente dispara `onStrokeEnd` en ese dispositivo — no descartar un bug real de eventos táctiles todavía.
+
+### Archivos clave
+
+```
+tools/fetch-kanjivg.mjs          # descarga SVG de KanjiVG por categoría
+tools/build-kanjivg-data.mjs     # SVG -> data/kanjivg/*.json
+tools/lib/svg-path.mjs           # parser de paths M/C/S
+js/stroke-geometry.js            # resample + normalize (compartido build/runtime)
+js/stroke-scoring.js             # algoritmo de comparación + color
+js/stroke-animation.js           # animador de trazos en canvas
+js/drawing.js                    # captura de puntos por trazo (createDrawingPad)
+js/profile.js                    # strokeEvaluatorEnabled, similarityThreshold
+js/app.js                        # carga de datos por item, feedback en vivo, gating, animación
+data/kanjivg/                    # datos generados (comiteados)
+vendor/kanjivg-svg/              # SVG fuente vendoreados (comiteados)
+tests/run-tests.mjs              # tests de stroke-geometry.js, stroke-scoring.js, profile.js
+```
+
+### Verificación hecha
+
+- `npm test` (incluye ~12 casos nuevos: trazo idéntico, invertido, perpendicular, conteo distinto, tap degenerado, clamp de umbral).
+- Playwright headless de punta a punta: dibujar el kanji real (usando los propios puntos KanjiVG) → desbloquea; garabato incorrecto → bloquea con score correcto; kana sin evaluador afectado; animación de un kanji de 1 trazo y de 8 trazos termina completa (se encontró y arregló un bug real: el frame final quedaba en blanco).
+- Tras extender a N4 (2026-07-06): mismo flujo verificado con un kanji N4 real (地, lección `kanji-n4-1`) → desbloquea con 100% de similitud; animación de otro kanji N4 (会) en el modal de Estudio confirmada en movimiento.
+
+### Plantilla de prompt para extender esto a N4 — ✅ HECHO el 2026-07-06 en `feature/stroke-evaluation-n4`
+
+La extensión funcionó exactamente como se predijo abajo, sin sorpresas: los 170 SVG de N4 descargaron sin fallos, el parser de paths (`tools/lib/svg-path.mjs`, solo M/C/S) los procesó todos sin necesitar comandos nuevos, y los conteos de trazos de una muestra (楽=13, 質=15,試=13, 族=11, 早=6) coincidieron con la referencia. Dejo la plantilla intacta abajo porque sigue siendo el patrón correcto para una futura extensión a N3 — solo cambiaría el nivel en el filtro.
+
+Esta fue la extensión más probable a corto plazo. La arquitectura ya era genérica por `categoria` (no había nada hardcodeado a "solo N5" salvo 3 puntos), así que el trabajo real fue angosto:
+
+1. `tools/fetch-kanjivg.mjs` y `tools/build-kanjivg-data.mjs`: cambiar el filtro `categoria === "N5"` por `["N5", "N4"].includes(categoria)` (o pasar el nivel como argumento de CLI).
+2. Re-correr `npm run fetch:kanjivg && npm run build:kanjivg` (descarga ~170 SVG nuevos).
+3. `tools/validate-content.mjs`: la función `validateKanjivgCoverage` debe cubrir también N4.
+4. `js/app.js`: `loadExpectedStrokes` y `loadModalExpectedStrokes` chequean `item.categoria === "N5"` — cambiar a la misma lista de niveles soportados.
+5. `npm test` debe seguir en verde.
+6. Verificación manual en navegador: practicar/estudiar un kanji N4 con el evaluador activo y confirmar coloreado + gating + animación, igual que ya funciona en N5.
+
+#### Prompt para Claude Code (o cualquier agente con acceso al repo y a herramientas)
+
+> En la rama `feature/stroke-evaluation` (o una nueva `feature/stroke-evaluation-n4` partiendo de ella) ya implementé el evaluador de trazos con KanjiVG solo para kanji N5 — ver `docs/registro-ia.md`, sección "Feature: Evaluador de trazos con KanjiVG". Extiéndelo para que cubra también los 170 kanji N4. La arquitectura ya es genérica por `categoria`; solo hay que ampliar el filtro en `tools/fetch-kanjivg.mjs`, `tools/build-kanjivg-data.mjs`, `tools/validate-content.mjs` y las dos funciones de carga en `js/app.js` (`loadExpectedStrokes`, `loadModalExpectedStrokes`). Corre `npm run fetch:kanjivg && npm run build:kanjivg`, actualiza los tests si hace falta, corre `npm test`, y verifica en navegador con un par de kanji N4 (dibujo correcto desbloquea, incorrecto bloquea, animación se ve completa). Actualiza la tabla de Historial en `docs/registro-ia.md`.
+
+Con Claude Code esto alcanza porque puede explorar el repo, leer el registro y el código, y decidir los detalles solo. No hace falta más contexto porque ya queda documentado aquí.
+
+#### Prompt para Codex (o cualquier asistente sin memoria de este proyecto y con menor autonomía para explorar)
+
+Codex normalmente arranca sin haber leído nada de este repo, así que el prompt tiene que ser autocontenido — no asumas que va a encontrar `docs/registro-ia.md` por su cuenta si no se lo indicas explícitamente:
+
+> Repo: KanjiFlow (app de práctica de japonés, vanilla JS, sin framework). Antes de tocar nada, lee `docs/registro-ia.md` completo, sección "Feature: Evaluador de trazos con KanjiVG" — ahí está toda la arquitectura de un evaluador de trazos ya implementado para los 80 kanji N5, usando datos del proyecto KanjiVG.
+>
+> Tarea: extender esa misma arquitectura para que cubra también los 170 kanji de nivel N4 (columna `categoria` en `datos.csv`). No rediseñes nada — es un cambio de alcance, no de arquitectura. Pasos concretos:
+>
+> 1. En `tools/fetch-kanjivg.mjs` y `tools/build-kanjivg-data.mjs`, el filtro hoy es `item.tipo === "kanji" && item.categoria === "N5"`. Cámbialo para incluir también `"N4"`.
+> 2. Corre `npm run fetch:kanjivg` (descarga los SVG de KanjiVG que falten para N4) y luego `npm run build:kanjivg` (genera `data/kanjivg/<codepoint>.json` + actualiza `data/kanjivg/index.json`).
+> 3. En `tools/validate-content.mjs`, la función `validateKanjivgCoverage` filtra `categoria === "N5"` — actualízala para cubrir también N4, para que `npm test` falle si falta algún dato.
+> 4. En `js/app.js`, busca las funciones `loadExpectedStrokes` y `loadModalExpectedStrokes` — ambas tienen la condición `item.categoria === "N5"` para decidir si cargan datos KanjiVG. Actualízala igual que en el paso 3.
+> 5. Corre `npm test` y confírmame que pasa completo.
+> 6. Levanta la app localmente (`npm run serve` o `python -m http.server 8765`) y prueba manualmente: abre un kanji N4 en la pantalla de Estudio con el evaluador de trazos activado desde Perfil, dibuja el carácter, y confirma que colorea los trazos y que la animación de orden de trazos funciona igual que ya funciona para N5.
+> 7. Agrega una fila nueva a la tabla de Historial en `docs/registro-ia.md` (fecha, tu nombre de modelo, rama, resumen, archivos clave).
+>
+> No cambies el algoritmo de comparación (`js/stroke-scoring.js`) ni el de animación (`js/stroke-animation.js`) — ya están terminados y no dependen del nivel JLPT.
+
+#### Prompt para Gemini (rol de revisor/segunda opinión, como ya se usó para recomendar KanjiVG)
+
+> Ya implementamos el evaluador de trazos con datos de KanjiVG para kanji N5 en KanjiFlow (ver `docs/registro-ia.md`). Vamos a extenderlo a N4. Antes de que otra IA lo implemente: revisa si hay algo específico de N4 (kanji con formas más complejas, más trazos, radicales alternativos en KanjiVG con sufijos como `-Kvg2`) que pueda romper los supuestos actuales — remuestreo a 32 puntos por trazo, normalización por bounding box del carácter completo, comparación trazo-a-trazo sin permitir reordenar. Si detectas un riesgo, dilo antes de que se implemente, no después.
+
+### Nota sobre versión y CHANGELOG
+
+Esta feature vive en `feature/stroke-evaluation` y su extensión a N4 en `feature/stroke-evaluation-n4`, ninguna fusionada a `main` todavía. A diferencia de lo que decía esta nota originalmente: **sí** tienen entradas en `CHANGELOG.md` (0.8.15, 0.8.16) porque la convención cambió el 2026-07-06 — ver punto 4 de "Convención" al inicio de este archivo.
+
+---
+
+## Tarea: Listas candidatas JLPT N3/N2 + auditoría de duplicados (2026-07-06, Claude Sonnet 5)
+
+### Qué se pidió
+
+Revisar cómo están estructurados los datos de N5/N4 (CSV, ejemplos, traducciones en los 5 idiomas) y generar las listas de kanji candidatos para N3 y N2, basándose en [JLPT Sensei](https://jlptsensei.com/) (mismas URLs que dio el usuario: `/jlpt-n3-kanji-list/` y, por el mismo patrón, `/jlpt-n2-kanji-list/`) — la misma fuente que ya se usó como referencia canónica para cerrar N4. Después, verificar exhaustivamente que no hubiera duplicados/incongruencias y dejarlo documentado aquí.
+
+### Cómo se obtuvo la lista (detalle técnico, por si hay que repetirlo para N1)
+
+La tabla de JLPT Sensei pagina con JavaScript: un `fetch`/`curl` normal solo trae la página 1 (100 filas de ~370-374). Los intentos de pedirle a WebFetch "el resto" fallan porque esas filas no existen en el HTML estático — se cargan al hacer click en "2", "3", "4". La solución fue:
+
+1. Abrir la página con Playwright headless (`waitUntil: "domcontentloaded"`, **no** `"networkidle"` — el sitio tiene tanto anuncio/tracking de fondo que `networkidle` nunca se cumple y hace timeout).
+2. Inspeccionar el HTML de la paginación (`ul.pagination a.page-numbers`) para sacar la URL real de cada página: sigue el patrón estándar de WordPress `**/page/2/`, `**/page/3/`, `**/page/4/`, no `**/2/` (eso redirige 301 a la página 1).
+3. Navegar a cada una de las 4 URLs y extraer `table.jl-table tbody tr` con `page.$$eval`.
+4. Cada celda trae romaji+kana concatenados sin separador visual (ej. `"tai, tsuiタイ、ツイ"`) porque el `textContent` colapsa el salto de línea entre el `<span>` de romaji y el de kana. Se separan con una regexp que busca el primer carácter kana (`/[぀-ヿ]/`) — todo lo anterior es romaji, todo lo posterior es kana. Funciona incluso con okurigana entre paréntesis porque los paréntesis son ASCII y aparecen simétricos en ambas mitades.
+
+### Auditoría realizada (esto es lo que pidió el usuario explícitamente)
+
+Verificación exhaustiva contra los 250 kanji N5+N4 ya publicados en `datos.csv`, y dentro de las listas nuevas:
+
+| Chequeo | Resultado |
+|---|---|
+| Duplicados dentro de N3 (361 filas) | 0 — 361 caracteres únicos |
+| Duplicados dentro de N2 (370 filas) | 0 — 370 caracteres únicos |
+| Solape N3 ∩ N2 | 0 |
+| Solape N3 ∩ (N5+N4 existentes) | 0 (ver más abajo) |
+| Solape N2 ∩ (N5+N4 existentes) | 0 (ver más abajo) |
+| `id_jlpt` únicos combinando N5+N4+N3+N2 (981 filas) | 981 — sin colisiones |
+| Continuidad de `id_jlpt` (250→251, 611→612) | Sin huecos ni saltos |
+| Caracteres inválidos (no CJK unitario, `/^[㐀-鿿]$/u`) | 0 |
+| `romaji`/`meaning` vacíos | 0 |
+| Filas sin onyomi NI kunyomi | 0 |
+| Entidades HTML sin escapar (`&amp;`, `&#123;`, etc.) | 0 |
+
+**Sí se encontró una incongruencia** (no duplicado, sino un defecto de formato): 51 filas en N3 y 76 en N2 traían un espacio extra después del separador `、` en lecturas múltiples (ej. `"タイ、 ツイ"` en vez de `"タイ、ツイ"`) — es un artefacto tal cual lo renderiza la página fuente, no un error de mi extracción (se confirmó comparando contra la fila cruda antes de procesar). Se normalizó con un `replace(/、\s+/g, '、')` antes de generar los documentos finales; no queda ninguna instancia tras la corrección.
+
+**Sí se excluyeron 13 kanji por solape con la categorización propia de este proyecto** (no es un "duplicado" real, sino que JLPT Sensei y este proyecto no clasifican esos 13 kanji en el mismo nivel):
+- De la lista N3 de JLPT Sensei: 市, 都, 速, 返, 薬, 遅, 遠, 寝, 耳 — este proyecto ya los tiene como N4.
+- De la lista N2 de JLPT Sensei: 区, 県, 村, 門 — este proyecto ya los tiene como N4.
+
+Quien continúe esto en el futuro: si se decide adoptar la categorización de JLPT Sensei tal cual (moviendo esos 13 kanji de N4 a N3/N2), haría falta un `itemId()`/progreso especial de migración porque `itemId = tipo_caracter` no incluye la categoría — cambiar `categoria` de una fila existente no rompe IDs, pero si un usuario ya tiene progreso guardado en esa tarjeta, el progreso se conserva igual (la clave no cambia), solo cambiaría en qué lección/nivel aparece.
+
+### Archivos generados
+
+- `docs/jlpt-n3-list.md`: 361 kanji, `id_jlpt` 251-611.
+- `docs/jlpt-n2-list.md`: 370 kanji, `id_jlpt` 612-981.
+
+Ambos son **listas candidatas**, no contenido listo para publicar — falta traducir significados al español, revisar el `romaji` principal caso por caso, escribir ejemplos en `js/kanji-examples.js`, traducir a los 5 idiomas, crear lecciones, y generar fuente + datos KanjiVG, siguiendo el mismo patrón incremental por tandas que se usó para N4 (`jlpt-n4-starter.md` → `jlpt-n4-2.md` → … → `jlpt-n4-final.md`). Cada documento trae su propio checklist al final.
+
+---
+
+## Tarea: Primera tanda de contenido N3 publicada (2026-07-06, Claude Sonnet 5)
+
+### Qué se pidió
+
+Publicar la primera tanda de N3 en `datos.csv` con ejemplos y traducciones, siguiendo el mismo patrón usado históricamente para N4 (`jlpt-n4-starter.md` → tandas sucesivas). El usuario confirmó avanzar con un simple "si" tras preguntarle si quería empezar ya.
+
+### Decisiones tomadas
+
+- **Rama `feature/jlpt-n3` creada desde `origin/main`**, no desde `feature/stroke-evaluation-n4`. Es contenido, no evaluador de trazos — dos líneas de trabajo independientes que conviene fusionar por separado (ver punto 5 de "Convención" arriba). Por eso el checkout mostró "reversiones" de `index.html`, `js/app.js`, `js/profile.js`, `CHANGELOG.md`, etc. a su estado en `main` — no fue un accidente, es el propio `git checkout -b ... origin/main`.
+- **Tamaño de tanda: 20 kanji** (`id_jlpt` 251-270), igual que la tanda inicial de N4 (`jlpt-n4-starter.md`), tomados en orden directo de `docs/jlpt-n3-list.md` (que vive en `feature/stroke-evaluation-n4`, no en esta rama — se leyó con `git show feature/stroke-evaluation-n4:docs/jlpt-n3-list.md` sin necesidad de cambiar de rama).
+- **Se reconstruyó el archivo `docs/registro-ia.md` en esta rama** (`git show feature/stroke-evaluation-n4:docs/registro-ia.md > docs/registro-ia.md`) porque no existía aquí (viene de después de que `main` se bifurcó) — así el registro sigue existiendo sin importar cuál rama se fusione primero.
+- **Traducciones**: el `meaning` en inglés de JLPT Sensei se usó tal cual para `locales/en.json`; el resto (ES/DE/FR/PT) y los ejemplos contextualizados (palabra + oración) se redactaron a mano por Claude, no son traducción automática literal del inglés. Quien revise esta tanda debería verificar naturalidad de las oraciones, no solo exactitud del significado del kanji.
+- **`romaji` principal**: se tomó la lectura on'yomi de `docs/jlpt-n3-list.md` en todos los casos de esta tanda (a diferencia de N4, donde a veces se prefirió kun'yomi como en 事=koto) — ninguno de estos 20 kanji tenía una kun'yomi claramente más natural como lectura "de tarjeta".
+
+### Cómo se hizo (para repetir con la tanda N3-2)
+
+1. Leer el bloque de `docs/jlpt-n3-list.md` correspondiente al rango de `id_jlpt` deseado (`git show feature/stroke-evaluation-n4:docs/jlpt-n3-list.md`, ya que ese doc no vive en esta rama).
+2. Agregar filas a `datos.csv` con `categoria=N3`, formato `onyomi`/`kunyomi` = `KANA (romaji)` (múltiples lecturas separadas por ` / ` en ambos); `kunyomi` sin okurigana en la kana raíz (ej. `さだ (sada)`, no `さだ(める) (sada(meru))`, aunque la fuente sí trae el okurigana entre paréntesis — se simplificó, igual que ya se hacía en N4).
+3. Escribir ejemplo contextualizado por kanji en `js/kanji-examples.js` (palabra + lectura + oración, todo en japonés real, no inventado a partir de la lista).
+4. Crear lección nueva en `js/core.js` con rango `id_jlpt` exacto de la tanda.
+5. Traducir `cards.kanji_X` (meaning/exampleMeaning/sentenceMeaning) + la lección nueva en los 5 `locales/*.json`. **Ojo con el estilo por idioma**: `fr.json` y `pt.json` no usan tildes/acentos en ningún lado del archivo (ej. "Politique" no "Politique", "reunion" no "réunion") y usan formato multilínea `{ "meaning": ..., "exampleMeaning": ..., "sentenceMeaning": ... }` en vez de una sola línea — si no se sigue el estilo exacto del archivo, desentona con el resto aunque sea "correcto".
+6. Agregar `"N3"` a `SUPPORTED_KANJI_LEVELS` en `tools/validate-content.mjs` y a `categories` en los 5 locales.
+7. Agregar `<option value="N3">` en el filtro de Estudio (`index.html`) — el filtrado ya es genérico (`/^N\d$/u` en `matchesStudyFilter()` de `js/app.js`), no requiere tocar JS.
+8. Actualizar conteos hardcodeados en `tests/run-tests.mjs` (`dictionary.length`, conteo de kanji, `stats.total`, `stats.newCount`, el mensaje de consola).
+9. Regenerar `KanjiStrokeOrders.woff`: requiere `pip install fonttools brotli` (no viene preinstalado) + `npm run build:stroke-font`.
+10. Bump de versión (0.8.11→0.8.12 en esta ocasión) + entrada en `CHANGELOG.md`, siguiendo el punto 4 de "Convención".
+11. `npm run validate:content && npm test` — pasó a la primera en esta tanda.
+12. Verificación manual en navegador (Playwright): la lección nueva aparece en el selector, el filtro N3 en Estudio muestra exactamente 20 resultados, revelar una respuesta muestra un kanji real de la tanda con categoría "N3", y el modal de detalles muestra la traducción correcta en español e inglés.
+
+### Qué falta para seguir con N3 (tanda 2 en adelante)
+
+- 341 kanji restantes de `docs/jlpt-n3-list.md` (`id_jlpt` 271-611), en tandas de ~20 como esta.
+- Extender el evaluador de trazos a N3 cuando corresponda (mismo patrón ya documentado en la plantilla de prompt de N4 más arriba, cambiando el nivel) — es un trabajo aparte, en las ramas del evaluador, no en `feature/jlpt-n3-*`.

@@ -10,6 +10,21 @@ El número de versión visible de la app debe mantenerse alineado en:
 - `CHANGELOG.md`;
 - `service-worker.js` y query strings `?v=...` cuando cambien archivos cacheados.
 
+## [0.8.12] - 2026-07-06
+
+### Agregado
+
+- Primera tanda de kanji N3 (20 caracteres): 政, 議, 民, 連, 対, 部, 合, 内, 相, 定, 回, 選, 米, 実, 関, 決, 全, 表, 戦 y 経.
+- Lección "22. Kanji N3: sociedad y decisiones".
+- Ejemplos contextualizados para los 20 kanji nuevos.
+- Traducciones ES/EN/DE/FR/PT para las nuevas tarjetas.
+- Filtro "Kanji N3" en la pantalla de Estudio.
+
+### Cambiado
+
+- La app muestra `v0.8.12`, 483 tarjetas y 270 kanji con ejemplos.
+- Fuente `KanjiStrokeOrders.woff` regenerada para cubrir los 270 kanji publicados.
+
 ## [0.8.11] - 2026-07-04
 
 ### Agregado

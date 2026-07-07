@@ -1249,4 +1249,104 @@ export const KANJI_EXAMPLES = {
         sentence: "漢字を練習します。", sentenceReading: "かんじを れんしゅうします。",
         sentenceMeaning: "Practico kanji.",
     },
+    "政": {
+        word: "政治", reading: "せいじ", meaning: "política",
+        sentence: "彼は政治に興味があります。", sentenceReading: "かれは せいじに きょうみが あります。",
+        sentenceMeaning: "Él está interesado en la política.",
+    },
+    "議": {
+        word: "会議", reading: "かいぎ", meaning: "reunión, junta",
+        sentence: "明日、会議があります。", sentenceReading: "あした、かいぎが あります。",
+        sentenceMeaning: "Mañana hay una reunión.",
+    },
+    "民": {
+        word: "国民", reading: "こくみん", meaning: "ciudadano, pueblo",
+        sentence: "国民の意見を聞きます。", sentenceReading: "こくみんの いけんを ききます。",
+        sentenceMeaning: "Escuchamos la opinión del pueblo.",
+    },
+    "連": {
+        word: "連絡", reading: "れんらく", meaning: "contacto, comunicación",
+        sentence: "後で連絡します。", sentenceReading: "あとで れんらくします。",
+        sentenceMeaning: "Te contactaré después.",
+    },
+    "対": {
+        word: "反対", reading: "はんたい", meaning: "oposición, en contra",
+        sentence: "私はその意見に反対です。", sentenceReading: "わたしは その いけんに はんたいです。",
+        sentenceMeaning: "Estoy en contra de esa opinión.",
+    },
+    "部": {
+        word: "部屋", reading: "へや", meaning: "habitación, cuarto",
+        sentence: "部屋を掃除します。", sentenceReading: "へやを そうじします。",
+        sentenceMeaning: "Limpio la habitación.",
+    },
+    "合": {
+        word: "合格", reading: "ごうかく", meaning: "aprobar (un examen)",
+        sentence: "試験に合格しました。", sentenceReading: "しけんに ごうかくしました。",
+        sentenceMeaning: "Aprobé el examen.",
+    },
+    "内": {
+        word: "内容", reading: "ないよう", meaning: "contenido",
+        sentence: "本の内容を説明します。", sentenceReading: "ほんの ないようを せつめいします。",
+        sentenceMeaning: "Explico el contenido del libro.",
+    },
+    "相": {
+        word: "相談", reading: "そうだん", meaning: "consulta",
+        sentence: "先生に相談します。", sentenceReading: "せんせいに そうだんします。",
+        sentenceMeaning: "Consulto con el profesor.",
+    },
+    "定": {
+        word: "予定", reading: "よてい", meaning: "plan, agenda",
+        sentence: "明日の予定は何ですか。", sentenceReading: "あしたの よていは なんですか。",
+        sentenceMeaning: "¿Cuál es tu plan para mañana?",
+    },
+    "回": {
+        word: "今回", reading: "こんかい", meaning: "esta vez",
+        sentence: "今回は失敗しました。", sentenceReading: "こんかいは しっぱいしました。",
+        sentenceMeaning: "Esta vez fallé.",
+    },
+    "選": {
+        word: "選択", reading: "せんたく", meaning: "selección, opción",
+        sentence: "正しい答えを選択してください。", sentenceReading: "ただしい こたえを せんたくしてください。",
+        sentenceMeaning: "Selecciona la respuesta correcta, por favor.",
+    },
+    "米": {
+        word: "お米", reading: "おこめ", meaning: "arroz",
+        sentence: "お米を炊きます。", sentenceReading: "おこめを たきます。",
+        sentenceMeaning: "Cocino arroz.",
+    },
+    "実": {
+        word: "事実", reading: "じじつ", meaning: "hecho, realidad",
+        sentence: "それは事実です。", sentenceReading: "それは じじつです。",
+        sentenceMeaning: "Eso es un hecho.",
+    },
+    "関": {
+        word: "関係", reading: "かんけい", meaning: "relación",
+        sentence: "二人はいい関係です。", sentenceReading: "ふたりは いい かんけいです。",
+        sentenceMeaning: "Los dos tienen una buena relación.",
+    },
+    "決": {
+        word: "決定", reading: "けってい", meaning: "decisión",
+        sentence: "会議で決定しました。", sentenceReading: "かいぎで けっていしました。",
+        sentenceMeaning: "Se decidió en la reunión.",
+    },
+    "全": {
+        word: "全部", reading: "ぜんぶ", meaning: "todo",
+        sentence: "全部食べました。", sentenceReading: "ぜんぶ たべました。",
+        sentenceMeaning: "Comí todo.",
+    },
+    "表": {
+        word: "表現", reading: "ひょうげん", meaning: "expresión",
+        sentence: "気持ちを表現します。", sentenceReading: "きもちを ひょうげんします。",
+        sentenceMeaning: "Expreso mis sentimientos.",
+    },
+    "戦": {
+        word: "戦争", reading: "せんそう", meaning: "guerra",
+        sentence: "戦争は悲しいです。", sentenceReading: "せんそうは かなしいです。",
+        sentenceMeaning: "La guerra es triste.",
+    },
+    "経": {
+        word: "経験", reading: "けいけん", meaning: "experiencia",
+        sentence: "いい経験になりました。", sentenceReading: "いい けいけんに なりました。",
+        sentenceMeaning: "Se convirtió en una buena experiencia.",
+    },
 };

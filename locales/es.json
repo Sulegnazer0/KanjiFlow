@@ -283,7 +283,8 @@
     "combinacion": "Combinación",
     "especial": "Especial",
     "N5": "N5",
-    "N4": "N4"
+    "N4": "N4",
+    "N3": "N3"
   },
   "content": {
     "kanaLetter": "Letra {romaji}"
@@ -381,6 +382,10 @@
     "kanji-n4-final": {
       "title": "21. Kanji N4: cierre de nivel",
       "description": "Últimos kanji N4 de la referencia: familia, clima, estaciones, comida, animales, colores y estudio."
+    },
+    "kanji-n3-1": {
+      "title": "22. Kanji N3: sociedad y decisiones",
+      "description": "Política, sociedad, relaciones, decisiones y conceptos abstractos de nivel N3."
     },
     "all": {
       "title": "Todo el contenido",
@@ -642,7 +647,27 @@
     "kanji_犬": { "meaning": "Perro", "exampleMeaning": "perro", "sentenceMeaning": "Paseo con el perro." },
     "kanji_妹": { "meaning": "Hermana menor", "exampleMeaning": "hermana menor", "sentenceMeaning": "Hablo con mi hermana menor." },
     "kanji_姉": { "meaning": "Hermana mayor", "exampleMeaning": "hermana mayor", "sentenceMeaning": "Mi hermana mayor es profesora." },
-    "kanji_漢": { "meaning": "Chino / Kanji", "exampleMeaning": "kanji", "sentenceMeaning": "Practico kanji." }
+    "kanji_漢": { "meaning": "Chino / Kanji", "exampleMeaning": "kanji", "sentenceMeaning": "Practico kanji." },
+    "kanji_政": { "meaning": "Política / Gobierno", "exampleMeaning": "política", "sentenceMeaning": "Él está interesado en la política." },
+    "kanji_議": { "meaning": "Deliberación / Debate", "exampleMeaning": "reunión, junta", "sentenceMeaning": "Mañana hay una reunión." },
+    "kanji_民": { "meaning": "Pueblo / Nación", "exampleMeaning": "ciudadano, pueblo", "sentenceMeaning": "Escuchamos la opinión del pueblo." },
+    "kanji_連": { "meaning": "Llevar consigo / Conectar", "exampleMeaning": "contacto, comunicación", "sentenceMeaning": "Te contactaré después." },
+    "kanji_対": { "meaning": "Opuesto / Versus", "exampleMeaning": "oposición, en contra", "sentenceMeaning": "Estoy en contra de esa opinión." },
+    "kanji_部": { "meaning": "Sección / Departamento", "exampleMeaning": "habitación, cuarto", "sentenceMeaning": "Limpio la habitación." },
+    "kanji_合": { "meaning": "Encajar / Unirse", "exampleMeaning": "aprobar (un examen)", "sentenceMeaning": "Aprobé el examen." },
+    "kanji_内": { "meaning": "Interior / Dentro", "exampleMeaning": "contenido", "sentenceMeaning": "Explico el contenido del libro." },
+    "kanji_相": { "meaning": "Mutuo / Juntos", "exampleMeaning": "consulta", "sentenceMeaning": "Consulto con el profesor." },
+    "kanji_定": { "meaning": "Determinar / Fijar", "exampleMeaning": "plan, agenda", "sentenceMeaning": "¿Cuál es tu plan para mañana?" },
+    "kanji_回": { "meaning": "Vez / Girar", "exampleMeaning": "esta vez", "sentenceMeaning": "Esta vez fallé." },
+    "kanji_選": { "meaning": "Elegir / Seleccionar", "exampleMeaning": "selección, opción", "sentenceMeaning": "Selecciona la respuesta correcta, por favor." },
+    "kanji_米": { "meaning": "Arroz / Estados Unidos", "exampleMeaning": "arroz", "sentenceMeaning": "Cocino arroz." },
+    "kanji_実": { "meaning": "Realidad / Fruto", "exampleMeaning": "hecho, realidad", "sentenceMeaning": "Eso es un hecho." },
+    "kanji_関": { "meaning": "Conexión / Relación", "exampleMeaning": "relación", "sentenceMeaning": "Los dos tienen una buena relación." },
+    "kanji_決": { "meaning": "Decidir / Determinar", "exampleMeaning": "decisión", "sentenceMeaning": "Se decidió en la reunión." },
+    "kanji_全": { "meaning": "Entero / Completo", "exampleMeaning": "todo", "sentenceMeaning": "Comí todo." },
+    "kanji_表": { "meaning": "Superficie / Tabla", "exampleMeaning": "expresión", "sentenceMeaning": "Expreso mis sentimientos." },
+    "kanji_戦": { "meaning": "Guerra / Batalla", "exampleMeaning": "guerra", "sentenceMeaning": "La guerra es triste." },
+    "kanji_経": { "meaning": "Transcurrir / Experimentar", "exampleMeaning": "experiencia", "sentenceMeaning": "Se convirtió en una buena experiencia." }
   },
   "exampleTerms": {}
 }

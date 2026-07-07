@@ -1,13 +1,13 @@
 # KanjiFlow
 
-Aplicación web estática para aprender hiragana, katakana y kanji N5/N4 mediante escritura, audio, ejemplos y repetición espaciada.
+Aplicación web estática para aprender hiragana, katakana y kanji N5/N4/N3 mediante escritura, audio, ejemplos y repetición espaciada.
 
 Historial de cambios: consulta [CHANGELOG.md](CHANGELOG.md).
 
 ## Funciones
 
-- Ruta progresiva de 21 lecciones.
-- 463 tarjetas: hiragana, katakana, reglas especiales y 250 kanji.
+- Ruta progresiva de 22 lecciones.
+- 483 tarjetas: hiragana, katakana, reglas especiales y 270 kanji.
 - Repetición espaciada con cuatro niveles de respuesta.
 - Perfil local con nombre, meta diaria, historial de 7 días y rachas de meta.
 - Sistema de logros por hitos de práctica, metas, favoritos y caracteres dominados.

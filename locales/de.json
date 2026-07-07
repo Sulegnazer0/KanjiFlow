@@ -283,7 +283,8 @@
     "combinacion": "Kombination",
     "especial": "Spezial",
     "N5": "N5",
-    "N4": "N4"
+    "N4": "N4",
+    "N3": "N3"
   },
   "content": {
     "kanaLetter": "Buchstabe {romaji}"
@@ -381,6 +382,10 @@
     "kanji-n4-final": {
       "title": "21. Kanji N4: Abschluss des Niveaus",
       "description": "Letzte N4-Kanji der Referenz: Familie, Wetter, Jahreszeiten, Essen, Tiere, Farben und Lernen."
+    },
+    "kanji-n3-1": {
+      "title": "22. Kanji N3: Gesellschaft und Entscheidungen",
+      "description": "Politik, Gesellschaft, Beziehungen, Entscheidungen und abstrakte Konzepte auf N3-Niveau."
     },
     "all": {
       "title": "Alle Inhalte",
@@ -642,7 +647,27 @@
     "kanji_犬": { "meaning": "Hund", "exampleMeaning": "Hund", "sentenceMeaning": "Ich gehe mit dem Hund spazieren." },
     "kanji_妹": { "meaning": "Jüngere Schwester", "exampleMeaning": "jüngere Schwester", "sentenceMeaning": "Ich spreche mit meiner jüngeren Schwester." },
     "kanji_姉": { "meaning": "Ältere Schwester", "exampleMeaning": "ältere Schwester", "sentenceMeaning": "Meine ältere Schwester ist Lehrerin." },
-    "kanji_漢": { "meaning": "Chinesisch / Kanji", "exampleMeaning": "Kanji", "sentenceMeaning": "Ich übe Kanji." }
+    "kanji_漢": { "meaning": "Chinesisch / Kanji", "exampleMeaning": "Kanji", "sentenceMeaning": "Ich übe Kanji." },
+    "kanji_政": { "meaning": "Politik / Regierung", "exampleMeaning": "Politik", "sentenceMeaning": "Er interessiert sich für Politik." },
+    "kanji_議": { "meaning": "Beratung / Debatte", "exampleMeaning": "Besprechung, Sitzung", "sentenceMeaning": "Morgen gibt es eine Besprechung." },
+    "kanji_民": { "meaning": "Volk / Nation", "exampleMeaning": "Bürger, Volk", "sentenceMeaning": "Wir hören die Meinung des Volkes." },
+    "kanji_連": { "meaning": "Mitnehmen / Verbinden", "exampleMeaning": "Kontakt", "sentenceMeaning": "Ich melde mich später bei dir." },
+    "kanji_対": { "meaning": "Gegensatz / Versus", "exampleMeaning": "Widerstand, dagegen", "sentenceMeaning": "Ich bin gegen diese Meinung." },
+    "kanji_部": { "meaning": "Abteilung / Bereich", "exampleMeaning": "Zimmer", "sentenceMeaning": "Ich putze das Zimmer." },
+    "kanji_合": { "meaning": "Passen / Vereinigen", "exampleMeaning": "eine Prüfung bestehen", "sentenceMeaning": "Ich habe die Prüfung bestanden." },
+    "kanji_内": { "meaning": "Inneres / Innerhalb", "exampleMeaning": "Inhalt", "sentenceMeaning": "Ich erkläre den Inhalt des Buches." },
+    "kanji_相": { "meaning": "Gegenseitig / Zusammen", "exampleMeaning": "Beratung", "sentenceMeaning": "Ich berate mich mit dem Lehrer." },
+    "kanji_定": { "meaning": "Bestimmen / Festlegen", "exampleMeaning": "Plan, Termin", "sentenceMeaning": "Was ist dein Plan für morgen?" },
+    "kanji_回": { "meaning": "Mal / Drehen", "exampleMeaning": "diesmal", "sentenceMeaning": "Diesmal habe ich versagt." },
+    "kanji_選": { "meaning": "Wählen / Auswählen", "exampleMeaning": "Auswahl", "sentenceMeaning": "Bitte wähle die richtige Antwort." },
+    "kanji_米": { "meaning": "Reis / USA", "exampleMeaning": "Reis", "sentenceMeaning": "Ich koche Reis." },
+    "kanji_実": { "meaning": "Wirklichkeit / Frucht", "exampleMeaning": "Tatsache", "sentenceMeaning": "Das ist eine Tatsache." },
+    "kanji_関": { "meaning": "Verbindung / Beziehung", "exampleMeaning": "Beziehung", "sentenceMeaning": "Die beiden haben eine gute Beziehung." },
+    "kanji_決": { "meaning": "Entscheiden / Bestimmen", "exampleMeaning": "Entscheidung", "sentenceMeaning": "Es wurde in der Sitzung entschieden." },
+    "kanji_全": { "meaning": "Ganz / Vollständig", "exampleMeaning": "alles", "sentenceMeaning": "Ich habe alles gegessen." },
+    "kanji_表": { "meaning": "Oberfläche / Tabelle", "exampleMeaning": "Ausdruck", "sentenceMeaning": "Ich drücke meine Gefühle aus." },
+    "kanji_戦": { "meaning": "Krieg / Schlacht", "exampleMeaning": "Krieg", "sentenceMeaning": "Krieg ist traurig." },
+    "kanji_経": { "meaning": "Verlaufen / Erfahren", "exampleMeaning": "Erfahrung", "sentenceMeaning": "Es wurde eine gute Erfahrung." }
   },
   "exampleTerms": {
     "Abreviación": "Abkürzung",

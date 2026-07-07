@@ -332,7 +332,8 @@
     "combinacion": "Combinaison",
     "especial": "Special",
     "N5": "N5",
-    "N4": "N4"
+    "N4": "N4",
+    "N3": "N3"
   },
   "content": {
     "kanaLetter": "Lettre {romaji}"
@@ -430,6 +431,10 @@
     "kanji-n4-final": {
       "title": "21. Kanji N4 : fin du niveau",
       "description": "Derniers kanji N4 de la reference : famille, meteo, saisons, nourriture, animaux, couleurs et etude."
+    },
+    "kanji-n3-1": {
+      "title": "22. Kanji N3 : societe et decisions",
+      "description": "Politique, societe, relations, decisions et concepts abstraits de niveau N3."
     },
     "all": {
       "title": "Tout le contenu",
@@ -1701,6 +1706,106 @@
       "meaning": "Chinois / Kanji",
       "exampleMeaning": "kanji",
       "sentenceMeaning": "Je pratique les kanji."
+    },
+    "kanji_政": {
+      "meaning": "Politique / Gouvernement",
+      "exampleMeaning": "politique",
+      "sentenceMeaning": "Il s'interesse a la politique."
+    },
+    "kanji_議": {
+      "meaning": "Deliberation / Debat",
+      "exampleMeaning": "reunion",
+      "sentenceMeaning": "Il y a une reunion demain."
+    },
+    "kanji_民": {
+      "meaning": "Peuple / Nation",
+      "exampleMeaning": "citoyen, peuple",
+      "sentenceMeaning": "Nous ecoutons l'opinion du peuple."
+    },
+    "kanji_連": {
+      "meaning": "Emmener / Connecter",
+      "exampleMeaning": "contact",
+      "sentenceMeaning": "Je te contacterai plus tard."
+    },
+    "kanji_対": {
+      "meaning": "Oppose / Versus",
+      "exampleMeaning": "opposition, contre",
+      "sentenceMeaning": "Je suis contre cette opinion."
+    },
+    "kanji_部": {
+      "meaning": "Section / Departement",
+      "exampleMeaning": "chambre",
+      "sentenceMeaning": "Je nettoie la chambre."
+    },
+    "kanji_合": {
+      "meaning": "Convenir / Unir",
+      "exampleMeaning": "reussir (un examen)",
+      "sentenceMeaning": "J'ai reussi l'examen."
+    },
+    "kanji_内": {
+      "meaning": "Interieur / Dedans",
+      "exampleMeaning": "contenu",
+      "sentenceMeaning": "J'explique le contenu du livre."
+    },
+    "kanji_相": {
+      "meaning": "Mutuel / Ensemble",
+      "exampleMeaning": "consultation",
+      "sentenceMeaning": "Je consulte le professeur."
+    },
+    "kanji_定": {
+      "meaning": "Determiner / Fixer",
+      "exampleMeaning": "plan, programme",
+      "sentenceMeaning": "Quel est ton programme pour demain ?"
+    },
+    "kanji_回": {
+      "meaning": "Fois / Tourner",
+      "exampleMeaning": "cette fois",
+      "sentenceMeaning": "J'ai echoue cette fois."
+    },
+    "kanji_選": {
+      "meaning": "Elire / Selectionner",
+      "exampleMeaning": "selection, choix",
+      "sentenceMeaning": "Choisis la bonne reponse, s'il te plait."
+    },
+    "kanji_米": {
+      "meaning": "Riz / Etats-Unis",
+      "exampleMeaning": "riz",
+      "sentenceMeaning": "Je cuis le riz."
+    },
+    "kanji_実": {
+      "meaning": "Realite / Fruit",
+      "exampleMeaning": "fait, realite",
+      "sentenceMeaning": "C'est un fait."
+    },
+    "kanji_関": {
+      "meaning": "Connexion / Relation",
+      "exampleMeaning": "relation",
+      "sentenceMeaning": "Les deux ont une bonne relation."
+    },
+    "kanji_決": {
+      "meaning": "Decider / Determiner",
+      "exampleMeaning": "decision",
+      "sentenceMeaning": "Ca a ete decide lors de la reunion."
+    },
+    "kanji_全": {
+      "meaning": "Entier / Complet",
+      "exampleMeaning": "tout",
+      "sentenceMeaning": "J'ai tout mange."
+    },
+    "kanji_表": {
+      "meaning": "Surface / Tableau",
+      "exampleMeaning": "expression",
+      "sentenceMeaning": "J'exprime mes sentiments."
+    },
+    "kanji_戦": {
+      "meaning": "Guerre / Bataille",
+      "exampleMeaning": "guerre",
+      "sentenceMeaning": "La guerre est triste."
+    },
+    "kanji_経": {
+      "meaning": "Passer / Experimenter",
+      "exampleMeaning": "experience",
+      "sentenceMeaning": "C'est devenu une bonne experience."
     }
   },
   "exampleTerms": {

@@ -332,7 +332,8 @@
     "combinacion": "Combinacao",
     "especial": "Especial",
     "N5": "N5",
-    "N4": "N4"
+    "N4": "N4",
+    "N3": "N3"
   },
   "content": {
     "kanaLetter": "Letra {romaji}"
@@ -430,6 +431,10 @@
     "kanji-n4-final": {
       "title": "21. Kanji N4: fechamento do nivel",
       "description": "Ultimos kanji N4 da referencia: familia, clima, estacoes, comida, animais, cores e estudo."
+    },
+    "kanji-n3-1": {
+      "title": "22. Kanji N3: sociedade e decisoes",
+      "description": "Politica, sociedade, relacoes, decisoes e conceitos abstratos de nivel N3."
     },
     "all": {
       "title": "Todo o conteudo",
@@ -1701,6 +1706,106 @@
       "meaning": "Chines / Kanji",
       "exampleMeaning": "kanji",
       "sentenceMeaning": "Pratico kanji."
+    },
+    "kanji_政": {
+      "meaning": "Politica / Governo",
+      "exampleMeaning": "politica",
+      "sentenceMeaning": "Ele esta interessado em politica."
+    },
+    "kanji_議": {
+      "meaning": "Deliberacao / Debate",
+      "exampleMeaning": "reuniao",
+      "sentenceMeaning": "Amanha tem uma reuniao."
+    },
+    "kanji_民": {
+      "meaning": "Povo / Nacao",
+      "exampleMeaning": "cidadao, povo",
+      "sentenceMeaning": "Ouvimos a opiniao do povo."
+    },
+    "kanji_連": {
+      "meaning": "Levar consigo / Conectar",
+      "exampleMeaning": "contato",
+      "sentenceMeaning": "Vou entrar em contato depois."
+    },
+    "kanji_対": {
+      "meaning": "Oposto / Versus",
+      "exampleMeaning": "oposicao, contra",
+      "sentenceMeaning": "Sou contra essa opiniao."
+    },
+    "kanji_部": {
+      "meaning": "Secao / Departamento",
+      "exampleMeaning": "quarto",
+      "sentenceMeaning": "Limpo o quarto."
+    },
+    "kanji_合": {
+      "meaning": "Encaixar / Unir",
+      "exampleMeaning": "passar (em uma prova)",
+      "sentenceMeaning": "Passei na prova."
+    },
+    "kanji_内": {
+      "meaning": "Interior / Dentro",
+      "exampleMeaning": "conteudo",
+      "sentenceMeaning": "Explico o conteudo do livro."
+    },
+    "kanji_相": {
+      "meaning": "Mutuo / Juntos",
+      "exampleMeaning": "consulta",
+      "sentenceMeaning": "Consulto o professor."
+    },
+    "kanji_定": {
+      "meaning": "Determinar / Fixar",
+      "exampleMeaning": "plano, agenda",
+      "sentenceMeaning": "Qual e o seu plano para amanha?"
+    },
+    "kanji_回": {
+      "meaning": "Vez / Girar",
+      "exampleMeaning": "desta vez",
+      "sentenceMeaning": "Desta vez eu falhei."
+    },
+    "kanji_選": {
+      "meaning": "Eleger / Selecionar",
+      "exampleMeaning": "selecao, opcao",
+      "sentenceMeaning": "Selecione a resposta correta, por favor."
+    },
+    "kanji_米": {
+      "meaning": "Arroz / Estados Unidos",
+      "exampleMeaning": "arroz",
+      "sentenceMeaning": "Cozinho arroz."
+    },
+    "kanji_実": {
+      "meaning": "Realidade / Fruto",
+      "exampleMeaning": "fato, realidade",
+      "sentenceMeaning": "Isso e um fato."
+    },
+    "kanji_関": {
+      "meaning": "Conexao / Relacao",
+      "exampleMeaning": "relacao",
+      "sentenceMeaning": "Os dois tem um bom relacionamento."
+    },
+    "kanji_決": {
+      "meaning": "Decidir / Determinar",
+      "exampleMeaning": "decisao",
+      "sentenceMeaning": "Foi decidido na reuniao."
+    },
+    "kanji_全": {
+      "meaning": "Inteiro / Completo",
+      "exampleMeaning": "tudo",
+      "sentenceMeaning": "Comi tudo."
+    },
+    "kanji_表": {
+      "meaning": "Superficie / Tabela",
+      "exampleMeaning": "expressao",
+      "sentenceMeaning": "Expresso meus sentimentos."
+    },
+    "kanji_戦": {
+      "meaning": "Guerra / Batalha",
+      "exampleMeaning": "guerra",
+      "sentenceMeaning": "A guerra e triste."
+    },
+    "kanji_経": {
+      "meaning": "Transcorrer / Experimentar",
+      "exampleMeaning": "experiencia",
+      "sentenceMeaning": "Tornou-se uma boa experiencia."
     }
   },
   "exampleTerms": {

@@ -135,6 +135,12 @@ export const LESSONS = [
         test: item => item.tipo === "kanji" && item.categoria === "N4" && Number(item.id_jlpt) >= 201 && Number(item.id_jlpt) <= 250,
     },
     {
+        id: "kanji-n3-1",
+        title: "22. Kanji N3: sociedad y decisiones",
+        description: "Política, sociedad, relaciones, decisiones y conceptos abstractos de nivel N3.",
+        test: item => item.tipo === "kanji" && item.categoria === "N3" && Number(item.id_jlpt) >= 251 && Number(item.id_jlpt) <= 270,
+    },
+    {
         id: "all",
         title: "Todo el contenido",
         description: "Mezcla libre de todos los caracteres disponibles.",
