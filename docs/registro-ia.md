@@ -23,6 +23,7 @@ Cada vez que una IA haga un commit de una feature nueva o un cambio de arquitect
 | 2026-07-06 | Claude (Sonnet 5) | `feature/stroke-evaluation` | Segunda ronda de ajustes: línea de color más delgada y opaca (encima de la tinta, no un halo), animación reducida a 70% con control de velocidad (Lenta/Normal/Rápida) en el modal, y recomendación automática de calificación SRS ("Fácil/Bien/Difícil") según el % de similitud, resaltando el botón sugerido | `js/app.js`, `js/drawing.js`, `js/stroke-animation.js`, `js/stroke-scoring.js`, `index.html`, `style.css` |
 | 2026-07-06 | Claude (Sonnet 5) | `feature/stroke-evaluation` | v0.8.15. Reemplaza el selector de velocidad por un botón ▶ pequeño (esquina inferior derecha del lienzo del modal) que cicla 1x/2x/4x y reinicia la animación; mensaje de recomendación de calificación ahora entre paréntesis y más tenue que el legend; bump de versión (0.8.11→0.8.15) en `APP_VERSION`, `package.json`, splash, `CACHE_NAME` y query strings `?v=` para que el usuario distinga builds nuevas y para invalidar caché stale en móviles | `index.html`, `js/app.js`, `style.css`, `service-worker.js`, `package.json`, `CHANGELOG.md` |
 | 2026-07-06 | Claude (Sonnet 5) | `feature/stroke-evaluation-n4` | v0.8.16. Extiende el evaluador de trazos + animación a los 170 kanji N4 (antes solo N5) siguiendo al pie de la letra la plantilla de prompt documentada más abajo — funcionó sin sorpresas, ver "Verificación hecha". También reduce a la mitad la velocidad base de la animación (450ms→900ms por trazo) a pedido del usuario | `tools/fetch-kanjivg.mjs`, `tools/build-kanjivg-data.mjs`, `tools/validate-content.mjs`, `js/app.js`, `vendor/kanjivg-svg/`, `data/kanjivg/` |
+| 2026-07-06 | Claude (Sonnet 5) | `feature/stroke-evaluation-n4` | Genera listas candidatas de kanji JLPT N3 (361) y N2 (370) desde JLPT Sensei (scraping con Playwright porque la tabla pagina por JS) y audita duplicados/inconsistencias contra los 250 kanji N5+N4 ya publicados — ver sección "Auditoría" más abajo. Sin código de la app tocado, solo documentos de planificación | `docs/jlpt-n3-list.md`, `docs/jlpt-n2-list.md` |
 
 ---
 
@@ -142,3 +143,53 @@ Codex normalmente arranca sin haber leído nada de este repo, así que el prompt
 ### Nota sobre versión y CHANGELOG
 
 Esta feature vive en `feature/stroke-evaluation` y su extensión a N4 en `feature/stroke-evaluation-n4`, ninguna fusionada a `main` todavía. A diferencia de lo que decía esta nota originalmente: **sí** tienen entradas en `CHANGELOG.md` (0.8.15, 0.8.16) porque la convención cambió el 2026-07-06 — ver punto 4 de "Convención" al inicio de este archivo.
+
+---
+
+## Tarea: Listas candidatas JLPT N3/N2 + auditoría de duplicados (2026-07-06, Claude Sonnet 5)
+
+### Qué se pidió
+
+Revisar cómo están estructurados los datos de N5/N4 (CSV, ejemplos, traducciones en los 5 idiomas) y generar las listas de kanji candidatos para N3 y N2, basándose en [JLPT Sensei](https://jlptsensei.com/) (mismas URLs que dio el usuario: `/jlpt-n3-kanji-list/` y, por el mismo patrón, `/jlpt-n2-kanji-list/`) — la misma fuente que ya se usó como referencia canónica para cerrar N4. Después, verificar exhaustivamente que no hubiera duplicados/incongruencias y dejarlo documentado aquí.
+
+### Cómo se obtuvo la lista (detalle técnico, por si hay que repetirlo para N1)
+
+La tabla de JLPT Sensei pagina con JavaScript: un `fetch`/`curl` normal solo trae la página 1 (100 filas de ~370-374). Los intentos de pedirle a WebFetch "el resto" fallan porque esas filas no existen en el HTML estático — se cargan al hacer click en "2", "3", "4". La solución fue:
+
+1. Abrir la página con Playwright headless (`waitUntil: "domcontentloaded"`, **no** `"networkidle"` — el sitio tiene tanto anuncio/tracking de fondo que `networkidle` nunca se cumple y hace timeout).
+2. Inspeccionar el HTML de la paginación (`ul.pagination a.page-numbers`) para sacar la URL real de cada página: sigue el patrón estándar de WordPress `**/page/2/`, `**/page/3/`, `**/page/4/`, no `**/2/` (eso redirige 301 a la página 1).
+3. Navegar a cada una de las 4 URLs y extraer `table.jl-table tbody tr` con `page.$$eval`.
+4. Cada celda trae romaji+kana concatenados sin separador visual (ej. `"tai, tsuiタイ、ツイ"`) porque el `textContent` colapsa el salto de línea entre el `<span>` de romaji y el de kana. Se separan con una regexp que busca el primer carácter kana (`/[぀-ヿ]/`) — todo lo anterior es romaji, todo lo posterior es kana. Funciona incluso con okurigana entre paréntesis porque los paréntesis son ASCII y aparecen simétricos en ambas mitades.
+
+### Auditoría realizada (esto es lo que pidió el usuario explícitamente)
+
+Verificación exhaustiva contra los 250 kanji N5+N4 ya publicados en `datos.csv`, y dentro de las listas nuevas:
+
+| Chequeo | Resultado |
+|---|---|
+| Duplicados dentro de N3 (361 filas) | 0 — 361 caracteres únicos |
+| Duplicados dentro de N2 (370 filas) | 0 — 370 caracteres únicos |
+| Solape N3 ∩ N2 | 0 |
+| Solape N3 ∩ (N5+N4 existentes) | 0 (ver más abajo) |
+| Solape N2 ∩ (N5+N4 existentes) | 0 (ver más abajo) |
+| `id_jlpt` únicos combinando N5+N4+N3+N2 (981 filas) | 981 — sin colisiones |
+| Continuidad de `id_jlpt` (250→251, 611→612) | Sin huecos ni saltos |
+| Caracteres inválidos (no CJK unitario, `/^[㐀-鿿]$/u`) | 0 |
+| `romaji`/`meaning` vacíos | 0 |
+| Filas sin onyomi NI kunyomi | 0 |
+| Entidades HTML sin escapar (`&amp;`, `&#123;`, etc.) | 0 |
+
+**Sí se encontró una incongruencia** (no duplicado, sino un defecto de formato): 51 filas en N3 y 76 en N2 traían un espacio extra después del separador `、` en lecturas múltiples (ej. `"タイ、 ツイ"` en vez de `"タイ、ツイ"`) — es un artefacto tal cual lo renderiza la página fuente, no un error de mi extracción (se confirmó comparando contra la fila cruda antes de procesar). Se normalizó con un `replace(/、\s+/g, '、')` antes de generar los documentos finales; no queda ninguna instancia tras la corrección.
+
+**Sí se excluyeron 13 kanji por solape con la categorización propia de este proyecto** (no es un "duplicado" real, sino que JLPT Sensei y este proyecto no clasifican esos 13 kanji en el mismo nivel):
+- De la lista N3 de JLPT Sensei: 市, 都, 速, 返, 薬, 遅, 遠, 寝, 耳 — este proyecto ya los tiene como N4.
+- De la lista N2 de JLPT Sensei: 区, 県, 村, 門 — este proyecto ya los tiene como N4.
+
+Quien continúe esto en el futuro: si se decide adoptar la categorización de JLPT Sensei tal cual (moviendo esos 13 kanji de N4 a N3/N2), haría falta un `itemId()`/progreso especial de migración porque `itemId = tipo_caracter` no incluye la categoría — cambiar `categoria` de una fila existente no rompe IDs, pero si un usuario ya tiene progreso guardado en esa tarjeta, el progreso se conserva igual (la clave no cambia), solo cambiaría en qué lección/nivel aparece.
+
+### Archivos generados
+
+- `docs/jlpt-n3-list.md`: 361 kanji, `id_jlpt` 251-611.
+- `docs/jlpt-n2-list.md`: 370 kanji, `id_jlpt` 612-981.
+
+Ambos son **listas candidatas**, no contenido listo para publicar — falta traducir significados al español, revisar el `romaji` principal caso por caso, escribir ejemplos en `js/kanji-examples.js`, traducir a los 5 idiomas, crear lecciones, y generar fuente + datos KanjiVG, siguiendo el mismo patrón incremental por tandas que se usó para N4 (`jlpt-n4-starter.md` → `jlpt-n4-2.md` → … → `jlpt-n4-final.md`). Cada documento trae su propio checklist al final.
