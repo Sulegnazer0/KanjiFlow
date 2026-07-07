@@ -10,7 +10,7 @@ El número de versión visible de la app debe mantenerse alineado en:
 - `CHANGELOG.md`;
 - `service-worker.js` y query strings `?v=...` cuando cambien archivos cacheados.
 
-## [0.8.12] - 2026-07-06
+## [0.8.17] - 2026-07-06
 
 ### Agregado
 
@@ -22,7 +22,7 @@ El número de versión visible de la app debe mantenerse alineado en:
 
 ### Cambiado
 
-- La app muestra `v0.8.12`, 483 tarjetas y 270 kanji con ejemplos.
+- La app muestra `v0.8.17`, 483 tarjetas y 270 kanji con ejemplos.
 - Fuente `KanjiStrokeOrders.woff` regenerada para cubrir los 270 kanji publicados.
 
 ## [0.8.11] - 2026-07-04
