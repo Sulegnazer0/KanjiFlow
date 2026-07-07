@@ -31,7 +31,7 @@ import {
     saveSettings,
 } from "./storage.js";
 import { createDrawingPad } from "./drawing.js";
-import { exampleJapanese, itemPronunciation, japaneseOnly, speakJapanese } from "./audio.js?v=818";
+import { exampleJapanese, itemPronunciation, japaneseOnly, speakJapanese } from "./audio.js?v=819";
 import { loadDictionary } from "./data.js";
 import {
     achievementLevel,
@@ -39,14 +39,14 @@ import {
     achievementSummary,
     buildAchievementStats,
     syncAchievements,
-} from "./achievements.js?v=818";
+} from "./achievements.js?v=819";
 import {
     dailyEntry,
     dailySummary,
     practiceStats,
     recentDailySummaries,
     recordDailyPractice,
-} from "./profile.js?v=818";
+} from "./profile.js?v=819";
 import {
     disablePracticeReminder,
     enablePracticeReminder,
@@ -55,7 +55,7 @@ import {
     recordPractice,
     setPracticeReminderTime,
     shouldNotifyPracticeReminder,
-} from "./reminders.js?v=818";
+} from "./reminders.js?v=819";
 import {
     AVAILABLE_LANGUAGES,
     applyDocumentTranslations,
@@ -69,9 +69,9 @@ import {
     localizeDictionary,
     t,
     translateCardState,
-} from "./i18n.js?v=818";
+} from "./i18n.js?v=819";
 
-const APP_VERSION = "0.8.18";
+const APP_VERSION = "0.8.19";
 const FEEDBACK_ENDPOINT = "https://script.google.com/macros/s/AKfycbxiz6058zwMxfPTDTmIBpG8JutOPw8YBxCRJ0BeMHp-py6IXZy4zkZs2IdTqwmSSzC1jw/exec";
 const SPLASH_MIN_MS = 2400;
 const startupStartedAt = performance.now();
@@ -737,15 +737,42 @@ function lessonsForCategory(category) {
     return LESSONS.filter(lesson => lesson.category === category);
 }
 
+const SUBCATEGORY_LABEL_KEYS = {
+    hiragana: "ui.subcategoryHiragana",
+    katakana: "ui.subcategoryKatakana",
+    especial: "ui.subcategoryEspecial",
+};
+
+function appendLessonOption(container, lesson) {
+    const option = document.createElement("option");
+    option.value = lesson.id;
+    option.textContent = lessonTitle(lesson);
+    container.appendChild(option);
+}
+
 function populateLessons() {
     const category = elements.categorySelect.value || "todas";
     const fragment = document.createDocumentFragment();
+    const groups = new Map();
+    const ungrouped = [];
+
     for (const lesson of lessonsForCategory(category)) {
-        const option = document.createElement("option");
-        option.value = lesson.id;
-        option.textContent = lessonTitle(lesson);
-        fragment.appendChild(option);
+        if (lesson.subcategory) {
+            if (!groups.has(lesson.subcategory)) groups.set(lesson.subcategory, []);
+            groups.get(lesson.subcategory).push(lesson);
+        } else {
+            ungrouped.push(lesson);
+        }
     }
+
+    for (const lesson of ungrouped) appendLessonOption(fragment, lesson);
+    for (const [key, groupLessons] of groups) {
+        const optgroup = document.createElement("optgroup");
+        optgroup.label = t(SUBCATEGORY_LABEL_KEYS[key] || key);
+        for (const lesson of groupLessons) appendLessonOption(optgroup, lesson);
+        fragment.appendChild(optgroup);
+    }
+
     elements.lessonSelect.replaceChildren(fragment);
 }
 

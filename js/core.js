@@ -13,6 +13,7 @@ export const LESSONS = [
         title: "1. Hiragana: vocales y K/S",
         description: "Empieza con あいうえお y las filas K y S.",
         category: "kana",
+        subcategory: "hiragana",
         test: item => item.tipo === "hiragana" && /^(a|i|u|e|o|ka|ki|ku|ke|ko|sa|shi|su|se|so)$/.test(item.romaji),
     },
     {
@@ -20,6 +21,7 @@ export const LESSONS = [
         title: "2. Hiragana: T/N/H",
         description: "Continúa con las filas T, N y H.",
         category: "kana",
+        subcategory: "hiragana",
         test: item => item.tipo === "hiragana" && /^(ta|chi|tsu|te|to|na|ni|nu|ne|no|ha|hi|fu|he|ho)$/.test(item.romaji),
     },
     {
@@ -27,6 +29,7 @@ export const LESSONS = [
         title: "3. Hiragana: M/Y/R/W",
         description: "Completa el gojūon básico y la ん.",
         category: "kana",
+        subcategory: "hiragana",
         test: item => item.tipo === "hiragana" && /^(ma|mi|mu|me|mo|ya|yu|yo|ra|ri|ru|re|ro|wa|wo|n)$/.test(item.romaji),
     },
     {
@@ -34,6 +37,7 @@ export const LESSONS = [
         title: "4. Hiragana con dakuten",
         description: "Practica los sonidos G, Z, D, B y P.",
         category: "kana",
+        subcategory: "hiragana",
         test: item => item.tipo === "hiragana" && item.caracter.length === 1 && /^(g|z|d|b|p|ji|zu)/.test(item.romaji),
     },
     {
@@ -41,6 +45,7 @@ export const LESSONS = [
         title: "5. Hiragana combinado",
         description: "Sonidos con ゃ・ゅ・ょ pequeños: きゃ, しゅ, ちょ…",
         category: "kana",
+        subcategory: "hiragana",
         test: item => item.tipo === "hiragana" && item.caracter.length > 1 && item.categoria !== "especial",
     },
     {
@@ -48,6 +53,7 @@ export const LESSONS = [
         title: "6. Katakana: vocales y K/S",
         description: "Aprende las formas katakana de las primeras filas.",
         category: "kana",
+        subcategory: "katakana",
         test: item => item.tipo === "katakana" && /^(a|i|u|e|o|ka|ki|ku|ke|ko|sa|shi|su|se|so)$/.test(item.romaji),
     },
     {
@@ -55,6 +61,7 @@ export const LESSONS = [
         title: "7. Katakana: T/N/H",
         description: "Continúa con las filas T, N y H.",
         category: "kana",
+        subcategory: "katakana",
         test: item => item.tipo === "katakana" && /^(ta|chi|tsu|te|to|na|ni|nu|ne|no|ha|hi|fu|he|ho)$/.test(item.romaji),
     },
     {
@@ -62,6 +69,7 @@ export const LESSONS = [
         title: "8. Katakana: M/Y/R/W",
         description: "Completa el silabario katakana básico.",
         category: "kana",
+        subcategory: "katakana",
         test: item => item.tipo === "katakana" && /^(ma|mi|mu|me|mo|ya|yu|yo|ra|ri|ru|re|ro|wa|wo|n)$/.test(item.romaji),
     },
     {
@@ -69,6 +77,7 @@ export const LESSONS = [
         title: "9. Katakana con dakuten",
         description: "Practica los sonidos G, Z, D, B y P en katakana.",
         category: "kana",
+        subcategory: "katakana",
         test: item => item.tipo === "katakana" && item.caracter.length === 1 && /^(g|z|d|b|p|ji|zu)/.test(item.romaji),
     },
     {
@@ -76,6 +85,7 @@ export const LESSONS = [
         title: "10. Katakana combinado",
         description: "Combinaciones frecuentes en palabras extranjeras.",
         category: "kana",
+        subcategory: "katakana",
         test: item => item.tipo === "katakana" && item.caracter.length > 1 && item.categoria !== "especial",
     },
     {
@@ -83,6 +93,7 @@ export const LESSONS = [
         title: "11. Reglas especiales de kana",
         description: "っ/ッ duplican consonantes; ー alarga vocales y ヴ representa el sonido «v».",
         category: "kana",
+        subcategory: "especial",
         test: item => item.categoria === "especial",
     },
     {

@@ -10,6 +10,13 @@ El número de versión visible de la app debe mantenerse alineado en:
 - `CHANGELOG.md`;
 - `service-worker.js` y query strings `?v=...` cuando cambien archivos cacheados.
 
+## [0.8.19] - 2026-07-06
+
+### Cambiado
+
+- El selector de "Lección" agrupa visualmente con `<optgroup>` cuando la categoría "Kana" está seleccionada: Hiragana (5 lecciones), Katakana (5 lecciones) y Reglas especiales (1 lección), en vez de una lista plana de 11 entradas. N5/N4/N3 siguen mostrando su lista plana (no tienen subcategorías naturales).
+- La app muestra `v0.8.19`.
+
 ## [0.8.18] - 2026-07-06
 
 ### Agregado
