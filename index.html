@@ -7,7 +7,7 @@
     <meta name="description" content="Aprende hiragana, katakana y kanji con escritura, audio y repetición espaciada.">
     <title>KanjiFlow — Aprende japonés</title>
     <link rel="manifest" href="manifest.webmanifest">
-    <link rel="stylesheet" href="style.css?v=817">
+    <link rel="stylesheet" href="style.css?v=818">
 </head>
 <body>
     <div id="pantalla-carga" class="splash-screen" aria-live="polite">
@@ -15,7 +15,7 @@
             <img src="assets/s0labsHorizontal.png" alt="S0 Labs" class="splash-logo">
             <p data-i18n="ui.splashTagline">Preparando tu flujo de práctica…</p>
         </div>
-        <span id="splash-version" class="splash-version">v0.8.17</span>
+        <span id="splash-version" class="splash-version">v0.8.18</span>
     </div>
 
     <main class="app-shell">
@@ -77,6 +77,16 @@
 
         <section id="seccion-practica" role="tabpanel" aria-labelledby="tab-practica">
             <div class="filters-card">
+                <div class="field">
+                    <label for="selector-categoria" data-i18n="ui.categoryLabel">Categoría</label>
+                    <select id="selector-categoria">
+                        <option value="todas" data-i18n="ui.categoryAll">Todas</option>
+                        <option value="kana" data-i18n="ui.categoryKana">Kana</option>
+                        <option value="N5">N5</option>
+                        <option value="N4">N4</option>
+                        <option value="N3">N3</option>
+                    </select>
+                </div>
                 <div class="field">
                     <label for="selector-leccion" data-i18n="ui.lessonLabel">Lección</label>
                     <select id="selector-leccion"></select>
@@ -513,6 +523,6 @@
 
     <div id="aviso-nivel" class="level-notice" role="status" aria-live="polite"></div>
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
-    <script type="module" src="js/app.js?v=817"></script>
+    <script type="module" src="js/app.js?v=818"></script>
 </body>
 </html>

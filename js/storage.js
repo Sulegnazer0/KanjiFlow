@@ -88,6 +88,7 @@ export function saveFavorites(favorites) {
 export function loadSettings() {
     return readJSON(SETTINGS_KEY, {
         lesson: "recommended",
+        category: "todas",
         script: "todos",
         session: "recomendado",
         language: "es",

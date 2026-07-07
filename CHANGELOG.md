@@ -10,6 +10,19 @@ El número de versión visible de la app debe mantenerse alineado en:
 - `CHANGELOG.md`;
 - `service-worker.js` y query strings `?v=...` cuando cambien archivos cacheados.
 
+## [0.8.18] - 2026-07-06
+
+### Agregado
+
+- Selector "Categoría" en la pantalla de Práctica (Todas/Kana/N5/N4/N3), antes del selector de "Lección".
+
+### Cambiado
+
+- El selector de "Lección" ahora se filtra según la categoría elegida (ej. N5 muestra solo sus 4 lecciones, N3 solo la suya) en vez de mostrar siempre las 22 lecciones juntas. Con "Todas" (por defecto) se comporta igual que antes.
+- Cada lección en `js/core.js` ahora declara a qué categoría pertenece (`category: "kana" | "N5" | "N4" | "N3"`).
+- La preferencia de categoría se guarda junto con lección/escritura/sesión y se restaura al recargar.
+- La app muestra `v0.8.18`.
+
 ## [0.8.17] - 2026-07-06
 
 ### Agregado

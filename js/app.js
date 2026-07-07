@@ -31,7 +31,7 @@ import {
     saveSettings,
 } from "./storage.js";
 import { createDrawingPad } from "./drawing.js";
-import { exampleJapanese, itemPronunciation, japaneseOnly, speakJapanese } from "./audio.js?v=817";
+import { exampleJapanese, itemPronunciation, japaneseOnly, speakJapanese } from "./audio.js?v=818";
 import { loadDictionary } from "./data.js";
 import {
     achievementLevel,
@@ -39,14 +39,14 @@ import {
     achievementSummary,
     buildAchievementStats,
     syncAchievements,
-} from "./achievements.js?v=817";
+} from "./achievements.js?v=818";
 import {
     dailyEntry,
     dailySummary,
     practiceStats,
     recentDailySummaries,
     recordDailyPractice,
-} from "./profile.js?v=817";
+} from "./profile.js?v=818";
 import {
     disablePracticeReminder,
     enablePracticeReminder,
@@ -55,7 +55,7 @@ import {
     recordPractice,
     setPracticeReminderTime,
     shouldNotifyPracticeReminder,
-} from "./reminders.js?v=817";
+} from "./reminders.js?v=818";
 import {
     AVAILABLE_LANGUAGES,
     applyDocumentTranslations,
@@ -69,9 +69,9 @@ import {
     localizeDictionary,
     t,
     translateCardState,
-} from "./i18n.js?v=817";
+} from "./i18n.js?v=818";
 
-const APP_VERSION = "0.8.17";
+const APP_VERSION = "0.8.18";
 const FEEDBACK_ENDPOINT = "https://script.google.com/macros/s/AKfycbxiz6058zwMxfPTDTmIBpG8JutOPw8YBxCRJ0BeMHp-py6IXZy4zkZs2IdTqwmSSzC1jw/exec";
 const SPLASH_MIN_MS = 2400;
 const startupStartedAt = performance.now();
@@ -97,6 +97,7 @@ const elements = {
     practiceSection: $("#seccion-practica"),
     studySection: $("#seccion-estudio"),
     profileSection: $("#seccion-perfil"),
+    categorySelect: $("#selector-categoria"),
     lessonSelect: $("#selector-leccion"),
     scriptSelect: $("#selector-modo"),
     sessionSelect: $("#selector-progreso"),
@@ -731,9 +732,15 @@ function populateLanguageSelect() {
     syncLanguageControls();
 }
 
+function lessonsForCategory(category) {
+    if (!category || category === "todas") return LESSONS;
+    return LESSONS.filter(lesson => lesson.category === category);
+}
+
 function populateLessons() {
+    const category = elements.categorySelect.value || "todas";
     const fragment = document.createDocumentFragment();
-    for (const lesson of LESSONS) {
+    for (const lesson of lessonsForCategory(category)) {
         const option = document.createElement("option");
         option.value = lesson.id;
         option.textContent = lessonTitle(lesson);
@@ -745,6 +752,7 @@ function populateLessons() {
 function saveCurrentSettings() {
     settings = {
         ...settings,
+        category: elements.categorySelect.value,
         lesson: elements.lessonSelect.value,
         script: elements.scriptSelect.value,
         session: elements.sessionSelect.value,
@@ -754,8 +762,12 @@ function saveCurrentSettings() {
 }
 
 function restoreSettings() {
-    const lessonExists = LESSONS.some(lesson => lesson.id === settings.lesson);
-    elements.lessonSelect.value = lessonExists ? settings.lesson : "recommended";
+    const categoryExists = ["todas", "kana", "N5", "N4", "N3"].includes(settings.category);
+    elements.categorySelect.value = categoryExists ? settings.category : "todas";
+    populateLessons();
+    const availableLessons = lessonsForCategory(elements.categorySelect.value);
+    const lessonExists = availableLessons.some(lesson => lesson.id === settings.lesson);
+    elements.lessonSelect.value = lessonExists ? settings.lesson : (availableLessons[0]?.id ?? "recommended");
     elements.scriptSelect.value = settings.script || "todos";
     elements.sessionSelect.value = settings.session || "recomendado";
 }
@@ -763,7 +775,6 @@ function restoreSettings() {
 function applyLanguageToUI() {
     applyDocumentTranslations();
     populateLanguageSelect();
-    populateLessons();
     restoreSettings();
     updateConnection();
     updateReminderUI();
@@ -785,6 +796,7 @@ async function changeLanguage(language) {
     }
     settings = {
         ...settings,
+        category: elements.categorySelect.value || settings.category,
         lesson: elements.lessonSelect.value || settings.lesson,
         script: elements.scriptSelect.value || settings.script,
         session: elements.sessionSelect.value || settings.session,
@@ -1644,6 +1656,12 @@ function bindEvents() {
             target.focus();
         });
     }
+
+    elements.categorySelect.addEventListener("change", () => {
+        populateLessons();
+        saveCurrentSettings();
+        presentChallenge();
+    });
 
     for (const select of [elements.lessonSelect, elements.scriptSelect, elements.sessionSelect]) {
         select.addEventListener("change", () => {
