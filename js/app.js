@@ -41,7 +41,7 @@ import {
 } from "./stroke-scoring.js";
 import { resampleStroke } from "./stroke-geometry.js";
 import { createStrokeAnimator } from "./stroke-animation.js";
-import { exampleJapanese, itemPronunciation, japaneseOnly, speakJapanese } from "./audio.js?v=823";
+import { exampleJapanese, itemPronunciation, japaneseOnly, speakJapanese } from "./audio.js?v=824";
 import { loadDictionary } from "./data.js";
 import {
     achievementLevel,
@@ -49,14 +49,14 @@ import {
     achievementSummary,
     buildAchievementStats,
     syncAchievements,
-} from "./achievements.js?v=823";
+} from "./achievements.js?v=824";
 import {
     dailyEntry,
     dailySummary,
     practiceStats,
     recentDailySummaries,
     recordDailyPractice,
-} from "./profile.js?v=823";
+} from "./profile.js?v=824";
 import {
     disablePracticeReminder,
     enablePracticeReminder,
@@ -65,7 +65,7 @@ import {
     recordPractice,
     setPracticeReminderTime,
     shouldNotifyPracticeReminder,
-} from "./reminders.js?v=823";
+} from "./reminders.js?v=824";
 import {
     AVAILABLE_LANGUAGES,
     applyDocumentTranslations,
@@ -79,9 +79,9 @@ import {
     localizeDictionary,
     t,
     translateCardState,
-} from "./i18n.js?v=823";
+} from "./i18n.js?v=824";
 
-const APP_VERSION = "0.8.23";
+const APP_VERSION = "0.8.24";
 const FEEDBACK_ENDPOINT = "https://script.google.com/macros/s/AKfycbxiz6058zwMxfPTDTmIBpG8JutOPw8YBxCRJ0BeMHp-py6IXZy4zkZs2IdTqwmSSzC1jw/exec";
 const SPLASH_MIN_MS = 2400;
 const startupStartedAt = performance.now();
@@ -200,6 +200,7 @@ const elements = {
     similarityThreshold: $("#perfil-umbral-similitud"),
     thresholdChips: document.querySelectorAll("[data-threshold]"),
     strokeEvaluatorToggle: $("#btn-evaluador-trazos"),
+    strokeEvaluatorCanvasToggle: $("#btn-evaluador-lienzo"),
     profileTodayUnique: $("#perfil-hoy-unicas"),
     profileTodayReviews: $("#perfil-hoy-repasos"),
     profileActiveDays: $("#perfil-dias-activos"),
@@ -417,11 +418,11 @@ function localizeLoadedDictionary() {
     dictionary = localizeDictionary(baseDictionary);
 }
 
-function showToast(message) {
+function showToast(message, duration = 2600) {
     clearTimeout(toastTimer);
     elements.toast.textContent = message;
     elements.toast.classList.add("visible");
-    toastTimer = setTimeout(() => elements.toast.classList.remove("visible"), 2600);
+    toastTimer = setTimeout(() => elements.toast.classList.remove("visible"), duration);
 }
 
 function formatAchievementLevel(level) {
@@ -1479,6 +1480,7 @@ function renderProfile() {
     elements.strokeEvaluatorToggle.textContent = profile.strokeEvaluatorEnabled
         ? t("ui.strokeEvaluatorDisable")
         : t("ui.strokeEvaluatorEnable");
+    elements.strokeEvaluatorCanvasToggle.setAttribute("aria-pressed", String(profile.strokeEvaluatorEnabled));
 
     elements.profileTodayUnique.textContent = today.uniqueCount;
     elements.profileTodayReviews.textContent = today.reviews;
@@ -1510,6 +1512,9 @@ function toggleStrokeEvaluator() {
     saveProfile(profile);
     profile = loadProfile();
     renderProfile();
+    showToast(profile.strokeEvaluatorEnabled
+        ? t("ui.strokeEvaluatorEnabledToast", { threshold: profile.similarityThreshold })
+        : t("ui.strokeEvaluatorDisabledToast"), 4200);
 }
 
 function openAboutModal() {
@@ -1929,6 +1934,7 @@ function bindEvents() {
         });
     });
     elements.strokeEvaluatorToggle.addEventListener("click", toggleStrokeEvaluator);
+    elements.strokeEvaluatorCanvasToggle.addEventListener("click", toggleStrokeEvaluator);
     elements.aboutButton.addEventListener("click", openAboutModal);
     elements.closeAbout.addEventListener("click", closeAboutModal);
     elements.aboutModal.addEventListener("click", event => {

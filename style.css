@@ -954,6 +954,29 @@ canvas {
     pointer-events: none;
 }
 
+.stroke-evaluator-toggle {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(15, 23, 42, 0.55);
+    color: white;
+    font-size: 0.95rem;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.stroke-evaluator-toggle[aria-pressed="true"] {
+    background: #16a34a;
+}
+
 .board-controls,
 .modal-board-controls {
     display: grid;

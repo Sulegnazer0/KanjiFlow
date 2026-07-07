@@ -10,6 +10,19 @@ El número de versión visible de la app debe mantenerse alineado en:
 - `CHANGELOG.md`;
 - `service-worker.js` y query strings `?v=...` cuando cambien archivos cacheados.
 
+## [0.8.24] - 2026-07-07
+
+### Agregado
+
+- Botón ⏻ junto al lienzo de práctica para activar/desactivar el evaluador de trazos sin ir a Perfil (verde cuando está activo).
+- Aviso emergente (popup/toast) al activar o desactivar el evaluador: si se desactiva, indica que la calificación debe registrarse manualmente; si se activa, indica el % de similitud requerido — ambos casos invitan a ir a Perfil para más opciones.
+
+### Cambiado
+
+- El mensaje de bloqueo por umbral de trazos (`ui.strokeGateMessage`) ya no dice "desactiva el evaluador en tu perfil"; ahora dice "desactiva el evaluador con el botón junto al lienzo".
+- El botón de Perfil (`#btn-evaluador-trazos`) y el nuevo botón del lienzo quedan sincronizados: ambos reflejan el mismo estado (`profile.strokeEvaluatorEnabled`).
+- La app muestra `v0.8.24`.
+
 ## [0.8.23] - 2026-07-07
 
 ### Agregado
