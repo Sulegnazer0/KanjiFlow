@@ -7,7 +7,7 @@
     <meta name="description" content="Aprende hiragana, katakana y kanji con escritura, audio y repetición espaciada.">
     <title>KanjiFlow — Aprende japonés</title>
     <link rel="manifest" href="manifest.webmanifest">
-    <link rel="stylesheet" href="style.css?v=95">
+    <link rel="stylesheet" href="style.css?v=100">
 </head>
 <body>
     <div id="pantalla-carga" class="splash-screen" aria-live="polite">
@@ -125,6 +125,10 @@
                     </div>
                 </div>
                 <p id="descripcion-leccion" class="lesson-description"></p>
+                <div id="banner-sesion-personalizada" class="custom-session-banner hidden">
+                    <span id="texto-sesion-personalizada"></span>
+                    <button id="btn-salir-sesion-personalizada" class="text-button" type="button" data-i18n="ui.exitCustomSession">Salir de esta sesión</button>
+                </div>
             </div>
 
             <article class="question-card" aria-labelledby="texto-significado">
@@ -232,6 +236,7 @@
                     </select>
                 </div>
             </div>
+            <button id="btn-mapa-progreso-estudio" class="text-button progress-map-entry" type="button" data-i18n="ui.progressMapOpenButton">Ver mapa de progreso</button>
             <p id="contador-resultados" class="results-count" aria-live="polite"></p>
             <div id="lista-diccionario" class="dictionary-grid"></div>
         </section>
@@ -394,6 +399,14 @@
                     </div>
                 </section>
 
+                <section class="data-card" aria-labelledby="mapa-progreso-perfil-titulo">
+                    <h3 id="mapa-progreso-perfil-titulo" data-i18n="ui.progressMapTitle">Mapa de progreso</h3>
+                    <p class="lesson-description" data-i18n="ui.progressMapProfileDescription">Mira de un vistazo qué caracteres dominas, cuáles repasas y cuáles te faltan.</p>
+                    <div class="data-actions">
+                        <button id="btn-mapa-progreso-perfil" class="text-button" type="button" data-i18n="ui.progressMapOpenButton">Ver mapa de progreso</button>
+                    </div>
+                </section>
+
                 <section class="data-card" aria-labelledby="tour-reinicio-titulo">
                     <h3 id="tour-reinicio-titulo" data-i18n="ui.tourRestartTitle">Tour de bienvenida</h3>
                     <p class="lesson-description" data-i18n="ui.tourRestartDescription">¿Quieres repasar cómo funciona KanjiFlow?</p>
@@ -412,6 +425,74 @@
                     </div>
                 </section>
             </div>
+        </div>
+    </div>
+
+    <div id="modal-mapa-progreso" class="modal hidden" role="dialog" aria-modal="true"
+         aria-labelledby="mapa-progreso-titulo" aria-describedby="mapa-progreso-descripcion">
+        <div class="modal-content progress-map-modal-content" tabindex="-1">
+            <div class="modal-top-actions">
+                <button id="cerrar-mapa-progreso" class="close-button" type="button"
+                        aria-label="Cerrar" data-i18n-aria-label="ui.closeDetails">×</button>
+            </div>
+            <p class="eyebrow" data-i18n="ui.progressMapEyebrow">Tu avance</p>
+            <h2 id="mapa-progreso-titulo" data-i18n="ui.progressMapTitle">Mapa de progreso</h2>
+            <p id="mapa-progreso-descripcion" class="lesson-description" data-i18n="ui.progressMapDescription">Toca cualquier carácter para practicarlo. Los colores muestran cómo vas.</p>
+
+            <div id="mapa-progreso-categorias" class="progress-map-categories" role="tablist" aria-label="Categoría">
+                <button type="button" class="goal-chip" data-progress-map-category="hiragana" data-i18n="ui.progressMapHiragana">Hiragana</button>
+                <button type="button" class="goal-chip" data-progress-map-category="katakana" data-i18n="ui.progressMapKatakana">Katakana</button>
+                <button type="button" class="goal-chip" data-progress-map-category="N5" data-i18n="ui.progressMapN5">Kanji N5</button>
+                <button type="button" class="goal-chip" data-progress-map-category="N4" data-i18n="ui.progressMapN4">Kanji N4</button>
+                <button type="button" class="goal-chip" data-progress-map-category="N3" data-i18n="ui.progressMapN3">Kanji N3</button>
+                <button type="button" class="goal-chip" data-progress-map-category="N2" data-i18n="ui.progressMapN2">Kanji N2</button>
+            </div>
+
+            <div class="progress-map-legend">
+                <span class="progress-map-legend-item"><i class="progress-map-dot progress-map-dot-white"></i><span data-i18n="ui.progressMapLegendWhite">Pendiente</span></span>
+                <span class="progress-map-legend-item"><i class="progress-map-dot progress-map-dot-red"></i><span data-i18n="ui.progressMapLegendRed">Por repasar</span></span>
+                <span class="progress-map-legend-item"><i class="progress-map-dot progress-map-dot-green"></i><span data-i18n="ui.progressMapLegendGreen">Aprendiendo</span></span>
+                <span class="progress-map-legend-item"><i class="progress-map-dot progress-map-dot-blue"></i><span data-i18n="ui.progressMapLegendBlue">Dominado</span></span>
+            </div>
+
+            <div class="progress-map-stats">
+                <div class="progress-map-stat">
+                    <strong id="mapa-progreso-estudiadas">0</strong>
+                    <span data-i18n="ui.progressMapStatStudied">Estudiados</span>
+                </div>
+                <div class="progress-map-stat">
+                    <strong id="mapa-progreso-dominadas">0</strong>
+                    <span data-i18n="ui.progressMapStatMastered">Dominados</span>
+                </div>
+                <div class="progress-map-stat">
+                    <strong id="mapa-progreso-aprendiendo">0</strong>
+                    <span data-i18n="ui.progressMapStatLearning">En repaso</span>
+                </div>
+                <div class="progress-map-stat">
+                    <strong id="mapa-progreso-pendientes">0</strong>
+                    <span data-i18n="ui.progressMapStatPending">Pendientes</span>
+                </div>
+            </div>
+
+            <div id="mapa-progreso-foco" class="progress-map-focus hidden">
+                <h3 data-i18n="ui.progressMapFocusTitle">Tu foco rojo</h3>
+                <div id="mapa-progreso-foco-chips" class="progress-map-focus-chips"></div>
+            </div>
+
+            <div class="progress-map-actions">
+                <button id="btn-mapa-progreso-repasar-rojos" class="button" type="button" data-i18n="ui.progressMapPracticeRed">Reforzar mis focos rojos</button>
+                <button id="btn-mapa-progreso-repasar-dominados" class="text-button" type="button" data-i18n="ui.progressMapPracticeMastered">Repasar dominados</button>
+            </div>
+
+            <div id="mapa-progreso-nav-bloques" class="progress-map-block-nav hidden">
+                <button id="btn-mapa-progreso-bloque-anterior" class="icon-button" type="button"
+                        aria-label="Bloque anterior" data-i18n-aria-label="ui.progressMapPrevBlock">‹</button>
+                <span id="mapa-progreso-bloque-etiqueta"></span>
+                <button id="btn-mapa-progreso-bloque-siguiente" class="icon-button" type="button"
+                        aria-label="Bloque siguiente" data-i18n-aria-label="ui.progressMapNextBlock">›</button>
+            </div>
+
+            <div id="mapa-progreso-grid" class="progress-map-grid"></div>
         </div>
     </div>
 
@@ -684,6 +765,6 @@
     <div id="aviso-nivel" class="level-notice" role="status" aria-live="polite"></div>
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
     <div id="version-fantasma" class="version-ghost" aria-hidden="true"></div>
-    <script type="module" src="js/app.js?v=95"></script>
+    <script type="module" src="js/app.js?v=100"></script>
 </body>
 </html>

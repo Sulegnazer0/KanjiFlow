@@ -346,6 +346,13 @@ export function isMastered(record) {
     return value.repetitions >= 4 && value.intervalDays >= 14 && value.streak >= 3;
 }
 
+export function progressMapColor(record, now = Date.now()) {
+    if (isNew(record)) return "white";
+    if (isDue(record, now)) return "red";
+    if (isMastered(record)) return "blue";
+    return "green";
+}
+
 export function cardState(record, now = Date.now()) {
     if (isNew(record)) return "Nueva";
     if (isDue(record, now)) return "Por repasar";

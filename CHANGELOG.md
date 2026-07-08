@@ -10,6 +10,17 @@ El número de versión visible de la app debe mantenerse alineado en:
 - `CHANGELOG.md`;
 - `service-worker.js` y query strings `?v=...` cuando cambien archivos cacheados.
 
+## [0.10.0] - 2026-07-08
+
+### Agregado
+
+- **Mapa de progreso**: nueva vista interactiva que muestra todos los caracteres (Hiragana, Katakana, Kanji N5-N2) como una grilla de celdas coloreadas según el avance real de cada uno — blanco (pendiente), rojo (por repasar hoy), verde (aprendiendo) y azul (dominado). Cada categoría se pagina en bloques de máximo 100 caracteres, con navegación anterior/siguiente cuando hace falta.
+- Resumen arriba de la grilla con estudiados, dominados, en repaso y pendientes de la categoría visible, más una lista de chips con "tu foco rojo" (los caracteres que urge repasar).
+- Dos botones de acción rápida — "Reforzar mis focos rojos" y "Repasar dominados" — que arrancan una sesión de práctica real filtrada a esa lista (aparece un aviso en Práctica indicando que es una sesión personalizada, con botón para salir de ella).
+- Tocar cualquier celda o chip abre directamente la tarjeta de práctica de ese carácter (el mismo lienzo de dibujo, reveal y animación de trazos de Estudio); al cerrarla, se vuelve al mapa exactamente donde estaba.
+- Dos puntos de entrada al mapa, ambos abren la misma vista: un botón en el Perfil y otro en la pestaña Estudio.
+- La app muestra `v0.10.0`.
+
 ## [0.9.5] - 2026-07-08
 
 ### Agregado

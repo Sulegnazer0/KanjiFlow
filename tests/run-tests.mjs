@@ -6,6 +6,7 @@ import {
     isMastered,
     itemId,
     parseCSV,
+    progressMapColor,
     progressStats,
     scheduleReview,
 } from "../js/core.js";
@@ -86,6 +87,13 @@ const failed = scheduleReview(mastered, "again", now);
 assert.equal(failed.streak, 0);
 assert.equal(failed.lapses, 1);
 assert.equal(failed.repetitions, 0);
+
+assert.equal(progressMapColor(undefined), "white");
+assert.equal(progressMapColor(firstGood, now), "green");
+assert.equal(progressMapColor(firstGood, now + 24 * 60 * 60 * 1000), "red");
+assert.equal(progressMapColor(mastered, now + 4 * 30 * 24 * 60 * 60 * 1000), "blue");
+assert.equal(progressMapColor(failed, now), "green");
+assert.equal(progressMapColor(failed, now + 60 * 1000), "red");
 
 const enabledReminder = enablePracticeReminder({}, now);
 assert.equal(enabledReminder.enabled, true);

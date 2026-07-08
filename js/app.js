@@ -8,6 +8,7 @@ import {
     isMastered,
     itemId,
     normalizeSearch,
+    progressMapColor,
     progressStats,
     scheduleReview,
 } from "./core.js";
@@ -92,7 +93,7 @@ import {
     translateCardState,
 } from "./i18n.js?v=831";
 
-const APP_VERSION = "0.9.5";
+const APP_VERSION = "0.10.0";
 const FEEDBACK_ENDPOINT = "https://script.google.com/macros/s/AKfycbxiz6058zwMxfPTDTmIBpG8JutOPw8YBxCRJ0BeMHp-py6IXZy4zkZs2IdTqwmSSzC1jw/exec";
 const SPLASH_MIN_MS = 2400;
 const startupStartedAt = performance.now();
@@ -111,6 +112,28 @@ const elements = {
     statMastered: $("#stat-dominadas"),
     statStreak: $("#stat-racha"),
     restartTourButton: $("#btn-reiniciar-tour"),
+    progressMapButtonProfile: $("#btn-mapa-progreso-perfil"),
+    progressMapButtonStudy: $("#btn-mapa-progreso-estudio"),
+    progressMapModal: $("#modal-mapa-progreso"),
+    progressMapModalContent: $(".progress-map-modal-content"),
+    closeProgressMap: $("#cerrar-mapa-progreso"),
+    progressMapCategoryChips: document.querySelectorAll("[data-progress-map-category]"),
+    progressMapStatStudied: $("#mapa-progreso-estudiadas"),
+    progressMapStatMastered: $("#mapa-progreso-dominadas"),
+    progressMapStatLearning: $("#mapa-progreso-aprendiendo"),
+    progressMapStatPending: $("#mapa-progreso-pendientes"),
+    progressMapFocus: $("#mapa-progreso-foco"),
+    progressMapFocusChips: $("#mapa-progreso-foco-chips"),
+    progressMapPracticeRed: $("#btn-mapa-progreso-repasar-rojos"),
+    progressMapPracticeMastered: $("#btn-mapa-progreso-repasar-dominados"),
+    progressMapBlockNav: $("#mapa-progreso-nav-bloques"),
+    progressMapPrevBlock: $("#btn-mapa-progreso-bloque-anterior"),
+    progressMapNextBlock: $("#btn-mapa-progreso-bloque-siguiente"),
+    progressMapBlockLabel: $("#mapa-progreso-bloque-etiqueta"),
+    progressMapGrid: $("#mapa-progreso-grid"),
+    customSessionBanner: $("#banner-sesion-personalizada"),
+    customSessionText: $("#texto-sesion-personalizada"),
+    exitCustomSession: $("#btn-salir-sesion-personalizada"),
     exportButton: $("#btn-exportar"),
     importButton: $("#btn-importar"),
     importFile: $("#archivo-importar"),
@@ -312,6 +335,9 @@ let touchStartX = 0;
 let tourIndex = 0;
 let tourHighlightedElement = null;
 let expectedKanjiData = null;
+let progressMapState = { category: "hiragana", block: 0 };
+let returnToProgressMapAfterClose = false;
+let customPracticePool = null;
 
 const KANJIVG_SUPPORTED_LEVELS = new Set(["N5", "N4", "N3", "N2"]);
 const kanjivgDataCache = new Map();
@@ -320,6 +346,16 @@ let kanjivgIndexPromise = null;
 function hasKanjivgData(item) {
     return Boolean(item?.tipo === "kanji" && KANJIVG_SUPPORTED_LEVELS.has(item.categoria));
 }
+
+const PROGRESS_MAP_BLOCK_SIZE = 100;
+const PROGRESS_MAP_CATEGORIES = [
+    { id: "hiragana", labelKey: "ui.progressMapHiragana", studyFilter: "hiragana", match: item => item.tipo === "hiragana" },
+    { id: "katakana", labelKey: "ui.progressMapKatakana", studyFilter: "katakana", match: item => item.tipo === "katakana" },
+    { id: "N5", labelKey: "ui.progressMapN5", studyFilter: "N5", match: item => item.tipo === "kanji" && item.categoria === "N5" },
+    { id: "N4", labelKey: "ui.progressMapN4", studyFilter: "N4", match: item => item.tipo === "kanji" && item.categoria === "N4" },
+    { id: "N3", labelKey: "ui.progressMapN3", studyFilter: "N3", match: item => item.tipo === "kanji" && item.categoria === "N3" },
+    { id: "N2", labelKey: "ui.progressMapN2", studyFilter: "N2", match: item => item.tipo === "kanji" && item.categoria === "N2" },
+];
 
 function loadKanjivgIndex() {
     if (!kanjivgIndexPromise) {
@@ -1174,6 +1210,16 @@ function avoidUnneededRepeats(pool) {
 }
 
 function getPracticePool() {
+    if (customPracticePool) {
+        return {
+            lesson: {
+                id: "custom-progress-map",
+                title: customPracticePool.title,
+                description: customPracticePool.description,
+            },
+            items: customPracticePool.items,
+        };
+    }
     const lessonData = currentLessonData();
     let pool = lessonData.items;
     if (elements.scriptSelect.value !== "todos") {
@@ -1192,6 +1238,10 @@ function getPracticePool() {
 function presentChallenge() {
     elements.answerPanel.classList.add("hidden");
     clearPracticeBoard();
+    setVisibility(elements.customSessionBanner, Boolean(customPracticePool));
+    if (customPracticePool) {
+        elements.customSessionText.textContent = `${customPracticePool.title} — ${customPracticePool.description}`;
+    }
     const poolData = getPracticePool();
     elements.lessonDescription.textContent = lessonDescription(poolData.lesson);
     currentItem = chooseNext(poolData.items, previousItemId, progress);
@@ -1691,6 +1741,154 @@ function closeProfileModal() {
     elements.profileChip.focus();
 }
 
+function progressMapCategoryItems(categoryId) {
+    const category = PROGRESS_MAP_CATEGORIES.find(candidate => candidate.id === categoryId);
+    return category ? dictionary.filter(category.match) : [];
+}
+
+function openProgressMapModal() {
+    renderProgressMap();
+    elements.progressMapModal.classList.remove("hidden");
+    document.body.style.overflow = "hidden";
+    elements.progressMapModalContent.focus();
+}
+
+function closeProgressMapModal() {
+    if (elements.progressMapModal.classList.contains("hidden")) return;
+    elements.progressMapModal.classList.add("hidden");
+    document.body.style.overflow = "";
+}
+
+function selectProgressMapCategory(categoryId) {
+    if (progressMapState.category === categoryId) return;
+    progressMapState.category = categoryId;
+    progressMapState.block = 0;
+    renderProgressMap();
+}
+
+function changeProgressMapBlock(delta) {
+    progressMapState.block += delta;
+    renderProgressMap();
+}
+
+function renderProgressMapFocus(redItems) {
+    const hasFocus = redItems.length > 0;
+    setVisibility(elements.progressMapFocus, hasFocus);
+    if (!hasFocus) return;
+
+    const shown = redItems.slice(0, 24);
+    const fragment = document.createDocumentFragment();
+    for (const item of shown) {
+        const chip = document.createElement("button");
+        chip.type = "button";
+        chip.className = "progress-map-focus-chip";
+        chip.textContent = item.caracter;
+        chip.addEventListener("click", () => openProgressMapItem(item));
+        fragment.appendChild(chip);
+    }
+    if (redItems.length > shown.length) {
+        const more = document.createElement("span");
+        more.className = "progress-map-focus-chip";
+        more.textContent = `+${redItems.length - shown.length}`;
+        fragment.appendChild(more);
+    }
+    elements.progressMapFocusChips.replaceChildren(fragment);
+}
+
+function renderProgressMap() {
+    const items = progressMapCategoryItems(progressMapState.category);
+    const totalBlocks = Math.max(1, Math.ceil(items.length / PROGRESS_MAP_BLOCK_SIZE));
+    progressMapState.block = Math.min(Math.max(0, progressMapState.block), totalBlocks - 1);
+    const start = progressMapState.block * PROGRESS_MAP_BLOCK_SIZE;
+    const blockItems = items.slice(start, start + PROGRESS_MAP_BLOCK_SIZE);
+
+    elements.progressMapCategoryChips.forEach(chip => {
+        const active = chip.dataset.progressMapCategory === progressMapState.category;
+        chip.classList.toggle("active", active);
+        chip.setAttribute("aria-selected", String(active));
+    });
+
+    const showNav = totalBlocks > 1;
+    setVisibility(elements.progressMapBlockNav, showNav);
+    if (showNav) {
+        elements.progressMapBlockLabel.textContent = t("ui.progressMapBlockLabel", {
+            current: progressMapState.block + 1,
+            total: totalBlocks,
+        }, `${progressMapState.block + 1} / ${totalBlocks}`);
+        elements.progressMapPrevBlock.disabled = progressMapState.block === 0;
+        elements.progressMapNextBlock.disabled = progressMapState.block >= totalBlocks - 1;
+    }
+
+    let mastered = 0;
+    let learning = 0;
+    let due = 0;
+    const redItems = [];
+    for (const item of items) {
+        const color = progressMapColor(progress[itemId(item)]);
+        if (color === "white") continue;
+        if (color === "blue") mastered++;
+        else if (color === "red") { due++; redItems.push(item); }
+        else learning++;
+    }
+    const studied = mastered + learning + due;
+    elements.progressMapStatStudied.textContent = studied;
+    elements.progressMapStatMastered.textContent = mastered;
+    elements.progressMapStatLearning.textContent = learning;
+    elements.progressMapStatPending.textContent = items.length - studied;
+    renderProgressMapFocus(redItems);
+
+    const fragment = document.createDocumentFragment();
+    for (const item of blockItems) {
+        const color = progressMapColor(progress[itemId(item)]);
+        const cell = document.createElement("button");
+        cell.type = "button";
+        cell.className = `progress-map-cell progress-map-cell-${color}`;
+        cell.textContent = item.caracter;
+        cell.title = item.romaji || item.significado || "";
+        cell.addEventListener("click", () => openProgressMapItem(item));
+        fragment.appendChild(cell);
+    }
+    elements.progressMapGrid.replaceChildren(fragment);
+}
+
+function openProgressMapItem(item) {
+    const category = PROGRESS_MAP_CATEGORIES.find(candidate => candidate.id === progressMapState.category);
+    elements.search.value = "";
+    elements.studyFilter.value = category?.studyFilter || "todos";
+    renderDictionary();
+    const index = filteredStudyItems.findIndex(candidate => itemId(candidate) === itemId(item));
+    if (index < 0) return;
+    returnToProgressMapAfterClose = true;
+    elements.progressMapModal.classList.add("hidden");
+    openModal(index, elements.progressMapModal);
+}
+
+function startProgressMapSession(kind) {
+    const items = progressMapCategoryItems(progressMapState.category);
+    const sessionMode = kind === "red" ? "repasar" : "dominadas";
+    const pool = filterBySession(items, sessionMode, progress, favorites);
+    if (!pool.length) {
+        showToast(t(kind === "red" ? "ui.progressMapNoRedToast" : "ui.progressMapNoMasteredToast"));
+        return;
+    }
+
+    const category = PROGRESS_MAP_CATEGORIES.find(candidate => candidate.id === progressMapState.category);
+    const categoryLabel = t(category.labelKey);
+    customPracticePool = {
+        items: pool,
+        title: t(kind === "red" ? "ui.progressMapSessionRedTitle" : "ui.progressMapSessionMasteredTitle", { category: categoryLabel }),
+        description: t("ui.progressMapSessionDescription", { count: pool.length }),
+    };
+    closeProgressMapModal();
+    switchTab("practice");
+    showToast(t("ui.progressMapSessionStartedToast", { count: pool.length }));
+}
+
+function exitCustomPracticeSession() {
+    customPracticePool = null;
+    presentChallenge();
+}
+
 let examQuestions = [];
 let examAnswers = [];
 let examCurrentIndex = 0;
@@ -2159,9 +2357,16 @@ function openModal(index, trigger = modalTrigger) {
 function closeModal() {
     if (elements.modal.classList.contains("hidden")) return;
     elements.modal.classList.add("hidden");
-    document.body.style.overflow = "";
     strokeAnimator.stop();
-    modalTrigger?.focus?.();
+    if (returnToProgressMapAfterClose) {
+        returnToProgressMapAfterClose = false;
+        renderProgressMap();
+        elements.progressMapModal.classList.remove("hidden");
+        elements.progressMapModalContent.focus();
+    } else {
+        document.body.style.overflow = "";
+        modalTrigger?.focus?.();
+    }
 }
 
 function currentModalItem() {
@@ -2292,6 +2497,7 @@ function bindEvents() {
     }
 
     elements.categorySelect.addEventListener("change", () => {
+        customPracticePool = null;
         populateLessons();
         saveCurrentSettings();
         presentChallenge();
@@ -2299,10 +2505,30 @@ function bindEvents() {
 
     for (const select of [elements.lessonSelect, elements.scriptSelect, elements.sessionSelect]) {
         select.addEventListener("change", () => {
+            customPracticePool = null;
             saveCurrentSettings();
             presentChallenge();
         });
     }
+
+    elements.exitCustomSession.addEventListener("click", exitCustomPracticeSession);
+
+    elements.progressMapButtonProfile.addEventListener("click", () => {
+        closeProfileModal();
+        openProgressMapModal();
+    });
+    elements.progressMapButtonStudy.addEventListener("click", openProgressMapModal);
+    elements.closeProgressMap.addEventListener("click", closeProgressMapModal);
+    elements.progressMapModal.addEventListener("click", event => {
+        if (event.target === elements.progressMapModal) closeProgressMapModal();
+    });
+    elements.progressMapCategoryChips.forEach(chip => {
+        chip.addEventListener("click", () => selectProgressMapCategory(chip.dataset.progressMapCategory));
+    });
+    elements.progressMapPrevBlock.addEventListener("click", () => changeProgressMapBlock(-1));
+    elements.progressMapNextBlock.addEventListener("click", () => changeProgressMapBlock(1));
+    elements.progressMapPracticeRed.addEventListener("click", () => startProgressMapSession("red"));
+    elements.progressMapPracticeMastered.addEventListener("click", () => startProgressMapSession("mastered"));
 
     elements.saveProfile.addEventListener("click", saveProfileFromForm);
     elements.profileName.addEventListener("keydown", event => {
