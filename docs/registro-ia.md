@@ -41,6 +41,7 @@ Cada vez que una IA haga un commit de una feature nueva o un cambio de arquitect
 | 2026-07-07 | 0.8.29 (bump 0.8.28→0.8.29) | Claude (Sonnet 5) | `feature/stroke-evaluator-toggle` | El usuario notó (viendo el modal de Estudio para 方) que el fantasma de fondo detrás de la animación seguía siendo la fuente `OrdenTrazos` (proporciones distintas al trazo KanjiVG animado encima) — pidió que en vez de eso "vaya rellenando la propia sombra que crea", y que el fantasma se mantenga visible aunque se desactive "mostrar orden de trazos". Fix: `playCharacter()` en `js/stroke-animation.js` ahora dibuja primero TODOS los trazos completos en gris tenue (nueva constante exportada `GHOST_COLOR`, mismos puntos KanjiVG) antes de dibujar los números y el relleno animado en rojo — literalmente la misma silueta que se anima encima, no una fuente aparte. `updateStrokeOrderDisplay()` en `js/app.js` oculta `#modal-caracter` (el elemento de fuente) por completo cuando hay datos KanjiVG, y cuando "mostrar orden de trazos" está apagado llama a `drawStatic(data, {color: GHOST_COLOR, showNumbers: false})` para dejar solo el fantasma estático, sin números ni animación. Sin datos KanjiVG (kana, kanji no cubierto), sigue el comportamiento anterior sin cambios — verificado con Playwright que あ conserva la fuente `OrdenTrazos` normal | `js/stroke-animation.js`, `js/app.js` |
 | 2026-07-07 | 0.8.30 (bump 0.8.29→0.8.30) | Claude (Sonnet 5) | `feature/stroke-evaluator-toggle` | Extiende el evaluador de trazos + animación a los 361 kanji N3 (antes solo N5+N4, 250 kanji), a pedido del usuario ("adelante, sin miedo"), siguiendo al pie de la letra la plantilla de prompt ya documentada en la sección "Feature: Evaluador de trazos con KanjiVG" de este archivo — funcionó sin sorpresas, igual que la extensión a N4. Cambios: `SUPPORTED_LEVELS`/`KANJIVG_SUPPORTED_LEVELS` en `tools/fetch-kanjivg.mjs`, `tools/build-kanjivg-data.mjs`, `tools/validate-content.mjs` y `js/app.js` (`hasKanjivgData`) pasan de `["N5","N4"]` a `["N5","N4","N3"]`. `npm run fetch:kanjivg` descargó 361 SVG nuevos sin fallos; `npm run build:kanjivg` generó los 361 JSON nuevos sin errores del parser (solo M/C/S, igual que N5/N4). De paso se corrigió `ui.kanjivgAttributionText` en los 5 locales, que había quedado desactualizado diciendo solo "N5" desde la extensión a N4 (nadie lo corrigió en su momento). Verificado con Playwright: trazar los puntos KanjiVG reales de un kanji N3 (民) da 100% de similitud en Práctica, y el fantasma + animación de Estudio funcionan igual que para N5/N4 en un kanji N3 (政) | `tools/fetch-kanjivg.mjs`, `tools/build-kanjivg-data.mjs`, `tools/validate-content.mjs`, `js/app.js`, `locales/*.json`, `vendor/kanjivg-svg/`, `data/kanjivg/` |
 | 2026-07-07 | 0.8.31 (bump 0.8.30→0.8.31) | Claude (Sonnet 5) | `feature/stroke-evaluator-toggle` | El usuario confirmó (pregunta directa) que la calificación SÍ es sensible al orden de trazos — `scoreAttempt` en `js/stroke-scoring.js` empareja por índice posicional (`normalizedUserStrokes[index]` vs `expectedStrokes[index]`), no busca el mejor match de forma. Pidió que el mensaje de bloqueo lo aclare explícitamente. Se agregó una frase a `ui.strokeGateMessage` en los 5 locales recordando que el orden también importa, no solo la forma/posición. Verificado con Playwright que el mensaje completo se muestra correctamente | `locales/*.json` |
+| 2026-07-07 | 0.8.31 (sin cambio) | Claude (Sonnet 5) | `main` | **Fusión a `main`**, autorizada explícitamente por el usuario tras preguntarle qué convenía hacer a continuación (N2, logros, o subir a main) — recomendé subir a main dado que todo el trabajo de N3 + evaluador estaba probado y era un buen punto de corte; el usuario confirmó con una pregunta de confirmación explícita (el sistema bloqueó el primer intento por no nombrar "main" literalmente en el pedido original, se re-preguntó y se confirmó). Fast-forward limpio (`main` era ancestro directo de `feature/stroke-evaluator-toggle`, sin conflictos, sin necesidad de merge commit): `git checkout main && git merge --ff-only feature/stroke-evaluator-toggle`. `npm test` en verde tras el merge. `main` pasa de `1e8a570` (0.8.11, cobertura N4 completa) a `b65b38e` (0.8.31) de un salto — no se renumeró nada, per la convención de versión global (punto 6 de "Convención"): estos números sí se usaron en algún momento, en alguna rama, y `CHANGELOG.md` ya lo documenta | *(fast-forward, sin diff propio — ver commits de las ramas `feature/jlpt-n3*` y `feature/stroke-evaluator-toggle`)* |
 
 ---
 
@@ -340,8 +341,36 @@ Mismo proceso que las tandas 2 y 3 (rama `feature/jlpt-n3-4` desde la punta de `
 
 Con esta tanda, el nivel N3 queda 100% cubierto según la referencia de JLPT Sensei: 361 kanji (`id_jlpt` 251-611), igual que ya lo estaban N5 (80) y N4 (170). Total del proyecto: 611 kanji con ejemplos, 824 tarjetas, versión `v0.8.23`.
 
-### Qué falta
+### Qué falta (actualizado 2026-07-07, ver sección "Fusión a main" al final de este archivo para el estado real)
 
-- El evaluador de trazos (datos KanjiVG) sigue acotado a N5+N4 — extenderlo a los 361 kanji N3 es trabajo aparte, en las ramas del evaluador (`feature/stroke-evaluation-*`), no en `feature/jlpt-n3-*`. La plantilla de prompt para esa extensión ya está documentada en la sección "Feature: Evaluador de trazos con KanjiVG" de este archivo.
-- N2 queda como posible próximo nivel de contenido (lista candidata ya generada en `docs/jlpt-n2-list.md`, 370 kanji, sin auditar/publicar todavía).
-- Ninguna de las 4 ramas `feature/jlpt-n3-*` se ha fusionado a `main` — sigue pendiente de autorización explícita del usuario.
+- ~~El evaluador de trazos (datos KanjiVG) sigue acotado a N5+N4~~ — hecho el 2026-07-07 (versión 0.8.30), N3 ya tiene datos KanjiVG completos.
+- N2 queda como posible próximo nivel de contenido (lista candidata ya generada en `docs/jlpt-n2-list.md`, 370 kanji, sin auditar/publicar todavía) — ni contenido ni evaluador de trazos.
+- ~~Ninguna de las 4 ramas `feature/jlpt-n3-*` se ha fusionado a `main`~~ — hecho el 2026-07-07 (versión 0.8.31), fusión autorizada explícitamente por el usuario. Ver la sección "Fusión a main (2026-07-07)" al final de este archivo.
+
+---
+
+## Fusión a main (2026-07-07, Claude Sonnet 5)
+
+### Qué se pidió
+
+Tras completar N3 (contenido + evaluador de trazos) y varias rondas de ajustes de UX del evaluador, le pregunté al usuario qué convenía hacer a continuación: empezar N2, revisar logros hasta N3, o subir esta versión a `main`. Recomendé subir a `main` — todo el trabajo estaba probado end-to-end y era un buen punto de corte, mientras que N2 es una iniciativa nueva de tamaño comparable a toda la de N3. El usuario pidió "haz push, documenta todo". El primer intento de merge fue bloqueado por el sistema porque ese mensaje no nombraba "main" literalmente (el usuario tiene una instrucción permanente de no tocar `main` sin autorización explícita) — se volvió a preguntar con una confirmación directa y el usuario autorizó.
+
+### Qué quedó en `main`
+
+Fast-forward limpio de `1e8a570` (0.8.11, "Completa cobertura N4") a `b65b38e` (0.8.31), sin conflictos porque `main` era ancestro directo de `feature/stroke-evaluator-toggle`. Contenido de ese salto, en orden:
+
+1. **Evaluador de trazos con KanjiVG** (N5, luego extendido a N4 el mismo día): coloreado en vivo por trazo, gating por umbral configurable, animación de orden de trazos, recomendación de calificación SRS.
+2. **Contenido N3 completo**: 361 kanji (`id_jlpt` 251-611) en 4 tandas (20 + 100 + 100 + 141), con ejemplos contextualizados y traducciones ES/EN/DE/FR/PT. Selector de Categoría + agrupamiento `<optgroup>` de Lección en Práctica.
+3. **Evaluador de trazos extendido a N3**: los 361 kanji N3 tienen datos KanjiVG igual que N5/N4.
+4. **Mejoras de UX del evaluador**: interruptor ON/OFF junto al lienzo de Práctica (no hace falta ir a Perfil), popup explicando el nuevo estado al activar/desactivar.
+5. **Corrección de alineación guía-vs-calificación**: la guía visual (Práctica tras revelar, fantasma de Estudio) usa los mismos puntos KanjiVG y la misma normalización que la calificación en vivo — antes eran sistemas de coordenadas distintos que podían no coincidir.
+6. **Escala del 80%** para los trazos KanjiVG (guía + calificación), con margen visible, en vez de bordear el lienzo completo.
+7. **Fantasma de Estudio con datos KanjiVG** en vez de la fuente `OrdenTrazos` — coincide exactamente con la animación, y se mantiene visible aunque se apague "mostrar orden de trazos".
+8. **Mensaje de bloqueo aclarado**: recuerda explícitamente que el orden de los trazos también importa para la calificación, no solo la forma/posición.
+
+Versión resultante en `main`: **v0.8.31**, 824 tarjetas, 611 kanji (N5 80 + N4 170 + N3 361), los 611 con datos KanjiVG completos.
+
+### Qué queda fuera de `main` todavía
+
+- **N2**: solo existe como lista candidata (`docs/jlpt-n2-list.md`, 370 kanji), sin publicar como contenido ni tener datos KanjiVG.
+- Nada más — no quedaron ramas de contenido o evaluador pendientes de fusionar en este punto.
