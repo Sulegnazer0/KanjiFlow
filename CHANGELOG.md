@@ -10,6 +10,13 @@ El número de versión visible de la app debe mantenerse alineado en:
 - `CHANGELOG.md`;
 - `service-worker.js` y query strings `?v=...` cuando cambien archivos cacheados.
 
+## [0.10.2] - 2026-07-08
+
+### Cambiado
+
+- La lista de logros en el Perfil ahora es colapsable: muestra 5 por defecto y un botón "Ver X logros más" para desplegar los 100 (y "Ver menos logros" para volver a colapsar).
+- La app muestra `v0.10.2`.
+
 ## [0.10.1] - 2026-07-08
 
 ### Agregado

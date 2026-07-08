@@ -125,6 +125,8 @@
     "profileBestStreak": "Beste Serie",
     "achievementsTitle": "Erfolge",
     "achievementsSummary": "{unlocked} von {total} Erfolgen freigeschaltet.",
+    "achievementsShowMore": "{count} weitere Erfolge anzeigen",
+    "achievementsShowLess": "Weniger Erfolge anzeigen",
     "achievementProgress": "{count} / {goal}",
     "achievementUnlockedAt": "Freigeschaltet {date}",
     "achievementUnlockedToast": "Erfolg freigeschaltet: {title}",

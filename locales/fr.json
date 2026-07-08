@@ -125,6 +125,8 @@
     "profileBestStreak": "Best streak",
     "achievementsTitle": "Achievements",
     "achievementsSummary": "{unlocked} of {total} achievements unlocked.",
+    "achievementsShowMore": "Voir {count} reussites de plus",
+    "achievementsShowLess": "Voir moins de reussites",
     "achievementProgress": "{count} / {goal}",
     "achievementUnlockedAt": "Unlocked {date}",
     "achievementUnlockedToast": "Achievement unlocked: {title}",

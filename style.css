@@ -570,6 +570,11 @@ select:focus-visible,
     gap: 10px;
 }
 
+#btn-mostrar-mas-logros {
+    display: block;
+    margin: 10px auto 0;
+}
+
 .achievement-card {
     display: grid;
     grid-template-columns: 42px 1fr;

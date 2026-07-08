@@ -93,7 +93,7 @@ import {
     translateCardState,
 } from "./i18n.js?v=831";
 
-const APP_VERSION = "0.10.1";
+const APP_VERSION = "0.10.2";
 const FEEDBACK_ENDPOINT = "https://script.google.com/macros/s/AKfycbxiz6058zwMxfPTDTmIBpG8JutOPw8YBxCRJ0BeMHp-py6IXZy4zkZs2IdTqwmSSzC1jw/exec";
 const SPLASH_MIN_MS = 2400;
 const startupStartedAt = performance.now();
@@ -254,6 +254,7 @@ const elements = {
     achievementSummary: $("#resumen-logros"),
     achievementCount: $("#contador-logros"),
     achievementList: $("#lista-logros"),
+    achievementToggle: $("#btn-mostrar-mas-logros"),
     dailyHistory: $("#historial-diario"),
     profileViewedToday: $("#perfil-vistas-hoy"),
     profileFailedToday: $("#perfil-falladas-hoy"),
@@ -338,6 +339,7 @@ let expectedKanjiData = null;
 let progressMapState = { category: "hiragana", block: 0 };
 let returnToProgressMapAfterClose = false;
 let customPracticePool = null;
+let achievementsExpanded = false;
 
 const KANJIVG_SUPPORTED_LEVELS = new Set(["N5", "N4", "N3", "N2"]);
 const kanjivgDataCache = new Map();
@@ -1639,6 +1641,8 @@ function makeAchievementCard(achievement) {
     return card;
 }
 
+const ACHIEVEMENTS_COLLAPSED_COUNT = 5;
+
 function renderAchievements() {
     const { items, summary } = refreshAchievements();
     elements.achievementSummary.textContent = t("ui.achievementsSummary", {
@@ -1647,11 +1651,18 @@ function renderAchievements() {
     });
     elements.achievementCount.textContent = `${summary.unlocked}/${summary.total}`;
 
+    const visibleItems = achievementsExpanded ? items : items.slice(0, ACHIEVEMENTS_COLLAPSED_COUNT);
     const fragment = document.createDocumentFragment();
-    for (const achievement of items) {
+    for (const achievement of visibleItems) {
         fragment.appendChild(makeAchievementCard(achievement));
     }
     elements.achievementList.replaceChildren(fragment);
+
+    const hiddenCount = items.length - ACHIEVEMENTS_COLLAPSED_COUNT;
+    setVisibility(elements.achievementToggle, hiddenCount > 0);
+    elements.achievementToggle.textContent = achievementsExpanded
+        ? t("ui.achievementsShowLess")
+        : t("ui.achievementsShowMore", { count: hiddenCount });
 }
 
 function renderProfile() {
@@ -2490,6 +2501,10 @@ function bindEvents() {
         if (event.target === elements.profileModal) closeProfileModal();
     });
     elements.restartTourButton.addEventListener("click", startTourGuide);
+    elements.achievementToggle.addEventListener("click", () => {
+        achievementsExpanded = !achievementsExpanded;
+        renderAchievements();
+    });
     const tabs = [elements.practiceTab, elements.studyTab, elements.examTab];
     for (const tab of tabs) {
         tab.addEventListener("keydown", event => {

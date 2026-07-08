@@ -125,6 +125,8 @@
     "profileBestStreak": "Mejor racha",
     "achievementsTitle": "Logros",
     "achievementsSummary": "{unlocked} de {total} logros desbloqueados.",
+    "achievementsShowMore": "Ver {count} logros más",
+    "achievementsShowLess": "Ver menos logros",
     "achievementProgress": "{count} / {goal}",
     "achievementUnlockedAt": "Desbloqueado {date}",
     "achievementUnlockedToast": "Logro desbloqueado: {title}",
