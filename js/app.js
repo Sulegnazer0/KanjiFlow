@@ -92,7 +92,7 @@ import {
     translateCardState,
 } from "./i18n.js?v=831";
 
-const APP_VERSION = "0.9.1";
+const APP_VERSION = "0.9.2";
 const FEEDBACK_ENDPOINT = "https://script.google.com/macros/s/AKfycbxiz6058zwMxfPTDTmIBpG8JutOPw8YBxCRJ0BeMHp-py6IXZy4zkZs2IdTqwmSSzC1jw/exec";
 const SPLASH_MIN_MS = 2400;
 const startupStartedAt = performance.now();

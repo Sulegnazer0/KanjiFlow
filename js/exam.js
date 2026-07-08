@@ -32,14 +32,36 @@ export function buildTopicPool(dictionary, { category, lessonId, lessons = LESSO
     return pool;
 }
 
+/**
+ * Onyomi/kunyomi and meaning fields can list several values joined by " / "
+ * (e.g. "コウ / ク (kou / ku)", "Partido / Facción"). Splitting on that
+ * separator (and dropping any trailing "(romaji)" annotation) gives the
+ * individual readings/meanings a value actually represents.
+ */
+function valueTokens(text) {
+    const withoutRomaji = text.split("(")[0];
+    return withoutRomaji.split("/").map(token => token.trim().toLowerCase()).filter(Boolean);
+}
+
+/** True if two option texts share at least one reading/meaning token — picking either would be defensibly "correct". */
+function sharesToken(a, b) {
+    if (!a || !b) return false;
+    const tokensA = new Set(valueTokens(a));
+    return valueTokens(b).some(token => tokensA.has(token));
+}
+
 function pickDistractorTexts(correctItem, pool, count, textOf, random) {
-    const seen = new Set([textOf(correctItem)]);
+    const correctText = textOf(correctItem);
+    const seen = new Set([correctText]);
+    const chosenTexts = [correctText];
     const candidates = shuffle(pool.filter(item => item !== correctItem), random);
     const result = [];
     for (const candidate of candidates) {
         const text = textOf(candidate);
         if (!text || text === "-" || seen.has(text)) continue;
+        if (chosenTexts.some(existing => sharesToken(existing, text))) continue;
         seen.add(text);
+        chosenTexts.push(text);
         result.push(text);
         if (result.length === count) break;
     }

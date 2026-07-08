@@ -10,6 +10,13 @@ El número de versión visible de la app debe mantenerse alineado en:
 - `CHANGELOG.md`;
 - `service-worker.js` y query strings `?v=...` cuando cambien archivos cacheados.
 
+## [0.9.2] - 2026-07-08
+
+### Corregido
+
+- Bug real reportado por el usuario: en preguntas de examen sobre onyomi (y, potencialmente, sobre significado), un distractor podía compartir una lectura/significado con la respuesta correcta cuando alguno de los dos tenía formato multivalor ("コウ / ク", "Partido / Facción"), haciendo que dos opciones lucieran igualmente correctas (ej. la respuesta correcta "コウ (kou)" junto a un distractor "コウ / ク (kou / ku)"). `js/exam.js` ahora descompone los valores separados por "/" y descarta cualquier distractor que comparta un token con la respuesta correcta o con otro distractor ya elegido, cayendo al diccionario completo si el tema no tiene suficientes candidatos sin colisión.
+- La app muestra `v0.9.2`.
+
 ## [0.9.1] - 2026-07-08
 
 ### Agregado

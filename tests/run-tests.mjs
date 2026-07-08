@@ -535,6 +535,54 @@ const onyomiLessKanji = examFixture[5];
 const fallbackQuestion = buildQuestion(onyomiLessKanji, [onyomiLessKanji], "meaningFromKanji", examFixture, fakeRandom(4));
 assert.equal(fallbackQuestion.options.length, 4, "Con un pool de un solo kanji, debe caer al pool completo para distractores");
 
+// Regresión: un kanji con lectura múltiple ("コウ / ク") no debe ofrecerse como
+// distractor de un kanji cuya lectura correcta es una de esas dos ("コウ"),
+// porque ambas opciones lucirían "correctas" al usuario (bug real reportado).
+const collisionFixture = [
+    { tipo: "kanji", categoria: "N4", id_jlpt: "1", caracter: "高", onyomi: "コウ (kou)", significado: "Alto" },
+    { tipo: "kanji", categoria: "N4", id_jlpt: "2", caracter: "行", onyomi: "コウ / ク (kou / ku)", significado: "Ir" },
+    { tipo: "kanji", categoria: "N4", id_jlpt: "3", caracter: "分", onyomi: "ブン / フン (bun / fun)", significado: "Parte / Minuto" },
+    { tipo: "kanji", categoria: "N4", id_jlpt: "4", caracter: "多", onyomi: "タ (ta)", significado: "Mucho" },
+    { tipo: "kanji", categoria: "N4", id_jlpt: "5", caracter: "大", onyomi: "ダイ / タイ (dai / tai)", significado: "Grande" },
+    { tipo: "kanji", categoria: "N4", id_jlpt: "6", caracter: "小", onyomi: "ショウ (shou)", significado: "Pequeño" },
+];
+for (let seed = 1; seed <= 50; seed += 1) {
+    const collisionQuestion = buildQuestion(collisionFixture[0], collisionFixture, "onyomi", collisionFixture, fakeRandom(seed));
+    const correctText = collisionQuestion.options[collisionQuestion.correctIndex];
+    const correctTokens = new Set(correctText.split("(")[0].split("/").map(token => token.trim()));
+    collisionQuestion.options.forEach((optionText, index) => {
+        if (index === collisionQuestion.correctIndex) return;
+        const optionTokens = optionText.split("(")[0].split("/").map(token => token.trim());
+        assert.ok(
+            optionTokens.every(token => !correctTokens.has(token)),
+            `El distractor "${optionText}" comparte lectura con la respuesta correcta "${correctText}" (semilla ${seed})`,
+        );
+    });
+}
+
+// Mismo problema puede darse en significados con formato "A / B".
+const meaningCollisionFixture = [
+    { tipo: "kanji", categoria: "N3", id_jlpt: "1", caracter: "党", onyomi: "-", significado: "Partido / Facción" },
+    { tipo: "kanji", categoria: "N3", id_jlpt: "2", caracter: "派", onyomi: "-", significado: "Facción / Grupo" },
+    { tipo: "kanji", categoria: "N3", id_jlpt: "3", caracter: "水", onyomi: "-", significado: "Agua" },
+    { tipo: "kanji", categoria: "N3", id_jlpt: "4", caracter: "火", onyomi: "-", significado: "Fuego" },
+    { tipo: "kanji", categoria: "N3", id_jlpt: "5", caracter: "木", onyomi: "-", significado: "Árbol" },
+    { tipo: "kanji", categoria: "N3", id_jlpt: "6", caracter: "土", onyomi: "-", significado: "Tierra" },
+];
+for (let seed = 1; seed <= 50; seed += 1) {
+    const meaningCollisionQuestion = buildQuestion(meaningCollisionFixture[0], meaningCollisionFixture, "meaningFromKanji", meaningCollisionFixture, fakeRandom(seed));
+    const correctText = meaningCollisionQuestion.options[meaningCollisionQuestion.correctIndex];
+    const correctTokens = new Set(correctText.split("/").map(token => token.trim().toLowerCase()));
+    meaningCollisionQuestion.options.forEach((optionText, index) => {
+        if (index === meaningCollisionQuestion.correctIndex) return;
+        const optionTokens = optionText.split("/").map(token => token.trim().toLowerCase());
+        assert.ok(
+            optionTokens.every(token => !correctTokens.has(token)),
+            `El distractor "${optionText}" comparte significado con la respuesta correcta "${correctText}" (semilla ${seed})`,
+        );
+    });
+}
+
 const smallExam = generateExam(examFixture, { category: "N5", questionCount: 50, random: fakeRandom(5) });
 assert.equal(smallExam.poolSize, 5);
 assert.equal(smallExam.requestedCount, MAX_QUESTIONS);
