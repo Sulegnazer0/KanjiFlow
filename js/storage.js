@@ -2,6 +2,7 @@ import { emptyReviewRecord, normalizeReviewRecord } from "./core.js";
 import { emptyAchievements, normalizeAchievements } from "./achievements.js";
 import { emptyProfile, normalizeDailyStats, normalizeProfile } from "./profile.js";
 import { emptyPracticeReminder, normalizePracticeReminder } from "./reminders.js";
+import { emptyExamStats, normalizeExamStats } from "./exam.js";
 
 const PROGRESS_KEY = "kanjiflow_progress_v2";
 const FAVORITES_KEY = "kanjiflow_favorites_v2";
@@ -10,6 +11,7 @@ const REMINDER_KEY = "kanjiflow_practice_reminder_v1";
 const PROFILE_KEY = "kanjiflow_profile_v1";
 const DAILY_STATS_KEY = "kanjiflow_daily_stats_v1";
 const ACHIEVEMENTS_KEY = "kanjiflow_achievements_v1";
+const EXAM_STATS_KEY = "kanjiflow_exam_stats_v1";
 
 function readJSON(key, fallback) {
     try {
@@ -131,6 +133,14 @@ export function saveAchievements(achievements) {
     localStorage.setItem(ACHIEVEMENTS_KEY, JSON.stringify(normalizeAchievements(achievements)));
 }
 
+export function loadExamStats() {
+    return normalizeExamStats(readJSON(EXAM_STATS_KEY, emptyExamStats()));
+}
+
+export function saveExamStats(examStats) {
+    localStorage.setItem(EXAM_STATS_KEY, JSON.stringify(normalizeExamStats(examStats)));
+}
+
 export function createBackup(
     progress,
     favorites,
@@ -139,6 +149,7 @@ export function createBackup(
     profile = emptyProfile(),
     dailyStats = {},
     achievements = emptyAchievements(),
+    examStats = emptyExamStats(),
 ) {
     return JSON.stringify({
         app: "KanjiFlow",
@@ -151,6 +162,7 @@ export function createBackup(
         profile: normalizeProfile(profile),
         dailyStats: normalizeDailyStats(dailyStats),
         achievements: normalizeAchievements(achievements),
+        examStats: normalizeExamStats(examStats),
     }, null, 2);
 }
 
@@ -172,10 +184,11 @@ export function parseBackup(text) {
         profile: normalizeProfile(data.profile),
         dailyStats: normalizeDailyStats(data.dailyStats),
         achievements: normalizeAchievements(data.achievements),
+        examStats: normalizeExamStats(data.examStats),
     };
 }
 
-export function replaceStoredData({ progress, favorites, settings, reminder, profile, dailyStats, achievements }) {
+export function replaceStoredData({ progress, favorites, settings, reminder, profile, dailyStats, achievements, examStats }) {
     saveProgress(progress);
     saveFavorites(favorites);
     saveSettings(settings);
@@ -183,4 +196,5 @@ export function replaceStoredData({ progress, favorites, settings, reminder, pro
     saveProfile(profile);
     saveDailyStats(dailyStats);
     saveAchievements(achievements);
+    saveExamStats(examStats || emptyExamStats());
 }

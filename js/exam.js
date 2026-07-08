@@ -139,3 +139,37 @@ export function scoreExam(questions, answers) {
     const total = questions.length;
     return { correct, total, score: total ? Math.round((correct / total) * 100) : 0 };
 }
+
+export function emptyExamStats() {
+    return {
+        examsTaken: 0,
+        perfectScores: 0,
+        bestScore: 0,
+        categoriesAttempted: {},
+    };
+}
+
+export function normalizeExamStats(stats = {}) {
+    const normalized = { ...emptyExamStats(), ...stats };
+    normalized.examsTaken = Math.max(0, Number(normalized.examsTaken) || 0);
+    normalized.perfectScores = Math.max(0, Number(normalized.perfectScores) || 0);
+    normalized.bestScore = Math.max(0, Number(normalized.bestScore) || 0);
+    normalized.categoriesAttempted = normalized.categoriesAttempted && typeof normalized.categoriesAttempted === "object"
+        ? Object.fromEntries(Object.entries(normalized.categoriesAttempted).filter(([, value]) => value))
+        : {};
+    return normalized;
+}
+
+/** Called once per finished exam — tracks the counters the achievement system reads from. */
+export function recordExamResult(stats, { category, score }) {
+    const normalized = normalizeExamStats(stats);
+    return {
+        examsTaken: normalized.examsTaken + 1,
+        perfectScores: normalized.perfectScores + (score >= 100 ? 1 : 0),
+        bestScore: Math.max(normalized.bestScore, score),
+        categoriesAttempted: {
+            ...normalized.categoriesAttempted,
+            ...(category && category !== "todas" ? { [category]: true } : {}),
+        },
+    };
+}

@@ -10,6 +10,18 @@ El número de versión visible de la app debe mantenerse alineado en:
 - `CHANGELOG.md`;
 - `service-worker.js` y query strings `?v=...` cuando cambien archivos cacheados.
 
+## [0.9.1] - 2026-07-08
+
+### Agregado
+
+- Sistema de logros ampliado de 14 a **100 logros**, organizados en: repasos totales (7), metas diarias cumplidas (7), rachas (6), días activos (7), caracteres/kanji/kana dominados (27 en total), dominio por nivel JLPT N5-N2 en 25/50/75/100% (16), favoritas (6), exámenes tomados y perfectos (10) y por categoría (4), tarjetas distintas repasadas (6), y 4 logros para funciones futuras ya contempladas mecánicamente pero aún sin activar en la interfaz: vincular cuenta de Google, calificar en la tienda, compartir en redes sociales, y "Estudiando en serio" para quien compre la app.
+- Nuevas estadísticas para el motor de logros: dominio por categoría JLPT (`categoryMastered`), estadísticas de examen persistidas (`examStats`: exámenes tomados, calificaciones perfectas, mejor calificación, categorías intentadas) y 4 banderas de perfil reservadas (`googleAccountLinked`, `storeRated`, `sharedOnSocial`, `hasPurchased`) que hoy siempre son falsas — quedan ahí para que esos logros existan visibles (bloqueados) en la lista hasta que esas funciones se implementen.
+- Persistencia de estadísticas de examen (`js/exam.js`: `emptyExamStats`/`normalizeExamStats`/`recordExamResult`; `js/storage.js`: `loadExamStats`/`saveExamStats`, incluidas en el respaldo/restauración de progreso). Cada examen terminado ahora actualiza el conteo de exámenes, calificaciones perfectas y categorías intentadas, y refresca los logros automáticamente.
+
+### Cambiado
+
+- La app muestra `v0.9.1`.
+
 ## [0.9.0] - 2026-07-08
 
 ### Agregado

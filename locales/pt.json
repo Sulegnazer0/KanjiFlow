@@ -372,6 +372,350 @@
     "favorites10": {
       "title": "Colecao pessoal",
       "description": "Adicione 10 cartas aos favoritos."
+    },
+    "review50": {
+      "title": "Aquecendo",
+      "description": "Alcance 50 revisoes no total."
+    },
+    "review250": {
+      "title": "Pratica constante",
+      "description": "Alcance 250 revisoes no total."
+    },
+    "review500": {
+      "title": "Na metade do caminho para mil",
+      "description": "Alcance 500 revisoes no total."
+    },
+    "review1000": {
+      "title": "Mil revisoes",
+      "description": "Alcance 1000 revisoes no total."
+    },
+    "review2500": {
+      "title": "Maratonista do kanji",
+      "description": "Alcance 2500 revisoes no total."
+    },
+    "dailyGoal30": {
+      "title": "Um mes de metas",
+      "description": "Cumpra sua meta diaria 30 vezes."
+    },
+    "dailyGoal60": {
+      "title": "Dois meses de metas",
+      "description": "Cumpra sua meta diaria 60 vezes."
+    },
+    "dailyGoal100": {
+      "title": "Cem metas",
+      "description": "Cumpra sua meta diaria 100 vezes."
+    },
+    "dailyGoal180": {
+      "title": "Meio ano de metas",
+      "description": "Cumpra sua meta diaria 180 vezes."
+    },
+    "dailyGoal365": {
+      "title": "Um ano de metas",
+      "description": "Cumpra sua meta diaria 365 vezes."
+    },
+    "streak3": {
+      "title": "Tres seguidos",
+      "description": "Consiga uma sequencia de 3 dias cumprindo sua meta."
+    },
+    "streak14": {
+      "title": "Duas semanas de sequencia",
+      "description": "Consiga uma sequencia de 14 dias cumprindo sua meta."
+    },
+    "streak30": {
+      "title": "Sequencia de um mes",
+      "description": "Consiga uma sequencia de 30 dias cumprindo sua meta."
+    },
+    "streak60": {
+      "title": "Sequencia de dois meses",
+      "description": "Consiga uma sequencia de 60 dias cumprindo sua meta."
+    },
+    "streak100": {
+      "title": "Sequencia de cem dias",
+      "description": "Consiga uma sequencia de 100 dias cumprindo sua meta."
+    },
+    "active7": {
+      "title": "Primeira semana ativa",
+      "description": "Pratique em 7 dias diferentes."
+    },
+    "active30": {
+      "title": "Um mes ativo",
+      "description": "Pratique em 30 dias diferentes."
+    },
+    "active60": {
+      "title": "Dois meses ativo",
+      "description": "Pratique em 60 dias diferentes."
+    },
+    "active100": {
+      "title": "Cem dias ativo",
+      "description": "Pratique em 100 dias diferentes."
+    },
+    "active200": {
+      "title": "Duzentos dias ativo",
+      "description": "Pratique em 200 dias diferentes."
+    },
+    "active365": {
+      "title": "Um ano ativo",
+      "description": "Pratique em 365 dias diferentes."
+    },
+    "mastered25": {
+      "title": "Vinte e cinco dominados",
+      "description": "Domine 25 caracteres."
+    },
+    "mastered100": {
+      "title": "Cem dominados",
+      "description": "Domine 100 caracteres."
+    },
+    "mastered200": {
+      "title": "Duzentos dominados",
+      "description": "Domine 200 caracteres."
+    },
+    "mastered300": {
+      "title": "Trezentos dominados",
+      "description": "Domine 300 caracteres."
+    },
+    "mastered500": {
+      "title": "Meio milhar dominado",
+      "description": "Domine 500 caracteres."
+    },
+    "mastered750": {
+      "title": "Setecentos e cinquenta dominados",
+      "description": "Domine 750 caracteres."
+    },
+    "masteredAll": {
+      "title": "Tudo dominado",
+      "description": "Domine os 1194 caracteres do programa."
+    },
+    "kanji25": {
+      "title": "Vinte e cinco kanjis",
+      "description": "Domine 25 kanjis."
+    },
+    "kanji50": {
+      "title": "Cinquenta kanjis",
+      "description": "Domine 50 kanjis."
+    },
+    "kanji100": {
+      "title": "Cem kanjis",
+      "description": "Domine 100 kanjis."
+    },
+    "kanji150": {
+      "title": "Cento e cinquenta kanjis",
+      "description": "Domine 150 kanjis."
+    },
+    "kanji200": {
+      "title": "Duzentos kanjis",
+      "description": "Domine 200 kanjis."
+    },
+    "kanji300": {
+      "title": "Trezentos kanjis",
+      "description": "Domine 300 kanjis."
+    },
+    "kanji400": {
+      "title": "Quatrocentos kanjis",
+      "description": "Domine 400 kanjis."
+    },
+    "kanji500": {
+      "title": "Quinhentos kanjis",
+      "description": "Domine 500 kanjis."
+    },
+    "kanji611": {
+      "title": "N5 a N3 dominados",
+      "description": "Domine 611 kanjis (tudo ate N3)."
+    },
+    "kanjiAll": {
+      "title": "Mestre do kanji",
+      "description": "Domine os 981 kanjis do programa."
+    },
+    "kana5": {
+      "title": "Primeiros kana",
+      "description": "Domine 5 hiraganas ou katakanas."
+    },
+    "kana50": {
+      "title": "Na metade do caminho kana",
+      "description": "Domine 50 hiraganas ou katakanas."
+    },
+    "kana100": {
+      "title": "Cem kana",
+      "description": "Domine 100 hiraganas ou katakanas."
+    },
+    "kanaAll": {
+      "title": "Kana completo",
+      "description": "Domine os 213 hiraganas e katakanas do programa."
+    },
+    "n5_25": {
+      "title": "N5 em andamento",
+      "description": "Domine 25% dos kanjis N5."
+    },
+    "n5_50": {
+      "title": "N5 na metade do caminho",
+      "description": "Domine 50% dos kanjis N5."
+    },
+    "n5_75": {
+      "title": "N5 quase completo",
+      "description": "Domine 75% dos kanjis N5."
+    },
+    "n5_100": {
+      "title": "N5 completo",
+      "description": "Domine 100% dos kanjis N5."
+    },
+    "n4_25": {
+      "title": "N4 em andamento",
+      "description": "Domine 25% dos kanjis N4."
+    },
+    "n4_50": {
+      "title": "N4 na metade do caminho",
+      "description": "Domine 50% dos kanjis N4."
+    },
+    "n4_75": {
+      "title": "N4 quase completo",
+      "description": "Domine 75% dos kanjis N4."
+    },
+    "n4_100": {
+      "title": "N4 completo",
+      "description": "Domine 100% dos kanjis N4."
+    },
+    "n3_25": {
+      "title": "N3 em andamento",
+      "description": "Domine 25% dos kanjis N3."
+    },
+    "n3_50": {
+      "title": "N3 na metade do caminho",
+      "description": "Domine 50% dos kanjis N3."
+    },
+    "n3_75": {
+      "title": "N3 quase completo",
+      "description": "Domine 75% dos kanjis N3."
+    },
+    "n3_100": {
+      "title": "N3 completo",
+      "description": "Domine 100% dos kanjis N3."
+    },
+    "n2_25": {
+      "title": "N2 em andamento",
+      "description": "Domine 25% dos kanjis N2."
+    },
+    "n2_50": {
+      "title": "N2 na metade do caminho",
+      "description": "Domine 50% dos kanjis N2."
+    },
+    "n2_75": {
+      "title": "N2 quase completo",
+      "description": "Domine 75% dos kanjis N2."
+    },
+    "n2_100": {
+      "title": "N2 completo",
+      "description": "Domine 100% dos kanjis N2."
+    },
+    "favorite5": {
+      "title": "Cinco favoritas",
+      "description": "Adicione 5 cartoes aos favoritos."
+    },
+    "favorite25": {
+      "title": "Vinte e cinco favoritas",
+      "description": "Adicione 25 cartoes aos favoritos."
+    },
+    "favorite50": {
+      "title": "Cinquenta favoritas",
+      "description": "Adicione 50 cartoes aos favoritos."
+    },
+    "favorite100": {
+      "title": "Cem favoritas",
+      "description": "Adicione 100 cartoes aos favoritos."
+    },
+    "exam1": {
+      "title": "Primeiro exame",
+      "description": "Complete seu primeiro exame."
+    },
+    "exam5": {
+      "title": "Cinco exames",
+      "description": "Complete 5 exames."
+    },
+    "exam10": {
+      "title": "Dez exames",
+      "description": "Complete 10 exames."
+    },
+    "exam25": {
+      "title": "Vinte e cinco exames",
+      "description": "Complete 25 exames."
+    },
+    "exam50": {
+      "title": "Cinquenta exames",
+      "description": "Complete 50 exames."
+    },
+    "exam100": {
+      "title": "Cem exames",
+      "description": "Complete 100 exames."
+    },
+    "examPerfect1": {
+      "title": "Exame perfeito",
+      "description": "Passe em um exame com nota 100."
+    },
+    "examPerfect5": {
+      "title": "Cinco exames perfeitos",
+      "description": "Passe em 5 exames com nota 100."
+    },
+    "examPerfect10": {
+      "title": "Dez exames perfeitos",
+      "description": "Passe em 10 exames com nota 100."
+    },
+    "examPerfect25": {
+      "title": "Vinte e cinco exames perfeitos",
+      "description": "Passe em 25 exames com nota 100."
+    },
+    "examN5": {
+      "title": "Exame N5",
+      "description": "Faca um exame do tema N5."
+    },
+    "examN4": {
+      "title": "Exame N4",
+      "description": "Faca um exame do tema N4."
+    },
+    "examN3": {
+      "title": "Exame N3",
+      "description": "Faca um exame do tema N3."
+    },
+    "examN2": {
+      "title": "Exame N2",
+      "description": "Faca um exame do tema N2."
+    },
+    "viewed50": {
+      "title": "Cinquenta vistas",
+      "description": "Revise pelo menos 50 cartoes diferentes."
+    },
+    "viewed100": {
+      "title": "Cem vistas",
+      "description": "Revise pelo menos 100 cartoes diferentes."
+    },
+    "viewed250": {
+      "title": "Duzentas e cinquenta vistas",
+      "description": "Revise pelo menos 250 cartoes diferentes."
+    },
+    "viewed500": {
+      "title": "Quinhentas vistas",
+      "description": "Revise pelo menos 500 cartoes diferentes."
+    },
+    "viewed750": {
+      "title": "Setecentas e cinquenta vistas",
+      "description": "Revise pelo menos 750 cartoes diferentes."
+    },
+    "viewedAll": {
+      "title": "Tudo revisado",
+      "description": "Revise os 1194 cartoes do programa pelo menos uma vez."
+    },
+    "googleAccount": {
+      "title": "Conta vinculada",
+      "description": "Vincule sua conta do Google para fazer backup do seu progresso."
+    },
+    "storeRating": {
+      "title": "Obrigado por avaliar",
+      "description": "Avalie o KanjiFlow na loja de aplicativos."
+    },
+    "socialShare": {
+      "title": "Compartilhe",
+      "description": "Compartilhe o KanjiFlow nas suas redes sociais."
+    },
+    "premiumSerious": {
+      "title": "Estudando a serio",
+      "description": "Adquira o KanjiFlow e desbloqueie a experiencia completa."
     }
   },
   "types": {

@@ -372,6 +372,350 @@
     "favorites10": {
       "title": "Collection personnelle",
       "description": "Ajoutez 10 cartes aux favoris."
+    },
+    "review50": {
+      "title": "Echauffement",
+      "description": "Atteignez 50 revisions au total."
+    },
+    "review250": {
+      "title": "Pratique constante",
+      "description": "Atteignez 250 revisions au total."
+    },
+    "review500": {
+      "title": "A mi-chemin du millier",
+      "description": "Atteignez 500 revisions au total."
+    },
+    "review1000": {
+      "title": "Mille revisions",
+      "description": "Atteignez 1000 revisions au total."
+    },
+    "review2500": {
+      "title": "Marathonien du kanji",
+      "description": "Atteignez 2500 revisions au total."
+    },
+    "dailyGoal30": {
+      "title": "Un mois d'objectifs",
+      "description": "Atteignez votre objectif quotidien 30 fois."
+    },
+    "dailyGoal60": {
+      "title": "Deux mois d'objectifs",
+      "description": "Atteignez votre objectif quotidien 60 fois."
+    },
+    "dailyGoal100": {
+      "title": "Cent objectifs",
+      "description": "Atteignez votre objectif quotidien 100 fois."
+    },
+    "dailyGoal180": {
+      "title": "Six mois d'objectifs",
+      "description": "Atteignez votre objectif quotidien 180 fois."
+    },
+    "dailyGoal365": {
+      "title": "Un an d'objectifs",
+      "description": "Atteignez votre objectif quotidien 365 fois."
+    },
+    "streak3": {
+      "title": "Trois d'affilee",
+      "description": "Obtenez une serie de 3 jours en atteignant votre objectif."
+    },
+    "streak14": {
+      "title": "Deux semaines de serie",
+      "description": "Obtenez une serie de 14 jours en atteignant votre objectif."
+    },
+    "streak30": {
+      "title": "Serie d'un mois",
+      "description": "Obtenez une serie de 30 jours en atteignant votre objectif."
+    },
+    "streak60": {
+      "title": "Serie de deux mois",
+      "description": "Obtenez une serie de 60 jours en atteignant votre objectif."
+    },
+    "streak100": {
+      "title": "Serie de cent jours",
+      "description": "Obtenez une serie de 100 jours en atteignant votre objectif."
+    },
+    "active7": {
+      "title": "Premiere semaine active",
+      "description": "Pratiquez pendant 7 jours differents."
+    },
+    "active30": {
+      "title": "Un mois actif",
+      "description": "Pratiquez pendant 30 jours differents."
+    },
+    "active60": {
+      "title": "Deux mois actifs",
+      "description": "Pratiquez pendant 60 jours differents."
+    },
+    "active100": {
+      "title": "Cent jours actifs",
+      "description": "Pratiquez pendant 100 jours differents."
+    },
+    "active200": {
+      "title": "Deux cents jours actifs",
+      "description": "Pratiquez pendant 200 jours differents."
+    },
+    "active365": {
+      "title": "Une annee active",
+      "description": "Pratiquez pendant 365 jours differents."
+    },
+    "mastered25": {
+      "title": "Vingt-cinq maitrises",
+      "description": "Maitrisez 25 caracteres."
+    },
+    "mastered100": {
+      "title": "Cent maitrises",
+      "description": "Maitrisez 100 caracteres."
+    },
+    "mastered200": {
+      "title": "Deux cents maitrises",
+      "description": "Maitrisez 200 caracteres."
+    },
+    "mastered300": {
+      "title": "Trois cents maitrises",
+      "description": "Maitrisez 300 caracteres."
+    },
+    "mastered500": {
+      "title": "Un demi-millier maitrise",
+      "description": "Maitrisez 500 caracteres."
+    },
+    "mastered750": {
+      "title": "Sept cent cinquante maitrises",
+      "description": "Maitrisez 750 caracteres."
+    },
+    "masteredAll": {
+      "title": "Tout maitrise",
+      "description": "Maitrisez les 1194 caracteres du programme."
+    },
+    "kanji25": {
+      "title": "Vingt-cinq kanji",
+      "description": "Maitrisez 25 kanji."
+    },
+    "kanji50": {
+      "title": "Cinquante kanji",
+      "description": "Maitrisez 50 kanji."
+    },
+    "kanji100": {
+      "title": "Cent kanji",
+      "description": "Maitrisez 100 kanji."
+    },
+    "kanji150": {
+      "title": "Cent cinquante kanji",
+      "description": "Maitrisez 150 kanji."
+    },
+    "kanji200": {
+      "title": "Deux cents kanji",
+      "description": "Maitrisez 200 kanji."
+    },
+    "kanji300": {
+      "title": "Trois cents kanji",
+      "description": "Maitrisez 300 kanji."
+    },
+    "kanji400": {
+      "title": "Quatre cents kanji",
+      "description": "Maitrisez 400 kanji."
+    },
+    "kanji500": {
+      "title": "Cinq cents kanji",
+      "description": "Maitrisez 500 kanji."
+    },
+    "kanji611": {
+      "title": "N5 a N3 maitrises",
+      "description": "Maitrisez 611 kanji (tout jusqu'a N3)."
+    },
+    "kanjiAll": {
+      "title": "Maitre du kanji",
+      "description": "Maitrisez les 981 kanji du programme."
+    },
+    "kana5": {
+      "title": "Premiers kana",
+      "description": "Maitrisez 5 hiragana ou katakana."
+    },
+    "kana50": {
+      "title": "A mi-chemin des kana",
+      "description": "Maitrisez 50 hiragana ou katakana."
+    },
+    "kana100": {
+      "title": "Cent kana",
+      "description": "Maitrisez 100 hiragana ou katakana."
+    },
+    "kanaAll": {
+      "title": "Kana complet",
+      "description": "Maitrisez les 213 hiragana et katakana du programme."
+    },
+    "n5_25": {
+      "title": "N5 en cours",
+      "description": "Maitrisez 25% des kanji N5."
+    },
+    "n5_50": {
+      "title": "N5 a mi-chemin",
+      "description": "Maitrisez 50% des kanji N5."
+    },
+    "n5_75": {
+      "title": "N5 presque complet",
+      "description": "Maitrisez 75% des kanji N5."
+    },
+    "n5_100": {
+      "title": "N5 complet",
+      "description": "Maitrisez 100% des kanji N5."
+    },
+    "n4_25": {
+      "title": "N4 en cours",
+      "description": "Maitrisez 25% des kanji N4."
+    },
+    "n4_50": {
+      "title": "N4 a mi-chemin",
+      "description": "Maitrisez 50% des kanji N4."
+    },
+    "n4_75": {
+      "title": "N4 presque complet",
+      "description": "Maitrisez 75% des kanji N4."
+    },
+    "n4_100": {
+      "title": "N4 complet",
+      "description": "Maitrisez 100% des kanji N4."
+    },
+    "n3_25": {
+      "title": "N3 en cours",
+      "description": "Maitrisez 25% des kanji N3."
+    },
+    "n3_50": {
+      "title": "N3 a mi-chemin",
+      "description": "Maitrisez 50% des kanji N3."
+    },
+    "n3_75": {
+      "title": "N3 presque complet",
+      "description": "Maitrisez 75% des kanji N3."
+    },
+    "n3_100": {
+      "title": "N3 complet",
+      "description": "Maitrisez 100% des kanji N3."
+    },
+    "n2_25": {
+      "title": "N2 en cours",
+      "description": "Maitrisez 25% des kanji N2."
+    },
+    "n2_50": {
+      "title": "N2 a mi-chemin",
+      "description": "Maitrisez 50% des kanji N2."
+    },
+    "n2_75": {
+      "title": "N2 presque complet",
+      "description": "Maitrisez 75% des kanji N2."
+    },
+    "n2_100": {
+      "title": "N2 complet",
+      "description": "Maitrisez 100% des kanji N2."
+    },
+    "favorite5": {
+      "title": "Cinq favorites",
+      "description": "Ajoutez 5 cartes aux favoris."
+    },
+    "favorite25": {
+      "title": "Vingt-cinq favorites",
+      "description": "Ajoutez 25 cartes aux favoris."
+    },
+    "favorite50": {
+      "title": "Cinquante favorites",
+      "description": "Ajoutez 50 cartes aux favoris."
+    },
+    "favorite100": {
+      "title": "Cent favorites",
+      "description": "Ajoutez 100 cartes aux favoris."
+    },
+    "exam1": {
+      "title": "Premier examen",
+      "description": "Terminez votre premier examen."
+    },
+    "exam5": {
+      "title": "Cinq examens",
+      "description": "Terminez 5 examens."
+    },
+    "exam10": {
+      "title": "Dix examens",
+      "description": "Terminez 10 examens."
+    },
+    "exam25": {
+      "title": "Vingt-cinq examens",
+      "description": "Terminez 25 examens."
+    },
+    "exam50": {
+      "title": "Cinquante examens",
+      "description": "Terminez 50 examens."
+    },
+    "exam100": {
+      "title": "Cent examens",
+      "description": "Terminez 100 examens."
+    },
+    "examPerfect1": {
+      "title": "Examen parfait",
+      "description": "Reussissez un examen avec une note de 100."
+    },
+    "examPerfect5": {
+      "title": "Cinq examens parfaits",
+      "description": "Reussissez 5 examens avec une note de 100."
+    },
+    "examPerfect10": {
+      "title": "Dix examens parfaits",
+      "description": "Reussissez 10 examens avec une note de 100."
+    },
+    "examPerfect25": {
+      "title": "Vingt-cinq examens parfaits",
+      "description": "Reussissez 25 examens avec une note de 100."
+    },
+    "examN5": {
+      "title": "Examen N5",
+      "description": "Passez un examen sur le theme N5."
+    },
+    "examN4": {
+      "title": "Examen N4",
+      "description": "Passez un examen sur le theme N4."
+    },
+    "examN3": {
+      "title": "Examen N3",
+      "description": "Passez un examen sur le theme N3."
+    },
+    "examN2": {
+      "title": "Examen N2",
+      "description": "Passez un examen sur le theme N2."
+    },
+    "viewed50": {
+      "title": "Cinquante vues",
+      "description": "Revisez au moins 50 cartes differentes."
+    },
+    "viewed100": {
+      "title": "Cent vues",
+      "description": "Revisez au moins 100 cartes differentes."
+    },
+    "viewed250": {
+      "title": "Deux cent cinquante vues",
+      "description": "Revisez au moins 250 cartes differentes."
+    },
+    "viewed500": {
+      "title": "Cinq cents vues",
+      "description": "Revisez au moins 500 cartes differentes."
+    },
+    "viewed750": {
+      "title": "Sept cent cinquante vues",
+      "description": "Revisez au moins 750 cartes differentes."
+    },
+    "viewedAll": {
+      "title": "Tout revise",
+      "description": "Revisez les 1194 cartes du programme au moins une fois."
+    },
+    "googleAccount": {
+      "title": "Compte lie",
+      "description": "Reliez votre compte Google pour sauvegarder votre progression."
+    },
+    "storeRating": {
+      "title": "Merci pour votre note",
+      "description": "Notez KanjiFlow sur le magasin d'applications."
+    },
+    "socialShare": {
+      "title": "Partagez-le",
+      "description": "Partagez KanjiFlow sur vos reseaux sociaux."
+    },
+    "premiumSerious": {
+      "title": "Etudier serieusement",
+      "description": "Achetez KanjiFlow et debloquez l'experience complete."
     }
   },
   "types": {

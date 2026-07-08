@@ -41,6 +41,12 @@ export function emptyProfile(now = Date.now()) {
         tourSkippedAt: 0,
         strokeEvaluatorEnabled: false,
         similarityThreshold: DEFAULT_SIMILARITY_THRESHOLD,
+        // Not built yet — reserved for upcoming features so their achievements
+        // can already exist in ACHIEVEMENT_DEFINITIONS (locked until wired up).
+        googleAccountLinked: false,
+        storeRated: false,
+        sharedOnSocial: false,
+        hasPurchased: false,
     };
 }
 
@@ -55,6 +61,10 @@ export function normalizeProfile(profile = {}, now = Date.now()) {
     normalized.tourSkippedAt = Number(normalized.tourSkippedAt) || 0;
     normalized.strokeEvaluatorEnabled = Boolean(normalized.strokeEvaluatorEnabled);
     normalized.similarityThreshold = clampSimilarityThreshold(normalized.similarityThreshold);
+    normalized.googleAccountLinked = Boolean(normalized.googleAccountLinked);
+    normalized.storeRated = Boolean(normalized.storeRated);
+    normalized.sharedOnSocial = Boolean(normalized.sharedOnSocial);
+    normalized.hasPurchased = Boolean(normalized.hasPurchased);
     return normalized;
 }
 

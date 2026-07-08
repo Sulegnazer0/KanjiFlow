@@ -15,6 +15,7 @@ import {
     createBackup,
     loadAchievements,
     loadDailyStats,
+    loadExamStats,
     loadFavorites,
     loadPracticeReminder,
     loadProfile,
@@ -23,6 +24,7 @@ import {
     parseBackup,
     replaceStoredData,
     saveDailyStats,
+    saveExamStats,
     saveFavorites,
     saveAchievements,
     savePracticeReminder,
@@ -40,7 +42,15 @@ import {
     similarityColor,
 } from "./stroke-scoring.js";
 import { fromCanvasPoint, resampleStroke } from "./stroke-geometry.js";
-import { DEFAULT_QUESTIONS, generateExam, kanjiLessons, MAX_QUESTIONS, MIN_QUESTIONS, scoreExam } from "./exam.js";
+import {
+    DEFAULT_QUESTIONS,
+    generateExam,
+    kanjiLessons,
+    MAX_QUESTIONS,
+    MIN_QUESTIONS,
+    recordExamResult,
+    scoreExam,
+} from "./exam.js";
 import { createStrokeAnimator, GHOST_COLOR } from "./stroke-animation.js";
 import { exampleJapanese, itemPronunciation, japaneseOnly, speakJapanese } from "./audio.js?v=831";
 import { loadDictionary } from "./data.js";
@@ -82,7 +92,7 @@ import {
     translateCardState,
 } from "./i18n.js?v=831";
 
-const APP_VERSION = "0.9.0";
+const APP_VERSION = "0.9.1";
 const FEEDBACK_ENDPOINT = "https://script.google.com/macros/s/AKfycbxiz6058zwMxfPTDTmIBpG8JutOPw8YBxCRJ0BeMHp-py6IXZy4zkZs2IdTqwmSSzC1jw/exec";
 const SPLASH_MIN_MS = 2400;
 const startupStartedAt = performance.now();
@@ -292,6 +302,7 @@ let practiceReminder = loadPracticeReminder();
 let profile = loadProfile();
 let dailyStats = loadDailyStats();
 let achievements = loadAchievements();
+let examStats = loadExamStats();
 let toastTimer = null;
 let levelNoticeTimer = null;
 let reminderTimer = null;
@@ -1428,6 +1439,7 @@ function currentAchievementStats() {
         favorites,
         dailyStats,
         profile,
+        examStats,
     });
 }
 
@@ -1604,6 +1616,7 @@ function closeProfileModal() {
 let examQuestions = [];
 let examAnswers = [];
 let examCurrentIndex = 0;
+let examCurrentCategory = "todas";
 let examDisclaimerAccepted = false;
 
 const EXAM_QUESTION_LABEL_KEYS = {
@@ -1683,6 +1696,7 @@ function beginExam() {
     examQuestions = result.questions;
     examAnswers = new Array(examQuestions.length).fill(null);
     examCurrentIndex = 0;
+    examCurrentCategory = category;
 
     elements.examAdjustNotice.classList.toggle("hidden", result.actualCount >= result.requestedCount);
     if (result.actualCount < result.requestedCount) {
@@ -1759,6 +1773,11 @@ function finishExam() {
         correct: result.correct,
         total: result.total,
     });
+
+    examStats = recordExamResult(examStats, { category: examCurrentCategory, score: result.score });
+    saveExamStats(examStats);
+    refreshAchievements({ announce: true });
+
     openExamFeedbackModal();
 }
 
@@ -2114,7 +2133,7 @@ function trapModalFocus(event, modal = elements.modal) {
 
 function exportProgress() {
     const blob = new Blob(
-        [createBackup(progress, favorites, settings, practiceReminder, profile, dailyStats, achievements)],
+        [createBackup(progress, favorites, settings, practiceReminder, profile, dailyStats, achievements, examStats)],
         { type: "application/json" },
     );
     const url = URL.createObjectURL(blob);
@@ -2137,6 +2156,7 @@ async function importProgress(file) {
         profile = imported.profile;
         dailyStats = imported.dailyStats;
         achievements = imported.achievements;
+        examStats = imported.examStats;
         restoreSettings();
         saveReminderState(practiceReminder);
         refreshAchievements();

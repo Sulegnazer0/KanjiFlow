@@ -51,11 +51,14 @@ import {
     buildQuestion,
     buildTopicPool,
     DEFAULT_QUESTIONS,
+    emptyExamStats,
     generateExam,
     kanjiLessons,
     MAX_QUESTIONS,
     MIN_QUESTIONS,
+    normalizeExamStats,
     QUESTION_TYPES,
+    recordExamResult,
     scoreExam,
 } from "../js/exam.js";
 
@@ -326,15 +329,22 @@ for (const item of [
     achievementReviewProgress[itemId(item)] = masteredRecord;
 }
 const achievementFavorites = Object.fromEntries(dictionary.slice(0, 10).map(item => [itemId(item), true]));
+const achievementExamStats = recordExamResult(
+    recordExamResult(emptyExamStats(), { category: "N5", score: 100 }),
+    { category: "N4", score: 80 },
+);
+const achievementProfileWithFlags = { ...achievementProfile, googleAccountLinked: true, hasPurchased: false };
 const builtAchievementStats = buildAchievementStats({
     dictionary,
     progress: achievementReviewProgress,
     favorites: achievementFavorites,
     dailyStats: achievementDailyStats,
-    profile: achievementProfile,
+    profile: achievementProfileWithFlags,
+    examStats: achievementExamStats,
     now: achievementNow,
 });
-assert.equal(ACHIEVEMENT_DEFINITIONS.length, 14);
+assert.equal(ACHIEVEMENT_DEFINITIONS.length, 100);
+assert.equal(new Set(ACHIEVEMENT_DEFINITIONS.map(achievement => achievement.id)).size, 100, "Los ids de logros deben ser únicos");
 assert.equal(builtAchievementStats.totalReviews, 14);
 assert.equal(builtAchievementStats.goalDays, 7);
 assert.equal(builtAchievementStats.bestGoalStreak, 7);
@@ -342,6 +352,18 @@ assert.equal(builtAchievementStats.masteredCount, 30);
 assert.equal(builtAchievementStats.masteredKanjiCount, 10);
 assert.equal(builtAchievementStats.masteredKanaCount, 20);
 assert.equal(builtAchievementStats.favoriteCount, 10);
+assert.equal(builtAchievementStats.categoryMastered.N5.mastered, 10);
+assert.equal(builtAchievementStats.categoryMastered.N5.total, 80);
+assert.equal(builtAchievementStats.categoryMastered.N5.percent, 13);
+assert.equal(builtAchievementStats.categoryMastered.N2.mastered, 0);
+assert.equal(builtAchievementStats.examsTaken, 2);
+assert.equal(builtAchievementStats.examPerfectScores, 1);
+assert.equal(builtAchievementStats.examBestScore, 100);
+assert.equal(builtAchievementStats.examCategoriesAttempted.N5, true);
+assert.equal(builtAchievementStats.examCategoriesAttempted.N4, true);
+assert.equal(Boolean(builtAchievementStats.examCategoriesAttempted.N3), false);
+assert.equal(builtAchievementStats.googleAccountLinked, true);
+assert.equal(builtAchievementStats.hasPurchased, false);
 
 const syncedAchievements = syncAchievements({}, builtAchievementStats, achievementNow);
 const unlockedAchievementIds = new Set(syncedAchievements.newlyUnlocked.map(achievement => achievement.id));
@@ -357,20 +379,47 @@ for (const achievementId of [
     "kana_20",
     "first_favorite",
     "favorites_10",
+    "exam_1",
+    "exam_perfect_1",
+    "exam_n5",
+    "exam_n4",
+    "google_account",
 ]) {
     assert.ok(unlockedAchievementIds.has(achievementId), `No se desbloqueó ${achievementId}`);
 }
 assert.equal(unlockedAchievementIds.has("review_100"), false);
 assert.equal(unlockedAchievementIds.has("mastered_50"), false);
+assert.equal(unlockedAchievementIds.has("exam_5"), false);
+assert.equal(unlockedAchievementIds.has("exam_10"), false);
+assert.equal(unlockedAchievementIds.has("exam_n3"), false);
+assert.equal(unlockedAchievementIds.has("n5_25"), false);
+assert.equal(unlockedAchievementIds.has("store_rating"), false);
+assert.equal(unlockedAchievementIds.has("premium_serious"), false);
 const visibleAchievements = achievementProgress(syncedAchievements.state, builtAchievementStats);
 assert.equal(visibleAchievements.find(achievement => achievement.id === "review_100").percent, 14);
 assert.equal(visibleAchievements.find(achievement => achievement.id === "mastered_50").percent, 60);
 assert.equal(achievementSummary(syncedAchievements.state).unlocked, syncedAchievements.newlyUnlocked.length);
 assert.equal(achievementPercent({ unlocked: 0, total: ACHIEVEMENT_DEFINITIONS.length }), 0);
 assert.equal(achievementLevel({ unlocked: 0, total: ACHIEVEMENT_DEFINITIONS.length }).level, 0);
-assert.equal(achievementLevel({ unlocked: 1, total: ACHIEVEMENT_DEFINITIONS.length }).level, 1);
-assert.equal(achievementLevel({ unlocked: 6, total: ACHIEVEMENT_DEFINITIONS.length }).level, 3);
-assert.equal(achievementLevel({ unlocked: 12, total: ACHIEVEMENT_DEFINITIONS.length }).level, 5);
+assert.equal(achievementLevel({ unlocked: 10, total: ACHIEVEMENT_DEFINITIONS.length }).level, 1);
+assert.equal(achievementLevel({ unlocked: 45, total: ACHIEVEMENT_DEFINITIONS.length }).level, 3);
+assert.equal(achievementLevel({ unlocked: 90, total: ACHIEVEMENT_DEFINITIONS.length }).level, 5);
+
+assert.deepEqual(emptyExamStats(), { examsTaken: 0, perfectScores: 0, bestScore: 0, categoriesAttempted: {} });
+const normalizedExamStats = normalizeExamStats({ examsTaken: "3", bestScore: -5, categoriesAttempted: { N5: true, N4: false } });
+assert.equal(normalizedExamStats.examsTaken, 3);
+assert.equal(normalizedExamStats.bestScore, 0);
+assert.deepEqual(normalizedExamStats.categoriesAttempted, { N5: true });
+const firstExamResult = recordExamResult(emptyExamStats(), { category: "N3", score: 100 });
+assert.equal(firstExamResult.examsTaken, 1);
+assert.equal(firstExamResult.perfectScores, 1);
+assert.equal(firstExamResult.bestScore, 100);
+assert.deepEqual(firstExamResult.categoriesAttempted, { N3: true });
+const mixedCategoryResult = recordExamResult(firstExamResult, { category: "todas", score: 40 });
+assert.equal(mixedCategoryResult.examsTaken, 2);
+assert.equal(mixedCategoryResult.perfectScores, 1);
+assert.equal(mixedCategoryResult.bestScore, 100);
+assert.deepEqual(mixedCategoryResult.categoriesAttempted, { N3: true }, "Un examen de categoría 'todas' no debe marcar ningún nivel específico como intentado");
 
 const straightLine = resampleStroke([{ x: 0, y: 0 }, { x: 10, y: 0 }], 5);
 assert.equal(straightLine.length, 5);
