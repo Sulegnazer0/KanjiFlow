@@ -99,7 +99,7 @@
     "toggleOff": "OFF",
     "strokeEvaluatorEnabledToast": "Avaliador de tracos ativado. O traco deve atingir {threshold}% para ser avaliado. Para mais opcoes, va ao seu perfil.",
     "strokeEvaluatorDisabledToast": "Avaliador de tracos desativado. Avalie-se manualmente. Para mais opcoes, va ao seu perfil.",
-    "strokeGateMessage": "Semelhanca {score}% — voce precisa de {threshold}%. Limpe e tente novamente, ou desative o avaliador com o botao ao lado do quadro.",
+    "strokeGateMessage": "Semelhanca {score}% — voce precisa de {threshold}%. Lembre-se de que a ordem dos tracos tambem importa para a avaliacao. Limpe e tente novamente, ou desative o avaliador com o botao ao lado do quadro.",
     "strokeRecommendMessage": "(Semelhanca {score}% — recomendamos avaliar como \"{rating}\")",
     "animationSpeedButtonLabel": "Mudar a velocidade da animacao (1x, 2x, 4x)",
     "thresholdEasy": "Facil · 50%",

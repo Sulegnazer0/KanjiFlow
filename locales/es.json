@@ -99,7 +99,7 @@
     "toggleOff": "OFF",
     "strokeEvaluatorEnabledToast": "Evaluador de trazos activado. El trazo debe superar el {threshold}% para poder calificarlo. Para más opciones, ve a tu perfil.",
     "strokeEvaluatorDisabledToast": "Evaluador de trazos desactivado. Registra tu calificación manualmente. Para más opciones, ve a tu perfil.",
-    "strokeGateMessage": "Similitud {score}% — necesitas {threshold}%. Limpia y reinténtalo, o desactiva el evaluador con el botón junto al lienzo.",
+    "strokeGateMessage": "Similitud {score}% — necesitas {threshold}%. Recuerda que el orden de los trazos también importa para la evaluación. Limpia y reinténtalo, o desactiva el evaluador con el botón junto al lienzo.",
     "strokeRecommendMessage": "(Similitud {score}% — recomendamos calificar como \"{rating}\")",
     "animationSpeedButtonLabel": "Cambiar velocidad de la animación (1x, 2x, 4x)",
     "thresholdEasy": "Fácil · 50%",

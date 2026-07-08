@@ -99,7 +99,7 @@
     "toggleOff": "OFF",
     "strokeEvaluatorEnabledToast": "Evaluateur de traits active. Le trait doit atteindre {threshold}% pour etre note. Pour plus d'options, va dans ton profil.",
     "strokeEvaluatorDisabledToast": "Evaluateur de traits desactive. Note-toi manuellement. Pour plus d'options, va dans ton profil.",
-    "strokeGateMessage": "Similarite {score}% — il faut {threshold}%. Efface et reessaie, ou desactive l'evaluateur avec le bouton a cote du canevas.",
+    "strokeGateMessage": "Similarite {score}% — il faut {threshold}%. N'oublie pas que l'ordre des traits compte aussi pour l'evaluation. Efface et reessaie, ou desactive l'evaluateur avec le bouton a cote du canevas.",
     "strokeRecommendMessage": "(Similarite {score}% — nous recommandons de noter \"{rating}\")",
     "animationSpeedButtonLabel": "Changer la vitesse de l'animation (1x, 2x, 4x)",
     "thresholdEasy": "Facile · 50%",

@@ -99,7 +99,7 @@
     "toggleOff": "OFF",
     "strokeEvaluatorEnabledToast": "Stroke evaluator turned on. Your stroke must reach {threshold}% to be graded. For more options, go to your profile.",
     "strokeEvaluatorDisabledToast": "Stroke evaluator turned off. Rate yourself manually. For more options, go to your profile.",
-    "strokeGateMessage": "Similarity {score}% — you need {threshold}%. Clear and try again, or turn off the evaluator with the button next to the canvas.",
+    "strokeGateMessage": "Similarity {score}% — you need {threshold}%. Remember that stroke order matters for the evaluation too. Clear and try again, or turn off the evaluator with the button next to the canvas.",
     "strokeRecommendMessage": "(Similarity {score}% — we recommend rating this as \"{rating}\")",
     "animationSpeedButtonLabel": "Change animation speed (1x, 2x, 4x)",
     "thresholdEasy": "Easy · 50%",

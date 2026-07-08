@@ -99,7 +99,7 @@
     "toggleOff": "AUS",
     "strokeEvaluatorEnabledToast": "Strichbewertung aktiviert. Der Strich muss {threshold}% erreichen, um bewertet zu werden. Weitere Optionen findest du in deinem Profil.",
     "strokeEvaluatorDisabledToast": "Strichbewertung deaktiviert. Bewerte dich selbst manuell. Weitere Optionen findest du in deinem Profil.",
-    "strokeGateMessage": "Ähnlichkeit {score}% — du brauchst {threshold}%. Lösche und versuche es erneut oder deaktiviere die Bewertung mit dem Knopf neben der Zeichenfläche.",
+    "strokeGateMessage": "Ähnlichkeit {score}% — du brauchst {threshold}%. Denk daran, dass auch die Strichreihenfolge für die Bewertung zählt. Lösche und versuche es erneut oder deaktiviere die Bewertung mit dem Knopf neben der Zeichenfläche.",
     "strokeRecommendMessage": "(Ähnlichkeit {score}% — wir empfehlen die Bewertung \"{rating}\")",
     "animationSpeedButtonLabel": "Animationsgeschwindigkeit ändern (1x, 2x, 4x)",
     "thresholdEasy": "Leicht · 50%",

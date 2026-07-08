@@ -10,6 +10,13 @@ El número de versión visible de la app debe mantenerse alineado en:
 - `CHANGELOG.md`;
 - `service-worker.js` y query strings `?v=...` cuando cambien archivos cacheados.
 
+## [0.8.31] - 2026-07-07
+
+### Cambiado
+
+- El mensaje de bloqueo por umbral de trazos (`ui.strokeGateMessage`) ahora recuerda explícitamente que el orden de los trazos también cuenta para la evaluación, no solo la forma/posición.
+- La app muestra `v0.8.31`.
+
 ## [0.8.30] - 2026-07-07
 
 ### Agregado
