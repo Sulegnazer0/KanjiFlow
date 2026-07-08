@@ -7,7 +7,7 @@
     <meta name="description" content="Aprende hiragana, katakana y kanji con escritura, audio y repetición espaciada.">
     <title>KanjiFlow — Aprende japonés</title>
     <link rel="manifest" href="manifest.webmanifest">
-    <link rel="stylesheet" href="style.css?v=834">
+    <link rel="stylesheet" href="style.css?v=90">
 </head>
 <body>
     <div id="pantalla-carga" class="splash-screen" aria-live="polite">
@@ -26,6 +26,15 @@
                 <p class="subtitle" data-i18n="ui.subtitle">Kana y kanji, un repaso a la vez.</p>
             </div>
             <div class="header-actions">
+                <button id="chip-perfil" class="profile-chip" type="button"
+                        aria-haspopup="dialog" aria-controls="modal-perfil"
+                        aria-label="Ver perfil" data-i18n-aria-label="ui.profileChipLabel">
+                    <span class="profile-chip-avatar" aria-hidden="true">👤</span>
+                    <span class="profile-chip-info">
+                        <span id="chip-perfil-nombre" class="profile-chip-name">—</span>
+                        <span id="chip-perfil-nivel" class="profile-chip-level">—</span>
+                    </span>
+                </button>
                 <label class="language-control" for="selector-idioma">
                     <span aria-hidden="true">🌐</span>
                     <select id="selector-idioma" data-i18n-aria-label="ui.languageLabel"></select>
@@ -69,9 +78,9 @@
                     aria-selected="false" aria-controls="seccion-estudio" tabindex="-1">
                 <span aria-hidden="true">📚</span> <span data-i18n="ui.studyTab">Estudio</span>
             </button>
-            <button id="tab-perfil" class="tab-button" type="button" role="tab"
-                    aria-selected="false" aria-controls="seccion-perfil" tabindex="-1">
-                <span aria-hidden="true">👤</span> <span data-i18n="ui.profileTab">Perfil</span>
+            <button id="tab-examen" class="tab-button tab-exam" type="button" role="tab"
+                    aria-selected="false" aria-controls="seccion-examen" tabindex="-1">
+                <span aria-hidden="true">🎯</span> <span data-i18n="ui.examTab">Examen</span>
             </button>
         </nav>
 
@@ -227,8 +236,62 @@
             <div id="lista-diccionario" class="dictionary-grid"></div>
         </section>
 
-        <section id="seccion-perfil" class="hidden" role="tabpanel"
-                 aria-labelledby="tab-perfil" tabindex="0">
+        <section id="seccion-examen" class="hidden" role="tabpanel"
+                 aria-labelledby="tab-examen" tabindex="0">
+            <div id="examen-setup" class="exam-card">
+                <p class="eyebrow" data-i18n="ui.examEyebrow">Modo examen</p>
+                <h2 data-i18n="ui.examSetupTitle">Arma tu examen</h2>
+                <p class="lesson-description" data-i18n="ui.examSetupDescription">
+                    Elige un tema y cuántas preguntas quieres. Te preguntaremos al azar sobre significado y onyomi — nunca sobre trazos.
+                </p>
+                <div class="field">
+                    <label for="examen-categoria" data-i18n="ui.categoryLabel">Categoría</label>
+                    <select id="examen-categoria">
+                        <option value="todas" data-i18n="ui.categoryAll">Todas</option>
+                        <option value="N5">N5</option>
+                        <option value="N4">N4</option>
+                        <option value="N3">N3</option>
+                        <option value="N2">N2</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label for="examen-tema" data-i18n="ui.examTopicLabel">Tema</label>
+                    <select id="examen-tema"></select>
+                </div>
+                <div class="field">
+                    <label for="examen-cantidad" data-i18n="ui.examQuestionCountLabel">Cantidad de preguntas</label>
+                    <input id="examen-cantidad" type="number" min="5" max="50" step="1" value="10">
+                </div>
+                <p id="examen-aviso-ajuste" class="recognition-status hidden" aria-live="polite"></p>
+                <button id="btn-comenzar-examen" class="button" type="button" data-i18n="ui.examStartButton">Comenzar examen</button>
+            </div>
+
+            <div id="examen-quiz" class="exam-card hidden">
+                <div class="exam-progress">
+                    <span id="examen-contador">—</span>
+                </div>
+                <p id="examen-pregunta-tipo" class="exam-question-type">—</p>
+                <div id="examen-prompt" class="exam-prompt">—</div>
+                <div id="examen-opciones" class="exam-options"></div>
+                <button id="btn-examen-siguiente" class="button hidden" type="button" data-i18n="ui.examNextButton">Siguiente</button>
+            </div>
+
+            <div id="examen-resultados" class="exam-card hidden">
+                <p class="eyebrow" data-i18n="ui.examResultsEyebrow">Resultado</p>
+                <strong id="examen-puntaje" class="exam-score">0</strong>
+                <p id="examen-resumen" class="lesson-description"></p>
+                <button id="btn-examen-nuevo" class="button secondary" type="button" data-i18n="ui.examRetryButton">Nuevo examen</button>
+            </div>
+        </section>
+    </main>
+
+    <div id="modal-perfil" class="modal hidden" role="dialog" aria-modal="true"
+         aria-labelledby="perfil-saludo" aria-describedby="perfil-resumen">
+        <div class="modal-content profile-modal-content" tabindex="-1">
+            <div class="modal-top-actions">
+                <button id="cerrar-perfil" class="close-button" type="button"
+                        aria-label="Cerrar perfil" data-i18n-aria-label="ui.closeDetails">×</button>
+            </div>
             <div class="profile-card">
                 <div class="profile-heading">
                     <div>
@@ -341,8 +404,47 @@
                     </div>
                 </section>
             </div>
-        </section>
-    </main>
+        </div>
+    </div>
+
+    <div id="modal-examen-aviso" class="modal hidden" role="dialog" aria-modal="true"
+         aria-labelledby="examen-aviso-titulo" aria-describedby="examen-aviso-texto">
+        <div class="modal-content" tabindex="-1">
+            <p class="eyebrow" data-i18n="ui.examDisclaimerEyebrow">Función en desarrollo</p>
+            <h2 id="examen-aviso-titulo" data-i18n="ui.examDisclaimerTitle">Esto es una prueba</h2>
+            <p id="examen-aviso-texto" class="lesson-description" data-i18n="ui.examDisclaimerText">
+                El modo examen es una función beta y todavía está en desarrollo. ¿Quieres continuar?
+            </p>
+            <div class="onboarding-actions">
+                <button id="btn-examen-aviso-cancelar" class="button secondary" type="button" data-i18n="ui.examDisclaimerCancel">Cancelar</button>
+                <button id="btn-examen-aviso-aceptar" class="button" type="button" data-i18n="ui.examDisclaimerAccept">Continuar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-examen-feedback" class="modal hidden" role="dialog" aria-modal="true"
+         aria-labelledby="examen-feedback-titulo" aria-describedby="examen-feedback-descripcion">
+        <div class="modal-content" tabindex="-1">
+            <div class="modal-top-actions">
+                <button id="cerrar-examen-feedback" class="close-button" type="button"
+                        aria-label="Cerrar" data-i18n-aria-label="ui.closeDetails">×</button>
+            </div>
+            <p class="eyebrow" data-i18n="ui.examFeedbackEyebrow">Tu opinión</p>
+            <h2 id="examen-feedback-titulo" data-i18n="ui.examFeedbackTitle">¿Cómo estuvo el examen?</h2>
+            <p id="examen-feedback-descripcion" class="lesson-description" data-i18n="ui.examFeedbackDescription">
+                Cuéntanos qué te pareció esta función nueva. Escribe entre 10 y 500 caracteres.
+            </p>
+            <label class="sr-only" for="examen-feedback-texto" data-i18n="ui.feedbackLabel">Recomendación</label>
+            <textarea id="examen-feedback-texto" rows="5" maxlength="500"
+                      placeholder="Cuéntame qué te pareció…"
+                      data-i18n-placeholder="ui.examFeedbackPlaceholder"></textarea>
+            <div class="feedback-footer">
+                <span id="examen-feedback-contador">0 / 500</span>
+                <button id="btn-enviar-examen-feedback" class="button secondary" type="button" data-i18n="ui.feedbackSend">Enviar</button>
+            </div>
+            <p id="examen-feedback-estado" class="recognition-status" aria-live="polite"></p>
+        </div>
+    </div>
 
     <div id="modal-bienvenida" class="modal onboarding-modal hidden" role="dialog" aria-modal="true"
          aria-labelledby="bienvenida-titulo" aria-describedby="bienvenida-descripcion">
@@ -573,6 +675,6 @@
 
     <div id="aviso-nivel" class="level-notice" role="status" aria-live="polite"></div>
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
-    <script type="module" src="js/app.js?v=834"></script>
+    <script type="module" src="js/app.js?v=90"></script>
 </body>
 </html>

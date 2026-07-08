@@ -40,6 +40,7 @@ import {
     similarityColor,
 } from "./stroke-scoring.js";
 import { fromCanvasPoint, resampleStroke } from "./stroke-geometry.js";
+import { DEFAULT_QUESTIONS, generateExam, kanjiLessons, MAX_QUESTIONS, MIN_QUESTIONS, scoreExam } from "./exam.js";
 import { createStrokeAnimator, GHOST_COLOR } from "./stroke-animation.js";
 import { exampleJapanese, itemPronunciation, japaneseOnly, speakJapanese } from "./audio.js?v=831";
 import { loadDictionary } from "./data.js";
@@ -81,7 +82,7 @@ import {
     translateCardState,
 } from "./i18n.js?v=831";
 
-const APP_VERSION = "0.8.34";
+const APP_VERSION = "0.9.0";
 const FEEDBACK_ENDPOINT = "https://script.google.com/macros/s/AKfycbxiz6058zwMxfPTDTmIBpG8JutOPw8YBxCRJ0BeMHp-py6IXZy4zkZs2IdTqwmSSzC1jw/exec";
 const SPLASH_MIN_MS = 2400;
 const startupStartedAt = performance.now();
@@ -103,10 +104,10 @@ const elements = {
     importFile: $("#archivo-importar"),
     practiceTab: $("#tab-practica"),
     studyTab: $("#tab-estudio"),
-    profileTab: $("#tab-perfil"),
+    examTab: $("#tab-examen"),
     practiceSection: $("#seccion-practica"),
     studySection: $("#seccion-estudio"),
-    profileSection: $("#seccion-perfil"),
+    examSection: $("#seccion-examen"),
     categorySelect: $("#selector-categoria"),
     lessonSelect: $("#selector-leccion"),
     scriptSelect: $("#selector-modo"),
@@ -191,6 +192,12 @@ const elements = {
     reminderButton: $("#btn-recordatorio"),
     reminderIcon: $("#icono-recordatorio"),
     reminderText: $("#texto-recordatorio"),
+    profileChip: $("#chip-perfil"),
+    profileChipName: $("#chip-perfil-nombre"),
+    profileChipLevel: $("#chip-perfil-nivel"),
+    profileModal: $("#modal-perfil"),
+    profileModalContent: $(".profile-modal-content"),
+    closeProfile: $("#cerrar-perfil"),
     profileGreeting: $("#perfil-saludo"),
     profileSummary: $("#perfil-resumen"),
     profileName: $("#perfil-nombre"),
@@ -226,6 +233,31 @@ const elements = {
     feedbackCounter: $("#feedback-contador"),
     feedbackSend: $("#btn-enviar-feedback"),
     feedbackStatus: $("#feedback-estado"),
+    examSetupCard: $("#examen-setup"),
+    examQuizCard: $("#examen-quiz"),
+    examResultsCard: $("#examen-resultados"),
+    examCategorySelect: $("#examen-categoria"),
+    examTopicSelect: $("#examen-tema"),
+    examQuestionCount: $("#examen-cantidad"),
+    examAdjustNotice: $("#examen-aviso-ajuste"),
+    examStartButton: $("#btn-comenzar-examen"),
+    examCounter: $("#examen-contador"),
+    examQuestionType: $("#examen-pregunta-tipo"),
+    examPrompt: $("#examen-prompt"),
+    examOptions: $("#examen-opciones"),
+    examNextButton: $("#btn-examen-siguiente"),
+    examScore: $("#examen-puntaje"),
+    examSummary: $("#examen-resumen"),
+    examRetryButton: $("#btn-examen-nuevo"),
+    examDisclaimerModal: $("#modal-examen-aviso"),
+    examDisclaimerAccept: $("#btn-examen-aviso-aceptar"),
+    examDisclaimerCancel: $("#btn-examen-aviso-cancelar"),
+    examFeedbackModal: $("#modal-examen-feedback"),
+    closeExamFeedback: $("#cerrar-examen-feedback"),
+    examFeedbackText: $("#examen-feedback-texto"),
+    examFeedbackCounter: $("#examen-feedback-contador"),
+    examFeedbackSend: $("#btn-enviar-examen-feedback"),
+    examFeedbackStatus: $("#examen-feedback-estado"),
     onboardingModal: $("#modal-bienvenida"),
     onboardingContent: $(".onboarding-content"),
     onboardingForm: $("#form-bienvenida"),
@@ -1202,7 +1234,7 @@ function switchTab(tab) {
     const tabs = {
         practice: [elements.practiceTab, elements.practiceSection],
         study: [elements.studyTab, elements.studySection],
-        profile: [elements.profileTab, elements.profileSection],
+        exam: [elements.examTab, elements.examSection],
     };
     for (const [name, [button, section]] of Object.entries(tabs)) {
         const active = name === tab;
@@ -1217,7 +1249,7 @@ function switchTab(tab) {
         renderDictionary();
         elements.search.focus();
     } else {
-        renderProfile();
+        showExamSetup();
     }
 }
 
@@ -1521,6 +1553,7 @@ function renderProfile() {
     renderAchievements();
     renderDailyHistory();
     renderProfileLists();
+    renderProfileChip();
 }
 
 function saveProfileFromForm() {
@@ -1547,6 +1580,203 @@ function toggleStrokeEvaluator() {
         : t("ui.strokeEvaluatorDisabledToast"), 4200);
 }
 
+function renderProfileChip() {
+    elements.profileChipName.textContent = profile.name || t("ui.profileChipGuest", {}, "Invitado");
+    const { summary } = refreshAchievements();
+    elements.profileChipLevel.textContent = formatAchievementLevel(achievementLevel(summary));
+}
+
+function openProfileModal() {
+    renderProfile();
+    elements.profileModal.classList.remove("hidden");
+    document.body.style.overflow = "hidden";
+    elements.profileModalContent.focus();
+}
+
+function closeProfileModal() {
+    if (elements.profileModal.classList.contains("hidden")) return;
+    elements.profileModal.classList.add("hidden");
+    document.body.style.overflow = "";
+    renderProfileChip();
+    elements.profileChip.focus();
+}
+
+let examQuestions = [];
+let examAnswers = [];
+let examCurrentIndex = 0;
+let examDisclaimerAccepted = false;
+
+const EXAM_QUESTION_LABEL_KEYS = {
+    onyomi: "ui.examQuestionOnyomi",
+    meaningFromKanji: "ui.examQuestionMeaningFromKanji",
+};
+
+function populateExamTopics() {
+    const category = elements.examCategorySelect.value || "todas";
+    const topics = kanjiLessons().filter(lesson => category === "todas" || lesson.category === category);
+    const fragment = document.createDocumentFragment();
+
+    const allOption = document.createElement("option");
+    allOption.value = "all-in-category";
+    allOption.textContent = t("ui.examAllTopics");
+    fragment.appendChild(allOption);
+
+    for (const lesson of topics) {
+        const option = document.createElement("option");
+        option.value = lesson.id;
+        option.textContent = lessonTitle(lesson);
+        fragment.appendChild(option);
+    }
+    elements.examTopicSelect.replaceChildren(fragment);
+}
+
+function showExamSetup() {
+    populateExamTopics();
+    elements.examAdjustNotice.classList.add("hidden");
+    setVisibility(elements.examSetupCard, true);
+    setVisibility(elements.examQuizCard, false);
+    setVisibility(elements.examResultsCard, false);
+}
+
+function openExamDisclaimerModal() {
+    elements.examDisclaimerModal.classList.remove("hidden");
+    document.body.style.overflow = "hidden";
+    elements.examDisclaimerModal.querySelector(".modal-content").focus();
+}
+
+function closeExamDisclaimerModal() {
+    if (elements.examDisclaimerModal.classList.contains("hidden")) return;
+    elements.examDisclaimerModal.classList.add("hidden");
+    document.body.style.overflow = "";
+    elements.examStartButton.focus();
+}
+
+function cancelExamDisclaimer() {
+    closeExamDisclaimerModal();
+}
+
+function acceptExamDisclaimer() {
+    examDisclaimerAccepted = true;
+    closeExamDisclaimerModal();
+    beginExam();
+}
+
+function requestStartExam() {
+    if (examDisclaimerAccepted) {
+        beginExam();
+        return;
+    }
+    openExamDisclaimerModal();
+}
+
+function beginExam() {
+    const category = elements.examCategorySelect.value;
+    const lessonId = elements.examTopicSelect.value;
+    const questionCount = Number(elements.examQuestionCount.value) || DEFAULT_QUESTIONS;
+
+    const result = generateExam(dictionary, { category, lessonId, questionCount });
+    if (!result.actualCount) {
+        showToast(t("ui.examNoQuestions"));
+        return;
+    }
+
+    examQuestions = result.questions;
+    examAnswers = new Array(examQuestions.length).fill(null);
+    examCurrentIndex = 0;
+
+    elements.examAdjustNotice.classList.toggle("hidden", result.actualCount >= result.requestedCount);
+    if (result.actualCount < result.requestedCount) {
+        elements.examAdjustNotice.textContent = t("ui.examCountAdjusted", { count: result.actualCount });
+    }
+
+    setVisibility(elements.examSetupCard, false);
+    setVisibility(elements.examQuizCard, true);
+    setVisibility(elements.examResultsCard, false);
+    showExamQuestion();
+}
+
+function showExamQuestion() {
+    const question = examQuestions[examCurrentIndex];
+    elements.examCounter.textContent = t("ui.examProgress", {
+        current: examCurrentIndex + 1,
+        total: examQuestions.length,
+    });
+
+    const isKanjiPrompt = question.type !== "kanjiFromMeaning";
+    elements.examQuestionType.textContent = isKanjiPrompt
+        ? t(EXAM_QUESTION_LABEL_KEYS[question.type])
+        : t("ui.examQuestionKanjiFromMeaning", { meaning: question.prompt });
+    elements.examPrompt.textContent = isKanjiPrompt ? question.prompt : "";
+    elements.examPrompt.classList.toggle("hidden", !isKanjiPrompt);
+
+    const fragment = document.createDocumentFragment();
+    question.options.forEach((optionText, index) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "exam-option";
+        if (question.type === "kanjiFromMeaning") button.classList.add("exam-option-character");
+        button.textContent = optionText;
+        button.addEventListener("click", () => handleExamAnswer(index));
+        fragment.appendChild(button);
+    });
+    elements.examOptions.replaceChildren(fragment);
+    elements.examNextButton.classList.add("hidden");
+}
+
+function handleExamAnswer(selectedIndex) {
+    if (examAnswers[examCurrentIndex] !== null) return;
+    const question = examQuestions[examCurrentIndex];
+    examAnswers[examCurrentIndex] = selectedIndex;
+
+    [...elements.examOptions.children].forEach((button, index) => {
+        button.disabled = true;
+        if (index === question.correctIndex) button.classList.add("exam-option-correct");
+        else if (index === selectedIndex) button.classList.add("exam-option-incorrect");
+    });
+
+    elements.examNextButton.textContent = examCurrentIndex === examQuestions.length - 1
+        ? t("ui.examFinishButton")
+        : t("ui.examNextButton");
+    elements.examNextButton.classList.remove("hidden");
+    elements.examNextButton.focus();
+}
+
+function advanceExam() {
+    if (examCurrentIndex < examQuestions.length - 1) {
+        examCurrentIndex += 1;
+        showExamQuestion();
+    } else {
+        finishExam();
+    }
+}
+
+function finishExam() {
+    const result = scoreExam(examQuestions, examAnswers);
+    setVisibility(elements.examQuizCard, false);
+    setVisibility(elements.examResultsCard, true);
+    elements.examScore.textContent = String(result.score);
+    elements.examSummary.textContent = t("ui.examResultsSummary", {
+        correct: result.correct,
+        total: result.total,
+    });
+    openExamFeedbackModal();
+}
+
+function openExamFeedbackModal() {
+    elements.examFeedbackText.value = "";
+    elements.examFeedbackStatus.textContent = "";
+    updateExamFeedbackCounter();
+    elements.examFeedbackModal.classList.remove("hidden");
+    document.body.style.overflow = "hidden";
+    elements.examFeedbackModal.querySelector(".modal-content").focus();
+}
+
+function closeExamFeedbackModal() {
+    if (elements.examFeedbackModal.classList.contains("hidden")) return;
+    elements.examFeedbackModal.classList.add("hidden");
+    document.body.style.overflow = "";
+}
+
 function openAboutModal() {
     elements.appVersion.textContent = `v${APP_VERSION}`;
     updateFeedbackCounter();
@@ -1567,26 +1797,37 @@ function updateFeedbackCounter() {
     elements.feedbackCounter.textContent = t("ui.feedbackCounter", { count, max: 500 }, `${count} / 500`);
 }
 
-async function sendFeedback() {
-    const message = elements.feedbackText.value.trim();
+function updateExamFeedbackCounter() {
+    const count = elements.examFeedbackText.value.length;
+    elements.examFeedbackCounter.textContent = t("ui.feedbackCounter", { count, max: 500 }, `${count} / 500`);
+}
+
+/**
+ * Shared submit logic behind both feedback forms (Acerca de + post-exam) —
+ * same endpoint/payload shape, only the target elements and an optional
+ * comment prefix differ (the exam form prefixes "Test: " so responses are
+ * distinguishable in the spreadsheet without a separate endpoint).
+ */
+async function submitFeedback({ prefix = "", textEl, counterEl, statusEl, sendEl, updateCounter }) {
+    const message = textEl.value.trim();
     if (message.length < 10) {
-        elements.feedbackStatus.textContent = t("ui.feedbackTooShort");
+        statusEl.textContent = t("ui.feedbackTooShort");
         return;
     }
     if (message.length > 500) {
-        elements.feedbackStatus.textContent = t("ui.feedbackTooLong");
+        statusEl.textContent = t("ui.feedbackTooLong");
         return;
     }
 
-    elements.feedbackSend.disabled = true;
-    elements.feedbackStatus.textContent = t("ui.feedbackSending");
+    sendEl.disabled = true;
+    statusEl.textContent = t("ui.feedbackSending");
 
     try {
         await fetch(FEEDBACK_ENDPOINT, {
             method: "POST",
             mode: "no-cors",
             body: new URLSearchParams({
-                comment: message,
+                comment: `${prefix}${message}`,
                 language: currentLanguage(),
                 version: APP_VERSION,
                 userName: profile.name,
@@ -1594,15 +1835,36 @@ async function sendFeedback() {
                 userAgent: navigator.userAgent,
             }),
         });
-        elements.feedbackText.value = "";
-        updateFeedbackCounter();
-        elements.feedbackStatus.textContent = t("ui.feedbackSent");
+        textEl.value = "";
+        updateCounter();
+        statusEl.textContent = t("ui.feedbackSent");
     } catch (error) {
         console.warn("No se pudo enviar la recomendación.", error);
-        elements.feedbackStatus.textContent = t("ui.feedbackSendError");
+        statusEl.textContent = t("ui.feedbackSendError");
     } finally {
-        elements.feedbackSend.disabled = false;
+        sendEl.disabled = false;
     }
+}
+
+async function sendFeedback() {
+    await submitFeedback({
+        textEl: elements.feedbackText,
+        counterEl: elements.feedbackCounter,
+        statusEl: elements.feedbackStatus,
+        sendEl: elements.feedbackSend,
+        updateCounter: updateFeedbackCounter,
+    });
+}
+
+async function sendExamFeedback() {
+    await submitFeedback({
+        prefix: "Test: ",
+        textEl: elements.examFeedbackText,
+        counterEl: elements.examFeedbackCounter,
+        statusEl: elements.examFeedbackStatus,
+        sendEl: elements.examFeedbackSend,
+        updateCounter: updateExamFeedbackCounter,
+    });
 }
 
 function matchesStudyFilter(item) {
@@ -1907,13 +2169,18 @@ function registerServiceWorker() {
 function bindEvents() {
     elements.practiceTab.addEventListener("click", () => switchTab("practice"));
     elements.studyTab.addEventListener("click", () => switchTab("study"));
-    elements.profileTab.addEventListener("click", () => switchTab("profile"));
+    elements.examTab.addEventListener("click", () => switchTab("exam"));
     elements.languageSelect.addEventListener("change", () => changeLanguage(elements.languageSelect.value));
     elements.onboardingLanguageButtons.forEach(button => {
         button.addEventListener("click", () => changeLanguage(button.dataset.onboardingLanguage));
     });
     elements.reminderButton.addEventListener("click", togglePracticeReminder);
-    const tabs = [elements.practiceTab, elements.studyTab, elements.profileTab];
+    elements.profileChip.addEventListener("click", openProfileModal);
+    elements.closeProfile.addEventListener("click", closeProfileModal);
+    elements.profileModal.addEventListener("click", event => {
+        if (event.target === elements.profileModal) closeProfileModal();
+    });
+    const tabs = [elements.practiceTab, elements.studyTab, elements.examTab];
     for (const tab of tabs) {
         tab.addEventListener("keydown", event => {
             if (!["ArrowLeft", "ArrowRight"].includes(event.key)) return;
@@ -1972,6 +2239,21 @@ function bindEvents() {
     });
     elements.feedbackText.addEventListener("input", updateFeedbackCounter);
     elements.feedbackSend.addEventListener("click", sendFeedback);
+    elements.examCategorySelect.addEventListener("change", populateExamTopics);
+    elements.examStartButton.addEventListener("click", requestStartExam);
+    elements.examDisclaimerAccept.addEventListener("click", acceptExamDisclaimer);
+    elements.examDisclaimerCancel.addEventListener("click", cancelExamDisclaimer);
+    elements.examDisclaimerModal.addEventListener("click", event => {
+        if (event.target === elements.examDisclaimerModal) closeExamDisclaimerModal();
+    });
+    elements.examNextButton.addEventListener("click", advanceExam);
+    elements.examRetryButton.addEventListener("click", showExamSetup);
+    elements.closeExamFeedback.addEventListener("click", closeExamFeedbackModal);
+    elements.examFeedbackModal.addEventListener("click", event => {
+        if (event.target === elements.examFeedbackModal) closeExamFeedbackModal();
+    });
+    elements.examFeedbackText.addEventListener("input", updateExamFeedbackCounter);
+    elements.examFeedbackSend.addEventListener("click", sendExamFeedback);
     elements.onboardingForm.addEventListener("submit", event => {
         event.preventDefault();
         completeOnboarding(true);
@@ -2039,6 +2321,21 @@ function bindEvents() {
         if (!elements.aboutModal.classList.contains("hidden")) {
             if (event.key === "Escape") closeAboutModal();
             trapModalFocus(event, elements.aboutModal);
+            return;
+        }
+        if (!elements.profileModal.classList.contains("hidden")) {
+            if (event.key === "Escape") closeProfileModal();
+            trapModalFocus(event, elements.profileModal);
+            return;
+        }
+        if (!elements.examDisclaimerModal.classList.contains("hidden")) {
+            if (event.key === "Escape") closeExamDisclaimerModal();
+            trapModalFocus(event, elements.examDisclaimerModal);
+            return;
+        }
+        if (!elements.examFeedbackModal.classList.contains("hidden")) {
+            if (event.key === "Escape") closeExamFeedbackModal();
+            trapModalFocus(event, elements.examFeedbackModal);
             return;
         }
         if (elements.modal.classList.contains("hidden")) return;

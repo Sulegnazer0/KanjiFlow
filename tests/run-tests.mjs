@@ -47,6 +47,17 @@ import {
 } from "../js/profile.js";
 import { computeBoundingBox, normalizeStrokes, resampleStroke } from "../js/stroke-geometry.js";
 import { compareStroke, recommendRating, scoreAttempt, similarityColor, YELLOW_THRESHOLD } from "../js/stroke-scoring.js";
+import {
+    buildQuestion,
+    buildTopicPool,
+    DEFAULT_QUESTIONS,
+    generateExam,
+    kanjiLessons,
+    MAX_QUESTIONS,
+    MIN_QUESTIONS,
+    QUESTION_TYPES,
+    scoreExam,
+} from "../js/exam.js";
 
 const csvSample = 'name,meaning,note\n"水","agua, líquido","dice ""mizu"""\n';
 assert.deepEqual(parseCSV(csvSample), [{
@@ -434,6 +445,77 @@ assert.equal(normalizeProfile({ strokeEvaluatorEnabled: true }, now).strokeEvalu
 assert.equal(normalizeProfile({ strokeEvaluatorEnabled: "yes" }, now).strokeEvaluatorEnabled, true);
 assert.equal(normalizeProfile({}, now).strokeEvaluatorEnabled, false);
 
+function fakeRandom(seed = 1) {
+    let state = seed;
+    return () => {
+        state = (state * 1103515245 + 12345) & 0x7fffffff;
+        return state / 0x7fffffff;
+    };
+}
+
+const examFixture = [
+    { tipo: "kanji", categoria: "N5", id_jlpt: "1", caracter: "一", onyomi: "イチ (ichi)", significado: "Uno" },
+    { tipo: "kanji", categoria: "N5", id_jlpt: "2", caracter: "二", onyomi: "ニ (ni)", significado: "Dos" },
+    { tipo: "kanji", categoria: "N5", id_jlpt: "3", caracter: "三", onyomi: "サン (san)", significado: "Tres" },
+    { tipo: "kanji", categoria: "N5", id_jlpt: "4", caracter: "四", onyomi: "シ (shi)", significado: "Cuatro" },
+    { tipo: "kanji", categoria: "N5", id_jlpt: "5", caracter: "五", onyomi: "ゴ (go)", significado: "Cinco" },
+    { tipo: "kanji", categoria: "N4", id_jlpt: "81", caracter: "働", onyomi: "-", significado: "Trabajar" },
+    { tipo: "hiragana", categoria: "basico", id_jlpt: "", caracter: "あ", onyomi: "", significado: "" },
+];
+
+assert.equal(buildTopicPool(examFixture, { category: "N5" }).length, 5);
+assert.equal(buildTopicPool(examFixture, {}).length, 6, "Sin categoría, el pool debe ser todos los kanji (no kana)");
+assert.ok(kanjiLessons().every(lesson => lesson.category && lesson.category !== "kana"), "kanjiLessons() no debe incluir lecciones de kana");
+assert.ok(!kanjiLessons().some(lesson => ["recommended", "all"].includes(lesson.id)), "kanjiLessons() no debe incluir los pseudo-ids recommended/all");
+
+const onyomiQuestion = buildQuestion(examFixture[0], examFixture.slice(0, 5), "onyomi", examFixture, fakeRandom(1));
+assert.equal(onyomiQuestion.options.length, 4);
+assert.equal(new Set(onyomiQuestion.options).size, 4, "Las opciones de onyomi no deben repetirse");
+assert.equal(onyomiQuestion.options[onyomiQuestion.correctIndex], "イチ (ichi)");
+
+const meaningQuestion = buildQuestion(examFixture[1], examFixture.slice(0, 5), "meaningFromKanji", examFixture, fakeRandom(2));
+assert.equal(new Set(meaningQuestion.options).size, 4, "Las opciones de significado no deben repetirse");
+assert.equal(meaningQuestion.options[meaningQuestion.correctIndex], "Dos");
+
+const kanjiQuestion = buildQuestion(examFixture[2], examFixture.slice(0, 5), "kanjiFromMeaning", examFixture, fakeRandom(3));
+assert.equal(new Set(kanjiQuestion.options).size, 4, "Las opciones de kanji no deben repetirse");
+assert.equal(kanjiQuestion.options[kanjiQuestion.correctIndex], "三");
+assert.equal(kanjiQuestion.prompt, "Tres");
+
+const onyomiLessKanji = examFixture[5];
+const fallbackQuestion = buildQuestion(onyomiLessKanji, [onyomiLessKanji], "meaningFromKanji", examFixture, fakeRandom(4));
+assert.equal(fallbackQuestion.options.length, 4, "Con un pool de un solo kanji, debe caer al pool completo para distractores");
+
+const smallExam = generateExam(examFixture, { category: "N5", questionCount: 50, random: fakeRandom(5) });
+assert.equal(smallExam.poolSize, 5);
+assert.equal(smallExam.requestedCount, MAX_QUESTIONS);
+assert.equal(smallExam.actualCount, 5, "El conteo pedido debe ajustarse al tamaño del pool disponible");
+assert.equal(smallExam.questions.length, 5);
+assert.ok(smallExam.questions.every(question => QUESTION_TYPES.includes(question.type)));
+
+const onyomiEligibleExam = generateExam(examFixture, { category: "N4", questionCount: 5, random: fakeRandom(6) });
+assert.ok(
+    onyomiEligibleExam.questions.every(question => question.type !== "onyomi"),
+    "Un kanji sin onyomi (\"-\") nunca debe recibir una pregunta de tipo onyomi",
+);
+
+const belowMinimum = generateExam(examFixture, { category: "N5", questionCount: 1, random: fakeRandom(7) });
+assert.equal(belowMinimum.requestedCount, MIN_QUESTIONS, "El conteo pedido nunca debe bajar de MIN_QUESTIONS");
+
+const perfectScore = scoreExam(smallExam.questions, smallExam.questions.map(question => question.correctIndex));
+assert.equal(perfectScore.score, 100);
+assert.equal(perfectScore.correct, 5);
+const halfScore = scoreExam(smallExam.questions, smallExam.questions.map((question, index) => index % 2 === 0 ? question.correctIndex : (question.correctIndex + 1) % 4));
+assert.equal(halfScore.score, 60);
+assert.equal(scoreExam([], []).score, 0);
+
+const realN5Pool = buildTopicPool(dictionary, { category: "N5" });
+assert.equal(realN5Pool.length, 80, "El pool real de N5 debe tener 80 kanji");
+const realExam = generateExam(dictionary, { category: "N3", lessonId: "kanji-n3-1", questionCount: 10, random: fakeRandom(8) });
+assert.equal(realExam.actualCount, 10);
+assert.ok(realExam.questions.every(question => question.options.length === 4 && question.correctIndex >= 0 && question.correctIndex < 4));
+assert.equal(DEFAULT_QUESTIONS, 10);
+
 console.log("✓ Parser CSV con campos entrecomillados");
 console.log("✓ Programación de repetición espaciada");
 console.log("✓ Recordatorio de práctica con hora configurable");
@@ -443,3 +525,4 @@ console.log("✓ Datos únicos y 981 ejemplos de kanji");
 console.log("✓ Currículo y estadísticas de progreso");
 console.log("✓ Locales activos completos para kanji y kana especial");
 console.log("✓ Geometría de trazos y algoritmo de comparación KanjiVG");
+console.log("✓ Motor de examen: generación de preguntas, distractores y calificación");

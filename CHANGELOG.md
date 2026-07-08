@@ -10,6 +10,21 @@ El número de versión visible de la app debe mantenerse alineado en:
 - `CHANGELOG.md`;
 - `service-worker.js` y query strings `?v=...` cuando cambien archivos cacheados.
 
+## [0.9.0] - 2026-07-08
+
+### Agregado
+
+- **Modo Examen**: nueva forma de autoevaluación por significado/lectura, independiente de la práctica de trazos. El usuario elige categoría (N5-N2 o todas) y un tema/lección concreto, define cuántas preguntas quiere (5-50, ajustado automáticamente si el tema tiene menos kanji disponibles), y responde opción múltiple de 4 alternativas sobre tres tipos de pregunta: onyomi de un kanji, cuál kanji corresponde a un significado dado, y qué significa un kanji dado. Nunca pregunta sobre trazos.
+- Nuevo módulo puro `js/exam.js` (sin DOM, testeado en `tests/run-tests.mjs`): construcción del pool de tarjetas por tema, generación de preguntas con distractores sin duplicados (con fallback al diccionario completo si el tema es muy chico), balanceo de tipos de pregunta y cálculo de la calificación 0-100.
+- Feedback inmediato por pregunta (verde/rojo al responder) y resultado final con puntaje.
+- Aviso de función beta ("esto es una prueba, aún en desarrollo") antes del primer examen de cada sesión, con opción de aceptar o cancelar.
+- Al terminar un examen, se abre automáticamente un modal de retroalimentación que reutiliza el mismo mecanismo de envío que "Acerca de" (mismo endpoint, mismo formulario), anteponiendo `"Test: "` al mensaje para poder distinguir esta retroalimentación de la general.
+
+### Cambiado
+
+- **Reestructura de navegación**: la pestaña "Perfil" desaparece de la barra de pestañas y es reemplazada por "Examen" (con un color distintivo naranja/ámbar). El acceso al perfil se mueve a un chip nuevo en el header, ahora fijo (`sticky`) en la parte superior de la app: silueta de avatar, nombre y nivel de logros actual; al presionarlo se abre el perfil completo (antes una pestaña, ahora un modal) con todo su contenido intacto (estadísticas, logros, historial, listas, exportar/importar).
+- La app muestra `v0.9.0`.
+
 ## [0.8.34] - 2026-07-07
 
 ### Corregido

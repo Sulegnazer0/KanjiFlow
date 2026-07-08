@@ -1,4 +1,4 @@
-const CACHE_NAME = "kanjiflow-v50";
+const CACHE_NAME = "kanjiflow-v51";
 const APP_ASSETS = [
     "./",
     "./index.html",
@@ -38,6 +38,7 @@ const APP_ASSETS = [
     "./js/stroke-geometry.js",
     "./js/stroke-scoring.js",
     "./js/stroke-animation.js",
+    "./js/exam.js",
     "./data/kanjivg/index.json",
 ];
 
