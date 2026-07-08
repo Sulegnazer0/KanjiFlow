@@ -81,7 +81,7 @@ import {
     translateCardState,
 } from "./i18n.js?v=831";
 
-const APP_VERSION = "0.8.32";
+const APP_VERSION = "0.8.33";
 const FEEDBACK_ENDPOINT = "https://script.google.com/macros/s/AKfycbxiz6058zwMxfPTDTmIBpG8JutOPw8YBxCRJ0BeMHp-py6IXZy4zkZs2IdTqwmSSzC1jw/exec";
 const SPLASH_MIN_MS = 2400;
 const startupStartedAt = performance.now();
@@ -268,7 +268,7 @@ let tourIndex = 0;
 let tourHighlightedElement = null;
 let expectedKanjiData = null;
 
-const KANJIVG_SUPPORTED_LEVELS = new Set(["N5", "N4", "N3"]);
+const KANJIVG_SUPPORTED_LEVELS = new Set(["N5", "N4", "N3", "N2"]);
 const kanjivgDataCache = new Map();
 let kanjivgIndexPromise = null;
 

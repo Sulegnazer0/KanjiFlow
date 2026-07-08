@@ -20,7 +20,7 @@ const REQUIRED_HEADERS = [
 ];
 const SUPPORTED_TYPES = new Set(["hiragana", "katakana", "kanji"]);
 const SUPPORTED_KANJI_LEVELS = new Set(["N5", "N4", "N3", "N2"]);
-const KANJIVG_SUPPORTED_LEVELS = new Set(["N5", "N4", "N3"]);
+const KANJIVG_SUPPORTED_LEVELS = new Set(["N5", "N4", "N3", "N2"]);
 const KANA_CATEGORIES = new Set(["basico", "dakuten", "combinacion", "especial"]);
 const REQUIRED_EXAMPLE_FIELDS = [
     "word",
@@ -348,7 +348,7 @@ await validateKanjivgCoverage(dictionary);
 note(`${dictionary.length} tarjetas validadas`);
 note(`${dictionary.filter(item => item.tipo === "kanji").length} kanji con ejemplos completos`);
 note("Fuente de orden de trazos validada para todos los kanji publicados");
-note("Datos KanjiVG validados para todos los kanji N5, N4 y N3");
+note("Datos KanjiVG validados para todos los kanji N5, N4, N3 y N2");
 note(`${AVAILABLE_LANGUAGES.length} idiomas activos validados: ${AVAILABLE_LANGUAGES.map(language => language.code).join(", ")}`);
 
 if (failures.length) {
