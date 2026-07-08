@@ -92,7 +92,7 @@ import {
     translateCardState,
 } from "./i18n.js?v=831";
 
-const APP_VERSION = "0.9.3";
+const APP_VERSION = "0.9.4";
 const FEEDBACK_ENDPOINT = "https://script.google.com/macros/s/AKfycbxiz6058zwMxfPTDTmIBpG8JutOPw8YBxCRJ0BeMHp-py6IXZy4zkZs2IdTqwmSSzC1jw/exec";
 const SPLASH_MIN_MS = 2400;
 const startupStartedAt = performance.now();
@@ -109,6 +109,7 @@ const elements = {
     statDue: $("#stat-repasar"),
     statMastered: $("#stat-dominadas"),
     statStreak: $("#stat-racha"),
+    restartTourButton: $("#btn-reiniciar-tour"),
     exportButton: $("#btn-exportar"),
     importButton: $("#btn-importar"),
     importFile: $("#archivo-importar"),
@@ -862,6 +863,7 @@ async function showTourStep(index) {
 function startTourGuide() {
     closeAboutModal();
     closeModal();
+    closeProfileModal();
     showTourStep(0);
 }
 
@@ -2275,6 +2277,7 @@ function bindEvents() {
     elements.profileModal.addEventListener("click", event => {
         if (event.target === elements.profileModal) closeProfileModal();
     });
+    elements.restartTourButton.addEventListener("click", startTourGuide);
     const tabs = [elements.practiceTab, elements.studyTab, elements.examTab];
     for (const tab of tabs) {
         tab.addEventListener("keydown", event => {

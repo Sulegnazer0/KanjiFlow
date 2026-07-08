@@ -7,7 +7,7 @@
     <meta name="description" content="Aprende hiragana, katakana y kanji con escritura, audio y repetición espaciada.">
     <title>KanjiFlow — Aprende japonés</title>
     <link rel="manifest" href="manifest.webmanifest">
-    <link rel="stylesheet" href="style.css?v=93">
+    <link rel="stylesheet" href="style.css?v=94">
 </head>
 <body>
     <div id="pantalla-carga" class="splash-screen" aria-live="polite">
@@ -394,6 +394,14 @@
                     </div>
                 </section>
 
+                <section class="data-card" aria-labelledby="tour-reinicio-titulo">
+                    <h3 id="tour-reinicio-titulo" data-i18n="ui.tourRestartTitle">Tour de bienvenida</h3>
+                    <p class="lesson-description" data-i18n="ui.tourRestartDescription">¿Quieres repasar cómo funciona KanjiFlow?</p>
+                    <div class="data-actions">
+                        <button id="btn-reiniciar-tour" class="text-button" type="button" data-i18n="ui.tourRestartButton">Volver a tomar el tour</button>
+                    </div>
+                </section>
+
                 <section class="data-card" aria-labelledby="datos-titulo">
                     <h3 id="datos-titulo" data-i18n="ui.dataTitle">Datos y respaldo</h3>
                     <p class="lesson-description" data-i18n="ui.dataDescription">Exporta o importa una copia local de tu avance.</p>
@@ -675,6 +683,6 @@
 
     <div id="aviso-nivel" class="level-notice" role="status" aria-live="polite"></div>
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
-    <script type="module" src="js/app.js?v=93"></script>
+    <script type="module" src="js/app.js?v=94"></script>
 </body>
 </html>

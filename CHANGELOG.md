@@ -10,6 +10,13 @@ El número de versión visible de la app debe mantenerse alineado en:
 - `CHANGELOG.md`;
 - `service-worker.js` y query strings `?v=...` cuando cambien archivos cacheados.
 
+## [0.9.4] - 2026-07-08
+
+### Agregado
+
+- Botón "Volver a tomar el tour" en el Perfil, en una tarjeta propia justo antes de "Datos y respaldo". Al presionarlo, cierra el modal de perfil y relanza el tour de bienvenida desde el paso 1 — antes no había ninguna forma de repetir el tour salvo borrar el progreso.
+- La app muestra `v0.9.4`.
+
 ## [0.9.3] - 2026-07-08
 
 ### Cambiado
