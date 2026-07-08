@@ -195,6 +195,13 @@ export const LESSONS = [
         test: item => item.tipo === "kanji" && item.categoria === "N3" && Number(item.id_jlpt) >= 471 && Number(item.id_jlpt) <= 611,
     },
     {
+        id: "kanji-n2-1",
+        title: "26. Kanji N2: nivel completo",
+        description: "Los 370 kanji de nivel N2 de la referencia: política, sociedad, naturaleza, cuerpo, ciencia y vida cotidiana.",
+        category: "N2",
+        test: item => item.tipo === "kanji" && item.categoria === "N2" && Number(item.id_jlpt) >= 612 && Number(item.id_jlpt) <= 981,
+    },
+    {
         id: "all",
         title: "Todo el contenido",
         description: "Mezcla libre de todos los caracteres disponibles.",

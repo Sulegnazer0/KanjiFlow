@@ -81,7 +81,7 @@ import {
     translateCardState,
 } from "./i18n.js?v=831";
 
-const APP_VERSION = "0.8.31";
+const APP_VERSION = "0.8.32";
 const FEEDBACK_ENDPOINT = "https://script.google.com/macros/s/AKfycbxiz6058zwMxfPTDTmIBpG8JutOPw8YBxCRJ0BeMHp-py6IXZy4zkZs2IdTqwmSSzC1jw/exec";
 const SPLASH_MIN_MS = 2400;
 const startupStartedAt = performance.now();
@@ -961,7 +961,7 @@ function saveCurrentSettings() {
 }
 
 function restoreSettings() {
-    const categoryExists = ["todas", "kana", "N5", "N4", "N3"].includes(settings.category);
+    const categoryExists = ["todas", "kana", "N5", "N4", "N3", "N2"].includes(settings.category);
     elements.categorySelect.value = categoryExists ? settings.category : "todas";
     populateLessons();
     const availableLessons = lessonsForCategory(elements.categorySelect.value);

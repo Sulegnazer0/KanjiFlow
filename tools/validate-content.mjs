@@ -19,7 +19,7 @@ const REQUIRED_HEADERS = [
     "palabra_ejemplo",
 ];
 const SUPPORTED_TYPES = new Set(["hiragana", "katakana", "kanji"]);
-const SUPPORTED_KANJI_LEVELS = new Set(["N5", "N4", "N3"]);
+const SUPPORTED_KANJI_LEVELS = new Set(["N5", "N4", "N3", "N2"]);
 const KANJIVG_SUPPORTED_LEVELS = new Set(["N5", "N4", "N3"]);
 const KANA_CATEGORIES = new Set(["basico", "dakuten", "combinacion", "especial"]);
 const REQUIRED_EXAMPLE_FIELDS = [

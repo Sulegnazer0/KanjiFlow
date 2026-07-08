@@ -10,6 +10,23 @@ El número de versión visible de la app debe mantenerse alineado en:
 - `CHANGELOG.md`;
 - `service-worker.js` y query strings `?v=...` cuando cambien archivos cacheados.
 
+## [0.8.32] - 2026-07-07
+
+### Agregado
+
+- Contenido completo de nivel N2: 370 kanji nuevos (`id_jlpt` 612-981), cada uno con romaji, onyomi, kunyomi, significado, palabra de ejemplo y oración de ejemplo, traducidos a los 5 idiomas activos (es, en, de, fr, pt).
+- Nueva categoría `N2` en el selector de categorías, en `restoreSettings()` y en `tools/validate-content.mjs` (`SUPPORTED_KANJI_LEVELS`).
+- Nueva lección `kanji-n2-1` ("26. Kanji N2: nivel completo") que cubre los 370 kanji N2 en una sola lección, siguiendo la convención de una lección por tanda de publicación.
+- `KanjiStrokeOrders.woff` regenerado para incluir los glifos de los 370 kanji N2 (guía estática de trazos vía fuente, igual que el resto de niveles).
+
+### Cambiado
+
+- La app muestra `v0.8.32`. `datos.csv` pasa de 824 a 1194 filas; `js/kanji-examples.js` pasa de 611 a 981 entradas.
+
+### Nota
+
+- El evaluador de trazos basado en KanjiVG (coloreado en vivo, animación progresiva) **no** se extiende a N2 en esta entrega — `KANJIVG_SUPPORTED_LEVELS` sigue en `["N5", "N4", "N3"]`. Los kanji N2 caen automáticamente al fallback de guía por fuente TTF estática, igual que N3 antes de su extensión. Extender KanjiVG a N2 queda como tarea futura independiente, siguiendo el mismo patrón usado para N3.
+
 ## [0.8.31] - 2026-07-07
 
 ### Cambiado
