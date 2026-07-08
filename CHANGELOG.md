@@ -10,6 +10,13 @@ El número de versión visible de la app debe mantenerse alineado en:
 - `CHANGELOG.md`;
 - `service-worker.js` y query strings `?v=...` cuando cambien archivos cacheados.
 
+## [0.10.1] - 2026-07-08
+
+### Agregado
+
+- Nuevo paso en el tour de bienvenida explicando el mapa de progreso: apunta al botón "Ver mapa de progreso" en Estudio, justo después del paso de tarjetas de referencia, y explica el significado de cada color (blanco/rojo/verde/azul) y que se puede practicar o lanzar una sesión de focos rojos desde ahí. El tour pasa de 17 a 18 pasos.
+- La app muestra `v0.10.1`.
+
 ## [0.10.0] - 2026-07-08
 
 ### Agregado

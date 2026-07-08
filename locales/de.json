@@ -40,6 +40,8 @@
     "tourSearchText": "Suche nach Zeichen, Lesung oder Bedeutung. Du kannst auch nach Kana, Kanji oder Favoriten filtern.",
     "tourCardsTitle": "Referenzkarten",
     "tourCardsText": "Öffne eine Karte, um Beispiele zu sehen und die Strichreihenfolge zu üben.",
+    "tourProgressMapTitle": "Deine Fortschrittskarte",
+    "tourProgressMapText": "Hier siehst du alle Zeichen in einem Farbraster: Weiß ist ausstehend, Rot ist dringend, Grün heißt du bist auf Kurs und Blau heißt beherrscht. Tippe auf ein Zeichen, um es zu üben, oder starte eine Sitzung mit Fokus auf deine roten Zeichen.",
     "tourAudioTitle": "Aussprache anhören",
     "tourAudioText": "Das Lautsprecher-Symbol spielt das Audio des Zeichens ab. Du findest es neben der Hauptlesung, dem Beispielwort, dem Onyomi, dem Kunyomi und dem Beispielsatz sowie in der Übung vor und nach dem Zeigen der Antwort.",
     "tourAnimationTitle": "Strichgeschwindigkeit und Nummerierung",

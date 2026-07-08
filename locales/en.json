@@ -40,6 +40,8 @@
     "tourSearchText": "Search by character, reading, or meaning. You can also filter by kana, kanji, or favorites.",
     "tourCardsTitle": "Reference cards",
     "tourCardsText": "Open any card to see examples and practice stroke order.",
+    "tourProgressMapTitle": "Your progress map",
+    "tourProgressMapText": "See every character in a color grid: white is pending, red is urgent, green means you're on track, and blue means mastered. Tap any character to practice it, or launch a session focused on your red items.",
     "tourAudioTitle": "Listen to the pronunciation",
     "tourAudioText": "The speaker icon plays the character's audio. You'll find it next to the main reading, the example word, the onyomi, the kunyomi, and the example sentence, plus in Practice before and after revealing the answer.",
     "tourAnimationTitle": "Stroke speed and numbering",

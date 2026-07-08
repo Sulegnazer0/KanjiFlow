@@ -40,6 +40,8 @@
     "tourSearchText": "Usa el buscador por carácter, lectura o significado. También puedes filtrar por kana, kanji o favoritas.",
     "tourCardsTitle": "Tarjetas de referencia",
     "tourCardsText": "Abre cualquier tarjeta para ver ejemplos y practicar el orden de trazos.",
+    "tourProgressMapTitle": "Tu mapa de progreso",
+    "tourProgressMapText": "Aquí ves todos tus caracteres en una grilla de colores: blanco es pendiente, rojo es urgente, verde vas bien y azul ya lo dominas. Toca cualquiera para practicarlo o lanza una sesión enfocada en tus focos rojos.",
     "tourAudioTitle": "Escucha la pronunciación",
     "tourAudioText": "El ícono de altavoz reproduce el audio del carácter. Lo encuentras junto a la lectura principal, la palabra de ejemplo, el onyomi, el kunyomi y la frase de ejemplo, además de en Práctica antes y después de revelar la respuesta.",
     "tourAnimationTitle": "Velocidad y numeración de trazos",

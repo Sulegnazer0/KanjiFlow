@@ -93,7 +93,7 @@ import {
     translateCardState,
 } from "./i18n.js?v=831";
 
-const APP_VERSION = "0.10.0";
+const APP_VERSION = "0.10.1";
 const FEEDBACK_ENDPOINT = "https://script.google.com/macros/s/AKfycbxiz6058zwMxfPTDTmIBpG8JutOPw8YBxCRJ0BeMHp-py6IXZy4zkZs2IdTqwmSSzC1jw/exec";
 const SPLASH_MIN_MS = 2400;
 const startupStartedAt = performance.now();
@@ -624,6 +624,12 @@ const TOUR_STEPS = [
         target: () => elements.dictionary,
         titleKey: "ui.tourCardsTitle",
         textKey: "ui.tourCardsText",
+    },
+    {
+        before: () => switchTab("study"),
+        target: () => elements.progressMapButtonStudy,
+        titleKey: "ui.tourProgressMapTitle",
+        textKey: "ui.tourProgressMapText",
     },
     {
         before: () => openTourExampleCard("作"),

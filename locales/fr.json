@@ -40,6 +40,8 @@
     "tourSearchText": "Recherchez par caractere, lecture ou sens, et filtrez kana, kanji ou favoris.",
     "tourCardsTitle": "Cartes de reference",
     "tourCardsText": "Ouvrez une carte pour voir des exemples et pratiquer l'ordre des traits.",
+    "tourProgressMapTitle": "Votre carte de progression",
+    "tourProgressMapText": "Voyez tous vos caracteres dans une grille de couleurs : blanc en attente, rouge urgent, vert vous progressez bien et bleu maitrise. Touchez un caractere pour le pratiquer, ou lancez une session centree sur votre foyer rouge.",
     "tourAudioTitle": "Ecoutez la prononciation",
     "tourAudioText": "L'icone haut-parleur joue l'audio du caractere. Vous la trouverez pres de la lecture principale, du mot d'exemple, de l'onyomi, du kunyomi et de la phrase d'exemple, ainsi que dans Pratique avant et apres avoir affiche la reponse.",
     "tourAnimationTitle": "Vitesse et numerotation des traits",
