@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#2563eb">
+    <meta name="description" content="Política de privacidad de KanjiFlow.">
+    <title>Política de privacidad — KanjiFlow</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png">
+    <style>
+        :root {
+            --blue: #2563eb;
+            --blue-dark: #1d4ed8;
+            --muted: #64748b;
+            --line: #dbe3ef;
+            --surface: #ffffff;
+            --bg: #eef2f8;
+            --ink: #0f172a;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 32px 16px 64px;
+            background: var(--bg);
+            color: var(--ink);
+            font-family: Inter, "Segoe UI", system-ui, sans-serif;
+            line-height: 1.6;
+        }
+
+        main {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 32px;
+            border: 1px solid var(--line);
+            border-radius: 24px;
+            background: var(--surface);
+            box-shadow: 0 22px 60px rgba(15, 23, 42, 0.08);
+        }
+
+        a {
+            color: var(--blue);
+        }
+
+        .eyebrow {
+            margin: 0 0 4px;
+            color: var(--blue);
+            font-size: 0.82rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        h1 {
+            margin: 0 0 6px;
+            font-size: 1.6rem;
+        }
+
+        .updated {
+            margin: 0 0 28px;
+            color: var(--muted);
+            font-size: 0.85rem;
+        }
+
+        h2 {
+            margin: 32px 0 10px;
+            font-size: 1.1rem;
+            color: var(--blue-dark);
+        }
+
+        p, li {
+            font-size: 0.95rem;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        li + li {
+            margin-top: 8px;
+        }
+
+        .callout {
+            margin-top: 8px;
+            padding: 14px 16px;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            background: #f8fafc;
+            font-size: 0.9rem;
+            color: var(--muted);
+        }
+
+        .back {
+            display: inline-block;
+            margin-bottom: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 10px;
+            border-collapse: collapse;
+            font-size: 0.88rem;
+        }
+
+        th, td {
+            padding: 8px 10px;
+            border: 1px solid var(--line);
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            background: #f8fafc;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <a class="back" href="./">&larr; Volver a KanjiFlow</a>
+        <p class="eyebrow">KanjiFlow</p>
+        <h1>Política de privacidad</h1>
+        <p class="updated">Última actualización: 8 de julio de 2026</p>
+
+        <p>
+            KanjiFlow es una app de práctica de hiragana, katakana y kanji desarrollada por S0 Labs.
+            Esta página explica, en el mayor detalle posible, qué información recolecta la app, para
+            qué se usa y qué control tienes sobre ella.
+        </p>
+
+        <h2>Lo que se guarda solo en tu dispositivo</h2>
+        <p>
+            La mayor parte de tu información nunca sale de tu teléfono o computadora. Se guarda de
+            forma local (en el almacenamiento del navegador o de la app) y nosotros no tenemos acceso
+            a ella:
+        </p>
+        <ul>
+            <li>Tu progreso de práctica: qué caracteres has repasado, calificaciones, rachas y fechas.</li>
+            <li>Tus favoritos y tarjetas dominadas.</li>
+            <li>Tus logros desbloqueados.</li>
+            <li>Tu meta diaria, el umbral del evaluador de trazos y demás preferencias de configuración.</li>
+            <li>El idioma de la interfaz que elegiste.</li>
+        </ul>
+        <div class="callout">
+            Puedes exportar una copia de este progreso en cualquier momento desde tu Perfil
+            ("Exportar progreso"), o borrarlo por completo desinstalando la app o limpiando los
+            datos del sitio desde tu navegador.
+        </div>
+
+        <h2>Lo que se envía a nuestro servidor</h2>
+        <p>
+            Usamos un servicio de Google (Google Apps Script, que guarda la información en una hoja
+            de cálculo privada) para dos cosas puntuales:
+        </p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Cuándo</th>
+                    <th>Qué se envía</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Una sola vez, al crear tu perfil por primera vez</td>
+                    <td>
+                        Un identificador aleatorio generado por la app (no vinculado a tu identidad
+                        real), el nombre que escribiste, tu meta diaria, tu hora de recordatorio
+                        preferida, fecha de creación del perfil, si aceptaste el tour inicial, el
+                        idioma, la versión de la app y datos técnicos básicos del navegador
+                        (user agent, URL).
+                    </td>
+                </tr>
+                <tr>
+                    <td>Solo si tú decides enviar una recomendación o comentario</td>
+                    <td>
+                        El texto que escribiste, tu nombre de perfil, el idioma, la versión de la
+                        app y datos técnicos básicos del navegador.
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <p>
+            Esta información se usa únicamente para entender cuánta gente usa la app y para leer tus
+            sugerencias — nunca se vende ni se comparte con terceros para publicidad.
+        </p>
+
+        <h2>Lo que NO recolectamos</h2>
+        <ul>
+            <li>No pedimos correo electrónico ni contraseña — hoy la app no tiene cuentas de usuario.</li>
+            <li>No accedemos a tu cámara, micrófono, contactos ni ubicación.</li>
+            <li>No usamos identificadores de publicidad ni SDKs de rastreo de terceros.</li>
+            <li>No mostramos anuncios.</li>
+            <li>No vendemos información a nadie.</li>
+        </ul>
+
+        <h2>Voz y reconocimiento de caracteres</h2>
+        <p>
+            Para pronunciar caracteres en voz alta, KanjiFlow usa la función de texto a voz integrada
+            en tu sistema operativo o navegador (no un servicio propio). Dependiendo de tu dispositivo,
+            esa función del sistema puede procesar el texto localmente o, en algunos casos, a través de
+            los propios servidores de tu fabricante de sistema operativo — eso está fuera del control
+            de KanjiFlow y se rige por la configuración de voz de tu dispositivo.
+        </p>
+
+        <h2>Alojamiento del sitio</h2>
+        <p>
+            KanjiFlow se sirve como sitio estático desde GitHub Pages. Como con cualquier sitio web,
+            el proveedor de hosting (GitHub) recibe automáticamente información técnica estándar de
+            cada solicitud (como tu dirección IP) como parte del funcionamiento normal de internet;
+            KanjiFlow no tiene acceso a esos registros.
+        </p>
+
+        <h2>Menores de edad</h2>
+        <p>
+            KanjiFlow está pensada para un público general y no solicita intencionalmente datos
+            personales de niños. Si eres madre, padre o tutor y crees que tu hijo o hija nos envió
+            información sin tu consentimiento, contáctanos y la eliminaremos.
+        </p>
+
+        <h2>Cambios futuros</h2>
+        <p>
+            Si en el futuro agregamos funciones nuevas que cambien qué datos recolectamos —por
+            ejemplo, inicio de sesión con cuenta de Google para sincronizar tu progreso entre
+            dispositivos— actualizaremos esta página antes de que esa función esté disponible.
+        </p>
+
+        <h2>Contacto</h2>
+        <p>
+            Si tienes preguntas sobre esta política o quieres pedir que eliminemos tu información
+            de nuestros registros, escríbenos a
+            <a href="mailto:CORREO_DE_CONTACTO_PENDIENTE">CORREO_DE_CONTACTO_PENDIENTE</a>.
+        </p>
+    </main>
+</body>
+</html>

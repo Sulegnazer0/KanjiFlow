@@ -10,6 +10,16 @@ El número de versión visible de la app debe mantenerse alineado en:
 - `CHANGELOG.md`;
 - `service-worker.js` y query strings `?v=...` cuando cambien archivos cacheados.
 
+## [0.10.5] - 2026-07-08
+
+### Agregado
+
+- Página de política de privacidad (`privacidad.html`), requisito de Google Play Store, enlazada desde "Acerca de" en la app. Describe con precisión qué guarda la app solo en el dispositivo (progreso, favoritos, logros, configuración) y qué se envía a un backend de Google Apps Script: el registro único al crear el perfil (nombre, meta diaria, hora de recordatorio, un ID aleatorio) y el feedback opcional que el usuario decide enviar. Incluida en el precache offline del service worker.
+
+### Pendiente
+
+- El correo de contacto en `privacidad.html` es un marcador de posición (`CORREO_DE_CONTACTO_PENDIENTE`) — hay que reemplazarlo por una dirección real antes de publicar.
+
 ## [0.10.4] - 2026-07-08
 
 ### Agregado

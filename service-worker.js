@@ -1,4 +1,4 @@
-const CACHE_NAME = "kanjiflow-v61";
+const CACHE_NAME = "kanjiflow-v62";
 const APP_ASSETS = [
     "./",
     "./index.html",
@@ -14,6 +14,7 @@ const APP_ASSETS = [
     "./assets/icons/favicon-48.png",
     "./datos.csv",
     "./manifest.webmanifest",
+    "./privacidad.html",
     "./KanjiStrokeOrders.woff",
     "./locales/es.json",
     "./locales/es.json?v=831",

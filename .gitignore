@@ -16,6 +16,9 @@ yarn-error.log*
 .DS_Store
 Thumbs.db
 
+# Configuracion local de IDE (Android Studio / IntelliJ)
+.idea/
+
 # Backups/exportaciones locales de progreso
 kanjiflow-progreso-*.json
 

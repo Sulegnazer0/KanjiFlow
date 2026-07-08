@@ -197,6 +197,8 @@
     "aboutDescription": "A daily practice app for learning Japanese one stroke at a time.",
     "aboutVersion": "Version",
     "aboutDeveloper": "Developed by",
+    "aboutPrivacy": "Privacy",
+    "aboutPrivacyLink": "View policy",
     "latestUpdates": "Latest updates",
     "updateOnboarding": "Brand splash screen, welcome prompt, and first-run tour.",
     "updateAchievements": "Achievement levels and visible version on the splash screen.",
