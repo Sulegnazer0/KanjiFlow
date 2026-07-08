@@ -10,6 +10,20 @@ El número de versión visible de la app debe mantenerse alineado en:
 - `CHANGELOG.md`;
 - `service-worker.js` y query strings `?v=...` cuando cambien archivos cacheados.
 
+## [0.9.3] - 2026-07-08
+
+### Cambiado
+
+- Rediseño completo del tour de bienvenida (17 pasos, antes 12): se agregaron pasos nuevos para el evaluador de trazos (colores verde/amarillo/rojo y dónde aparece el porcentaje de similitud tras "Ver respuesta"), los botones de audio/pronunciación, la velocidad de la animación de trazos junto con la numeración que marca dónde nace cada trazo (usando el kanji 作 "tsukuru" como ejemplo fijo), el modo Examen, y el nuevo chip de perfil del header. Se recortó el texto del paso de tarjetas de referencia para no duplicar la explicación de audio.
+- El fondo oscuro del tour pasó de `rgba(15,23,42,0.72)` con `blur(2px)` a `rgba(15,23,42,0.45)` sin desenfoque, para que solo el anillo de resaltado (no todo el fondo) llame la atención sobre el control explicado.
+- El recuadro de texto del tour ahora se reposiciona automáticamente arriba o abajo del elemento resaltado según el espacio disponible en pantalla, para nunca tapar lo que está explicando.
+
+### Corregido
+
+- Bug real: los últimos 3 pasos del tour (meta diaria, hora de recordatorio, historial) llamaban a `switchTab("profile")`, una pestaña que ya no existe desde que el perfil se convirtió en un modal — esos pasos no hacían nada útil. Ahora abren correctamente `#modal-perfil`.
+- El resaltado de un paso del tour dentro de un modal ya solo perfora el fondo del modal que realmente contiene el elemento (antes siempre perforaba `#modal-detalles`, sin importar cuál modal estuviera abierto).
+- La app muestra `v0.9.3`.
+
 ## [0.9.2] - 2026-07-08
 
 ### Corregido

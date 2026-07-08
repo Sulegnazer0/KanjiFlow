@@ -92,7 +92,7 @@ import {
     translateCardState,
 } from "./i18n.js?v=831";
 
-const APP_VERSION = "0.9.2";
+const APP_VERSION = "0.9.3";
 const FEEDBACK_ENDPOINT = "https://script.google.com/macros/s/AKfycbxiz6058zwMxfPTDTmIBpG8JutOPw8YBxCRJ0BeMHp-py6IXZy4zkZs2IdTqwmSSzC1jw/exec";
 const SPLASH_MIN_MS = 2400;
 const startupStartedAt = performance.now();
@@ -555,6 +555,12 @@ const TOUR_STEPS = [
         textKey: "ui.tourRevealText",
     },
     {
+        before: () => switchTab("practice"),
+        target: () => elements.strokeEvaluatorCanvasToggle,
+        titleKey: "ui.tourEvaluatorTitle",
+        textKey: "ui.tourEvaluatorText",
+    },
+    {
         before: () => {
             switchTab("practice");
             if (currentItem && elements.answerPanel.classList.contains("hidden")) revealAnswer();
@@ -582,6 +588,18 @@ const TOUR_STEPS = [
         textKey: "ui.tourCardsText",
     },
     {
+        before: () => openTourExampleCard("作"),
+        target: () => elements.modalMainSound,
+        titleKey: "ui.tourAudioTitle",
+        textKey: "ui.tourAudioText",
+    },
+    {
+        before: () => openTourExampleCard("作"),
+        target: () => elements.animationSpeedButton,
+        titleKey: "ui.tourAnimationTitle",
+        textKey: "ui.tourAnimationText",
+    },
+    {
         before: () => showFavoriteTourExample(),
         target: () => elements.favorite,
         titleKey: "ui.tourFavoritesTitle",
@@ -590,7 +608,26 @@ const TOUR_STEPS = [
     {
         before: () => {
             closeModal();
-            switchTab("profile");
+            switchTab("exam");
+        },
+        target: () => elements.examTab,
+        titleKey: "ui.tourExamTitle",
+        textKey: "ui.tourExamText",
+    },
+    {
+        before: () => {
+            closeModal();
+            closeProfileModal();
+            switchTab("practice");
+        },
+        target: () => elements.profileChip,
+        titleKey: "ui.tourProfileChipTitle",
+        textKey: "ui.tourProfileChipText",
+    },
+    {
+        before: () => {
+            closeModal();
+            openProfileModal();
         },
         target: () => elements.dailyGoal,
         titleKey: "ui.tourProfileGoalTitle",
@@ -599,7 +636,7 @@ const TOUR_STEPS = [
     {
         before: () => {
             closeModal();
-            switchTab("profile");
+            openProfileModal();
         },
         target: () => elements.reminderTime,
         titleKey: "ui.tourReminderTimeTitle",
@@ -608,7 +645,7 @@ const TOUR_STEPS = [
     {
         before: () => {
             closeModal();
-            switchTab("profile");
+            openProfileModal();
         },
         target: () => document.querySelector(".profile-stats-grid"),
         titleKey: "ui.tourStatsTitle",
@@ -622,6 +659,16 @@ function showFavoriteTourExample() {
     if (filteredStudyItems.length && elements.modal.classList.contains("hidden")) {
         openModal(0, elements.studyTab);
     }
+}
+
+/** Opens a specific kanji's Study card so a tour step can point at a concrete, consistent example (e.g. 作 for stroke numbers). */
+function openTourExampleCard(character) {
+    switchTab("study");
+    elements.studyFilter.value = "todos";
+    elements.search.value = character;
+    renderDictionary();
+    const index = filteredStudyItems.findIndex(item => item.caracter === character);
+    if (index >= 0) openModal(index, elements.studyTab);
 }
 
 function createUserId() {
@@ -742,7 +789,31 @@ function completeOnboarding(startTour) {
 function clearTourHighlight() {
     tourHighlightedElement?.classList.remove("tour-highlight");
     tourHighlightedElement = null;
-    elements.modal.classList.remove("tour-modal");
+    document.querySelectorAll(".modal.tour-modal").forEach(modal => modal.classList.remove("tour-modal"));
+}
+
+/**
+ * Places the popover above or below the highlighted target, whichever side
+ * has more room — so a step targeting something near the top or bottom of
+ * the viewport never gets its own text hidden behind (or hiding) the target.
+ */
+function positionTourPopover(target) {
+    const popover = elements.tourPopover;
+    const margin = 16;
+    const rect = target.getBoundingClientRect();
+    const viewportHeight = window.innerHeight;
+    const popoverHeight = popover.offsetHeight;
+    const spaceBelow = viewportHeight - rect.bottom - margin;
+    const spaceAbove = rect.top - margin;
+
+    let top;
+    if (spaceBelow >= popoverHeight || spaceBelow >= spaceAbove) {
+        top = Math.min(rect.bottom + margin, viewportHeight - popoverHeight - margin);
+    } else {
+        top = rect.top - popoverHeight - margin;
+    }
+    popover.style.top = `${Math.max(margin, top)}px`;
+    popover.style.bottom = "auto";
 }
 
 async function showTourStep(index) {
@@ -766,7 +837,8 @@ async function showTourStep(index) {
 
     tourHighlightedElement = target;
     tourHighlightedElement.classList.add("tour-highlight");
-    if (tourHighlightedElement.closest(".modal")) elements.modal.classList.add("tour-modal");
+    const parentModal = tourHighlightedElement.closest(".modal");
+    if (parentModal) parentModal.classList.add("tour-modal");
     tourHighlightedElement.scrollIntoView?.({ behavior: "smooth", block: "center", inline: "center" });
 
     elements.tourCounter.textContent = t("ui.tourStepCounter", {
@@ -781,6 +853,9 @@ async function showTourStep(index) {
         : t("ui.next");
     elements.tourOverlay.classList.remove("hidden");
     elements.tourPopover.classList.remove("hidden");
+
+    await wait(340);
+    positionTourPopover(tourHighlightedElement);
     elements.tourPopover.focus?.();
 }
 
