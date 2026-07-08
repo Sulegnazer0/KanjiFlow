@@ -1813,6 +1813,20 @@ canvas {
     transform: translate(-50%, 0);
 }
 
+.version-ghost {
+    position: fixed;
+    z-index: 5;
+    right: max(8px, env(safe-area-inset-right));
+    bottom: max(6px, env(safe-area-inset-bottom));
+    color: var(--muted);
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    opacity: 0.22;
+    pointer-events: none;
+    user-select: none;
+}
+
 @keyframes reveal {
     from { opacity: 0; transform: translateY(-8px); }
     to { opacity: 1; transform: translateY(0); }

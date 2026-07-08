@@ -92,7 +92,7 @@ import {
     translateCardState,
 } from "./i18n.js?v=831";
 
-const APP_VERSION = "0.9.4";
+const APP_VERSION = "0.9.5";
 const FEEDBACK_ENDPOINT = "https://script.google.com/macros/s/AKfycbxiz6058zwMxfPTDTmIBpG8JutOPw8YBxCRJ0BeMHp-py6IXZy4zkZs2IdTqwmSSzC1jw/exec";
 const SPLASH_MIN_MS = 2400;
 const startupStartedAt = performance.now();
@@ -101,6 +101,7 @@ const $ = selector => document.querySelector(selector);
 const elements = {
     splash: $("#pantalla-carga"),
     splashVersion: $("#splash-version"),
+    versionGhost: $("#version-fantasma"),
     connection: $("#estado-conexion"),
     progressSummary: $("#resumen-progreso"),
     progressPercent: $("#porcentaje-dominio"),
@@ -2473,6 +2474,7 @@ async function init() {
     bindEvents();
     elements.splashVersion.textContent = `v${APP_VERSION}`;
     elements.appVersion.textContent = `v${APP_VERSION}`;
+    elements.versionGhost.textContent = `v${APP_VERSION}`;
     renderProfile();
     updateFeedbackCounter();
     updateConnection();

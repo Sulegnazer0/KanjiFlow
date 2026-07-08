@@ -10,6 +10,13 @@ El número de versión visible de la app debe mantenerse alineado en:
 - `CHANGELOG.md`;
 - `service-worker.js` y query strings `?v=...` cuando cambien archivos cacheados.
 
+## [0.9.5] - 2026-07-08
+
+### Agregado
+
+- Número de versión visible como marca de agua tenue y fija en la esquina inferior derecha (`#version-fantasma`), en todas las pantallas de la app. Opacidad baja (22%), sin interceptar clics (`pointer-events: none`), para que sea legible si se busca pero no distraiga.
+- La app muestra `v0.9.5`.
+
 ## [0.9.4] - 2026-07-08
 
 ### Agregado
