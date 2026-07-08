@@ -5,7 +5,8 @@
       "namespace": "android_app",
       "package_name": "com.s0labs.kanjiflow",
       "sha256_cert_fingerprints": [
-        "SHA256_FINGERPRINT_AQUI"
+        "SHA256_UPLOAD_KEY_LOCAL_AQUI",
+        "SHA256_PLAY_APP_SIGNING_AQUI"
       ]
     }
   }

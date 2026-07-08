@@ -61,7 +61,7 @@ Bubblewrap te va a preguntar, en orden:
 
 Al terminar, vas a tener una carpeta con un proyecto Android completo (`twa-manifest.json`, `app/`, etc.) y tu archivo de keystore.
 
-## 4. Obtener la huella SHA-256 y completar `assetlinks.json`
+## 4. Obtener la huella SHA-256 de tu upload key y completar `assetlinks.json`
 
 ```bash
 keytool -list -v -keystore ./android.keystore -alias android
@@ -69,13 +69,28 @@ keytool -list -v -keystore ./android.keystore -alias android
 
 Busca la línea `SHA256:` en la salida (se ve como `14:6D:E9:83:C5:73:...`). Cópiala completa.
 
-Plantilla lista en `docs/assetlinks.template.json` de este repo — cópiala al repo `sulegnazer0.github.io` como `.well-known/assetlinks.json`, reemplazando `SHA256_FINGERPRINT_AQUI` por el valor real (mantén los dos puntos, en mayúsculas, tal como lo imprime `keytool`). Confirma que el `package_name` coincide exactamente con el que usaste en el paso 2/3.
+Plantilla lista en `docs/assetlinks.template.json` de este repo — cópiala al repo `sulegnazer0.github.io` como `.well-known/assetlinks.json`. El array `sha256_cert_fingerprints` tiene **dos** lugares:
+
+```json
+"sha256_cert_fingerprints": [
+  "SHA256_UPLOAD_KEY_LOCAL_AQUI",
+  "SHA256_PLAY_APP_SIGNING_AQUI"
+]
+```
+
+Por ahora reemplaza solo `SHA256_UPLOAD_KEY_LOCAL_AQUI` con el valor que acabas de sacar de `keytool` (mantén los dos puntos, en mayúsculas). Deja `SHA256_PLAY_APP_SIGNING_AQUI` tal cual — lo completas en el paso 6, después de activar Play App Signing. **No borres esa segunda línea del array aunque no la tengas todavía** (un valor placeholder ahí no rompe nada; ambos son válidos hasta que los reemplaces).
+
+> **Por qué dos huellas**: la de tu keystore local firma el `.aab` que subes, pero si activas Play App Signing (recomendado, paso 6) Google **vuelve a firmar** la app con su propia llave antes de entregarla a los usuarios — y Digital Asset Links verifica contra el certificado que el usuario realmente tiene instalado. Con las dos huellas en el array, el TWA queda verificado tanto para pruebas locales (sideload con tu upload key) como para la versión real que la gente instala desde Play Store.
+
+Confirma que el `package_name` coincide exactamente con el que usaste en el paso 2/3.
 
 Sube ese archivo al nuevo repo y espera 1-2 minutos a que GitHub Pages lo publique. Verifica con:
 
 ```bash
 curl https://sulegnazer0.github.io/.well-known/assetlinks.json
 ```
+
+Esto ya te sirve para probar el APK sideloaded en tu propio dispositivo (paso 5). No hace falta crear nada en Play Console todavía para esta parte.
 
 ## 5. Compilar el `.aab`
 
@@ -87,9 +102,11 @@ bubblewrap build
 
 Esto genera el `.aab` firmado con tu keystore, listo para subir a Play Console. Puedes probarlo en un dispositivo/emulador conectado con `bubblewrap install` antes de subirlo.
 
-## 6. Play App Signing (recomendado)
+## 6. Play App Signing (recomendado) — y completar la segunda huella
 
 Al crear la app en Play Console, cuando te pida el `.aab`, activa **Play App Signing** — Google genera y custodia la llave de firma final; tú solo conservas la "llave de subida" (la de tu keystore). Ventaja: si algún día pierdes tu keystore, Google puede ayudarte a recuperar el control de la app; sin Play App Signing, perder la keystore significa no poder actualizar la app nunca más.
+
+Una vez activado, ve a **Play Console → tu app → Configuración → Integridad de la app → Firma de la app** y copia la huella **SHA-256** que aparece bajo "Certificado de firma de la app" (distinta de la de tu keystore local). Reemplaza `SHA256_PLAY_APP_SIGNING_AQUI` en `assetlinks.json` (repo `sulegnazer0.github.io`) con ese valor y vuelve a hacer commit. Sin este paso, el TWA funciona sideloaded en tu celular pero **no** se ve como app instalada de verdad (mostrará la barra de Chrome) para quien lo descargue desde Play Store.
 
 ## 7. Ficha de Play Store y pruebas cerradas
 
@@ -103,8 +120,9 @@ Al crear la app en Play Console, cuando te pida el `.aab`, activa **Play App Sig
 - [ ] Repo `sulegnazer0.github.io` creado con Pages activo
 - [ ] Package name decidido
 - [ ] `bubblewrap init` corrido, keystore generada y guardada a salvo
-- [ ] `assetlinks.json` completado y publicado, verificado con `curl`
+- [ ] `assetlinks.json` completado con la huella de la upload key y publicado, verificado con `curl`
 - [ ] `bubblewrap build` genera el `.aab`
 - [ ] App creada en Play Console con Play App Signing activado
+- [ ] `assetlinks.json` actualizado con la segunda huella (Firma de la app, Play Console)
 - [ ] Política de privacidad enlazada en la ficha
 - [ ] Subido a pruebas cerradas con testers
