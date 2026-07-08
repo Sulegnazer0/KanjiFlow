@@ -10,6 +10,13 @@ El número de versión visible de la app debe mantenerse alineado en:
 - `CHANGELOG.md`;
 - `service-worker.js` y query strings `?v=...` cuando cambien archivos cacheados.
 
+## [0.8.34] - 2026-07-07
+
+### Corregido
+
+- El selector de "Contenido" en el área de Estudio (`#filtro-nivel`) le faltaba la opción "Kanji N2" — se agregó a `SUPPORTED_KANJI_LEVELS` como categoría de contenido pero se olvidó de este selector, que es independiente del de la pantalla de Práctica. `matchesStudyFilter()` ya soportaba cualquier categoría `N\d` de forma genérica, así que solo hacía falta la opción en el HTML.
+- La app muestra `v0.8.34`.
+
 ## [0.8.33] - 2026-07-07
 
 ### Agregado
