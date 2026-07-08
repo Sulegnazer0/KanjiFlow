@@ -1,10 +1,17 @@
-const CACHE_NAME = "kanjiflow-v60";
+const CACHE_NAME = "kanjiflow-v61";
 const APP_ASSETS = [
     "./",
     "./index.html",
     "./style.css",
     "./style.css?v=831",
     "./assets/s0labsHorizontal.png",
+    "./assets/icons/icon-192.png",
+    "./assets/icons/icon-512.png",
+    "./assets/icons/icon-maskable-192.png",
+    "./assets/icons/icon-maskable-512.png",
+    "./assets/icons/apple-touch-icon.png",
+    "./assets/icons/favicon-32.png",
+    "./assets/icons/favicon-48.png",
     "./datos.csv",
     "./manifest.webmanifest",
     "./KanjiStrokeOrders.woff",

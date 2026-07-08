@@ -10,6 +10,14 @@ El número de versión visible de la app debe mantenerse alineado en:
 - `CHANGELOG.md`;
 - `service-worker.js` y query strings `?v=...` cuando cambien archivos cacheados.
 
+## [0.10.4] - 2026-07-08
+
+### Agregado
+
+- Íconos de la app (192/512, versiones normal y "maskable" para Android) usando el carácter 流 ("flujo", en línea con el nombre KanjiFlow) sobre el azul de marca — antes `manifest.webmanifest` no tenía ningún ícono, lo que bloquea tanto la instalación como la generación de un TWA para Play Store. También se agregaron favicon y `apple-touch-icon` a `index.html`.
+- Los íconos nuevos se agregaron a la lista de precache del service worker para que también funcionen sin conexión.
+- La app muestra `v0.10.4`.
+
 ## [0.10.3] - 2026-07-08
 
 ### Corregido
