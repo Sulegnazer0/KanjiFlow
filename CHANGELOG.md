@@ -10,6 +10,13 @@ El número de versión visible de la app debe mantenerse alineado en:
 - `CHANGELOG.md`;
 - `service-worker.js` y query strings `?v=...` cuando cambien archivos cacheados.
 
+## [0.10.7] - 2026-07-08
+
+### Agregado
+
+- `docs/play-store-twa.md`: guía paso a paso para generar el TWA con Bubblewrap y publicarlo en Play Store — package name sugerido, comandos exactos, y un gotcha real detectado (la verificación de Digital Asset Links se busca en la raíz del dominio `sulegnazer0.github.io`, no en `sulegnazer0.github.io/KanjiFlow/`, así que hace falta un repo `sulegnazer0.github.io` nuevo solo para alojar `assetlinks.json`).
+- `docs/assetlinks.template.json`: plantilla lista para completar con la huella SHA-256 real de la keystore.
+
 ## [0.10.6] - 2026-07-08
 
 ### Corregido
