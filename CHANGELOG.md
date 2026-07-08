@@ -10,6 +10,13 @@ El número de versión visible de la app debe mantenerse alineado en:
 - `CHANGELOG.md`;
 - `service-worker.js` y query strings `?v=...` cuando cambien archivos cacheados.
 
+## [0.10.3] - 2026-07-08
+
+### Corregido
+
+- `locales/fr.json` y `locales/pt.json` tenían ~34 claves sin traducir (dejadas en inglés desde una fusión anterior): estadísticas de perfil, logros, historial, reconocimiento de escritura y mensajes de respaldo. Ahora están correctamente traducidas al francés (formal, sin tildes) y al portugués (informal, sin tildes), siguiendo el vocabulario ya establecido en cada archivo.
+- La app muestra `v0.10.3`.
+
 ## [0.10.2] - 2026-07-08
 
 ### Cambiado
