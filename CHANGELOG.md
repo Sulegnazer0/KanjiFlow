@@ -10,6 +10,12 @@ El número de versión visible de la app debe mantenerse alineado en:
 - `CHANGELOG.md`;
 - `service-worker.js` y query strings `?v=...` cuando cambien archivos cacheados.
 
+## [0.10.6] - 2026-07-08
+
+### Corregido
+
+- Correo de contacto real (`s0kanjiflow@gmail.com`) en `privacidad.html`, reemplazando el marcador de posición pendiente.
+
 ## [0.10.5] - 2026-07-08
 
 ### Agregado
