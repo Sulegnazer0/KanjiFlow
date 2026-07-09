@@ -1,4 +1,4 @@
-const CACHE_NAME = "kanjiflow-v64";
+const CACHE_NAME = "kanjiflow-v65";
 const APP_ASSETS = [
     "./",
     "./index.html",

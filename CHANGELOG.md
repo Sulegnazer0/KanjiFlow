@@ -10,6 +10,12 @@ El número de versión visible de la app debe mantenerse alineado en:
 - `CHANGELOG.md`;
 - `service-worker.js` y query strings `?v=...` cuando cambien archivos cacheados.
 
+## [0.10.8] - 2026-07-09
+
+### Agregado
+
+- Sección "Cómo eliminar tus datos de KanjiFlow" en `privacidad.html`, requerida por el formulario de Seguridad de los datos de Play Console: explica por separado cómo eliminar los datos que solo viven en el dispositivo (desinstalar/limpiar datos del sitio, inmediato) y cómo pedir la eliminación de los datos enviados al servidor (nombre y registro de creación de perfil), vía `s0kanjiflow@gmail.com`, con plazo de 30 días.
+
 ## [0.10.7] - 2026-07-08
 
 ### Agregado
