@@ -46,7 +46,7 @@ Este archivo **no sustituye** a [`docs/registro-ia.md`](docs/registro-ia.md) —
 
 **En desarrollo activo**: ninguna feature de producto — el foco actual es completar la publicación en Play Store (pruebas cerradas → producción).
 
-**Nota de estado**: existe una rama sin fusionar, `feature/kunyomi-okurigana`, con una corrección de lecturas kunyomi con okurigana que no forma parte de `main` — pendiente de revisión/fusión o descarte.
+**Nota de estado**: dos ramas completas sin fusionar a `main`: `feature/brand-refresh` (íconos nuevos + splash de marca) y `feature/kunyomi-okurigana-v2` (corrección de 478 lecturas kunyomi con okurigana, ver Roadmap → Próximo). La rama vieja `feature/kunyomi-okurigana` (huérfana desde 0.8.11) quedó reemplazada por la v2 y puede borrarse.
 
 **Planeadas**: ver [Roadmap](#7-roadmap).
 
@@ -181,7 +181,9 @@ Decisiones que no deben romperse sin que el usuario lo pida explícitamente:
 
 ### Próximo
 - Completar publicación en Play Store: superar las pruebas cerradas (12 testers/14 días) y pasar a producción.
-- Resolver la rama pendiente `feature/kunyomi-okurigana` (fusionar o descartar).
+- Fusionar `feature/kunyomi-okurigana-v2` a `main` — reimplementación completa ya hecha (478 kanji corregidos), pendiente de revisión lingüística antes de fusionar (ver `docs/registro-ia.md`, entradas 0.10.10/0.10.11). La rama vieja `feature/kunyomi-okurigana` queda obsoleta, se puede borrar una vez fusionada esta.
+- Fusionar `feature/brand-refresh` a `main` (íconos nuevos + splash de marca, ya completo).
+- Botón de instalación dentro de la app (usando la API `beforeinstallprompt` del navegador) para usuarios que llegan por el link directo de GitHub Pages en vez de por Play Store — hoy solo pueden instalar la PWA vía el menú escondido de Chrome ("Agregar a pantalla de inicio"); un botón visible en la propia app sería más descubrible. No aplica a quienes instalan desde Play Store, que ya tienen la experiencia limpia automáticamente.
 - Contenido N1 (no iniciado — requiere primero la lista canónica de kanji N1, después extender el evaluador de trazos siguiendo el mismo patrón ya usado para N4/N3/N2).
 
 ### Mediano plazo
