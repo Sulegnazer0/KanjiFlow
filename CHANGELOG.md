@@ -10,6 +10,20 @@ El número de versión visible de la app debe mantenerse alineado en:
 - `CHANGELOG.md`;
 - `service-worker.js` y query strings `?v=...` cuando cambien archivos cacheados.
 
+## [0.10.10] - 2026-07-10
+
+### Corregido
+
+- Kunyomi con okurigana ahora muestra la parte en hiragana que completa la palabra, entre paréntesis japoneses — por ejemplo, 転 pasa de mostrar la raíz sola "ころ" a mostrar sus tres lecturas completas "ころ（がる）", "ころ（げる）", "ころ（ぶ）". Aplicado a los 250 kanji N5/N4 (revisión ya hecha anteriormente, reincorporada) y, en esta pasada, a los 731 kanji N3/N2 (364 de ellos tenían kunyomi de verbo/adjetivo sin okurigana visible).
+- La tarjeta de kanji (Práctica, Estudio, Perfil, mapa de progreso) ya no usa el campo `romaji` interno como lectura principal — ahora muestra un resumen "On: … · Kun: …" tomado de onyomi/kunyomi reales, evitando mostrar una raíz de lectura incompleta como si fuera la palabra completa.
+- El audio de kunyomi expande el okurigana antes de pronunciar — "ころ（がる）" se lee "korogaru", no la raíz sola.
+- Nota explicativa de qué es el okurigana, visible junto a la lectura kunyomi cuando aplica, traducida a los 5 idiomas.
+
+### Nota
+
+- La corrección de kunyomi para los 731 kanji N3/N2 es contenido generado por IA a esta escala (364 lecturas revisadas), sin verificación de un hablante nativo — se recomienda una revisión puntual antes de considerarlo definitivo.
+- La app muestra `v0.10.10`.
+
 ## [0.10.8] - 2026-07-09
 
 ### Agregado

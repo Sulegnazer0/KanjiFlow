@@ -1,6 +1,8 @@
 let japaneseVoice = null;
 
 const JAPANESE_SEGMENT_RE = /[\u3000-\u30ff\u3400-\u9fff々〆ヵヶー]+/g;
+const OKURIGANA_RE = /([぀-ヿ]+)（([぀-ヿ]+)）/g;
+const HAS_OKURIGANA_RE = /[぀-ヿ]+（[぀-ヿ]+）/;
 
 function canSpeak() {
     return typeof window !== "undefined" && "speechSynthesis" in window;
@@ -18,9 +20,25 @@ if (canSpeak()) {
     window.speechSynthesis.addEventListener?.("voiceschanged", refreshVoices);
 }
 
+/** True if a reading uses the "stem（okurigana）" notation, e.g. "ころ（がる）". */
+export function hasOkuriganaReading(text = "") {
+    return HAS_OKURIGANA_RE.test(String(text || ""));
+}
+
+/** Merges "stem（okurigana）" into the plain word it represents, e.g. "ころ（がる）" -> "ころがる". */
+export function expandOkurigana(text = "") {
+    return String(text || "").replace(OKURIGANA_RE, "$1$2");
+}
+
+function cleanReadingText(text = "") {
+    const value = String(text || "").trim();
+    if (!value || value === "-") return "";
+    return expandOkurigana(value.replace(/\([^)]*\)/g, " "));
+}
+
 function japaneseSegments(text = "") {
-    const withoutParentheses = String(text || "").replace(/\([^)]*\)/g, " ");
-    return withoutParentheses.match(JAPANESE_SEGMENT_RE)?.filter(Boolean) ?? [];
+    const clean = cleanReadingText(text);
+    return clean.match(JAPANESE_SEGMENT_RE)?.filter(Boolean) ?? [];
 }
 
 function firstJapaneseSegment(text = "") {
@@ -28,9 +46,9 @@ function firstJapaneseSegment(text = "") {
 }
 
 export function japaneseOnly(text = "", separator = "、") {
-    const withoutParentheses = String(text || "").replace(/\([^)]*\)/g, " ");
-    const segments = japaneseSegments(withoutParentheses);
-    return segments.length ? segments.join(separator) : withoutParentheses.trim();
+    const clean = cleanReadingText(text);
+    const segments = japaneseSegments(clean);
+    return segments.length ? segments.join(separator) : clean;
 }
 
 export function exampleJapanese(text = "") {

@@ -332,6 +332,7 @@
     "listenExample": "Beispiel anhören",
     "listenOnyomi": "Onyomi anhören",
     "listenKunyomi": "Kunyomi anhören",
+    "kunyomiOkuriganaNote": "Das Kanji steht für den Lesestamm. Der Teil in Klammern ist Okurigana und wird in Hiragana geschrieben, um das Wort zu vervollständigen.",
     "kanjiContext": "Kanji im Kontext",
     "listenSentence": "Satz anhören",
     "previous": "Zurück",

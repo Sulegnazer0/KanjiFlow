@@ -332,6 +332,7 @@
     "listenExample": "Ouvir exemplo",
     "listenOnyomi": "Ouvir onyomi",
     "listenKunyomi": "Ouvir kunyomi",
+    "kunyomiOkuriganaNote": "O kanji representa a raiz da leitura. A parte entre parenteses e okurigana, escrita em hiragana para completar a palavra.",
     "kanjiContext": "Kanji em contexto",
     "listenSentence": "Ouvir frase",
     "previous": "Anterior",
