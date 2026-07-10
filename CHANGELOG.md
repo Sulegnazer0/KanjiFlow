@@ -10,6 +10,17 @@ El número de versión visible de la app debe mantenerse alineado en:
 - `CHANGELOG.md`;
 - `service-worker.js` y query strings `?v=...` cuando cambien archivos cacheados.
 
+## [0.10.11] - 2026-07-10
+
+### Cambiado
+
+- La nota explicativa del okurigana ya no se muestra siempre como texto fijo debajo del kunyomi — ahora es un pequeño ícono "!" en círculo que, al tocarlo, abre un popover con la explicación; tocar en cualquier otro lado lo cierra.
+- El popover se posiciona con `position: fixed` calculado en JS (no `absolute`) porque el contenedor de detalles del kanji tiene `overflow: hidden` y recortaba el texto — con `fixed` no depende del contenedor que lo envuelve.
+
+### Nota
+
+- La app muestra `v0.10.11`.
+
 ## [0.10.10] - 2026-07-10
 
 ### Corregido

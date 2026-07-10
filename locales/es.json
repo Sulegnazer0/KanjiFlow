@@ -333,6 +333,7 @@
     "listenOnyomi": "Escuchar onyomi",
     "listenKunyomi": "Escuchar kunyomi",
     "kunyomiOkuriganaNote": "El kanji representa la raíz de la lectura. La parte entre paréntesis es okurigana, escrita en hiragana para completar la palabra.",
+    "kunyomiOkuriganaNoteLabel": "Qué es el okurigana",
     "kanjiContext": "Kanji en contexto",
     "listenSentence": "Escuchar frase",
     "previous": "Anterior",

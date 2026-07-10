@@ -333,6 +333,7 @@
     "listenOnyomi": "Ouvir onyomi",
     "listenKunyomi": "Ouvir kunyomi",
     "kunyomiOkuriganaNote": "O kanji representa a raiz da leitura. A parte entre parenteses e okurigana, escrita em hiragana para completar a palavra.",
+    "kunyomiOkuriganaNoteLabel": "O que e okurigana",
     "kanjiContext": "Kanji em contexto",
     "listenSentence": "Ouvir frase",
     "previous": "Anterior",

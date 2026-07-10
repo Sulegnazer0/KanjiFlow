@@ -99,7 +99,7 @@ import {
     translateCardState,
 } from "./i18n.js?v=831";
 
-const APP_VERSION = "0.10.10";
+const APP_VERSION = "0.10.11";
 const FEEDBACK_ENDPOINT = "https://script.google.com/macros/s/AKfycbxiz6058zwMxfPTDTmIBpG8JutOPw8YBxCRJ0BeMHp-py6IXZy4zkZs2IdTqwmSSzC1jw/exec";
 const SPLASH_MIN_MS = 2400;
 const startupStartedAt = performance.now();
@@ -1317,6 +1317,7 @@ function cardReadingLabel(item) {
 
 function revealAnswer() {
     if (!currentItem) return;
+    closeAllReadingNotePopovers();
     showPracticeGuide(currentItem.caracter);
     elements.answerCharacter.textContent = currentItem.caracter;
     elements.answerRomaji.textContent = cardReadingLabel(currentItem);
@@ -2348,6 +2349,7 @@ function setModalRow(row, visible) {
 function openModal(index, trigger = modalTrigger) {
     const item = filteredStudyItems[index];
     if (!item) return;
+    closeAllReadingNotePopovers();
     modalIndex = index;
     modalTrigger = trigger;
     strokeOrderVisible = true;
@@ -2737,6 +2739,34 @@ function bindEvents() {
     document.addEventListener("visibilitychange", () => {
         if (!document.hidden) checkPracticeReminder({ notify: false });
     });
+
+    document.addEventListener("click", event => {
+        const icon = event.target.closest(".reading-note-icon");
+        if (icon) {
+            const popover = icon.nextElementSibling;
+            const wasHidden = popover?.classList.contains("hidden");
+            closeAllReadingNotePopovers();
+            if (wasHidden && popover) openReadingNotePopover(icon, popover);
+            return;
+        }
+        if (!event.target.closest(".reading-note-popover")) closeAllReadingNotePopovers();
+    });
+}
+
+function openReadingNotePopover(icon, popover) {
+    popover.classList.remove("hidden");
+    const iconRect = icon.getBoundingClientRect();
+    const margin = 12;
+    const width = popover.offsetWidth;
+    let left = iconRect.left;
+    if (left + width > window.innerWidth - margin) left = window.innerWidth - width - margin;
+    if (left < margin) left = margin;
+    popover.style.left = `${left}px`;
+    popover.style.top = `${iconRect.bottom + 6}px`;
+}
+
+function closeAllReadingNotePopovers() {
+    document.querySelectorAll(".reading-note-popover").forEach(popover => popover.classList.add("hidden"));
 }
 
 async function init() {

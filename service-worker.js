@@ -1,9 +1,9 @@
-const CACHE_NAME = "kanjiflow-v66";
+const CACHE_NAME = "kanjiflow-v67";
 const APP_ASSETS = [
     "./",
     "./index.html",
     "./style.css",
-    "./style.css?v=1010",
+    "./style.css?v=1011",
     "./assets/s0labsHorizontal.png",
     "./assets/icons/icon-192.png",
     "./assets/icons/icon-512.png",
@@ -27,7 +27,7 @@ const APP_ASSETS = [
     "./locales/pt.json",
     "./locales/pt.json?v=831",
     "./js/app.js",
-    "./js/app.js?v=1010",
+    "./js/app.js?v=1011",
     "./js/audio.js",
     "./js/audio.js?v=1010",
     "./js/core.js",
