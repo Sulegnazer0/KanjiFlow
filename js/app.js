@@ -93,7 +93,7 @@ import {
     translateCardState,
 } from "./i18n.js?v=831";
 
-const APP_VERSION = "0.10.8";
+const APP_VERSION = "0.11.0";
 const FEEDBACK_ENDPOINT = "https://script.google.com/macros/s/AKfycbxiz6058zwMxfPTDTmIBpG8JutOPw8YBxCRJ0BeMHp-py6IXZy4zkZs2IdTqwmSSzC1jw/exec";
 const SPLASH_MIN_MS = 2400;
 const startupStartedAt = performance.now();
@@ -344,9 +344,19 @@ let achievementsExpanded = false;
 const KANJIVG_SUPPORTED_LEVELS = new Set(["N5", "N4", "N3", "N2"]);
 const kanjivgDataCache = new Map();
 let kanjivgIndexPromise = null;
+const kanaStrokeDataCache = new Map();
+let kanaStrokeIndexPromise = null;
 
 function hasKanjivgData(item) {
     return Boolean(item?.tipo === "kanji" && KANJIVG_SUPPORTED_LEVELS.has(item.categoria));
+}
+
+function hasKanaStrokeData(item) {
+    return Boolean(item?.tipo === "hiragana" || item?.tipo === "katakana");
+}
+
+function hasStrokeData(item) {
+    return hasKanjivgData(item) || hasKanaStrokeData(item);
 }
 
 const PROGRESS_MAP_BLOCK_SIZE = 100;
@@ -387,8 +397,42 @@ async function loadKanjivgData(character) {
     }
 }
 
+function loadKanaStrokeIndex() {
+    if (!kanaStrokeIndexPromise) {
+        kanaStrokeIndexPromise = fetch("data/kana-strokes/index.json")
+            .then(response => (response.ok ? response.json() : {}))
+            .catch(() => ({}));
+    }
+    return kanaStrokeIndexPromise;
+}
+
+async function loadKanaStrokeData(character) {
+    if (kanaStrokeDataCache.has(character)) return kanaStrokeDataCache.get(character);
+    const index = await loadKanaStrokeIndex();
+    const fileId = index[character];
+    if (!fileId) {
+        kanaStrokeDataCache.set(character, null);
+        return null;
+    }
+    try {
+        const response = await fetch(`data/kana-strokes/${fileId}.json`);
+        const data = response.ok ? await response.json() : null;
+        kanaStrokeDataCache.set(character, data);
+        return data;
+    } catch {
+        kanaStrokeDataCache.set(character, null);
+        return null;
+    }
+}
+
+async function loadStrokeData(item) {
+    if (hasKanjivgData(item)) return loadKanjivgData(item.caracter);
+    if (hasKanaStrokeData(item)) return loadKanaStrokeData(item.caracter);
+    return null;
+}
+
 async function loadExpectedStrokes(item) {
-    expectedKanjiData = hasKanjivgData(item) ? await loadKanjivgData(item.caracter) : null;
+    expectedKanjiData = hasStrokeData(item) ? await loadStrokeData(item) : null;
 }
 
 let modalExpectedKanjiData = null;
@@ -397,8 +441,8 @@ let modalKanjivgRequestId = 0;
 async function loadModalExpectedStrokes(item) {
     const requestId = (modalKanjivgRequestId += 1);
     modalExpectedKanjiData = null;
-    if (hasKanjivgData(item)) {
-        const data = await loadKanjivgData(item.caracter);
+    if (hasStrokeData(item)) {
+        const data = await loadStrokeData(item);
         if (requestId !== modalKanjivgRequestId) return;
         modalExpectedKanjiData = data;
     }
@@ -495,11 +539,11 @@ function hidePracticeGuide() {
     elements.practiceGuideCanvas.classList.add("hidden");
 }
 
-// Cuando hay datos KanjiVG para el item actual, la guía se dibuja con esos MISMOS
-// puntos y la misma normalización (PRACTICE_CANVAS_SCALE, vía stroke-geometry.js) que
-// usa handleStrokeEnd para calificar — así lo que el usuario ve como referencia es
-// literalmente lo que se evalúa. Sin datos KanjiVG (kana u otro kanji no cubierto) cae
-// a la fuente estática.
+// Cuando hay datos de trazos para el item actual (KanjiVG para kanji N5-N2, AnimCJK para
+// kana), la guía se dibuja con esos MISMOS puntos y la misma normalización
+// (PRACTICE_CANVAS_SCALE, vía stroke-geometry.js) que usa handleStrokeEnd para calificar —
+// así lo que el usuario ve como referencia es literalmente lo que se evalúa. Sin datos
+// (kanji fuera de N5-N2) cae a la fuente estática.
 function showPracticeGuide(character) {
     if (expectedKanjiData) {
         elements.practiceGuide.textContent = "";

@@ -10,6 +10,19 @@ El número de versión visible de la app debe mantenerse alineado en:
 - `CHANGELOG.md`;
 - `service-worker.js` y query strings `?v=...` cuando cambien archivos cacheados.
 
+## [0.11.0] - 2026-07-10
+
+### Agregado
+
+- **Evaluador de trazos para kana**: hiragana y katakana (los 213 caracteres del proyecto, incluidas las 66 combinaciones youon como きゃ/シュ) ahora tienen el mismo evaluador interactivo que ya existía solo para kanji N5-N2 — coloreado en vivo del trazo dibujado, guía animada con numeración de trazo, y % de similitud. Antes, la kana solo mostraba la guía estática de fuente (`KanjiStrokeOrders.woff`), sin evaluación real.
+- Fuente de datos: [AnimCJK](https://github.com/parsimonhi/animCJK) (LGPL — confirmado que los SVG de kana no se derivan de fuentes Arphic, así que no aplica la licencia más restrictiva que sí cubre sus archivos de kanji/hanzi). Nuevo pipeline: `tools/fetch-kana-strokes.mjs` + `tools/build-kana-strokes.mjs` + `tools/lib/animcjk-path.mjs`, generando `data/kana-strokes/*.json` con el mismo esquema que `data/kanjivg/*.json` — todo el código de calificación, animación y guía visual existente funciona sin cambios, solo cambia de dónde vienen los puntos.
+- Las combinaciones youon (きゃ, キャ, etc., dos caracteres Unicode sin codepoint combinado) se componen automáticamente: el carácter base a tamaño completo + el carácter pequeño (ゃゅょ/ャュョ) escalado al 55% en la esquina inferior derecha, siguiendo la convención estándar de escritura en genkouyoushi.
+- `tools/validate-content.mjs` ahora exige cobertura completa de datos de trazos para toda la kana, igual que ya exigía para KanjiVG.
+
+### Nota
+
+- La app muestra `v0.11.0`.
+
 ## [0.10.8] - 2026-07-09
 
 ### Agregado

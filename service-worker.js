@@ -1,4 +1,4 @@
-const CACHE_NAME = "kanjiflow-v65";
+const CACHE_NAME = "kanjiflow-v66";
 const APP_ASSETS = [
     "./",
     "./index.html",
@@ -27,7 +27,7 @@ const APP_ASSETS = [
     "./locales/pt.json",
     "./locales/pt.json?v=831",
     "./js/app.js",
-    "./js/app.js?v=831",
+    "./js/app.js?v=110",
     "./js/audio.js",
     "./js/audio.js?v=831",
     "./js/core.js",
@@ -48,6 +48,7 @@ const APP_ASSETS = [
     "./js/stroke-animation.js",
     "./js/exam.js",
     "./data/kanjivg/index.json",
+    "./data/kana-strokes/index.json",
 ];
 
 self.addEventListener("install", event => {

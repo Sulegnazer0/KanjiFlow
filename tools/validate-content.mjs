@@ -275,6 +275,35 @@ async function validateKanjivgCoverage(dictionary) {
     }
 }
 
+async function validateKanaStrokeCoverage(dictionary) {
+    const kana = dictionary.filter(item => item.tipo === "hiragana" || item.tipo === "katakana");
+    let index;
+    try {
+        index = await readJSON("../data/kana-strokes/index.json");
+    } catch {
+        fail("Falta data/kana-strokes/index.json — corre npm run fetch:kana && npm run build:kana");
+        return;
+    }
+
+    for (const item of kana) {
+        const fileId = index[item.caracter];
+        if (!fileId) {
+            fail(`data/kana-strokes/index.json no tiene entrada para ${item.caracter}`);
+            continue;
+        }
+        let kanaData;
+        try {
+            kanaData = await readJSON(`../data/kana-strokes/${fileId}.json`);
+        } catch {
+            fail(`Falta data/kana-strokes/${fileId}.json para ${item.caracter}`);
+            continue;
+        }
+        if (kanaData.strokeCount !== kanaData.strokes.length) {
+            fail(`data/kana-strokes/${fileId}.json tiene strokeCount inconsistente con sus trazos para ${item.caracter}`);
+        }
+    }
+}
+
 function validateLessonCoverage(dictionary) {
     const contentLessons = LESSONS.filter(lesson => !["recommended", "all"].includes(lesson.id));
     for (const item of dictionary) {
@@ -344,11 +373,13 @@ validateLessonCoverage(dictionary);
 validateStrokeOrderFont(dictionary, await readStrokeOrderGlyphs());
 await validateLocales(dictionary);
 await validateKanjivgCoverage(dictionary);
+await validateKanaStrokeCoverage(dictionary);
 
 note(`${dictionary.length} tarjetas validadas`);
 note(`${dictionary.filter(item => item.tipo === "kanji").length} kanji con ejemplos completos`);
 note("Fuente de orden de trazos validada para todos los kanji publicados");
 note("Datos KanjiVG validados para todos los kanji N5, N4, N3 y N2");
+note("Datos de trazos AnimCJK validados para toda la kana (hiragana y katakana)");
 note(`${AVAILABLE_LANGUAGES.length} idiomas activos validados: ${AVAILABLE_LANGUAGES.map(language => language.code).join(", ")}`);
 
 if (failures.length) {

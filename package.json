@@ -1,6 +1,6 @@
 {
   "name": "kanjiflow",
-  "version": "0.10.8",
+  "version": "0.11.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -9,6 +9,8 @@
     "build:stroke-font": "node tools/build-stroke-font.mjs",
     "fetch:kanjivg": "node tools/fetch-kanjivg.mjs",
     "build:kanjivg": "node tools/build-kanjivg-data.mjs",
+    "fetch:kana": "node tools/fetch-kana-strokes.mjs",
+    "build:kana": "node tools/build-kana-strokes.mjs",
     "serve": "python -m http.server 8765"
   }
 }
