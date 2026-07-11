@@ -93,7 +93,7 @@ import {
     translateCardState,
 } from "./i18n.js?v=831";
 
-const APP_VERSION = "0.11.1";
+const APP_VERSION = "0.11.2";
 const FEEDBACK_ENDPOINT = "https://script.google.com/macros/s/AKfycbxiz6058zwMxfPTDTmIBpG8JutOPw8YBxCRJ0BeMHp-py6IXZy4zkZs2IdTqwmSSzC1jw/exec";
 const SPLASH_MIN_MS = 2400;
 const startupStartedAt = performance.now();
@@ -351,8 +351,12 @@ function hasKanjivgData(item) {
     return Boolean(item?.tipo === "kanji" && KANJIVG_SUPPORTED_LEVELS.has(item.categoria));
 }
 
+// A diferencia de los kanji (KanjiVG, siempre activo), la kana solo usa el modelo de
+// trazos de AnimCJK cuando el evaluador está encendido -- lo necesita para calificar y
+// mostrar la guía en vivo. Con el evaluador apagado, la kana vuelve a la fuente estática
+// (KanjiStrokeOrders.woff), más estilizada, ya que ahí no hace falta el modelo de puntos.
 function hasKanaStrokeData(item) {
-    return Boolean(item?.tipo === "hiragana" || item?.tipo === "katakana");
+    return Boolean((item?.tipo === "hiragana" || item?.tipo === "katakana") && profile.strokeEvaluatorEnabled);
 }
 
 function hasStrokeData(item) {
@@ -1771,11 +1775,18 @@ function saveProfileFromForm() {
     showToast(t("ui.profileSaved"));
 }
 
+async function refreshPracticeGuideForCurrentItem() {
+    if (!currentItem) return;
+    await loadExpectedStrokes(currentItem);
+    if (!elements.answerPanel.classList.contains("hidden")) showPracticeGuide(currentItem.caracter);
+}
+
 function toggleStrokeEvaluator() {
     profile = { ...profile, strokeEvaluatorEnabled: !profile.strokeEvaluatorEnabled };
     saveProfile(profile);
     profile = loadProfile();
     renderProfile();
+    refreshPracticeGuideForCurrentItem();
     showToast(profile.strokeEvaluatorEnabled
         ? t("ui.strokeEvaluatorEnabledToast", { threshold: profile.similarityThreshold })
         : t("ui.strokeEvaluatorDisabledToast"), 4200);

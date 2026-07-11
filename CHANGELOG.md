@@ -10,6 +10,21 @@ El número de versión visible de la app debe mantenerse alineado en:
 - `CHANGELOG.md`;
 - `service-worker.js` y query strings `?v=...` cuando cambien archivos cacheados.
 
+## [0.11.2] - 2026-07-11
+
+### Agregado
+
+- **Acerca de**: nueva nota explicando que kanji (KanjiVG) y kana (AnimCJK) usan dos modelos de datos de trazos distintos, por lo que el estilo del trazo se ve un poco diferente entre ambos — junto con la atribución/licencia de AnimCJK (GNU LGPL) que faltaba en este modal.
+
+### Cambiado
+
+- La kana solo usa la guía de trazos de AnimCJK como referencia de fondo cuando el **evaluador de trazos está activado** (la necesita para calificar y animar en vivo). Con el evaluador desactivado, la kana vuelve a mostrar la guía de la fuente estática `KanjiStrokeOrders.woff`, más estilizada — tal como funcionaba antes de introducir AnimCJK. Los kanji N5-N2 no cambian: siguen usando KanjiVG siempre, sin importar el estado del evaluador.
+- Alternar el evaluador de trazos con la tarjeta de respuesta ya visible ahora refresca la guía mostrada de inmediato, sin necesidad de pasar a la siguiente tarjeta.
+
+### Nota
+
+- La app muestra `v0.11.2`.
+
 ## [0.11.1] - 2026-07-11
 
 ### Corregido

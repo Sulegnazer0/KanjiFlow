@@ -212,6 +212,8 @@
     "updateI18n": "Mehrsprachige Oberfläche auf Spanisch, Englisch, Deutsch, Französisch und Portugiesisch.",
     "kanjivgAttributionTitle": "Strichdaten",
     "kanjivgAttributionText": "Strichreihenfolge und -form für N5-, N4-, N3- und N2-Kanji verwenden Daten des KanjiVG-Projekts (Ulrich Apel), lizenziert unter Creative Commons BY-SA 3.0.",
+    "animcjkAttributionText": "Strichreihenfolge und -form für Hiragana und Katakana verwenden Daten des AnimCJK-Projekts, lizenziert unter der GNU LGPL.",
+    "strokeModelDifferenceNote": "Kanji und Kana verwenden zwei unterschiedliche Strich-Datenmodelle, deshalb sieht der Strichstil bei beiden etwas anders aus — das ist normal. Bei aktiviertem Strichbewerter nutzt Kana dieses Modell als Hintergrundführung; wenn du ihn in deinem Profil deaktivierst, zeigt Kana wieder die gewohnten, stilvolleren Striche.",
     "feedbackTitle": "Empfehlung senden",
     "feedbackDescription": "Schreibe zwischen 10 und 500 Zeichen. Es wird direkt zur Prüfung gespeichert.",
     "feedbackLabel": "Empfehlung",

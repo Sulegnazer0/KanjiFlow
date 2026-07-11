@@ -212,6 +212,8 @@
     "updateI18n": "Interfaz multiidioma en español, inglés, alemán, francés y portugués.",
     "kanjivgAttributionTitle": "Datos de trazos",
     "kanjivgAttributionText": "El orden y la forma de los trazos de kanji N5, N4, N3 y N2 usan datos del proyecto KanjiVG (Ulrich Apel), licenciados bajo Creative Commons BY-SA 3.0.",
+    "animcjkAttributionText": "El orden y la forma de los trazos de hiragana y katakana usan datos del proyecto AnimCJK, licenciados bajo GNU LGPL.",
+    "strokeModelDifferenceNote": "Los kanji y la kana usan dos modelos de datos de trazos distintos, así que el estilo del trazo se ve un poco diferente entre ambos — es normal. Con el evaluador de trazos activado, la kana usa ese modelo como guía de fondo; si lo desactivas desde tu perfil, la kana vuelve a mostrarse con el trazo más estilizado de siempre.",
     "feedbackTitle": "Enviar recomendación",
     "feedbackDescription": "Escribe entre 10 y 500 caracteres. Se guardará directo para revisión.",
     "feedbackLabel": "Recomendación",
