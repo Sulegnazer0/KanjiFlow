@@ -10,6 +10,16 @@ El número de versión visible de la app debe mantenerse alineado en:
 - `CHANGELOG.md`;
 - `service-worker.js` y query strings `?v=...` cuando cambien archivos cacheados.
 
+## [0.11.1] - 2026-07-11
+
+### Corregido
+
+- Los trazos de kana se veían poligonales/toscos en vez de curvos — la guía de AnimCJK trae muy pocos puntos por trazo (a veces solo 4), y conectarlos con líneas rectas se notaba, a diferencia de los kanji (KanjiVG), que ya vienen con curvas Bézier densas. Se agregó suavizado con splines Catmull-Rom sobre los puntos de AnimCJK antes de normalizar y remuestrear — conserva la forma/dirección real del trazo pero ahora se ve curvo y natural, igual que los kanji.
+
+### Nota
+
+- La app muestra `v0.11.1`.
+
 ## [0.11.0] - 2026-07-10
 
 ### Agregado

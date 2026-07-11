@@ -17,6 +17,38 @@ export function parsePolyline(d) {
         });
 }
 
+function catmullRomPoint(p0, p1, p2, p3, t) {
+    const t2 = t * t;
+    const t3 = t2 * t;
+    return {
+        x: 0.5 * ((2 * p1.x) + (-p0.x + p2.x) * t + (2 * p0.x - 5 * p1.x + 4 * p2.x - p3.x) * t2 + (-p0.x + 3 * p1.x - 3 * p2.x + p3.x) * t3),
+        y: 0.5 * ((2 * p1.y) + (-p0.y + p2.y) * t + (2 * p0.y - 5 * p1.y + 4 * p2.y - p3.y) * t2 + (-p0.y + 3 * p1.y - 3 * p2.y + p3.y) * t3),
+    };
+}
+
+/**
+ * AnimCJK's guide polylines are sparse (as few as 3-4 points for a whole stroke) --
+ * connecting them with straight segments looks polygonal/crude, unlike KanjiVG's dense
+ * bezier sampling. Fits a Catmull-Rom spline through the existing points (which already
+ * encode the correct path/direction, just coarsely) and densely resamples it, giving a
+ * smooth curve that still passes through every original guide point.
+ */
+export function smoothPolyline(points, samplesPerSegment = 12) {
+    if (points.length < 3) return points;
+    const result = [];
+    for (let i = 0; i < points.length - 1; i += 1) {
+        const p0 = points[Math.max(0, i - 1)];
+        const p1 = points[i];
+        const p2 = points[i + 1];
+        const p3 = points[Math.min(points.length - 1, i + 2)];
+        for (let s = 0; s < samplesPerSegment; s += 1) {
+            result.push(catmullRomPoint(p0, p1, p2, p3, s / samplesPerSegment));
+        }
+    }
+    result.push(points[points.length - 1]);
+    return result;
+}
+
 /**
  * Extracts one polyline per stroke, in stroke order. AnimCJK sometimes splits a single
  * visual stroke into overlapping fill pieces ("d2a"/"d2b"/"d2c" for stroke 2) so a
@@ -41,5 +73,5 @@ export function extractStrokePolylines(svg) {
     }
     return [...byStroke.entries()]
         .sort((a, b) => a[0] - b[0])
-        .map(([, points]) => points);
+        .map(([, points]) => smoothPolyline(points));
 }
