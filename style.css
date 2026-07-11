@@ -56,6 +56,21 @@ body {
     display: none;
 }
 
+.brand-splash {
+    z-index: 3001;
+    transition: opacity 450ms ease;
+}
+
+.brand-splash.fade-out {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.brand-splash-logo {
+    width: min(78%, 320px);
+    height: auto;
+}
+
 .splash-card {
     width: min(100%, 560px);
     text-align: center;

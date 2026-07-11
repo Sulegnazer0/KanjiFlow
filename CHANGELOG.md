@@ -10,6 +10,17 @@ El número de versión visible de la app debe mantenerse alineado en:
 - `CHANGELOG.md`;
 - `service-worker.js` y query strings `?v=...` cuando cambien archivos cacheados.
 
+## [0.10.9] - 2026-07-10
+
+### Agregado
+
+- Ícono de la app rediseñado: monograma "KF" (blanco, mismo trazo de pincel del logo, con el punto rojo y la línea como versión reducida del sello y el swoosh del logo completo) en `assets/icons/icon-192.png`, `icon-512.png`, `icon-maskable-192.png`, `icon-maskable-512.png`, `apple-touch-icon.png`, `favicon-32.png` y `favicon-48.png` — el wordmark completo anterior ("Kanji Flow" + sello) se volvía ilegible a tamaño de favicon/ícono de launcher.
+- Nueva pantalla de marca al iniciar la app (`#pantalla-marca`): logo completo de KanjiFlow ("Kanji Flow" + sello, `assets/kanjiflowSplash.png`) sobre fondo negro, visible 2 segundos, que se desvanece hacia la pantalla de carga existente (marca S0 Labs). Antes, la pantalla de carga de S0 Labs era la única y su duración mínima efectiva (2.4s) se contaba desde el arranque de la página, no desde que el usuario realmente la veía.
+
+### Cambiado
+
+- La app muestra `v0.10.9`.
+
 ## [0.10.8] - 2026-07-09
 
 ### Agregado

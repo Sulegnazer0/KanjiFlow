@@ -93,13 +93,16 @@ import {
     translateCardState,
 } from "./i18n.js?v=831";
 
-const APP_VERSION = "0.10.8";
+const APP_VERSION = "0.10.9";
 const FEEDBACK_ENDPOINT = "https://script.google.com/macros/s/AKfycbxiz6058zwMxfPTDTmIBpG8JutOPw8YBxCRJ0BeMHp-py6IXZy4zkZs2IdTqwmSSzC1jw/exec";
 const SPLASH_MIN_MS = 2400;
-const startupStartedAt = performance.now();
+const BRAND_SPLASH_MS = 2000;
+const BRAND_SPLASH_FADE_MS = 450;
+let s0LabsSplashRevealedAt = null;
 
 const $ = selector => document.querySelector(selector);
 const elements = {
+    brandSplash: $("#pantalla-marca"),
     splash: $("#pantalla-carga"),
     splashVersion: $("#splash-version"),
     versionGhost: $("#version-fantasma"),
@@ -773,8 +776,23 @@ function sendUserSignup(tourAccepted) {
     });
 }
 
+function revealS0LabsSplash() {
+    elements.brandSplash?.classList.add("fade-out");
+    elements.splash?.classList.remove("hidden");
+    s0LabsSplashRevealedAt = performance.now();
+    setTimeout(() => elements.brandSplash?.classList.add("hidden"), BRAND_SPLASH_FADE_MS);
+}
+
+const brandSplashRevealed = new Promise(resolve => {
+    setTimeout(() => {
+        revealS0LabsSplash();
+        resolve();
+    }, BRAND_SPLASH_MS);
+});
+
 async function finishSplashAndMaybeOnboard() {
-    await wait(SPLASH_MIN_MS - (performance.now() - startupStartedAt));
+    await brandSplashRevealed;
+    await wait(SPLASH_MIN_MS - (performance.now() - s0LabsSplashRevealedAt));
     elements.splash?.classList.add("hidden");
     if (!profile.name) {
         openOnboardingModal();
