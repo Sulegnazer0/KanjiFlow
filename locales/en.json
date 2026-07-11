@@ -332,6 +332,8 @@
     "listenExample": "Listen to example",
     "listenOnyomi": "Listen to onyomi",
     "listenKunyomi": "Listen to kunyomi",
+    "kunyomiOkuriganaNote": "The kanji represents the reading root. The part in parentheses is okurigana, written in hiragana to complete the word.",
+    "kunyomiOkuriganaNoteLabel": "What okurigana is",
     "kanjiContext": "Kanji in context",
     "listenSentence": "Listen to sentence",
     "previous": "Previous",

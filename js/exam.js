@@ -34,13 +34,16 @@ export function buildTopicPool(dictionary, { category, lessonId, lessons = LESSO
 
 /**
  * Onyomi/kunyomi and meaning fields can list several values joined by " / "
- * (e.g. "コウ / ク (kou / ku)", "Partido / Facción"). Splitting on that
- * separator (and dropping any trailing "(romaji)" annotation) gives the
- * individual readings/meanings a value actually represents.
+ * (e.g. "コウ / ク (kou / ku)", "Partido / Facción", "ころ（がる） (korogaru) / ころ（げる） (korogeru)").
+ * Each value may carry its own "(romaji)" annotation and, for kunyomi with
+ * okurigana, a "stem（okurigana）" notation — both need to be normalized away
+ * (globally, not just before the first match) before splitting on "/", or a
+ * multi-reading kunyomi collapses into a single bogus token.
  */
 function valueTokens(text) {
-    const withoutRomaji = text.split("(")[0];
-    return withoutRomaji.split("/").map(token => token.trim().toLowerCase()).filter(Boolean);
+    const withoutRomaji = text.replace(/\([^)]*\)/g, "");
+    const withoutOkuriganaMarkup = withoutRomaji.replace(/[（）]/g, "");
+    return withoutOkuriganaMarkup.split("/").map(token => token.trim().toLowerCase()).filter(Boolean);
 }
 
 /** True if two option texts share at least one reading/meaning token — picking either would be defensibly "correct". */

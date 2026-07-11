@@ -12,6 +12,8 @@ import {
 } from "../js/core.js";
 import { KANJI_EXAMPLES } from "../js/kanji-examples.js";
 import {
+    expandOkurigana,
+    hasOkuriganaReading,
     itemPronunciation,
     japaneseOnly,
 } from "../js/audio.js";
@@ -176,7 +178,20 @@ assert.equal(itemId(dictionary.find(item => item.caracter === "水")), "kanji_�
 assert.equal(itemPronunciation(dictionary.find(item => item.caracter === "小")), "ショウ");
 assert.equal(itemPronunciation(dictionary.find(item => item.caracter === "会")), "カイ");
 assert.equal(japaneseOnly(dictionary.find(item => item.caracter === "会").onyomi), "カイ、エ");
-assert.equal(japaneseOnly(dictionary.find(item => item.caracter === "行").kunyomi), "い、ゆ");
+assert.equal(japaneseOnly(dictionary.find(item => item.caracter === "行").kunyomi), "いく、ゆく");
+
+// Okurigana notation: "stem（okurigana）" reflects the kanji root plus the hiragana
+// needed to complete the word, e.g. 転がる is written ころ（がる） in this dataset.
+assert.equal(hasOkuriganaReading("ころ（がる） (korogaru)"), true);
+assert.equal(hasOkuriganaReading("たみ (tami)"), false);
+assert.equal(hasOkuriganaReading("-"), false);
+assert.equal(expandOkurigana("ころ（がる） (korogaru)"), "ころがる (korogaru)");
+assert.equal(
+    expandOkurigana("ころ（がる） (korogaru) / ころ（げる） (korogeru) / ころ（ぶ） (korobu)"),
+    "ころがる (korogaru) / ころげる (korogeru) / ころぶ (korobu)",
+);
+assert.equal(japaneseOnly("ころ（がる） (korogaru) / ころ（げる） (korogeru) / ころ（ぶ） (korobu)"), "ころがる、ころげる、ころぶ");
+assert.equal(itemPronunciation(dictionary.find(item => item.caracter === "込")), "こむ");
 
 for (const item of dictionary.filter(item => item.tipo === "kanji")) {
     assert.ok(KANJI_EXAMPLES[item.caracter], `Falta ejemplo para ${item.caracter}`);

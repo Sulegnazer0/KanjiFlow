@@ -332,6 +332,8 @@
     "listenExample": "Ecouter l'exemple",
     "listenOnyomi": "Ecouter l'onyomi",
     "listenKunyomi": "Ecouter le kunyomi",
+    "kunyomiOkuriganaNote": "Le kanji represente la racine de la lecture. La partie entre parentheses est l'okurigana, ecrite en hiragana pour completer le mot.",
+    "kunyomiOkuriganaNoteLabel": "Qu'est-ce que l'okurigana",
     "kanjiContext": "Kanji en contexte",
     "listenSentence": "Ecouter la phrase",
     "previous": "Precedent",

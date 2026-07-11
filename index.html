@@ -10,7 +10,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png">
     <link rel="icon" type="image/png" sizes="48x48" href="assets/icons/favicon-48.png">
     <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
-    <link rel="stylesheet" href="style.css?v=109">
+    <link rel="stylesheet" href="style.css?v=1011">
 </head>
 <body>
     <div id="pantalla-marca" class="splash-screen brand-splash" aria-hidden="true">
@@ -22,7 +22,7 @@
             <img src="assets/s0labsHorizontal.png" alt="S0 Labs" class="splash-logo">
             <p data-i18n="ui.splashTagline">Preparando tu flujo de práctica…</p>
         </div>
-        <span id="splash-version" class="splash-version">v0.8.31</span>
+        <span id="splash-version" class="splash-version">v0.10.12</span>
     </div>
 
     <main class="app-shell">
@@ -193,7 +193,7 @@
                     <div id="fila-palabra"><dt data-i18n="ui.example">Ejemplo</dt><dd id="resp-palabra">—</dd></div>
                     <div id="fila-id"><dt data-i18n="ui.jlptNumber">N.º JLPT</dt><dd id="resp-id">—</dd></div>
                     <div id="fila-onyomi"><dt>Onyomi</dt><dd id="resp-onyomi">—</dd></div>
-                    <div id="fila-kunyomi"><dt>Kunyomi</dt><dd id="resp-kunyomi">—</dd></div>
+                    <div id="fila-kunyomi"><dt>Kunyomi</dt><dd><span id="resp-kunyomi">—</span><span id="resp-kunyomi-nota" class="reading-note-wrap hidden"><button type="button" class="reading-note-icon" aria-label="Qué es el okurigana" data-i18n-aria-label="ui.kunyomiOkuriganaNoteLabel">!</button><span class="reading-note-popover hidden" data-i18n="ui.kunyomiOkuriganaNote">El kanji representa la raíz de la lectura. La parte entre paréntesis es okurigana, escrita en hiragana para completar la palabra.</span></span></dd></div>
                     <div id="fila-ejemplo-kanji"><dt data-i18n="ui.inContext">En contexto</dt><dd id="resp-ejemplo-kanji">—</dd></div>
                 </dl>
                 <p id="aviso-umbral-trazos" class="hint hidden" role="status"></p>
@@ -670,7 +670,8 @@
                     <dt>Kunyomi</dt>
                     <dd><span id="modal-kunyomi">—</span>
                         <button id="btn-sonido-kunyomi" class="inline-sound" type="button"
-                                aria-label="Escuchar kunyomi" data-i18n-aria-label="ui.listenKunyomi">🔊</button></dd>
+                                aria-label="Escuchar kunyomi" data-i18n-aria-label="ui.listenKunyomi">🔊</button>
+                        <span id="modal-kunyomi-nota" class="reading-note-wrap hidden"><button type="button" class="reading-note-icon" aria-label="Qué es el okurigana" data-i18n-aria-label="ui.kunyomiOkuriganaNoteLabel">!</button><span class="reading-note-popover hidden" data-i18n="ui.kunyomiOkuriganaNote">El kanji representa la raíz de la lectura. La parte entre paréntesis es okurigana, escrita en hiragana para completar la palabra.</span></span></dd>
                 </div>
             </dl>
 
@@ -774,6 +775,6 @@
     <div id="aviso-nivel" class="level-notice" role="status" aria-live="polite"></div>
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
     <div id="version-fantasma" class="version-ghost" aria-hidden="true"></div>
-    <script type="module" src="js/app.js?v=109"></script>
+    <script type="module" src="js/app.js?v=1012"></script>
 </body>
 </html>
