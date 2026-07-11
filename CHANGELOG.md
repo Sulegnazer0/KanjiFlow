@@ -10,6 +10,16 @@ El número de versión visible de la app debe mantenerse alineado en:
 - `CHANGELOG.md`;
 - `service-worker.js` y query strings `?v=...` cuando cambien archivos cacheados.
 
+## [0.11.3] - 2026-07-11
+
+### Agregado
+
+- Aviso emergente ("El evaluador de trazos de kana aún está en proceso") que aparece la primera vez que un trazo de hiragana/katakana se califica claramente mal (similitud por debajo del umbral amarillo) con el evaluador activado. Explica que el modelo de kana (AnimCJK) es más nuevo y menos preciso que el de kanji (KanjiVG), y ofrece un botón para desactivar el evaluador ahí mismo, además de "Seguir practicando" para cerrarlo sin cambiar nada. Se muestra una sola vez por sesión, nunca para kanji.
+
+### Nota
+
+- La app muestra `v0.11.3`.
+
 ## [0.11.2] - 2026-07-11
 
 ### Agregado

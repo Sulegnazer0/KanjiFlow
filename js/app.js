@@ -41,6 +41,7 @@ import {
     RESAMPLE_POINTS,
     scoreAttempt,
     similarityColor,
+    YELLOW_THRESHOLD,
 } from "./stroke-scoring.js";
 import { fromCanvasPoint, resampleStroke } from "./stroke-geometry.js";
 import {
@@ -99,7 +100,7 @@ import {
     translateCardState,
 } from "./i18n.js?v=831";
 
-const APP_VERSION = "0.11.2";
+const APP_VERSION = "0.11.3";
 const FEEDBACK_ENDPOINT = "https://script.google.com/macros/s/AKfycbxiz6058zwMxfPTDTmIBpG8JutOPw8YBxCRJ0BeMHp-py6IXZy4zkZs2IdTqwmSSzC1jw/exec";
 const SPLASH_MIN_MS = 2400;
 const BRAND_SPLASH_MS = 2000;
@@ -299,6 +300,9 @@ const elements = {
     examDisclaimerModal: $("#modal-examen-aviso"),
     examDisclaimerAccept: $("#btn-examen-aviso-aceptar"),
     examDisclaimerCancel: $("#btn-examen-aviso-cancelar"),
+    kanaEvaluatorNoticeModal: $("#modal-kana-evaluador-aviso"),
+    kanaEvaluatorNoticeDismiss: $("#btn-kana-evaluador-aviso-cerrar"),
+    kanaEvaluatorNoticeDisable: $("#btn-kana-evaluador-aviso-desactivar"),
     examFeedbackModal: $("#modal-examen-feedback"),
     closeExamFeedback: $("#cerrar-examen-feedback"),
     examFeedbackText: $("#examen-feedback-texto"),
@@ -533,6 +537,38 @@ function handleStrokeEnd(index, points) {
     const resampled = resampleStroke(normalized, RESAMPLE_POINTS);
     const strokeScore = compareStroke(resampled, expectedStroke.points);
     feedbackLayer.paintStroke(points, similarityColor(strokeScore));
+    maybeShowKanaEvaluatorNotice(strokeScore);
+}
+
+// El modelo de trazos de kana (AnimCJK) es más nuevo y menos preciso que el de kanji
+// (KanjiVG) -- avisamos una sola vez por sesión, y solo cuando el usuario realmente se
+// equivoca en un trazo (no ante cualquier imprecisión menor), para que sepa que puede
+// desactivar el evaluador sin pensar que el error es siempre suyo.
+let kanaEvaluatorNoticeShown = false;
+
+function maybeShowKanaEvaluatorNotice(strokeScore) {
+    if (kanaEvaluatorNoticeShown) return;
+    if (currentItem?.tipo !== "hiragana" && currentItem?.tipo !== "katakana") return;
+    if (strokeScore >= YELLOW_THRESHOLD) return;
+    kanaEvaluatorNoticeShown = true;
+    openKanaEvaluatorNoticeModal();
+}
+
+function openKanaEvaluatorNoticeModal() {
+    elements.kanaEvaluatorNoticeModal.classList.remove("hidden");
+    document.body.style.overflow = "hidden";
+    elements.kanaEvaluatorNoticeModal.querySelector(".modal-content").focus();
+}
+
+function closeKanaEvaluatorNoticeModal() {
+    if (elements.kanaEvaluatorNoticeModal.classList.contains("hidden")) return;
+    elements.kanaEvaluatorNoticeModal.classList.add("hidden");
+    document.body.style.overflow = "";
+}
+
+function disableKanaEvaluatorFromNotice() {
+    closeKanaEvaluatorNoticeModal();
+    toggleStrokeEvaluator();
 }
 
 const practicePad = createDrawingPad(elements.board, { lineWidth: 12, onStrokeEnd: handleStrokeEnd });
@@ -2700,6 +2736,11 @@ function bindEvents() {
     elements.examDisclaimerModal.addEventListener("click", event => {
         if (event.target === elements.examDisclaimerModal) closeExamDisclaimerModal();
     });
+    elements.kanaEvaluatorNoticeDismiss.addEventListener("click", closeKanaEvaluatorNoticeModal);
+    elements.kanaEvaluatorNoticeDisable.addEventListener("click", disableKanaEvaluatorFromNotice);
+    elements.kanaEvaluatorNoticeModal.addEventListener("click", event => {
+        if (event.target === elements.kanaEvaluatorNoticeModal) closeKanaEvaluatorNoticeModal();
+    });
     elements.examNextButton.addEventListener("click", advanceExam);
     elements.examRetryButton.addEventListener("click", showExamSetup);
     elements.closeExamFeedback.addEventListener("click", closeExamFeedbackModal);
@@ -2790,6 +2831,11 @@ function bindEvents() {
         if (!elements.examFeedbackModal.classList.contains("hidden")) {
             if (event.key === "Escape") closeExamFeedbackModal();
             trapModalFocus(event, elements.examFeedbackModal);
+            return;
+        }
+        if (!elements.kanaEvaluatorNoticeModal.classList.contains("hidden")) {
+            if (event.key === "Escape") closeKanaEvaluatorNoticeModal();
+            trapModalFocus(event, elements.kanaEvaluatorNoticeModal);
             return;
         }
         if (elements.modal.classList.contains("hidden")) return;

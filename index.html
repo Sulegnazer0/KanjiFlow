@@ -22,7 +22,7 @@
             <img src="assets/s0labsHorizontal.png" alt="S0 Labs" class="splash-logo">
             <p data-i18n="ui.splashTagline">Preparando tu flujo de práctica…</p>
         </div>
-        <span id="splash-version" class="splash-version">v0.11.2</span>
+        <span id="splash-version" class="splash-version">v0.11.3</span>
     </div>
 
     <main class="app-shell">
@@ -519,6 +519,21 @@
         </div>
     </div>
 
+    <div id="modal-kana-evaluador-aviso" class="modal hidden" role="dialog" aria-modal="true"
+         aria-labelledby="kana-evaluador-aviso-titulo" aria-describedby="kana-evaluador-aviso-texto">
+        <div class="modal-content" tabindex="-1">
+            <p class="eyebrow" data-i18n="ui.kanaEvaluatorNoticeEyebrow">En desarrollo</p>
+            <h2 id="kana-evaluador-aviso-titulo" data-i18n="ui.kanaEvaluatorNoticeTitle">El evaluador de trazos de kana aún está en proceso</h2>
+            <p id="kana-evaluador-aviso-texto" class="lesson-description" data-i18n="ui.kanaEvaluatorNoticeText">
+                El evaluador de trazos para hiragana y katakana usa un modelo distinto al de los kanji y todavía está en desarrollo, así que puede marcar como incorrectos trazos que en realidad están bien. El de kanji (KanjiVG) es más preciso. Si prefieres, puedes desactivarlo ahora o más tarde desde tu perfil.
+            </p>
+            <div class="onboarding-actions">
+                <button id="btn-kana-evaluador-aviso-cerrar" class="button secondary" type="button" data-i18n="ui.kanaEvaluatorNoticeDismiss">Seguir practicando</button>
+                <button id="btn-kana-evaluador-aviso-desactivar" class="button" type="button" data-i18n="ui.kanaEvaluatorNoticeDisable">Desactivar evaluador</button>
+            </div>
+        </div>
+    </div>
+
     <div id="modal-examen-feedback" class="modal hidden" role="dialog" aria-modal="true"
          aria-labelledby="examen-feedback-titulo" aria-describedby="examen-feedback-descripcion">
         <div class="modal-content" tabindex="-1">
@@ -785,6 +800,6 @@
     <div id="aviso-nivel" class="level-notice" role="status" aria-live="polite"></div>
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
     <div id="version-fantasma" class="version-ghost" aria-hidden="true"></div>
-    <script type="module" src="js/app.js?v=1013"></script>
+    <script type="module" src="js/app.js?v=1014"></script>
 </body>
 </html>
