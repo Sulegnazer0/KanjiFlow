@@ -212,6 +212,8 @@
     "updateI18n": "Multilingual interface in Spanish, English, German, French, and Portuguese.",
     "kanjivgAttributionTitle": "Stroke data",
     "kanjivgAttributionText": "Stroke order and shape for N5, N4, N3, and N2 kanji use data from the KanjiVG project (Ulrich Apel), licensed under Creative Commons BY-SA 3.0.",
+    "animcjkAttributionText": "Stroke order and shape for hiragana and katakana use data from the AnimCJK project, licensed under the GNU LGPL.",
+    "strokeModelDifferenceNote": "Kanji and kana use two different stroke-data models, so the stroke style looks a little different between them — that's normal. With the stroke evaluator turned on, kana uses that model as a background guide; if you turn it off from your profile, kana goes back to showing the more stylized strokes it always had.",
     "feedbackTitle": "Send recommendation",
     "feedbackDescription": "Write between 10 and 500 characters. It will be saved directly for review.",
     "feedbackLabel": "Recommendation",

@@ -212,6 +212,8 @@
     "updateI18n": "Interface multiidioma em espanhol, ingles, alemao, frances e portugues.",
     "kanjivgAttributionTitle": "Dados de tracos",
     "kanjivgAttributionText": "A ordem e a forma dos tracos dos kanji N5, N4, N3 e N2 usam dados do projeto KanjiVG (Ulrich Apel), licenciados sob Creative Commons BY-SA 3.0.",
+    "animcjkAttributionText": "A ordem e a forma dos tracos dos hiragana e katakana usam dados do projeto AnimCJK, licenciados sob GNU LGPL.",
+    "strokeModelDifferenceNote": "Kanji e kana usam dois modelos de dados de tracos diferentes, entao o estilo do traco fica um pouco diferente entre eles — isso e normal. Com o avaliador de tracos ativado, a kana usa esse modelo como guia de fundo; se voce desativa-lo no seu perfil, a kana volta a mostrar o traco mais estilizado de sempre.",
     "feedbackTitle": "Enviar recomendacao",
     "feedbackDescription": "Escreva entre 10 e 500 caracteres. Sera salva para revisao.",
     "feedbackLabel": "Recomendacao",

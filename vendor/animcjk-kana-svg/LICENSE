@@ -1,0 +1,13 @@
+Datos de trazos: AnimCJK (https://github.com/parsimonhi/animCJK)
+Copyright (C) 2016-2026 FM-SH.
+Los archivos SVG de kana (carpeta svgsJaKana del repositorio original) se
+distribuyen bajo la GNU Lesser General Public License (LGPL), version 3 o
+posterior (https://www.gnu.org/licenses/lgpl-3.0.html) -- el propio proyecto
+aclara que estos archivos de kana NO se derivan de fuentes Arphic, por lo que
+no les aplica la licencia Arphic que sí cubre sus archivos de kanji/hanzi.
+
+Estos archivos SVG son una copia sin modificar de los ficheros
+"svgsJaKana/<codepoint decimal>.svg" del repositorio original, filtrados a los
+caracteres de hiragana/katakana usados en este proyecto. Cualquier dato
+derivado de estos archivos (por ejemplo data/kana-strokes/*.json) conserva la
+misma licencia LGPL.

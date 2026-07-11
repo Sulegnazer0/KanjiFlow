@@ -22,7 +22,7 @@
             <img src="assets/s0labsHorizontal.png" alt="S0 Labs" class="splash-logo">
             <p data-i18n="ui.splashTagline">Preparando tu flujo de práctica…</p>
         </div>
-        <span id="splash-version" class="splash-version">v0.10.12</span>
+        <span id="splash-version" class="splash-version">v0.11.2</span>
     </div>
 
     <main class="app-shell">
@@ -733,11 +733,21 @@
             <section class="context-card">
                 <h3 data-i18n="ui.kanjivgAttributionTitle">Datos de trazos</h3>
                 <p data-i18n="ui.kanjivgAttributionText">
-                    El orden y la forma de los trazos de kanji N5 usan datos del proyecto KanjiVG (Ulrich Apel), licenciados bajo Creative Commons BY-SA 3.0.
+                    El orden y la forma de los trazos de kanji N5, N4, N3 y N2 usan datos del proyecto KanjiVG (Ulrich Apel), licenciados bajo Creative Commons BY-SA 3.0.
                 </p>
                 <p class="kanjivg-links">
                     <a href="https://kanjivg.tagaini.net/" target="_blank" rel="noopener noreferrer">kanjivg.tagaini.net</a>
                     · <a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="noopener noreferrer">CC BY-SA 3.0</a>
+                </p>
+                <p data-i18n="ui.animcjkAttributionText">
+                    El orden y la forma de los trazos de hiragana y katakana usan datos del proyecto AnimCJK, licenciados bajo GNU LGPL.
+                </p>
+                <p class="kanjivg-links">
+                    <a href="https://github.com/parsimonhi/animCJK" target="_blank" rel="noopener noreferrer">github.com/parsimonhi/animCJK</a>
+                    · <a href="https://www.gnu.org/licenses/lgpl-3.0.html" target="_blank" rel="noopener noreferrer">LGPL 3.0</a>
+                </p>
+                <p class="lesson-description" data-i18n="ui.strokeModelDifferenceNote">
+                    Los kanji y la kana usan dos modelos de datos de trazos distintos, así que el estilo del trazo se ve un poco diferente entre ambos — es normal. Con el evaluador de trazos activado, la kana usa ese modelo como guía de fondo; si lo desactivas desde tu perfil, la kana vuelve a mostrarse con el trazo más estilizado de siempre.
                 </p>
             </section>
 
@@ -775,6 +785,6 @@
     <div id="aviso-nivel" class="level-notice" role="status" aria-live="polite"></div>
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
     <div id="version-fantasma" class="version-ghost" aria-hidden="true"></div>
-    <script type="module" src="js/app.js?v=1012"></script>
+    <script type="module" src="js/app.js?v=1013"></script>
 </body>
 </html>

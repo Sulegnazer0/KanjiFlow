@@ -10,6 +10,44 @@ El número de versión visible de la app debe mantenerse alineado en:
 - `CHANGELOG.md`;
 - `service-worker.js` y query strings `?v=...` cuando cambien archivos cacheados.
 
+## [0.11.2] - 2026-07-11
+
+### Agregado
+
+- **Acerca de**: nueva nota explicando que kanji (KanjiVG) y kana (AnimCJK) usan dos modelos de datos de trazos distintos, por lo que el estilo del trazo se ve un poco diferente entre ambos — junto con la atribución/licencia de AnimCJK (GNU LGPL) que faltaba en este modal.
+
+### Cambiado
+
+- La kana solo usa la guía de trazos de AnimCJK como referencia de fondo cuando el **evaluador de trazos está activado** (la necesita para calificar y animar en vivo). Con el evaluador desactivado, la kana vuelve a mostrar la guía de la fuente estática `KanjiStrokeOrders.woff`, más estilizada — tal como funcionaba antes de introducir AnimCJK. Los kanji N5-N2 no cambian: siguen usando KanjiVG siempre, sin importar el estado del evaluador.
+- Alternar el evaluador de trazos con la tarjeta de respuesta ya visible ahora refresca la guía mostrada de inmediato, sin necesidad de pasar a la siguiente tarjeta.
+
+### Nota
+
+- La app muestra `v0.11.2`.
+
+## [0.11.1] - 2026-07-11
+
+### Corregido
+
+- Los trazos de kana se veían poligonales/toscos en vez de curvos — la guía de AnimCJK trae muy pocos puntos por trazo (a veces solo 4), y conectarlos con líneas rectas se notaba, a diferencia de los kanji (KanjiVG), que ya vienen con curvas Bézier densas. Se agregó suavizado con splines Catmull-Rom sobre los puntos de AnimCJK antes de normalizar y remuestrear — conserva la forma/dirección real del trazo pero ahora se ve curvo y natural, igual que los kanji.
+
+### Nota
+
+- La app muestra `v0.11.1`.
+
+## [0.11.0] - 2026-07-10
+
+### Agregado
+
+- **Evaluador de trazos para kana**: hiragana y katakana (los 213 caracteres del proyecto, incluidas las 66 combinaciones youon como きゃ/シュ) ahora tienen el mismo evaluador interactivo que ya existía solo para kanji N5-N2 — coloreado en vivo del trazo dibujado, guía animada con numeración de trazo, y % de similitud. Antes, la kana solo mostraba la guía estática de fuente (`KanjiStrokeOrders.woff`), sin evaluación real.
+- Fuente de datos: [AnimCJK](https://github.com/parsimonhi/animCJK) (LGPL — confirmado que los SVG de kana no se derivan de fuentes Arphic, así que no aplica la licencia más restrictiva que sí cubre sus archivos de kanji/hanzi). Nuevo pipeline: `tools/fetch-kana-strokes.mjs` + `tools/build-kana-strokes.mjs` + `tools/lib/animcjk-path.mjs`, generando `data/kana-strokes/*.json` con el mismo esquema que `data/kanjivg/*.json` — todo el código de calificación, animación y guía visual existente funciona sin cambios, solo cambia de dónde vienen los puntos.
+- Las combinaciones youon (きゃ, キャ, etc., dos caracteres Unicode sin codepoint combinado) se componen automáticamente: el carácter base a tamaño completo + el carácter pequeño (ゃゅょ/ャュョ) escalado al 55% en la esquina inferior derecha, siguiendo la convención estándar de escritura en genkouyoushi.
+- `tools/validate-content.mjs` ahora exige cobertura completa de datos de trazos para toda la kana, igual que ya exigía para KanjiVG.
+
+### Nota
+
+- La app muestra `v0.11.0`.
+
 ## [0.10.12] - 2026-07-10
 
 ### Corregido

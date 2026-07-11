@@ -212,6 +212,8 @@
     "updateI18n": "Interface multilingue en espagnol, anglais, allemand, francais et portugais.",
     "kanjivgAttributionTitle": "Donnees de traits",
     "kanjivgAttributionText": "L'ordre et la forme des traits des kanji N5, N4, N3 et N2 utilisent les donnees du projet KanjiVG (Ulrich Apel), sous licence Creative Commons BY-SA 3.0.",
+    "animcjkAttributionText": "L'ordre et la forme des traits des hiragana et katakana utilisent les donnees du projet AnimCJK, sous licence GNU LGPL.",
+    "strokeModelDifferenceNote": "Les kanji et les kana utilisent deux modeles de donnees de traits differents, le style du trait est donc un peu different entre les deux — c'est normal. Avec l'evaluateur de traits active, les kana utilisent ce modele comme guide de fond ; si vous le desactivez depuis votre profil, les kana reaffichent le trait plus stylise habituel.",
     "feedbackTitle": "Envoyer une recommandation",
     "feedbackDescription": "Ecrivez entre 10 et 500 caracteres. Elle sera enregistree pour revision.",
     "feedbackLabel": "Recommandation",
